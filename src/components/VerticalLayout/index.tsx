@@ -20,7 +20,6 @@ import { useSelector, useDispatch } from "react-redux";
 
 const Layout = (props: any) => {
   const dispatch = useDispatch();
-
   const {
     isPreloader,
     layoutWidth,
@@ -37,7 +36,9 @@ const Layout = (props: any) => {
     leftSideBarTheme: state.Layout.leftSideBarTheme,
   }));
 
-  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  const isMobile: any = /iPhone|iPad|iPod|Android/i.test(
+    process.browser && window && (window as any).navigator.userAgent
+  );
 
   const toggleMenuCallback = () => {
     if (leftSideBarType === "default") {
@@ -48,16 +49,19 @@ const Layout = (props: any) => {
   };
 
   //hides right sidebar on body click
-  const hideRightbar = useCallback((event) => {
-    var rightbar = document.getElementById("right-bar");
-    //if clicked in inside right bar, then do nothing
-    if (rightbar && rightbar.contains(event.target)) {
-      return;
-    } else {
-      //if clicked in outside of rightbar then fire action for hide rightbar
-      dispatch(showRightSidebarAction(false));
-    }
-  }, [dispatch]);
+  const hideRightbar = useCallback(
+    (event) => {
+      var rightbar = document.getElementById("right-bar");
+      //if clicked in inside right bar, then do nothing
+      if (rightbar && rightbar.contains(event.target)) {
+        return;
+      } else {
+        //if clicked in outside of rightbar then fire action for hide rightbar
+        dispatch(showRightSidebarAction(false));
+      }
+    },
+    [dispatch]
+  );
   /*
   layout  settings
   */
@@ -78,7 +82,7 @@ const Layout = (props: any) => {
       document.getElementById("preloader")!.style.display = "none";
       document.getElementById("status")!.style.display = "none";
     }
-  }, [isPreloader,hideRightbar]);
+  }, [isPreloader, hideRightbar]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -150,4 +154,4 @@ Layout.propTypes = {
   topbarTheme: PropTypes.any,
 };
 
-export default Layout
+export default Layout;

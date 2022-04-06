@@ -18,7 +18,7 @@ import {
 /**
  * Changes the body attribute
  */
-function changeBodyAttribute(attribute, value) {
+function changeBodyAttribute(attribute: any, value: any) {
   if (document.body) document.body.setAttribute(attribute, value);
   return true;
 }
@@ -27,7 +27,7 @@ function changeBodyAttribute(attribute, value) {
  * Toggle the class on body
  * @param {*} cssClass
  */
-function manageBodyClass(cssClass, action = "toggle") {
+function manageBodyClass(cssClass: any, action = "toggle") {
   switch (action) {
     case "add":
       if (document.body) document.body.classList.add(cssClass);
@@ -47,7 +47,7 @@ function manageBodyClass(cssClass, action = "toggle") {
  * Changes the layout type
  * @param {*} param0
  */
-function* changeLayout({ payload: layout }) {
+function* changeLayout({ payload: layout }: any) {
   try {
     if (layout === "horizontal") {
       yield put(changeTopbarThemeAction("colored"));
@@ -64,7 +64,7 @@ function* changeLayout({ payload: layout }) {
  * Changes the layout width
  * @param {*} param0
  */
-function* changeLayoutWidth({ payload: width }) {
+function* changeLayoutWidth({ payload: width }: any) {
   try {
     if (width === "boxed") {
       yield put(changeSidebarTypeAction("icon"));
@@ -86,7 +86,7 @@ function* changeLayoutWidth({ payload: width }) {
  * Changes the left sidebar theme
  * @param {*} param0
  */
-function* changeLeftSidebarTheme({ payload: theme }) {
+function* changeLeftSidebarTheme({ payload: theme }: any) {
   try {
     yield call(changeBodyAttribute, "data-sidebar", theme);
   } catch (error) { }
@@ -96,7 +96,7 @@ function* changeLeftSidebarTheme({ payload: theme }) {
  * Changes the topbar theme
  * @param {*} param0
  */
-function* changeTopbarTheme({ payload: theme }) {
+function* changeTopbarTheme({ payload: theme }: any) {
   try {
     yield call(changeBodyAttribute, "data-topbar", theme);
   } catch (error) { }
@@ -106,7 +106,7 @@ function* changeTopbarTheme({ payload: theme }) {
  * Changes the left sidebar type
  * @param {*} param0
  */
-function* changeLeftSidebarType({ payload: { sidebarType, isMobile } }) {
+function* changeLeftSidebarType({ payload: { sidebarType, isMobile } }: any) {
   try {
     switch (sidebarType) {
       case "compact":

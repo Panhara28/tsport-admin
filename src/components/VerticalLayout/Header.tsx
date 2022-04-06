@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import React, { useState } from "react";
 
 import { connect } from "react-redux";
@@ -8,9 +8,6 @@ import { Form, Input, Button, Row, Col } from "reactstrap";
 import { Dropdown, DropdownToggle, DropdownMenu } from "reactstrap";
 
 // Import menuDropdown
-import LanguageDropdown from "../CommonForBoth/TopbarDropdown/LanguageDropdown";
-import NotificationDropdown from "../CommonForBoth/TopbarDropdown/NotificationDropdown";
-import ProfileMenu from "../CommonForBoth/TopbarDropdown/ProfileMenu";
 
 import logoSm from "../../assets/images/logo-sm.png";
 import logoDark from "../../assets/images/logo-dark.png";
@@ -32,31 +29,31 @@ import {
   toggleLeftmenu,
   changeSidebarType,
 } from "../../store/actions";
-import Link from 'next/link';
+import Link from "next/link";
 
 type Props = {
   toggleMenuCallback: any;
   showRightSidebarAction: any;
   showRightSidebar: any;
-}
+};
 
 const Header = (props: Props) => {
   const [search, setsearch] = useState(false);
   const [socialDrp, setsocialDrp] = useState(false);
-  var document:any = window.document;
+  var document: any = process.browser && window.document;
 
   function toggleFullscreen() {
     if (
       !document.fullscreenElement &&
-      /* alternative standard method */ !document['mozFullScreenElement'] &&
-      !document['webkitFullscreenElement']
+      /* alternative standard method */ !document["mozFullScreenElement"] &&
+      !document["webkitFullscreenElement"]
     ) {
       // current working methods
       if (document.documentElement.requestFullscreen) {
         document.documentElement.requestFullscreen();
-      } else if (document.documentElement['mozRequestFullScreen']) {
+      } else if (document.documentElement["mozRequestFullScreen"]) {
         document.documentElement.mozRequestFullScreen();
-      } 
+      }
     } else {
       if (document.cancelFullScreen) {
         document.cancelFullScreen();
@@ -79,19 +76,18 @@ const Header = (props: Props) => {
         <div className="navbar-header">
           <div className="d-flex">
             <div className="navbar-brand-box">
-              <Link href="/#">
-                <a  className="logo logo-dark">
-                <span className="logo-sm">
-                  <img src={""} alt="" height="22" />
-                </span>
-                <span className="logo-lg">
-                  <img src={""} alt="" height="20" />
-                </span>
+              {/* <Link href="/">
+                <a className="logo logo-dark">
+                  <span className="logo-sm">
+                    <img src={""} alt="" height="22" />
+                  </span>
+                  <span className="logo-lg">
+                    <img src={""} alt="" height="20" />
+                  </span>
                 </a>
-          
-              </Link>
+              </Link> */}
 
-              <Link href="/#" >
+              {/* <Link href="/">
                 <a className="logo logo-light">
                   <span className="logo-sm">
                     <img src={""} alt="" height="22" />
@@ -100,7 +96,7 @@ const Header = (props: Props) => {
                     <img src={""} alt="" height="20" />
                   </span>
                 </a>
-              </Link>
+              </Link> */}
             </div>
 
             <button
@@ -116,18 +112,13 @@ const Header = (props: Props) => {
 
             <Form className="app-search d-none d-lg-block">
               <div className="position-relative">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder=""
-                />
+                <input type="text" className="form-control" placeholder="" />
                 <span className="uil-search"></span>
               </div>
             </Form>
           </div>
 
           <div className="d-flex">
-
             <Dropdown
               className="d-inline-block d-lg-none ms-2"
               onClick={() => {
@@ -139,24 +130,30 @@ const Header = (props: Props) => {
                 className="btn header-item noti-icon waves-effect"
                 id="page-header-search-dropdown"
                 tag="button"
-              > <i className="uil-search" />
+              >
+                {" "}
+                <i className="uil-search" />
               </DropdownToggle>
               <DropdownMenu className="dropdown-menu-lg dropdown-menu-end p-0">
                 <Form className="p-3">
                   <div className="form-group m-0">
                     <div className="input-group">
-                      <Input type="text" className="form-control" placeholder="Search ..." aria-label="Recipient's username" />
+                      <Input
+                        type="text"
+                        className="form-control"
+                        placeholder="Search ..."
+                        aria-label="Recipient's username"
+                      />
                       <div className="input-group-append">
-                        <Button className="btn btn-primary" type="submit"><i className="mdi mdi-magnify"></i></Button>
+                        <Button className="btn btn-primary" type="submit">
+                          <i className="mdi mdi-magnify"></i>
+                        </Button>
                       </div>
                     </div>
                   </div>
                 </Form>
               </DropdownMenu>
             </Dropdown>
-
-            <LanguageDropdown />
-
             <Dropdown
               className="d-none d-lg-inline-block ms-1"
               isOpen={socialDrp}
@@ -174,40 +171,38 @@ const Header = (props: Props) => {
                 <div className="px-lg-2">
                   <Row className="g-0">
                     <Col>
-                      <Link href="/#">
-                        <a  className="dropdown-icon-item">
-
-                        </a>
+                      {/* <Link href="/">
+                        <a className="dropdown-icon-item"></a>
                         <img src={""} alt="Github" />
                         <span>GitHub</span>
-                      </Link>
+                      </Link> */}
                     </Col>
                   </Row>
 
                   <Row className="g-0">
                     <Col>
-                      <Link href="">
+                      {/* <Link href="">
                         <a className="dropdown-icon-item">
                           <img src={""} alt="dropbox" />
-                        <span>Dropbox</span>
-                        </a>                     
-                      </Link>
+                          <span>Dropbox</span>
+                        </a>
+                      </Link> */}
                     </Col>
                     <Col>
-                      <Link href="#">
-                        <a  className="dropdown-icon-item" >
+                      {/* <Link href="#">
+                        <a className="dropdown-icon-item">
                           <img src={""} alt="mail_chimp" />
                           <span>Mail Chimp</span>
-                        </a>                     
-                      </Link>
+                        </a>
+                      </Link> */}
                     </Col>
                     <Col>
-                      <Link href="#">
+                      {/* <Link href="#">
                         <a className="dropdown-icon-item">
                           <img src={""} alt="slack" />
                           <span>Slack</span>
-                        </a>                      
-                      </Link>
+                        </a>
+                      </Link> */}
                     </Col>
                   </Row>
                 </div>
@@ -227,19 +222,19 @@ const Header = (props: Props) => {
               </button>
             </Dropdown>
 
-            <NotificationDropdown />
-
-            <ProfileMenu />
-
-            <div onClick={() => {
-              props.showRightSidebarAction(!props.showRightSidebar);
-            }}
-              className="dropdown d-inline-block">
-              <button type="button" className="btn header-item noti-icon right-bar-toggle waves-effect">
+            <div
+              onClick={() => {
+                props.showRightSidebarAction(!props.showRightSidebar);
+              }}
+              className="dropdown d-inline-block"
+            >
+              <button
+                type="button"
+                className="btn header-item noti-icon right-bar-toggle waves-effect"
+              >
                 <i className="uil-cog"></i>
               </button>
             </div>
-
           </div>
         </div>
       </header>
@@ -254,16 +249,12 @@ Header.propTypes = {
   showRightSidebar: PropTypes.any,
   showRightSidebarAction: PropTypes.func,
   t: PropTypes.any,
-  toggleLeftmenu: PropTypes.func
+  toggleLeftmenu: PropTypes.func,
 };
 
 const mapStatetoProps = (state: any) => {
-  const {
-    layoutType,
-    showRightSidebar,
-    leftMenu,
-    leftSideBarType,
-  } = state.Layout;
+  const { layoutType, showRightSidebar, leftMenu, leftSideBarType } =
+    state.Layout;
   return { layoutType, showRightSidebar, leftMenu, leftSideBarType };
 };
 

@@ -33,7 +33,7 @@ const INIT_STATE = {
   leftMenu: false,
 };
 
-const Layout = (state = INIT_STATE, action) => {
+const Layout = (state = INIT_STATE, action: { type: any; payload: { sidebarType: any; }; }) => {
   switch (action.type) {
     case CHANGE_LAYOUT:
       return {

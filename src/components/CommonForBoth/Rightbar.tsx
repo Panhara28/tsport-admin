@@ -27,7 +27,7 @@ import {
   layoutTypes,
   layoutWidthTypes,
   leftSidebarTypes,
-  leftSideBarThemeTypes
+  leftSideBarThemeTypes,
 } from "../../constants/layout";
 import Link from "next/link";
 
@@ -39,17 +39,16 @@ const RightSidebar = (props: any) => {
           <div className="h-100">
             <div className="rightbar-title d-flex align-items-center px-3 py-4">
               <h5 className="m-0 me-2">Settings</h5>
-              <Link href="#">
-                <a  
-                onClick={(e) => {
-                  e.preventDefault();
-                  props.showRightSidebarAction(false);
-                }}
-                className="right-bar-toggle ms-auto">
-
-                </a>
+              {/* <Link href="#">
+                <a
+                  onClick={(e) => {
+                    e.preventDefault();
+                    props.showRightSidebarAction(false);
+                  }}
+                  className="right-bar-toggle ms-auto"
+                ></a>
                 <i className="mdi mdi-close noti-icon" />
-              </Link>
+              </Link> */}
             </div>
 
             <hr className="my-0" />
@@ -133,7 +132,9 @@ const RightSidebar = (props: any) => {
                       id="sidebarDefault"
                       name="sidebarType"
                       value={leftSidebarTypes.DEFAULT}
-                      checked={props.leftSideBarType === leftSidebarTypes.DEFAULT}
+                      checked={
+                        props.leftSideBarType === leftSidebarTypes.DEFAULT
+                      }
                       onChange={(e) => {
                         if (e.target.checked) {
                           props.changeSidebarType(e.target.value);
@@ -147,7 +148,9 @@ const RightSidebar = (props: any) => {
                       id="sidebarCompact"
                       name="sidebarType"
                       value={leftSidebarTypes.COMPACT}
-                      checked={props.leftSideBarType === leftSidebarTypes.COMPACT}
+                      checked={
+                        props.leftSideBarType === leftSidebarTypes.COMPACT
+                      }
                       onChange={(e) => {
                         if (e.target.checked) {
                           props.changeSidebarType(e.target.value);
@@ -182,7 +185,9 @@ const RightSidebar = (props: any) => {
                       id="leftsidebarThemelight"
                       name="leftsidebarTheme"
                       value={leftSideBarThemeTypes.LIGHT}
-                      checked={props.leftSideBarTheme === leftSideBarThemeTypes.LIGHT}
+                      checked={
+                        props.leftSideBarTheme === leftSideBarThemeTypes.LIGHT
+                      }
                       onChange={(e) => {
                         if (e.target.checked) {
                           props.changeSidebarTheme(e.target.value);
@@ -197,7 +202,9 @@ const RightSidebar = (props: any) => {
                       id="leftsidebarThemedark"
                       name="leftsidebarTheme"
                       value={leftSideBarThemeTypes.DARK}
-                      checked={props.leftSideBarTheme === leftSideBarThemeTypes.DARK}
+                      checked={
+                        props.leftSideBarTheme === leftSideBarThemeTypes.DARK
+                      }
                       onChange={(e) => {
                         if (e.target.checked) {
                           props.changeSidebarTheme(e.target.value);
@@ -212,7 +219,9 @@ const RightSidebar = (props: any) => {
                       id="leftsidebarThemecolored"
                       name="leftsidebarTheme"
                       value={leftSideBarThemeTypes.COLORED}
-                      checked={props.leftSideBarTheme === leftSideBarThemeTypes.COLORED}
+                      checked={
+                        props.leftSideBarTheme === leftSideBarThemeTypes.COLORED
+                      }
                       onChange={(e) => {
                         if (e.target.checked) {
                           props.changeSidebarTheme(e.target.value);
@@ -251,52 +260,34 @@ const RightSidebar = (props: any) => {
               <h6 className="text-center">Choose Layouts</h6>
 
               <div className="mb-2">
-                <Link
-                  href="//minible-v-light.react.themesbrand.com"
-                >
-                  <a target="_blank"> 
-                  <img
-                    src={""}
-                    className="img-fluid img-thumbnail"
-                    alt=""
-                  />
-
+                {/* <Link href="minible-v-light.react.themesbrand.com">
+                  <a target="_blank">
+                    <img src={""} className="img-fluid img-thumbnail" alt="" />
                   </a>
-                 
-                </Link>
+                </Link> */}
               </div>
 
               <div className="mb-2">
-                <Link href="//minible-v-dark.react.themesbrand.com">
+                {/* <Link href="minible-v-dark.react.themesbrand.com">
                   <a target="_blank">
-                    <img
-                      src={""}
-                      className="img-fluid img-thumbnail"
-                      alt=""
-                    />
+                    <img src={""} className="img-fluid img-thumbnail" alt="" />
                   </a>
-                </Link>
+                </Link> */}
               </div>
 
               <div className="mb-2">
-                <Link
-                  href="//minible-v-rtl.react.themesbrand.com"
-                >
+                {/* <Link href="minible-v-rtl.react.themesbrand.com">
                   <a target="_blank">
-                    <img
-                      src={""}
-                      className="img-fluid img-thumbnail"
-                      alt=""
-                    />
+                    <img src={""} className="img-fluid img-thumbnail" alt="" />
                   </a>
-                </Link>
+                </Link> */}
               </div>
 
-              <Link href="//1.envato.market/minible-react">
+              {/* <Link href="1.envato.market/minible-react">
                 <a className="btn btn-primary btn-block mt-3" target="_blank">
                   <i className="mdi mdi-cart mr-1" /> Purchase Now
                 </a>
-              </Link>
+              </Link> */}
             </div>
           </div>
         </SimpleBar>

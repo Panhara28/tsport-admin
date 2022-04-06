@@ -1,9 +1,8 @@
-import React from "react"
-import PropTypes from 'prop-types'
-import { Link } from "react-router-dom"
-import { Row, Col, BreadcrumbItem } from "reactstrap"
-
-const Breadcrumb = props => {
+import React from "react";
+import PropTypes from "prop-types";
+import { Row, Col, BreadcrumbItem } from "reactstrap";
+import Link from "next/link";
+export const Breadcrumb = (props: any) => {
   return (
     <Row>
       <Col className="col-12">
@@ -13,22 +12,24 @@ const Breadcrumb = props => {
           <div className="page-title-right">
             <ol className="breadcrumb m-0">
               <BreadcrumbItem>
-                <Link to="#">{props.title}</Link>
+                <Link href="#">
+                  <a>{props.title}</a>
+                </Link>
               </BreadcrumbItem>
               <BreadcrumbItem active>
-                <Link to="#">{props.breadcrumbItem}</Link>
+                <Link href="#">
+                  <a>{props.breadcrumbItem}</a>
+                </Link>
               </BreadcrumbItem>
             </ol>
           </div>
         </div>
       </Col>
     </Row>
-  )
-}
+  );
+};
 
 Breadcrumb.propTypes = {
   breadcrumbItem: PropTypes.string,
-  title: PropTypes.string
-}
-
-export default Breadcrumb
+  title: PropTypes.string,
+};
