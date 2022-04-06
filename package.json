@@ -9,9 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "lodash": "^4.17.21",
     "next": "12.1.4",
     "react": "18.0.0",
-    "react-dom": "18.0.0"
+    "react-dom": "18.0.0",
+    "react-redux": "^7.2.8",
+    "reactstrap": "^9.0.1",
+    "sass": "^1.49.11",
+    "simplebar-react": "^2.3.6"
   },
   "devDependencies": {
     "@types/node": "17.0.23",
