@@ -1,0 +1,212 @@
+.form_group {
+  margin-bottom: 1rem;
+}
+
+.form_legend {
+  legend {
+    color: rgb(0, 82, 204);
+    display: inline-block;
+    font-weight: 600;
+    line-height: 16px;
+    padding: 0.5rem 0;
+    margin-bottom: 4px;
+    border-bottom: 1px solid #eee;
+    margin: 1rem 0 1.5rem 0;
+  }
+}
+
+.input {
+  position: relative;
+  background-color: rgb(250, 251, 252);
+  border: 2px solid rgb(223, 225, 230);
+  border-radius: 3px;
+  outline: none;
+  padding: 8px 6px;
+  color: rgb(23, 43, 77);
+  font-size: 14px;
+  width: 100%;
+  display: block;
+  font-family: inherit;
+  transition: background-color 0.2s ease-in-out 0s, border-color 0.2s ease-in-out 0s;
+}
+
+.input:hover {
+  background-color: rgb(235, 236, 240);
+  border-color: rgb(223, 225, 230);
+}
+
+.input:focus {
+  background-color: rgb(255, 255, 255);
+  border-color: rgb(76, 154, 255);
+}
+
+.label {
+  color: rgb(107, 119, 140);
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  padding: 0px;
+  margin-bottom: 4px;
+}
+
+.action_list {
+  margin-top: 1rem;
+  padding: 15px 0px 12px;
+  text-align: right;
+
+  .btn {
+    margin-left: 0.5rem;
+  }
+}
+
+.checkbox {
+  display: block;
+  position: relative;
+  padding-left: 25px;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  &.checkbox_inline {
+    display: inline-block;
+  }
+
+  :before {
+    content: '';
+    position: absolute;
+    top: 2.5px;
+    left: 0;
+    height: 15px;
+    width: 15px;
+    background-color: #eee;
+    text-align: center;
+    line-height: 11px;
+    font-weight: bold;
+    border: 2px solid rgb(223, 225, 230);
+    font-size: 12px;
+    border-radius: 2px;
+  }
+
+  :hover ~ :before {
+    background-color: #ccc;
+  }
+
+  input:checked ~ :before {
+    content: '\2713';
+    display: block;
+    color: #fff;
+    background-color: rgb(0, 82, 204);
+    border-color: rgb(0, 82, 204);
+  }
+
+  input[type='checkbox'],
+  input[type='radio'] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+}
+
+.btn,
+a.btn {
+  display: inline-flex;
+  line-height: 32px;
+  height: 32px;
+  font-weight: 500;
+  padding: 0px 12px;
+  border-radius: 3px;
+  transition: 0.1s;
+  border: 0;
+  cursor: pointer;
+  color: rgb(66, 82, 110);
+  text-decoration: none;
+  align-items: center;
+  outline: none;
+
+  :hover {
+    text-decoration: none;
+  }
+}
+
+.btn:focus {
+  outline: none;
+}
+
+.btn_danger,
+a.btn_danger {
+  background-color: #e74c3c;
+  color: #fff;
+}
+
+.btn_danger:hover {
+  background-color: #e74c3caa;
+}
+
+.btn_secondary,
+a.btn_secondary {
+  background-color: rgba(9, 30, 66, 0.04);
+}
+
+.btn_secondary:hover {
+  background-color: rgba(9, 30, 66, 0.08);
+}
+
+.btn_primary,
+a.btn_primary {
+  background: rgb(0, 82, 204);
+  color: #fff;
+}
+
+.btn_primary:hover {
+  background: rgb(0, 101, 255);
+}
+
+.form_inline {
+  input,
+  select,
+  .checkbox {
+    display: inline-block;
+    margin-right: 10px;
+  }
+}
+
+.form_input_group {
+  display: flex;
+
+  .btn {
+    height: 100%;
+    margin-left: 5px;
+  }
+}
+
+.btnIcon {
+  position: absolute;
+  opacity: 1;
+  background-color: #fff;
+  transform: translate(-50%);
+  color: white;
+  transition: background-color 100ms linear 0s, color 100ms linear 0s, opacity 300ms cubic-bezier(0.2, 0, 0, 1) 0s, transform 300ms cubic-bezier(0.2, 0, 0, 1) 0s;
+  width: 24px;
+  height: 24px;
+  top: 1.3em;
+  color: rgb(107, 119, 140);
+  background: 0px center white;
+  outline: 0px;
+  border-radius: 50%;
+  border: 0px;
+  cursor: pointer;
+  padding: 0px;
+  line-height: 1;
+  left: 19.1em;
+  box-shadow: rgb(9 30 66 / 8%) 0px 0px 0px 1px, rgb(9 30 66 / 8%) 0px 2px 4px 1px;
+  // opacity: 0;
+  &:hover {
+    background-color: rgb(38, 132, 255);
+    color: #fff;
+  }
+}

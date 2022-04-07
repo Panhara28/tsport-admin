@@ -17,11 +17,6 @@ import {
 //SimpleBar
 import SimpleBar from "simplebar-react";
 
-//Import images
-import layout1 from "../../assets/images/layouts/layout-1.jpg";
-import layout2 from "../../assets/images/layouts/layout-2.jpg";
-import layout3 from "../../assets/images/layouts/layout-3.jpg";
-
 //constants
 import {
   layoutTypes,

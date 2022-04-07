@@ -1,0 +1,26 @@
+.container {
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+  border-radius: 5px;
+  background: #eee;
+
+  i {
+    margin-right: 0.5rem;
+  }
+
+  span {
+    font-size: 0.9rem;
+  }
+}
+
+.success {
+  i {
+    color: #1abc9c;
+  }
+}
+
+.error {
+  i {
+    color: #ff0000;
+  }
+}

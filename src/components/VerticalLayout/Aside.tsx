@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 import {
   ProSidebar,
@@ -38,36 +39,41 @@ export const Aside = ({
             whiteSpace: "nowrap",
           }}
         >
-          sidebarTitle
+          Ministry Of Commerce
         </div>
       </SidebarHeader>
 
       <SidebarContent>
         <Menu iconShape="circle">
-          <MenuItem suffix={<span className="badge red">new</span>}>
-            dashboard
-          </MenuItem>
-          <MenuItem>components</MenuItem>
-        </Menu>
-        <Menu iconShape="circle">
-          <SubMenu
-            suffix={<span className="badge yellow">3</span>}
-            title="withSuffix"
-          >
-            <MenuItem>submenu 1</MenuItem>
-            <MenuItem>submenu 2</MenuItem>
-            <MenuItem>submenu 3</MenuItem>
-          </SubMenu>
-          <SubMenu
-            prefix={<span className="badge gray">3</span>}
-            title="withPrefix"
-          >
+          <Link href="/dashboard">
+            <a>
+              <MenuItem>Dashboard</MenuItem>
+            </a>
+          </Link>
+          <SubMenu title="withSuffix">
             <MenuItem>submenu 1</MenuItem>
             <MenuItem>submenu 2</MenuItem>
             <MenuItem>submenu 3</MenuItem>
           </SubMenu>
         </Menu>
       </SidebarContent>
+      <SidebarFooter>
+        <div
+          className="sidebar-btn-wrapper"
+          style={{
+            padding: "20px 24px",
+          }}
+        >
+          <a
+            href="https://github.com/azouaoui-med/react-pro-sidebar"
+            target="_blank"
+            className="sidebar-btn"
+            rel="noopener noreferrer"
+          >
+            <span>Profile</span>
+          </a>
+        </div>
+      </SidebarFooter>
     </ProSidebar>
   );
 };
