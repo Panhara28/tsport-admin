@@ -1,21 +1,29 @@
-import { gql, useMutation, useQuery } from '@apollo/client';
-import { faAngleLeft, faImage, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import { useContext, useEffect, useState } from 'react';
-import { Form, Row, Col, Card, Button, Container, Modal, Tabs, Tab } from 'react-bootstrap';
-import Select from 'react-select';
-import AuthContext from '../../../../components/Authentication/AuthContext';
-import FormEditor from '../../../../components/Editor/FormEditor';
-import { Layout } from '../../../../components/Layout';
-import { Title } from '../../../../components/Title';
-import { ComponentUpload } from '../../../../components/UploadComponent';
-import { TransformDataEditorJS } from '../../../../libs/TransformDataEditorJs';
-import style from './news.module.scss';
-import Image from 'next/image';
-import { SignleImageUpload } from '../../../../components/SignleImageUpload';
-import { MediaListByWebsite } from '../../../../components/Media/MediaListByWebsite';
+import { gql, useMutation, useQuery } from "@apollo/client";
+import { faImage, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useRouter } from "next/router";
+import { useContext, useState } from "react";
+import {
+  Form,
+  Row,
+  Col,
+  Card,
+  Button,
+  Container,
+  Modal,
+  Tabs,
+  Tab,
+} from "react-bootstrap";
+import Select from "react-select";
+import AuthContext from "../../../../components/Authentication/AuthContext";
+import FormEditor from "../../../../components/Editor/FormEditor";
+import { TransformDataEditorJS } from "../../../../libs/TransformDataEditorJs";
+import style from "./news.module.scss";
+import Image from "next/image";
+import Layout from "../../../../components/VerticalLayout";
+import { Breadcrumb } from "../../../../components/Common/Breadcrumb";
+import { SignleImageUpload } from "../../../../components/SignleImageUpload";
+import { MediaListByWebsite } from "../../../../components/Media/MediaListByWebsite";
 
 const MUTATION = gql`
   mutation createNews($input: NewsInput, $websiteId: Int!) {
@@ -38,7 +46,7 @@ export function CreateNewsScreen() {
   const [firstFeaturedImage, setFirstFeaturedImage] = useState(undefined);
   const [finaleSelected, setFinaleSelected] = useState(undefined);
 
-  const [key, setKey] = useState('media');
+  const [key, setKey] = useState("media");
   const [lgShow, setLgShow] = useState(false);
   const { me } = useContext(AuthContext);
   const [thumbnail, setThumbnail]: any = useState(undefined);
@@ -48,7 +56,9 @@ export function CreateNewsScreen() {
   const [addNews] = useMutation(MUTATION, {
     onCompleted: (data: any) => {
       if (data.createNews) {
-        router.push(`/mochub/websites/${router.query.id}/cms/news/${data.createNews}/edit`);
+        router.push(
+          `/mochub/websites/${router.query.id}/cms/news/${data.createNews}/edit`
+        );
       }
     },
   });
@@ -57,7 +67,8 @@ export function CreateNewsScreen() {
     e.preventDefault();
 
     const x: any = e.target;
-    const description: any = process.browser && localStorage.getItem('newsData');
+    const description: any =
+      process.browser && localStorage.getItem("newsData");
     const result =
       description === null
         ? TransformDataEditorJS(data.newsDetail.description)
@@ -77,10 +88,10 @@ export function CreateNewsScreen() {
         websiteId: Number(router.query.id),
       },
     });
-    process.browser && localStorage.removeItem('newsData');
+    process.browser && localStorage.removeItem("newsData");
   };
 
-  const accessPlugin = me.plugins.find((item: any) => item.slug === 'news');
+  const accessPlugin = me.plugins.find((item: any) => item.slug === "news");
 
   if (!accessPlugin.access.create) {
     router.push(`/no-permission`);
@@ -91,19 +102,32 @@ export function CreateNewsScreen() {
   const renderFeaturedImage = finaleSelected ? (
     <>
       <div
-        style={{ display: 'flex', justifyContent: 'end' }}
+        style={{ display: "flex", justifyContent: "end" }}
         onClick={() => {
           setFinaleSelected(undefined);
         }}
       >
-        <FontAwesomeIcon icon={faTrash} style={{ cursor: 'pointer' }} className="text-danger mb-3" />
+        <FontAwesomeIcon
+          icon={faTrash}
+          style={{ cursor: "pointer" }}
+          className="text-danger mb-3"
+        />
       </div>
       <div>
-        <Image src={finaleSelected} alt="" layout="responsive" width={100} height={100} />
+        <Image
+          src={finaleSelected}
+          alt=""
+          layout="responsive"
+          width={100}
+          height={100}
+        />
       </div>
     </>
   ) : (
-    <div className={style.newsFeatureImageContainer} onClick={() => setLgShow(true)}>
+    <div
+      className={style.newsFeatureImageContainer}
+      onClick={() => setLgShow(true)}
+    >
       <div className={style.newsFeatureImageIcon}>
         <FontAwesomeIcon icon={faImage} />
       </div>
@@ -112,155 +136,158 @@ export function CreateNewsScreen() {
 
   return (
     <Layout>
-      <Container>
-        <Row className="mx-4 mt-4">
-          <Col>
-            <Title title="Create News">
-              <Link href={`/mochub/websites/${router.query.id}/cms/news`}>
-                <a className="btn btn-danger mx-2">
-                  <FontAwesomeIcon icon={faAngleLeft} /> Back
-                </a>
-              </Link>
-            </Title>
-          </Col>
-        </Row>
-        <Row className="mx-4 mt-4">
-          <Col md={12}>
-            <Form onSubmit={onSubmit}>
-              <Row>
-                <Col md={9}>
-                  <Row>
-                    <Col md={12}>
-                      <Form.Group controlId="formBasicEmail">
-                        <Form.Label>Enter your title here...</Form.Label>
-                        <input
-                          type="text"
-                          placeholder="Enter your title here..."
-                          name="title"
-                          className={`${style.titleInput} form-control`}
-                          autoFocus
+      <div className="page-content">
+        <Container fluid>
+          <Breadcrumb title="Ministry Of Commerce" breadcrumbItem="News" />
+          <hr />
+          <Row>
+            <Col md={12}>
+              <Form onSubmit={onSubmit}>
+                <Row>
+                  <Col md={9}>
+                    <Row>
+                      <Col md={12}>
+                        <Form.Group controlId="formBasicEmail">
+                          <Form.Label>Enter your title here...</Form.Label>
+                          <input
+                            type="text"
+                            placeholder="Enter your title here..."
+                            name="title"
+                            className={`${style.titleInput} form-control`}
+                            autoFocus
+                          />
+                        </Form.Group>
+                      </Col>
+                    </Row>
+
+                    <Row className="mt-3">
+                      <Col lg={12} md={12}>
+                        <Form.Group controlId="formBasicTextarea">
+                          <Form.Label>Enter your summary here...</Form.Label>
+
+                          <textarea
+                            className={`${style.summaryInput} form-control`}
+                            rows={3}
+                            placeholder="Enter your summary here..."
+                            name="summary"
+                          ></textarea>
+                        </Form.Group>
+                      </Col>
+                    </Row>
+
+                    <Row className="mt-4">
+                      <Col>
+                        <Form.Group controlId="formBasicEmail">
+                          <FormEditor dataKey="newsData" />
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                  </Col>
+                  <Col md={3}>
+                    <Card>
+                      <Card.Body>
+                        <Button
+                          variant="primary"
+                          type="submit"
+                          style={{ width: "100%", margin: "10px 0px 25px 0px" }}
+                        >
+                          Submit
+                        </Button>
+
+                        <h6>Category</h6>
+                        <hr />
+                        <Select
+                          options={data?.publicNewsCategoryList?.map(
+                            (x: any) => {
+                              return {
+                                value: x.id,
+                                label: x.name,
+                              };
+                            }
+                          )}
+                          name="category"
                         />
-                      </Form.Group>
-                    </Col>
-                  </Row>
-
-                  <Row className="mt-3">
-                    <Col lg={12} md={12}>
-                      <Form.Group controlId="formBasicTextarea">
-                        <Form.Label>Enter your summary here...</Form.Label>
-
-                        <textarea
-                          className={`${style.summaryInput} form-control`}
-                          rows={3}
-                          placeholder="Enter your summary here..."
-                          name="summary"
-                        ></textarea>
-                      </Form.Group>
-                    </Col>
-                  </Row>
-
-                  <Row className="mt-4">
-                    <Col>
-                      <Form.Group controlId="formBasicEmail">
-                        <FormEditor dataKey="newsData" />
-                      </Form.Group>
-                    </Col>
-                  </Row>
-                </Col>
-                <Col md={3}>
-                  <Card>
-                    <Card.Body>
-                      <Button variant="primary" type="submit" style={{ width: '100%', margin: '10px 0px 25px 0px' }}>
-                        Submit
-                      </Button>
-
-                      <h6>Category</h6>
-                      <hr />
-                      <Select
-                        options={data?.publicNewsCategoryList?.map((x: any) => {
-                          return {
-                            value: x.id,
-                            label: x.name,
-                          };
-                        })}
-                        name="category"
-                      />
-                      <h6 className="mt-3">Feature Image</h6>
-                      <hr />
-                      {renderFeaturedImage}
-                      <Modal
-                        size="lg"
-                        show={lgShow}
-                        onHide={() => setLgShow(false)}
-                        aria-labelledby="example-modal-sizes-title-lg"
-                      >
-                        <Modal.Header closeButton>
-                          <Modal.Title id="example-modal-sizes-title-sm">Media</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                          <Tabs
-                            activeKey={key}
-                            onSelect={(k: any) => {
-                              setKey(k);
-                            }}
-                            id="uncontrolled-tab-example"
-                            className="mb-3"
-                          >
-                            <Tab eventKey="upload" title="Upload">
-                              <div className={style.newsUploadWrapper}>
-                                <div className="text-center">
-                                  <h4>Drop files to upload</h4>
-                                  <p>or</p>
+                        <h6 className="mt-3">Feature Image</h6>
+                        <hr />
+                        {renderFeaturedImage}
+                        <Modal
+                          size="lg"
+                          show={lgShow}
+                          onHide={() => setLgShow(false)}
+                          aria-labelledby="example-modal-sizes-title-lg"
+                        >
+                          <Modal.Header closeButton>
+                            <Modal.Title id="example-modal-sizes-title-sm">
+                              Media
+                            </Modal.Title>
+                          </Modal.Header>
+                          <Modal.Body>
+                            <Tabs
+                              activeKey={key}
+                              onSelect={(k: any) => {
+                                setKey(k);
+                              }}
+                              id="uncontrolled-tab-example"
+                              className="mb-3"
+                            >
+                              <Tab eventKey="upload" title="Upload">
+                                <div className={style.newsUploadWrapper}>
+                                  <div className="text-center">
+                                    <h4>Drop files to upload</h4>
+                                    <p>or</p>
+                                  </div>
+                                  <div className={style.newsUploadContainer}>
+                                    <SignleImageUpload
+                                      setImage={setThumbnail}
+                                      setKey={setKey}
+                                      width="15%"
+                                      height="150px"
+                                      websiteId={Number(router.query.id)}
+                                      setFirstFeaturedImage={
+                                        setFirstFeaturedImage
+                                      }
+                                      setSelectImage={setSelectImage}
+                                    />
+                                  </div>
                                 </div>
-                                <div className={style.newsUploadContainer}>
-                                  <SignleImageUpload
-                                    setImage={setThumbnail}
-                                    setKey={setKey}
-                                    width="15%"
-                                    height="150px"
-                                    websiteId={Number(router.query.id)}
-                                    setFirstFeaturedImage={setFirstFeaturedImage}
-                                    setSelectImage={setSelectImage}
-                                  />
-                                </div>
-                              </div>
-                            </Tab>
-                            <Tab eventKey="media" title="Media">
-                              <MediaListByWebsite
-                                websiteId={Number(router.query.id)}
-                                setSelectedImage={setSelectedImage}
-                                firstFeaturedImage={firstFeaturedImage}
-                                setFirstFeaturedImage={setFirstFeaturedImage}
-                                selectImage={selectImage}
-                                setSelectImage={setSelectImage}
-                              />
-                            </Tab>
-                          </Tabs>
-                        </Modal.Body>
-                        <Modal.Footer>
-                          <Button
-                            variant="primary"
-                            onClick={() => {
-                              setLgShow(false);
-                              if (firstFeaturedImage) {
-                                setFinaleSelected(firstFeaturedImage);
-                              } else {
-                                setFinaleSelected(selectedImage);
-                              }
-                            }}
-                          >
-                            Set featured image
-                          </Button>
-                        </Modal.Footer>
-                      </Modal>
-                    </Card.Body>
-                  </Card>
-                </Col>
-              </Row>
-            </Form>
-          </Col>
-        </Row>
-      </Container>
+                              </Tab>
+                              <Tab eventKey="media" title="Media">
+                                <MediaListByWebsite
+                                  websiteId={Number(router.query.id)}
+                                  setSelectedImage={setSelectedImage}
+                                  firstFeaturedImage={firstFeaturedImage}
+                                  setFirstFeaturedImage={setFirstFeaturedImage}
+                                  selectImage={selectImage}
+                                  setSelectImage={setSelectImage}
+                                />
+                              </Tab>
+                            </Tabs>
+                          </Modal.Body>
+                          <Modal.Footer>
+                            <Button
+                              variant="primary"
+                              onClick={() => {
+                                setLgShow(false);
+                                if (firstFeaturedImage) {
+                                  setFinaleSelected(firstFeaturedImage);
+                                } else {
+                                  setFinaleSelected(selectedImage);
+                                }
+                              }}
+                            >
+                              Set featured image
+                            </Button>
+                          </Modal.Footer>
+                        </Modal>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                </Row>
+              </Form>
+            </Col>
+          </Row>
+        </Container>
+      </div>
     </Layout>
   );
 }

@@ -92,7 +92,6 @@ export function NewsListScreen() {
   const onSelectStatus = (select: any) => {
     setFilterStatus(select);
   };
-  console.log(filterStatus);
 
   return (
     <Layout>
@@ -102,6 +101,23 @@ export function NewsListScreen() {
           <hr />
           <Row>
             <Col lg={9}>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <Link
+                  href={`/mochub/websites/${router.query.id}/cms/news/create`}
+                >
+                  <a className="btn btn-primary mb-3">Add new</a>
+                </Link>
+                <Link href="#">
+                  <a
+                    className="btn btn-danger mb-3"
+                    style={{ marginLeft: 10 }}
+                    onClick={() => router.back()}
+                  >
+                    <FontAwesomeIcon icon={faAngleLeft} /> Back
+                  </a>
+                </Link>
+              </div>
+
               <Card>
                 <CardBody>
                   <CardTitle className="h4 mb-4">All News</CardTitle>
