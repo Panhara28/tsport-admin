@@ -1,3 +1,5 @@
+import { faGlobeAsia } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import React from "react";
 import {
@@ -45,12 +47,17 @@ export const Aside = ({
 
       <SidebarContent>
         <Menu iconShape="circle">
-          <Link href="/dashboard">
+          <Link href="/">
             <a>
-              <MenuItem>Dashboard</MenuItem>
+              <MenuItem icon={<FontAwesomeIcon icon={faGlobeAsia} />}>
+                Your website
+              </MenuItem>
             </a>
           </Link>
-          <SubMenu title="withSuffix">
+          <SubMenu
+            title="withSuffix"
+            icon={<FontAwesomeIcon icon={faGlobeAsia} />}
+          >
             <MenuItem>submenu 1</MenuItem>
             <MenuItem>submenu 2</MenuItem>
             <MenuItem>submenu 3</MenuItem>
