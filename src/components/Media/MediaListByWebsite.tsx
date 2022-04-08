@@ -1,9 +1,16 @@
-import { gql, useQuery } from '@apollo/client';
+import { gql, useMutation, useQuery } from '@apollo/client';
 import { Col, Row, Card } from 'react-bootstrap';
 import Image from 'next/image';
 import { useState } from 'react';
 import style from './media.module.scss';
 import Link from 'next/link';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye } from '@fortawesome/free-solid-svg-icons';
+import toastr from 'toastr';
+import 'toastr/build/toastr.min.css';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+const MySwal = withReactContent(Swal);
 
 const QUERY = gql`
   query mediaList($websiteId: Int!, $pagination: PaginationInput) {
@@ -13,6 +20,12 @@ const QUERY = gql`
         image_url
       }
     }
+  }
+`;
+
+const MUTATION = gql`
+  mutation removeMedia($websiteId: Int!, $mediaId: Int!) {
+    removeMedia(websiteId: $websiteId, mediaId: $mediaId)
   }
 `;
 
@@ -33,6 +46,15 @@ export function MediaListByWebsite({
   setSelectImage,
   selectImage,
 }: Props) {
+  const [removeMediaId, setRemoveMedia] = useState<number | undefined>(undefined);
+  const [removeMedia] = useMutation(MUTATION, {
+    onCompleted: data => {
+      if (data.removeMedia) {
+        setSelectImage(undefined);
+        toastr.success('Save Draft');
+      }
+    },
+  });
   const { data, loading } = useQuery(QUERY, {
     variables: {
       websiteId,
@@ -45,6 +67,29 @@ export function MediaListByWebsite({
   });
 
   if (loading || !data) return <div>Loading...</div>;
+
+  const onRemoveMedia = (mediaId: number | undefined) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then(result => {
+      if (result.isConfirmed) {
+        removeMedia({
+          variables: {
+            websiteId,
+            mediaId,
+          },
+          refetchQueries: ['mediaList'],
+        });
+        Swal.fire('Deleted!', 'Your image has been deleted.', 'success');
+      }
+    });
+  };
 
   return (
     <>
@@ -59,6 +104,7 @@ export function MediaListByWebsite({
                     setSelectImage(item.image_url);
                     setSelectedImage(item.image_url);
                     setFirstFeaturedImage(undefined);
+                    setRemoveMedia(item.id);
                   }}
                   className={`mb-3 ${
                     firstFeaturedImage === item.image_url
@@ -88,9 +134,13 @@ export function MediaListByWebsite({
                   <Image src={selectImage} alt="" layout="responsive" width={100} height={100} />
                 </div>
                 <Link href={selectImage}>
-                  <a target="_blank">{selectImage}</a>
+                  <a target="_blank">
+                    <FontAwesomeIcon icon={faEye} /> View
+                  </a>
                 </Link>
-                <p className="text-danger mt-2">Delete permanently</p>
+                <p className="text-danger mt-2" onClick={() => onRemoveMedia(removeMediaId)}>
+                  Delete permanently
+                </p>
               </Card.Body>
             </Card>
           </Col>
