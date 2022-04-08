@@ -1,24 +1,29 @@
-import { useCallback, useState, useEffect } from "react";
-import initialData from "./data.json";
+import { useCallback, useState, useEffect } from 'react';
 
-export const useSaveCallback = (editor, dataKey) => {
+const initialData: any = {
+  time: 1587670998983,
+  blocks: [],
+  version: '2.22.0',
+};
+
+export const useSaveCallback = (editor: any, dataKey: any) => {
   return useCallback(async () => {
     if (!editor) return;
     try {
       const out = await editor.save();
-      console.group("EDITOR onSave");
+      console.group('EDITOR onSave');
       console.dir(out);
       localStorage.setItem(dataKey, JSON.stringify(out));
-      console.info("Saved in localStorage");
+      console.info('Saved in localStorage');
       console.groupEnd();
     } catch (e) {
-      console.error("SAVE RESULT failed", e);
+      console.error('SAVE RESULT failed', e);
     }
   }, [editor]);
 };
 
 // Set editor data after initializing
-export const useSetData = (editor, data) => {
+export const useSetData = (editor: any, data: any) => {
   useEffect(() => {
     if (!editor || !data) {
       return;
@@ -43,9 +48,9 @@ export const useSetData = (editor, data) => {
   }, [editor, data]);
 };
 
-export const useClearDataCallback = (editor) => {
+export const useClearDataCallback = (editor: any) => {
   return useCallback(
-    (ev) => {
+    ev => {
       ev.preventDefault();
       if (!editor) {
         return;
@@ -57,12 +62,12 @@ export const useClearDataCallback = (editor) => {
         }, 100);
       });
     },
-    [editor]
+    [editor],
   );
 };
 
 // load saved data
-export const useLoadData = (dataKey) => {
+export const useLoadData = (dataKey: any) => {
   const [item, setItem] = useState(null);
   const [load, setLoad] = useState(false);
 
@@ -70,7 +75,7 @@ export const useLoadData = (dataKey) => {
   useEffect(() => {
     setLoad(true);
     const id = setTimeout(() => {
-      console.group("EDITOR load data");
+      console.group('EDITOR load data');
       const saved = localStorage.getItem(dataKey);
 
       if (saved) {
@@ -78,7 +83,7 @@ export const useLoadData = (dataKey) => {
         setItem(parsed);
         console.dir(parsed);
       } else {
-        console.info("No saved data, using initial");
+        console.info('No saved data, using initial');
         console.dir(initialData);
         setItem(initialData);
       }

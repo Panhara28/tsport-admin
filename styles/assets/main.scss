@@ -1,5 +1,5 @@
-@import url("https://fonts.googleapis.com/css?family=Roboto&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Hanuman:wght@100;300;400;700;900&display=swap");
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Hanuman:wght@100;300;400;700;900&display=swap');
 
 $sidebar-bg-color: #1d1d1d;
 $submenu-bg-color: rgba(255, 255, 255, 0.05);
@@ -9,10 +9,10 @@ $highlight-color: #d8d8d8;
 $icon-bg-color: rgba(255, 255, 255, 0.05);
 $icon-size: 35px;
 
-@import "~react-pro-sidebar/dist/scss/styles.scss";
+@import '~react-pro-sidebar/dist/scss/styles.scss';
 
 body {
-  font-family: "Hanuman", Siemreap, Open Sans, Helvetica Neue, sans-serif;
+  font-family: 'Hanuman', Siemreap, Open Sans, Helvetica Neue, sans-serif;
 }
 
 #root {
@@ -189,7 +189,7 @@ body {
   }
 }
 
-.radio-toolbar input[type="radio"] {
+.radio-toolbar input[type='radio'] {
   opacity: 0;
   position: fixed;
   width: 0;
@@ -202,7 +202,7 @@ body {
   font-size: 14px;
   border-radius: 4px;
 }
-.radio-toolbar input[type="radio"]:checked + label {
+.radio-toolbar input[type='radio']:checked + label {
   background-color: red;
   border: none;
   color: #fff;
@@ -229,12 +229,7 @@ body {
   color: #dfe6e9;
 }
 
-.pro-sidebar
-  .pro-menu
-  .pro-menu-item.pro-sub-menu
-  > .pro-inner-item
-  > .pro-arrow-wrapper
-  .pro-arrow {
+.pro-sidebar .pro-menu .pro-menu-item.pro-sub-menu > .pro-inner-item > .pro-arrow-wrapper .pro-arrow {
   display: inline-block;
   border-style: solid;
   border-color: #fff;
@@ -307,8 +302,21 @@ body {
   }
 
   &:hover {
-    box-shadow: rgb(9 30 66 / 25%) 0px 8px 16px -4px,
-      rgb(9 30 66 / 31%) 0px 0px 1px;
+    box-shadow: rgb(9 30 66 / 25%) 0px 8px 16px -4px, rgb(9 30 66 / 31%) 0px 0px 1px;
     transition: box-shadow 0.2s ease 0s;
   }
+}
+
+.codex-editor {
+  .codex-editor__redactor {
+    padding-bottom: 60px !important;
+  }
+}
+
+.ce-toolbar__content {
+  max-width: 85%;
+}
+
+.ce-block__content {
+  max-width: 85%;
 }

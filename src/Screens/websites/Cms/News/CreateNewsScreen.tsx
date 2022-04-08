@@ -121,43 +121,47 @@ export function CreateNewsScreen() {
               <Form onSubmit={onSubmit}>
                 <Row>
                   <Col md={9}>
-                    <Row>
-                      <Col md={12}>
-                        <Form.Group controlId="formBasicEmail">
-                          <Form.Label>Enter your title here...</Form.Label>
-                          <input
-                            type="text"
-                            placeholder="Enter your title here..."
-                            name="title"
-                            className={`${style.titleInput} form-control`}
-                            autoFocus
-                          />
-                        </Form.Group>
-                      </Col>
-                    </Row>
+                    <Card>
+                      <CardBody>
+                        <Row>
+                          <Col md={12}>
+                            <Form.Group controlId="formBasicEmail">
+                              <Form.Label>Enter your title here...</Form.Label>
+                              <input
+                                type="text"
+                                placeholder="Enter your title here..."
+                                name="title"
+                                className={`${style.titleInput} form-control`}
+                                autoFocus
+                              />
+                            </Form.Group>
+                          </Col>
+                        </Row>
 
-                    <Row className="mt-3">
-                      <Col lg={12} md={12}>
-                        <Form.Group controlId="formBasicTextarea">
-                          <Form.Label>Enter your summary here...</Form.Label>
+                        <Row className="mt-3">
+                          <Col lg={12} md={12}>
+                            <Form.Group controlId="formBasicTextarea">
+                              <Form.Label>Enter your summary here...</Form.Label>
 
-                          <textarea
-                            className={`${style.summaryInput} form-control`}
-                            rows={3}
-                            placeholder="Enter your summary here..."
-                            name="summary"
-                          ></textarea>
-                        </Form.Group>
-                      </Col>
-                    </Row>
+                              <textarea
+                                className={`${style.summaryInput} form-control`}
+                                rows={3}
+                                placeholder="Enter your summary here..."
+                                name="summary"
+                              ></textarea>
+                            </Form.Group>
+                          </Col>
+                        </Row>
 
-                    <Row className="mt-4">
-                      <Col>
-                        <Form.Group controlId="formBasicEmail">
-                          <FormEditor dataKey="newsData" />
-                        </Form.Group>
-                      </Col>
-                    </Row>
+                        <Row className="mt-4">
+                          <Col>
+                            <Form.Group controlId="formBasicEmail">
+                              <FormEditor dataKey="newsData" />
+                            </Form.Group>
+                          </Col>
+                        </Row>
+                      </CardBody>
+                    </Card>
                   </Col>
 
                   <Col md={3}>
