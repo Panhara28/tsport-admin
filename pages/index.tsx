@@ -7,6 +7,9 @@ import Notiflix from "notiflix";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { Card } from "../src/components/Card";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSquarePlus } from "@fortawesome/free-regular-svg-icons";
+import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 
 const QUERY = gql`
   query applicationByUserList {
@@ -40,6 +43,7 @@ const Home: NextPage = () => {
             breadcrumbItem="Your websites"
           />
           <hr />
+
           <Row>
             {data?.applicationByUserList?.data?.map((item: any) => {
               return (

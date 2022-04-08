@@ -1,46 +1,61 @@
 import {
+  faAngleLeft,
+  faCog,
   faCogs,
   faEdit,
   faExchangeAlt,
   faEye,
   faGlobeEurope,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Button } from "react-bootstrap";
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Button } from 'react-bootstrap';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 type Props = {
   status: string;
 };
 export const StatusPageBagde = ({ status }: Props) => {
-  if (status === "PENDING") {
+  const router = useRouter();
+  if (status === 'PENDING') {
     return (
-      <Button variant="primary" size="sm">
-        <FontAwesomeIcon icon={faEdit} /> Pending
-      </Button>
+      <Link href="#">
+        <a className="btn btn-primary">
+          <FontAwesomeIcon icon={faCogs} /> Pending
+        </a>
+      </Link>
     );
-  } else if (status === "INREVIEW") {
+  } else if (status === 'INREVIEW') {
     return (
-      <Button variant="warning" size="sm">
-        <FontAwesomeIcon icon={faEye} /> In Review
-      </Button>
+      <Link href="#">
+        <a className="btn btn-warning">
+          <FontAwesomeIcon icon={faEye} /> In Review
+        </a>
+      </Link>
     );
-  } else if (status === "PUBLISHED") {
+  } else if (status === 'PUBLISHED') {
     return (
-      <Button variant="success" size="sm">
-        <FontAwesomeIcon icon={faGlobeEurope} /> Published
-      </Button>
+      <Link href="#">
+        <a className="btn btn-success">
+          <FontAwesomeIcon icon={faGlobeEurope} /> Published
+        </a>
+      </Link>
     );
-  } else if (status === "REVERSION") {
+  } else if (status === 'REVERSION') {
     return (
-      <Button variant="danger" size="sm">
-        <FontAwesomeIcon icon={faExchangeAlt} /> Reversion
-      </Button>
+      <Link href="#">
+        <a className="btn btn-danger">
+          <FontAwesomeIcon icon={faExchangeAlt} /> Reversion
+        </a>
+      </Link>
     );
   }
 
   return (
-    <Button variant="primary" size="sm">
-      <FontAwesomeIcon icon={faCogs} /> Pending
-    </Button>
+    <Link href="#">
+      <a className="btn btn-primary">
+        <FontAwesomeIcon icon={faCogs} /> Pending
+      </a>
+    </Link>
   );
 };

@@ -15,3 +15,4 @@ declare module '@editorjs/image';
 declare module '@editorjs/quote';
 declare module '@editorjs/marker';
 declare module 'reactstrap';
+declare module 'toastr';

@@ -16,6 +16,8 @@ import { Breadcrumb } from '../../../../components/Common/Breadcrumb';
 import { SignleImageUpload } from '../../../../components/SignleImageUpload';
 import { MediaListByWebsite } from '../../../../components/Media/MediaListByWebsite';
 import FormEditor from '../../../../components/Editor/FormEditor';
+import toastr from 'toastr';
+import 'toastr/build/toastr.min.css';
 
 const MUTATION = gql`
   mutation createNews($input: NewsInput, $websiteId: Int!) {
@@ -49,6 +51,7 @@ export function CreateNewsScreen() {
     onCompleted: (data: any) => {
       if (data.createNews) {
         router.push(`/mochub/websites/${router.query.id}/cms/news/${data.createNews}/edit`);
+        toastr.success('Save Draft');
       }
     },
   });

@@ -1,34 +1,29 @@
-import React, { useEffect, useState } from "react";
-import EditorJS from "@editorjs/editorjs";
-import { tools } from "./tools";
-import { UploadImageEditorJs } from "../UploadImageEditorJs";
-import ImageTool from "@editorjs/image";
-import LinkTool from "@editorjs/link";
-import Embed from "@editorjs/embed";
+import React, { useEffect, useState } from 'react';
+import EditorJS from '@editorjs/editorjs';
+import { tools } from './tools';
+import { UploadImageEditorJs } from '../UploadImageEditorJs';
+import ImageTool from '@editorjs/image';
+import LinkTool from '@editorjs/link';
+import Embed from '@editorjs/embed';
 /**
  *
  * @param {EditorJS.Tool[]} toolsList
  * @param {*} param1
  * @param {EditorJS.EditorConfig} options
  */
-export const useEditor = (toolsList, { data, editorRef }, options = {}) => {
+export const useEditor = (toolsList: any, { data, editorRef }: any, options = {}) => {
   const [editorInstance, setEditor] = useState(null);
-  const {
-    data: ignoreData,
-    tools: ignoreTools,
-    holder: ignoreHolder,
-    ...editorOptions
-  }: any = options;
+  const { data: ignoreData, tools: ignoreTools, holder: ignoreHolder, ...editorOptions }: any = options;
   // initialize
   useEffect(() => {
     let url = process.env.NEXT_PUBLIC_API_URL;
-    const uri = `${url}?token=` + localStorage.getItem("token");
+    const uri = `${url}?token=` + localStorage.getItem('token');
     // create instance
-    const editor = new EditorJS({
+    const editor: any = new EditorJS({
       /**
        * Id of Element that should contain the Editor
        */
-      holder: "editor-js",
+      holder: 'editor-js',
 
       /**
        * Available Tools list.
@@ -43,9 +38,8 @@ export const useEditor = (toolsList, { data, editorRef }, options = {}) => {
         image: {
           class: ImageTool,
           config: {
-            types: "image/*",
-            buttonContent:
-              "<div><i class='fal fa-image fa-lg' style='font-style: normal;'></i> Select an image</div>",
+            types: 'image/*',
+            buttonContent: "<div><i class='fal fa-image fa-lg' style='font-style: normal;'></i> Select an image</div>",
             endpoints: {
               byFile: `${uri}`, // Your backend file uploader endpoint
               byUrl: `${uri}`, // Your endpoint that provides uploading by Url
@@ -75,7 +69,7 @@ export const useEditor = (toolsList, { data, editorRef }, options = {}) => {
        */
       data: data || {},
 
-      initialBlock: "paragraph",
+      initialBlock: 'paragraph',
 
       // Override editor options
       ...editorOptions,
@@ -90,7 +84,7 @@ export const useEditor = (toolsList, { data, editorRef }, options = {}) => {
           editor.destroy();
           setEditor(null);
         })
-        .catch((e) => console.error("ERROR editor cleanup", e));
+        .catch((e: any) => console.error('ERROR editor cleanup', e));
     };
   }, [toolsList]);
 
@@ -108,12 +102,12 @@ export const useEditor = (toolsList, { data, editorRef }, options = {}) => {
   return { editor: editorInstance };
 };
 
-export const EditorContainer = ({ editorRef, children, data, options }) => {
+export const EditorContainer = ({ editorRef, children, data, options }: any) => {
   useEditor(tools, { data, editorRef }, options);
 
   return (
     <React.Fragment>
-      {!children && <div className="container" id="editor-js"></div>}
+      {!children && <div id="editor-js"></div>}
       {children}
       <style jsx>{`
         .container {

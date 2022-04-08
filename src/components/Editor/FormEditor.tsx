@@ -1,21 +1,18 @@
-import React, { useEffect, useState } from "react";
-import Head from "next/head";
-import dynamic from "next/dynamic";
+import React, { useEffect, useState } from 'react';
+import Head from 'next/head';
+import dynamic from 'next/dynamic';
 // import {
 //   useClearDataCallback,
 //   useLoadData,
 //   useSaveCallback,
 //   useSetData,
 // } from "src/hook/hook";
-import { Button } from "react-bootstrap";
-import { options } from "./options";
+import { Button } from 'react-bootstrap';
+import { options } from './options';
 // import 'toastr/build/toastr.min.css';
-import { useLoadData, useSaveCallback, useSetData } from "../../hook/hook";
+import { useLoadData, useSaveCallback, useSetData } from '../../hook/hook';
 
-const Editor: any = dynamic(
-  () => import("./EditorJS").then((mod) => mod.EditorContainer),
-  { ssr: false }
-);
+const Editor: any = dynamic(() => import('./EditorJS').then(mod => mod.EditorContainer), { ssr: false });
 
 type FormEditorType = {
   dataKey?: string;
@@ -24,12 +21,7 @@ type FormEditorType = {
   id?: any;
 };
 
-export default function FormEditor({
-  dataKey,
-  data,
-  editDataKey,
-  id,
-}: FormEditorType) {
+export default function FormEditor({ dataKey, data, editDataKey, id }: FormEditorType) {
   // toastr.options = {
   //   "closeButton": false,
   //   "debug": false,
@@ -71,7 +63,7 @@ export default function FormEditor({
         // toastr.success("Saved Draft!")
 
         if (id) {
-          localStorage.setItem("usedNews", id + "");
+          localStorage.setItem('usedNews', id + '');
         }
       }, 2000);
     }
@@ -80,8 +72,8 @@ export default function FormEditor({
   const disabled = editor === null || load;
 
   return (
-    <div className="container">
-      <main style={{ width: "100%" }}>
+    <>
+      <main className="mainEditor" style={{ width: '100%' }}>
         <div className="editorContainer">
           <Editor
             reInit
@@ -184,8 +176,8 @@ export default function FormEditor({
           border-radius: 5px;
           padding: 0.75rem;
           font-size: 1.1rem;
-          font-family: Menlo, Monaco, Lucida Console, Liberation Mono,
-            DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
+          font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono,
+            Courier New, monospace;
         }
 
         .logo {
@@ -199,6 +191,6 @@ export default function FormEditor({
           }
         }
       `}</style>
-    </div>
+    </>
   );
 }

@@ -13,10 +13,10 @@ export function RenderEditButton({ status, onSubmit }: Props) {
       <Button
         variant="primary"
         type="submit"
-        style={{ width: '100%', margin: '10px 0px 25px 0px' }}
+        style={{ width: '100%', margin: '10px 0px 10px 0px' }}
         onClick={e => onSubmit(e)}
       >
-        Submit
+        Save Draft
       </Button>
     );
   } else if (status === 'PUBLISHED') {
@@ -27,10 +27,10 @@ export function RenderEditButton({ status, onSubmit }: Props) {
     <Button
       variant="primary"
       type="submit"
-      style={{ width: '100%', margin: '10px 0px 25px 0px' }}
+      style={{ width: '100%', margin: '10px 0px 10px 0px' }}
       onClick={e => onSubmit(e)}
     >
-      Submit
+      Save Draft
     </Button>
   );
 }
