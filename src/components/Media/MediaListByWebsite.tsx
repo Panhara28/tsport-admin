@@ -3,6 +3,7 @@ import { Col, Row, Card } from 'react-bootstrap';
 import Image from 'next/image';
 import { useState } from 'react';
 import style from './media.module.scss';
+import Link from 'next/link';
 
 const QUERY = gql`
   query mediaList($websiteId: Int!, $pagination: PaginationInput) {
@@ -80,9 +81,16 @@ export function MediaListByWebsite({
                 <Card.Title as="h6" style={{ fontSize: 14 }}>
                   ATTACHMENT DETAILS
                 </Card.Title>
-                <div style={{ width: '80%', height: 'auto', border: '1px solid #dee2e6', padding: 10 }}>
+                <div
+                  className="mb-3"
+                  style={{ width: '80%', height: 'auto', border: '1px solid #dee2e6', padding: 10 }}
+                >
                   <Image src={selectImage} alt="" layout="responsive" width={100} height={100} />
                 </div>
+                <Link href={selectImage}>
+                  <a target="_blank">{selectImage}</a>
+                </Link>
+                <p className="text-danger mt-2">Delete permanently</p>
               </Card.Body>
             </Card>
           </Col>
