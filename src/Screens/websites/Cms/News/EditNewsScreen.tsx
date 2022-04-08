@@ -15,12 +15,12 @@ import { RenderEditButton } from "../../../../components/RenderEditButton";
 import { ReverseDataEditorJS } from "../../../../libs/ReverseDataEditorJs";
 import Link from "next/link";
 import style from "./news.module.scss";
-import FormEditor from "../../../../components/Editor/FormEditor";
 import Select from "react-select";
 import AuthContext from "../../../../components/Authentication/AuthContext";
 import Notiflix from "notiflix";
 import Layout from "../../../../components/VerticalLayout";
 import { Breadcrumb } from "../../../../components/Common/Breadcrumb";
+import FormEditor from "../../../../components/Editor/FormEditor";
 
 const MUTATION = gql`
   mutation updateNews($id: Int!, $input: NewsInput, $websiteId: Int!) {

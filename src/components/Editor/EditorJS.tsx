@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import EditorJS from "@editorjs/editorjs";
 import { tools } from "./tools";
-import { UploadImageEditorJs } from "../../components/UploadImageEditorJs";
+import { UploadImageEditorJs } from "../UploadImageEditorJs";
 import ImageTool from "@editorjs/image";
 import LinkTool from "@editorjs/link";
 import Embed from "@editorjs/embed";

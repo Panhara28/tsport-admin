@@ -19,7 +19,7 @@ export const useSaveCallback = (editor, dataKey) => {
 
 // Set editor data after initializing
 export const useSetData = (editor, data) => {
-  useEffect(() => {    
+  useEffect(() => {
     if (!editor || !data) {
       return;
     }
@@ -34,7 +34,7 @@ export const useSetData = (editor, data) => {
 
           editor.render(data);
         } else {
-          if(!data){
+          if (!data) {
             editor.clear();
           }
         }

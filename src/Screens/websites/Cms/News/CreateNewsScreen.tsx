@@ -1,29 +1,21 @@
-import { gql, useMutation, useQuery } from "@apollo/client";
-import { faImage, faTrash } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRouter } from "next/router";
-import { useContext, useState } from "react";
-import {
-  Form,
-  Row,
-  Col,
-  Card,
-  Button,
-  Container,
-  Modal,
-  Tabs,
-  Tab,
-} from "react-bootstrap";
-import Select from "react-select";
-import AuthContext from "../../../../components/Authentication/AuthContext";
-import FormEditor from "../../../../components/Editor/FormEditor";
-import { TransformDataEditorJS } from "../../../../libs/TransformDataEditorJs";
-import style from "./news.module.scss";
-import Image from "next/image";
-import Layout from "../../../../components/VerticalLayout";
-import { Breadcrumb } from "../../../../components/Common/Breadcrumb";
-import { SignleImageUpload } from "../../../../components/SignleImageUpload";
-import { MediaListByWebsite } from "../../../../components/Media/MediaListByWebsite";
+import { gql, useMutation, useQuery } from '@apollo/client';
+import { faImage, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useRouter } from 'next/router';
+import { useContext, useState } from 'react';
+import { CardBody } from 'reactstrap';
+
+import { Form, Row, Col, Card, Button, Container, Modal, Tabs, Tab } from 'react-bootstrap';
+import Select from 'react-select';
+import AuthContext from '../../../../components/Authentication/AuthContext';
+import { TransformDataEditorJS } from '../../../../libs/TransformDataEditorJs';
+import style from './news.module.scss';
+import Image from 'next/image';
+import Layout from '../../../../components/VerticalLayout';
+import { Breadcrumb } from '../../../../components/Common/Breadcrumb';
+import { SignleImageUpload } from '../../../../components/SignleImageUpload';
+import { MediaListByWebsite } from '../../../../components/Media/MediaListByWebsite';
+import FormEditor from '../../../../components/Editor/FormEditor';
 
 const MUTATION = gql`
   mutation createNews($input: NewsInput, $websiteId: Int!) {
@@ -46,7 +38,7 @@ export function CreateNewsScreen() {
   const [firstFeaturedImage, setFirstFeaturedImage] = useState(undefined);
   const [finaleSelected, setFinaleSelected] = useState(undefined);
 
-  const [key, setKey] = useState("media");
+  const [key, setKey] = useState('media');
   const [lgShow, setLgShow] = useState(false);
   const { me } = useContext(AuthContext);
   const [thumbnail, setThumbnail]: any = useState(undefined);
@@ -56,9 +48,7 @@ export function CreateNewsScreen() {
   const [addNews] = useMutation(MUTATION, {
     onCompleted: (data: any) => {
       if (data.createNews) {
-        router.push(
-          `/mochub/websites/${router.query.id}/cms/news/${data.createNews}/edit`
-        );
+        router.push(`/mochub/websites/${router.query.id}/cms/news/${data.createNews}/edit`);
       }
     },
   });
@@ -67,8 +57,7 @@ export function CreateNewsScreen() {
     e.preventDefault();
 
     const x: any = e.target;
-    const description: any =
-      process.browser && localStorage.getItem("newsData");
+    const description: any = process.browser && localStorage.getItem('newsData');
     const result =
       description === null
         ? TransformDataEditorJS(data.newsDetail.description)
@@ -88,10 +77,10 @@ export function CreateNewsScreen() {
         websiteId: Number(router.query.id),
       },
     });
-    process.browser && localStorage.removeItem("newsData");
+    process.browser && localStorage.removeItem('newsData');
   };
 
-  const accessPlugin = me.plugins.find((item: any) => item.slug === "news");
+  const accessPlugin = me.plugins.find((item: any) => item.slug === 'news');
 
   if (!accessPlugin.access.create) {
     router.push(`/no-permission`);
@@ -102,32 +91,19 @@ export function CreateNewsScreen() {
   const renderFeaturedImage = finaleSelected ? (
     <>
       <div
-        style={{ display: "flex", justifyContent: "end" }}
+        style={{ display: 'flex', justifyContent: 'end' }}
         onClick={() => {
           setFinaleSelected(undefined);
         }}
       >
-        <FontAwesomeIcon
-          icon={faTrash}
-          style={{ cursor: "pointer" }}
-          className="text-danger mb-3"
-        />
+        <FontAwesomeIcon icon={faTrash} style={{ cursor: 'pointer' }} className="text-danger mb-3" />
       </div>
       <div>
-        <Image
-          src={finaleSelected}
-          alt=""
-          layout="responsive"
-          width={100}
-          height={100}
-        />
+        <Image src={finaleSelected} alt="" layout="responsive" width={100} height={100} />
       </div>
     </>
   ) : (
-    <div
-      className={style.newsFeatureImageContainer}
-      onClick={() => setLgShow(true)}
-    >
+    <div className={style.newsFeatureImageContainer} onClick={() => setLgShow(true)}>
       <div className={style.newsFeatureImageIcon}>
         <FontAwesomeIcon icon={faImage} />
       </div>
@@ -183,28 +159,23 @@ export function CreateNewsScreen() {
                       </Col>
                     </Row>
                   </Col>
+
                   <Col md={3}>
                     <Card>
                       <Card.Body>
-                        <Button
-                          variant="primary"
-                          type="submit"
-                          style={{ width: "100%", margin: "10px 0px 25px 0px" }}
-                        >
+                        <Button variant="primary" type="submit" style={{ width: '100%', margin: '10px 0px 25px 0px' }}>
                           Submit
                         </Button>
 
                         <h6>Category</h6>
                         <hr />
                         <Select
-                          options={data?.publicNewsCategoryList?.map(
-                            (x: any) => {
-                              return {
-                                value: x.id,
-                                label: x.name,
-                              };
-                            }
-                          )}
+                          options={data?.publicNewsCategoryList?.map((x: any) => {
+                            return {
+                              value: x.id,
+                              label: x.name,
+                            };
+                          })}
                           name="category"
                         />
                         <h6 className="mt-3">Feature Image</h6>
@@ -217,9 +188,7 @@ export function CreateNewsScreen() {
                           aria-labelledby="example-modal-sizes-title-lg"
                         >
                           <Modal.Header closeButton>
-                            <Modal.Title id="example-modal-sizes-title-sm">
-                              Media
-                            </Modal.Title>
+                            <Modal.Title id="example-modal-sizes-title-sm">Media</Modal.Title>
                           </Modal.Header>
                           <Modal.Body>
                             <Tabs
@@ -243,9 +212,7 @@ export function CreateNewsScreen() {
                                       width="15%"
                                       height="150px"
                                       websiteId={Number(router.query.id)}
-                                      setFirstFeaturedImage={
-                                        setFirstFeaturedImage
-                                      }
+                                      setFirstFeaturedImage={setFirstFeaturedImage}
                                       setSelectImage={setSelectImage}
                                     />
                                   </div>
