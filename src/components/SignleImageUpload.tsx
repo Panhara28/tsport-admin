@@ -70,23 +70,26 @@ export function SignleImageUpload({
   };
 
   return (
-    <div
-      style={{
-        width: `${width}`,
-        height: `${height}`,
-        borderStyle: 'dotted',
-        borderWidth: 1,
-        borderRadius: 5,
-        borderColor: '#4886ff',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        cursor: 'pointer',
-      }}
-      onClick={() => refUpload?.current?.click()}
-    >
-      <input type="file" onChange={onChange} style={{ display: 'none' }} ref={refUpload} />
-      <FontAwesomeIcon icon={faImage} style={{ fontSize: 32, color: '#4886ff' }} />
-    </div>
+    <>
+      <div
+        style={{
+          width: `${width}`,
+          height: `${height}`,
+          borderStyle: 'dotted',
+          borderWidth: 1,
+          borderRadius: 5,
+          borderColor: '#4886ff',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          cursor: 'pointer',
+        }}
+        onClick={() => refUpload?.current?.click()}
+      >
+        <input type="file" onChange={onChange} style={{ display: 'none' }} ref={refUpload} />
+        <FontAwesomeIcon icon={faImage} style={{ fontSize: 32, color: '#4886ff' }} />
+      </div>
+      <p className="mt-3">Maximum upload file size: 15 MB.</p>
+    </>
   );
 }

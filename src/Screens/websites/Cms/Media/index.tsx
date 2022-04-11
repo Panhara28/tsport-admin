@@ -1,6 +1,5 @@
 import { gql, useQuery } from '@apollo/client';
-import { faSquareCaretRight, faSquareFull } from '@fortawesome/free-regular-svg-icons';
-import { faPlus, faTable } from '@fortawesome/free-solid-svg-icons';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/router';
 import Select from 'react-select';
@@ -13,6 +12,9 @@ import { Breadcrumb } from '../../../../components/Common/Breadcrumb';
 import Layout from '../../../../components/VerticalLayout';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
+import { Modal } from 'react-bootstrap';
+import style from './media.module.scss';
 
 const QUERY = gql`
   query mediaList($websiteId: Int!, $pagination: PaginationInput) {
@@ -27,7 +29,8 @@ const QUERY = gql`
 
 export function MediaListScreen() {
   const router = useRouter();
-
+  const [lgShow, setLgShow] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(undefined);
   const { data, loading } = useQuery(QUERY, {
     variables: {
       websiteId: Number(router.query.id),
@@ -91,7 +94,14 @@ export function MediaListScreen() {
                   <Row>
                     {data.mediaList.data.map((item: any) => {
                       return (
-                        <Col md={2} className={`mb-3`}>
+                        <Col
+                          md={2}
+                          className={`mb-3`}
+                          onClick={() => {
+                            setLgShow(true);
+                            setSelectedImage(item.image_url);
+                          }}
+                        >
                           <Image src={item.image_url} alt="" layout="responsive" width={150} height={150} />
                         </Col>
                       );
@@ -101,6 +111,38 @@ export function MediaListScreen() {
               </Card>
             </Col>
           </Row>
+          <Modal size="lg" show={lgShow} onHide={() => setLgShow(false)} aria-labelledby="example-modal-sizes-title-lg">
+            <Modal.Header closeButton>
+              <Modal.Title id="example-modal-sizes-title-sm">Attachment details</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Row>
+                <Col md={8}>
+                  {selectedImage ? (
+                    <div style={{ width: '100%', height: 'auto' }}>
+                      <Image src={selectedImage} alt="" layout="responsive" width={1280} height={720} />
+                    </div>
+                  ) : (
+                    ''
+                  )}
+                </Col>
+                <Col md={4}>
+                  <Card>
+                    <CardBody>
+                      <div className={style.selectedImageInfo}>
+                        <p>Uploaded on: April 11, 2022</p>
+                        <p>Uploaded by: panhara</p>
+                        <p>File name: minister-2.jpg</p>
+                        <p>File type: image/jpeg</p>
+                        <p>File size: 331 KB</p>
+                        <p>Dimensions: 2048 by 1365 pixels</p>
+                      </div>
+                    </CardBody>
+                  </Card>
+                </Col>
+              </Row>
+            </Modal.Body>
+          </Modal>
         </Container>
       </div>
     </Layout>

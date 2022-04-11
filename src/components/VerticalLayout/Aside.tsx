@@ -38,34 +38,35 @@ export const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }: a
         <Menu iconShape="circle">
           <Link href="/">
             <a>
-              <MenuItem icon={<FontAwesomeIcon icon={faGlobeAsia} />}>Your website</MenuItem>
+              <MenuItem icon={<FontAwesomeIcon icon={faGlobeAsia} />}>Your websites</MenuItem>
             </a>
           </Link>
         </Menu>
 
-        <Menu subMenuBullets={true} iconShape="circle">
-          <SubMenu title="Media" icon={<FontAwesomeIcon icon={faImages} />}>
-            <Link href={`/mochub/websites/${router.query.id}/media/create`}>
-              <a>
-                <MenuItem>Add media</MenuItem>
-              </a>
-            </Link>
-            <Link href={`/mochub/websites/${router.query.id}/media`}>
-              <a>
-                <MenuItem>Library</MenuItem>
-              </a>
-            </Link>
-          </SubMenu>
-        </Menu>
-
         {router.query.id ? (
-          <Menu iconShape="circle">
-            <Link href={`/mochub/websites/${router.query.id}/settings`}>
-              <a>
-                <MenuItem icon={<FontAwesomeIcon icon={faCogs} />}>Settings</MenuItem>
-              </a>
-            </Link>
-          </Menu>
+          <>
+            <Menu subMenuBullets={true} iconShape="circle">
+              <SubMenu title="Media" icon={<FontAwesomeIcon icon={faImages} />}>
+                <Link href={`/mochub/websites/${router.query.id}/media/create`}>
+                  <a>
+                    <MenuItem>Add media</MenuItem>
+                  </a>
+                </Link>
+                <Link href={`/mochub/websites/${router.query.id}/media`}>
+                  <a>
+                    <MenuItem>Library</MenuItem>
+                  </a>
+                </Link>
+              </SubMenu>
+            </Menu>
+            <Menu iconShape="circle">
+              <Link href={`/mochub/websites/${router.query.id}/settings`}>
+                <a>
+                  <MenuItem icon={<FontAwesomeIcon icon={faCogs} />}>Settings</MenuItem>
+                </a>
+              </Link>
+            </Menu>
+          </>
         ) : (
           ''
         )}

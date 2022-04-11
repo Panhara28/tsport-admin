@@ -32,9 +32,9 @@ const MUTATION = gql`
 
 type Props = {
   websiteId: number;
-  setSelectedImage: any;
-  firstFeaturedImage: any;
-  setFirstFeaturedImage: any;
+  setSelectedImage?: any;
+  firstFeaturedImage?: any;
+  setFirstFeaturedImage?: any;
   setSelectImage?: any;
   selectImage?: any;
 };
