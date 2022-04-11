@@ -177,93 +177,99 @@ export function CreateNewsScreen() {
                   </Col>
 
                   <Col md={3}>
-                    <Card>
-                      <Card.Body>
-                        <Button variant="primary" type="submit" style={{ width: '100%', margin: '10px 0px 25px 0px' }}>
-                          Save Draft
-                        </Button>
+                    <div style={{ position: 'sticky', top: '90px', marginBottom: '25px' }}>
+                      <Card>
+                        <Card.Body>
+                          <Button
+                            variant="primary"
+                            type="submit"
+                            style={{ width: '100%', margin: '10px 0px 25px 0px' }}
+                          >
+                            Save Draft
+                          </Button>
 
-                        <h6>Category</h6>
-                        <hr />
-                        <Select
-                          options={data?.publicNewsCategoryList?.map((x: any) => {
-                            return {
-                              value: x.id,
-                              label: x.name,
-                            };
-                          })}
-                          name="category"
-                        />
-                        <h6 className="mt-3">Feature Image</h6>
-                        <hr />
-                        {renderFeaturedImage}
-                        <Modal
-                          size="lg"
-                          show={lgShow}
-                          onHide={() => setLgShow(false)}
-                          aria-labelledby="example-modal-sizes-title-lg"
-                        >
-                          <Modal.Header closeButton>
-                            <Modal.Title id="example-modal-sizes-title-sm">Media</Modal.Title>
-                          </Modal.Header>
-                          <Modal.Body>
-                            <Tabs
-                              activeKey={key}
-                              onSelect={(k: any) => {
-                                setKey(k);
-                              }}
-                              id="uncontrolled-tab-example"
-                              className="mb-3"
-                            >
-                              <Tab eventKey="upload" title="Upload">
-                                <div className={style.newsUploadWrapper}>
-                                  <div className="text-center">
-                                    <h4>Drop files to upload</h4>
-                                    <p>or</p>
+                          <h6>Category</h6>
+                          <hr />
+                          <Select
+                            options={data?.publicNewsCategoryList?.map((x: any) => {
+                              return {
+                                value: x.id,
+                                label: x.name,
+                              };
+                            })}
+                            name="category"
+                          />
+                          <h6 className="mt-3">Feature Image</h6>
+                          <hr />
+                          {renderFeaturedImage}
+                          <Modal
+                            size="lg"
+                            show={lgShow}
+                            onHide={() => setLgShow(false)}
+                            aria-labelledby="example-modal-sizes-title-lg"
+                          >
+                            <Modal.Header closeButton>
+                              <Modal.Title id="example-modal-sizes-title-sm">Media</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                              <Tabs
+                                activeKey={key}
+                                onSelect={(k: any) => {
+                                  setKey(k);
+                                }}
+                                id="uncontrolled-tab-example"
+                                className="mb-3"
+                              >
+                                <Tab eventKey="upload" title="Upload">
+                                  <div className={style.newsUploadWrapper}>
+                                    <div className="text-center">
+                                      <h4>Drop files to upload</h4>
+                                      <p>or</p>
+                                    </div>
+                                    <div className={style.newsUploadContainer}>
+                                      <SignleImageUpload
+                                        setImage={setThumbnail}
+                                        setKey={setKey}
+                                        width="15%"
+                                        height="150px"
+                                        websiteId={Number(router.query.id)}
+                                        setFirstFeaturedImage={setFirstFeaturedImage}
+                                        setSelectImage={setSelectImage}
+                                      />
+                                    </div>
                                   </div>
-                                  <div className={style.newsUploadContainer}>
-                                    <SignleImageUpload
-                                      setImage={setThumbnail}
-                                      setKey={setKey}
-                                      width="15%"
-                                      height="150px"
-                                      websiteId={Number(router.query.id)}
-                                      setFirstFeaturedImage={setFirstFeaturedImage}
-                                      setSelectImage={setSelectImage}
-                                    />
-                                  </div>
-                                </div>
-                              </Tab>
-                              <Tab eventKey="media" title="Media">
-                                <MediaListByWebsite
-                                  websiteId={Number(router.query.id)}
-                                  setSelectedImage={setSelectedImage}
-                                  firstFeaturedImage={firstFeaturedImage}
-                                  setFirstFeaturedImage={setFirstFeaturedImage}
-                                  selectImage={selectImage}
-                                  setSelectImage={setSelectImage}
-                                />
-                              </Tab>
-                            </Tabs>
-                          </Modal.Body>
-                          <Modal.Footer>
-                            <Button
-                              variant="primary"
-                              onClick={() => {
-                                setLgShow(false);
-                                if (firstFeaturedImage) {
-                                  setFinaleSelected(firstFeaturedImage);
-                                } else {
-                                  setFinaleSelected(selectedImage);
-                                }
-                              }}
-                            >
-                              Set featured image
-                            </Button>
-                          </Modal.Footer>
-                        </Modal>
-                      </Card.Body>
-                    </Card>
+                                </Tab>
+                                <Tab eventKey="media" title="Media">
+                                  <MediaListByWebsite
+                                    websiteId={Number(router.query.id)}
+                                    setSelectedImage={setSelectedImage}
+                                    firstFeaturedImage={firstFeaturedImage}
+                                    setFirstFeaturedImage={setFirstFeaturedImage}
+                                    selectImage={selectImage}
+                                    setSelectImage={setSelectImage}
+                                  />
+                                </Tab>
+                              </Tabs>
+                            </Modal.Body>
+                            <Modal.Footer>
+                              <Button
+                                variant="primary"
+                                onClick={() => {
+                                  setLgShow(false);
+                                  if (firstFeaturedImage) {
+                                    setFinaleSelected(firstFeaturedImage);
+                                  } else {
+                                    setFinaleSelected(selectedImage);
+                                  }
+                                }}
+                              >
+                                Set featured image
+                              </Button>
+                            </Modal.Footer>
+                          </Modal>
+                        </Card.Body>
+                      </Card>
+                    </div>
                   </Col>
                 </Row>
               </Form>

@@ -21,6 +21,7 @@ export function ContentManagementScreen() {
           <Breadcrumb title="Ministry Of Commerce" breadcrumbItem="Your Plugins" />
           <hr />
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div></div>
             <Link href="#">
               <a className="btn btn-danger mb-3" onClick={() => router.back()}>
                 <FontAwesomeIcon icon={faAngleLeft} /> Back

@@ -8,7 +8,7 @@ export function PluginWebsiteScreen() {
   return (
     <Layout>
       <Container>
-        <Row className="mx-4">
+        <Row>
           <Col md={3} style={{ borderRight: '1px solid #ccc' }}>
             <WebsiteSettingSidebar />
           </Col>

@@ -351,3 +351,11 @@ body {
 .pro-sidebar .pro-menu .pro-menu-item > .pro-inner-item {
   padding: 0px 35px 0px 20px;
 }
+
+.pro-sidebar .pro-menu .pro-menu-item.pro-sub-menu .pro-inner-list-item {
+  margin-top: 15px;
+}
+
+.pro-sidebar .pro-menu a:before {
+  content: none;
+}

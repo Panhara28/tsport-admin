@@ -69,7 +69,6 @@ export function MediaListByWebsite({
   });
 
   if (loading || !data) return <div>Loading...</div>;
-  console.log(router);
 
   const onRemoveMedia = (mediaId: number | undefined, thumbnail: string | undefined) => {
     Swal.fire({

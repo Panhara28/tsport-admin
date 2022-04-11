@@ -357,7 +357,7 @@ export function EditNewsScreen() {
               </Card>
             </Col>
             <Col md={3}>
-              <div style={{ position: 'sticky', top: '20px', marginBottom: '25px' }}>
+              <div style={{ position: 'sticky', top: '90px', marginBottom: '25px' }}>
                 <Card>
                   <Card.Body>
                     {renderEditButton}

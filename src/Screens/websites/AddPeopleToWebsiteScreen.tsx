@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Col, Container, Form, Row } from 'react-bootstrap';
 import XForm from '../../components/Form/XForm';
-
 import { WebsiteSettingSidebar } from './WebsiteSettingSidebar';
 import Select from 'react-select';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
 import Layout from '../../components/VerticalLayout';
+import { Breadcrumb } from '../../components/Common/Breadcrumb';
 
 const QUERY = gql`
   query userList {
@@ -66,31 +66,35 @@ export function AddPeopleToWebsiteScreen() {
 
   return (
     <Layout>
-      <Container>
-        <Row className="mx-4">
-          <Col md={3} style={{ borderRight: '1px solid #ccc', height: '100vh' }}>
-            <WebsiteSettingSidebar />
-          </Col>
-          <Col md={9}>
-            <Form.Label>Name</Form.Label>
-            <Select
-              onChange={e => {
-                setInput(Array.isArray(e) ? e : []);
-              }}
-              isMulti
-              name="colors"
-              options={items}
-              className="basic-multi-select"
-              classNamePrefix="select"
-            />
-            <XForm.Footer>
-              <XForm.Button onClick={onAddPeople} style={{ fontSize: 12 }}>
-                Add People
-              </XForm.Button>
-            </XForm.Footer>
-          </Col>
-        </Row>
-      </Container>
+      <div className="page-content">
+        <Container fluid>
+          <Breadcrumb title="Ministry Of Commerce" breadcrumbItem="Add People" />
+          <hr />
+          <Row>
+            <Col md={3} style={{ borderRight: '1px solid #ccc', height: '100vh' }}>
+              <WebsiteSettingSidebar />
+            </Col>
+            <Col md={9}>
+              <Form.Label>Name</Form.Label>
+              <Select
+                onChange={e => {
+                  setInput(Array.isArray(e) ? e : []);
+                }}
+                isMulti
+                name="colors"
+                options={items}
+                className="basic-multi-select"
+                classNamePrefix="select"
+              />
+              <XForm.Footer>
+                <XForm.Button onClick={onAddPeople} style={{ fontSize: 12 }}>
+                  Add People
+                </XForm.Button>
+              </XForm.Footer>
+            </Col>
+          </Row>
+        </Container>
+      </div>
     </Layout>
   );
 }

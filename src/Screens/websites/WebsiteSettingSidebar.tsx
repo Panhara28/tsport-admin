@@ -23,7 +23,9 @@ export function WebsiteSettingSidebar() {
                 ` ${router.asPath === `/mochub/websites/${router.query.id}/people` ? style.active : ''}`
               }
             >
-              <ListGroup.Item className="reset-list-group-item">People</ListGroup.Item>
+              <ListGroup.Item as="p" className="reset-list-group-item">
+                People
+              </ListGroup.Item>
             </a>
           </Link>
           <Link href={`/mochub/websites/${router.query.id}/add-people`}>
@@ -33,7 +35,9 @@ export function WebsiteSettingSidebar() {
                 ` ${router.asPath === `/mochub/websites/${router.query.id}/add-people` ? style.active : ''}`
               }
             >
-              <ListGroup.Item className="reset-list-group-item">Add People</ListGroup.Item>
+              <ListGroup.Item as="p" className="reset-list-group-item">
+                Add People
+              </ListGroup.Item>
             </a>
           </Link>
         </ListGroup>

@@ -2,6 +2,9 @@ import { gql, useMutation, useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
 import React, { ReactNode, useState } from 'react';
 import { Col, Container, Row, Table } from 'react-bootstrap';
+import { CardBody } from 'reactstrap';
+import { Card } from 'reactstrap';
+import { Breadcrumb } from '../../components/Common/Breadcrumb';
 import XForm from '../../components/Form/XForm';
 import Layout from '../../components/VerticalLayout';
 
@@ -60,41 +63,50 @@ export function PeopleRoleScreen() {
 
   return (
     <Layout>
-      <Container>
-        <Row className="mt-4 mx-4">
-          <Col md={8}>
-            <Table>
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Name</th>
-                </tr>
-              </thead>
-              <tbody>
-                {data?.adminRoleList?.data.map((role: any) => {
-                  return (
-                    <tr>
-                      <td>{role.id}</td>
-                      <td>{role.name}</td>
-                      <td>
-                        <input
-                          type="radio"
-                          value={role.id}
-                          onChange={e => onValueChange(e)}
-                          checked={Number(selected) === role.id}
-                        />
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </Table>
-            <XForm.Footer>
-              <XForm.Button onClick={onSaveRole}>Save</XForm.Button>
-            </XForm.Footer>
-          </Col>
-        </Row>
-      </Container>
+      <div className="page-content">
+        <Container fluid>
+          <Breadcrumb title="Ministry Of Commerce" breadcrumbItem="Add People" />
+          <hr />
+          <Row>
+            <Col md={8}>
+              <Card>
+                <CardBody>
+                  <Table responsive striped hover>
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {data?.adminRoleList?.data.map((role: any) => {
+                        return (
+                          <tr>
+                            <td>{role.id}</td>
+                            <td>{role.name}</td>
+                            <td>
+                              <input
+                                type="radio"
+                                value={role.id}
+                                onChange={e => onValueChange(e)}
+                                checked={Number(selected) === role.id}
+                              />
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </Table>
+                  <XForm.Footer>
+                    <XForm.Button onClick={onSaveRole}>Save</XForm.Button>
+                  </XForm.Footer>
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
+      </div>
     </Layout>
   );
 }

@@ -1,5 +1,5 @@
 import { gql, useQuery } from '@apollo/client';
-import { faAngleLeft, faEdit, faEye } from '@fortawesome/free-solid-svg-icons';
+import { faAngleLeft, faEdit, faEye, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -98,7 +98,7 @@ export function NewsListScreen() {
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <Link href={`/mochub/websites/${router.query.id}/cms/news/create`}>
                   <a className="btn btn-primary mb-3">
-                    <FontAwesomeIcon icon={faSquarePlus} /> Add new
+                    <FontAwesomeIcon icon={faPlus} /> Add new
                   </a>
                 </Link>
                 <Link href="#">

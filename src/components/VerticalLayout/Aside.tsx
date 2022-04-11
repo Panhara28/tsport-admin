@@ -1,4 +1,4 @@
-import { faCogs, faGlobeAsia } from '@fortawesome/free-solid-svg-icons';
+import { faCogs, faGlobeAsia, faImages } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -35,32 +35,40 @@ export const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }: a
       </SidebarHeader>
 
       <SidebarContent className="sidebar-content">
-        <Link href="/">
-          <a>
-            <Menu iconShape="circle">
-              <MenuItem icon={<FontAwesomeIcon icon={faGlobeAsia} />}>Your website</MenuItem>
-            </Menu>
-          </a>
-        </Link>
-        {router.query.id ? (
-          <Link href={`/mochub/websites/${router.query.id}/settings`}>
+        <Menu iconShape="circle">
+          <Link href="/">
             <a>
-              <Menu iconShape="circle">
-                <MenuItem icon={<FontAwesomeIcon icon={faCogs} />}>Settings</MenuItem>
-              </Menu>
+              <MenuItem icon={<FontAwesomeIcon icon={faGlobeAsia} />}>Your website</MenuItem>
             </a>
           </Link>
+        </Menu>
+
+        <Menu subMenuBullets={true} iconShape="circle">
+          <SubMenu title="Media" icon={<FontAwesomeIcon icon={faImages} />}>
+            <Link href={`/mochub/websites/${router.query.id}/media/create`}>
+              <a>
+                <MenuItem>Add media</MenuItem>
+              </a>
+            </Link>
+            <Link href={`/mochub/websites/${router.query.id}/media`}>
+              <a>
+                <MenuItem>Library</MenuItem>
+              </a>
+            </Link>
+          </SubMenu>
+        </Menu>
+
+        {router.query.id ? (
+          <Menu iconShape="circle">
+            <Link href={`/mochub/websites/${router.query.id}/settings`}>
+              <a>
+                <MenuItem icon={<FontAwesomeIcon icon={faCogs} />}>Settings</MenuItem>
+              </a>
+            </Link>
+          </Menu>
         ) : (
           ''
         )}
-
-        <Menu>
-          <SubMenu title="Sample" icon={<FontAwesomeIcon icon={faGlobeAsia} />}>
-            <MenuItem>submenu 1</MenuItem>
-            <MenuItem>submenu 2</MenuItem>
-            <MenuItem>submenu 3</MenuItem>
-          </SubMenu>
-        </Menu>
       </SidebarContent>
       <SidebarFooter>
         <div
