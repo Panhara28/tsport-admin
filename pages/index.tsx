@@ -7,9 +7,6 @@ import Notiflix from "notiflix";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { Card } from "../src/components/Card";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSquarePlus } from "@fortawesome/free-regular-svg-icons";
-import { faAngleLeft } from "@fortawesome/free-solid-svg-icons";
 
 const QUERY = gql`
   query applicationByUserList {
@@ -23,9 +20,8 @@ const QUERY = gql`
 `;
 const Home: NextPage = () => {
   const router = useRouter();
-
   const { data, loading } = useQuery(QUERY, {
-    onError: (error) => {
+    onError: () => {
       router.push("/");
       Notiflix.Notify.failure(
         "Please contact your site administrator to grant access for you!"

@@ -4,7 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { Col, Container, Row, Table } from 'react-bootstrap';
-import style from './news.module.scss';
 import moment from 'moment';
 import { CustomPagination } from '../../../../components/Paginations';
 import Select, { StylesConfig } from 'react-select';
@@ -12,7 +11,7 @@ import { useState } from 'react';
 import { StatusOption, statusOptions } from '../../../../libs/ReactSelectColor';
 import Layout from '../../../../components/VerticalLayout';
 import { Breadcrumb } from '../../../../components/Common/Breadcrumb';
-import { Button, Card, CardBody, CardTitle, Label } from 'reactstrap';
+import { Card, CardBody, CardTitle, Label } from 'reactstrap';
 import { faSquarePlus } from '@fortawesome/free-regular-svg-icons';
 
 const QUERY = gql`
@@ -33,6 +32,7 @@ const QUERY = gql`
 `;
 
 export function NewsListScreen() {
+  const [searchByName, setSearchByName] = useState(undefined);
   const dot = (color = '#4886ff') => ({
     alignItems: 'center',
     display: 'flex',
@@ -75,6 +75,7 @@ export function NewsListScreen() {
       },
       filter: {
         status: filterStatus.value,
+        name: searchByName,
       },
       websiteId: Number(router.query.id),
     },
@@ -167,7 +168,13 @@ export function NewsListScreen() {
                   <CardTitle className="h4 mb-4">Filter</CardTitle>
                   <hr />
                   <Label>Search by name</Label>
-                  <input className="form-control mb-3" placeholder="Search..." />
+                  <input
+                    className="form-control mb-3"
+                    placeholder="Search..."
+                    onChange={(e: any) => setSearchByName(e.currentTarget.value)}
+                    defaultValue={searchByName}
+                    autoFocus
+                  />
                   <Label>Filter by status</Label>
                   <Select
                     options={statusOptions}

@@ -4,10 +4,10 @@ import Notiflix from 'notiflix';
 import { useContext, useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import AuthContext from '../../../../../src/components/Authentication/AuthContext';
+import { Breadcrumb } from '../../../../../src/components/Common/Breadcrumb';
 import XForm from '../../../../../src/components/Form/XForm';
 import { CreateUpdateForm } from '../../../../../src/components/GraphQL/CreateUpdateForm';
-import { Layout } from '../../../../../src/components/Layout';
-import { Title } from '../../../../../src/components/Title';
+import Layout from '../../../../../src/components/VerticalLayout';
 import { WebsiteSettingSidebar } from '../../../../../src/Screens/websites/WebsiteSettingSidebar';
 
 const QUERY = gql`
@@ -61,29 +61,28 @@ export default function SettingPage() {
   }
   return (
     <Layout>
-      <Container>
-        <Row className="mt-4 mx-4">
-          <Col>
-            <Title title="Website setting" />
-          </Col>
-        </Row>
-        <Row className="mx-4">
-          <Col md={3} style={{ borderRight: '1px solid #ccc', height: '100vh' }}>
-            <WebsiteSettingSidebar />
-          </Col>
-          <Col md={9}>
-            <h6>Edit Website</h6>
-            <CreateUpdateForm
-              body={FormBody}
-              update={MUTATION_UPDATE}
-              create={MUTATION_CREATE}
-              query={QUERY}
-              id={Number(router.query.id)}
-              createReturned={'/brand_list/list'}
-            />
-          </Col>
-        </Row>
-      </Container>
+      <div className="page-content">
+        <Container fluid>
+          <Breadcrumb title="Ministry Of Commerce" breadcrumbItem="Website Setting" />
+          <hr />
+          <Row>
+            <Col md={3} style={{ borderRight: '1px solid #ccc', height: '100vh' }}>
+              <WebsiteSettingSidebar />
+            </Col>
+            <Col md={9}>
+              <h6>Edit Website</h6>
+              <CreateUpdateForm
+                body={FormBody}
+                update={MUTATION_UPDATE}
+                create={MUTATION_CREATE}
+                query={QUERY}
+                id={Number(router.query.id)}
+                createReturned={'/brand_list/list'}
+              />
+            </Col>
+          </Row>
+        </Container>
+      </div>
     </Layout>
   );
 }

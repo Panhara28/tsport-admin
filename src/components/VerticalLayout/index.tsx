@@ -1,5 +1,5 @@
-import PropTypes from "prop-types";
-import React, { useEffect, useCallback } from "react";
+import PropTypes from 'prop-types';
+import React, { useEffect, useCallback } from 'react';
 
 import {
   changeLayout,
@@ -8,50 +8,45 @@ import {
   changeTopbarTheme,
   changeLayoutWidth,
   showRightSidebarAction,
-} from "../../store/actions";
+} from '../../store/actions';
 
-import Header from "./Header";
-import Sidebar from "./Sidebar";
-import Footer from "./Footer";
-import Rightbar from "../CommonForBoth/Rightbar";
+import Header from './Header';
+import Sidebar from './Sidebar';
+import Footer from './Footer';
+import Rightbar from '../CommonForBoth/Rightbar';
 
 //redux
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from 'react-redux';
 
 const Layout = (props: any) => {
   const dispatch = useDispatch();
-  const {
-    isPreloader,
-    layoutWidth,
-    leftSideBarType,
-    topbarTheme,
-    showRightSidebar,
-    leftSideBarTheme,
-  } = useSelector((state: any) => ({
-    isPreloader: state.Layout.isPreloader,
-    leftSideBarType: state.Layout.leftSideBarType,
-    layoutWidth: state.Layout.layoutWidth,
-    topbarTheme: state.Layout.topbarTheme,
-    showRightSidebar: state.Layout.showRightSidebar,
-    leftSideBarTheme: state.Layout.leftSideBarTheme,
-  }));
+  const { isPreloader, layoutWidth, leftSideBarType, topbarTheme, showRightSidebar, leftSideBarTheme } = useSelector(
+    (state: any) => ({
+      isPreloader: state.Layout.isPreloader,
+      leftSideBarType: state.Layout.leftSideBarType,
+      layoutWidth: state.Layout.layoutWidth,
+      topbarTheme: state.Layout.topbarTheme,
+      showRightSidebar: state.Layout.showRightSidebar,
+      leftSideBarTheme: state.Layout.leftSideBarTheme,
+    }),
+  );
 
   const isMobile: any = /iPhone|iPad|iPod|Android/i.test(
-    process.browser && window && (window as any).navigator.userAgent
+    process.browser && window && (window as any).navigator.userAgent,
   );
 
   const toggleMenuCallback = () => {
-    if (leftSideBarType === "default") {
-      dispatch(changeSidebarType("condensed", isMobile));
-    } else if (leftSideBarType === "condensed") {
-      dispatch(changeSidebarType("default", isMobile));
+    if (leftSideBarType === 'default') {
+      dispatch(changeSidebarType('condensed', isMobile));
+    } else if (leftSideBarType === 'condensed') {
+      dispatch(changeSidebarType('default', isMobile));
     }
   };
 
   //hides right sidebar on body click
   const hideRightbar = useCallback(
-    (event) => {
-      var rightbar = document.getElementById("right-bar");
+    event => {
+      let rightbar = document.getElementById('right-bar');
       //if clicked in inside right bar, then do nothing
       if (rightbar && rightbar.contains(event.target)) {
         return;
@@ -60,7 +55,7 @@ const Layout = (props: any) => {
         dispatch(showRightSidebarAction(false));
       }
     },
-    [dispatch]
+    [dispatch],
   );
   /*
   layout  settings
@@ -68,19 +63,17 @@ const Layout = (props: any) => {
 
   useEffect(() => {
     //init body click event fot toggle rightbar
-    document.body.addEventListener("click", hideRightbar, true);
-
     if (isPreloader === true) {
-      document.getElementById("preloader")!.style.display = "block";
-      document.getElementById("status")!.style.display = "block";
+      document.getElementById('preloader')!.style.display = 'block';
+      document.getElementById('status')!.style.display = 'block';
 
-      setTimeout(function () {
-        document.getElementById("preloader")!.style.display = "none";
-        document.getElementById("status")!.style.display = "none";
+      setTimeout(function() {
+        document.getElementById('preloader')!.style.display = 'none';
+        document.getElementById('status')!.style.display = 'none';
       }, 2500);
     } else {
-      document.getElementById("preloader")!.style.display = "none";
-      document.getElementById("status")!.style.display = "none";
+      document.getElementById('preloader')!.style.display = 'none';
+      document.getElementById('status')!.style.display = 'none';
     }
   }, [isPreloader, hideRightbar]);
 
@@ -89,7 +82,7 @@ const Layout = (props: any) => {
   }, []);
 
   useEffect(() => {
-    dispatch(changeLayout("vertical"));
+    dispatch(changeLayout('vertical'));
   }, [dispatch]);
 
   useEffect(() => {
@@ -126,11 +119,7 @@ const Layout = (props: any) => {
       </div>
       <div id="layout-wrapper">
         <Header toggleMenuCallback={toggleMenuCallback} />
-        <Sidebar
-          theme={leftSideBarTheme}
-          type={leftSideBarType}
-          isMobile={isMobile}
-        />
+        <Sidebar theme={leftSideBarTheme} type={leftSideBarType} isMobile={isMobile} />
         <div className="main-content">{props.children}</div>
         <Footer />
       </div>

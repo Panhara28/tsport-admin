@@ -3,8 +3,7 @@ import { useRouter } from 'next/router';
 import React, { ReactNode, useState } from 'react';
 import { Col, Container, Row, Table } from 'react-bootstrap';
 import XForm from '../../components/Form/XForm';
-import { Layout } from '../../components/Layout';
-import { Title } from '../../components/Title';
+import Layout from '../../components/VerticalLayout';
 
 const QUERY = gql`
   query adminRoleList($websiteId: Int!, $userId: Int!) {
@@ -62,11 +61,6 @@ export function PeopleRoleScreen() {
   return (
     <Layout>
       <Container>
-        <Row className="mt-4 mx-4">
-          <Col>
-            <Title title="Role setting" />
-          </Col>
-        </Row>
         <Row className="mt-4 mx-4">
           <Col md={8}>
             <Table>

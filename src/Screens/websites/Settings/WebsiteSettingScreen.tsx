@@ -4,8 +4,7 @@ import React, { useState } from 'react';
 import { Col, Container, ListGroup, Row } from 'react-bootstrap';
 import XForm from '../../../components/Form/XForm';
 import { CreateUpdateForm } from '../../../components/GraphQL/CreateUpdateForm';
-import { Layout } from '../../../components/Layout';
-import { Title } from '../../../components/Title';
+import Layout from '../../../components/VerticalLayout';
 import { WebsiteSettingSidebar } from '../WebsiteSettingSidebar';
 
 const QUERY = gql`
@@ -56,29 +55,26 @@ export const WebsiteSettingScreen = () => {
 
   return (
     <Layout>
-      <Container>
-        <Row className="mt-4 mx-4">
-          <Col>
-            <Title title="Website setting" />
-          </Col>
-        </Row>
-        <Row className="mx-4">
-          <Col md={3} style={{ borderRight: '1px solid #ccc', height: '100vh' }}>
-            <WebsiteSettingSidebar />
-          </Col>
-          <Col md={9}>
-            <h6>Edit Website</h6>
-            <CreateUpdateForm
-              body={FormBody}
-              update={MUTATION_UPDATE}
-              create={MUTATION_CREATE}
-              query={QUERY}
-              id={Number(router.query.id)}
-              createReturned={'/brand_list/list'}
-            />
-          </Col>
-        </Row>
-      </Container>
+      <div className="page-content">
+        <Container>
+          <Row>
+            <Col md={3} style={{ borderRight: '1px solid #ccc', height: '100vh' }}>
+              <WebsiteSettingSidebar />
+            </Col>
+            <Col md={9}>
+              <h6>Edit Website</h6>
+              <CreateUpdateForm
+                body={FormBody}
+                update={MUTATION_UPDATE}
+                create={MUTATION_CREATE}
+                query={QUERY}
+                id={Number(router.query.id)}
+                createReturned={'/brand_list/list'}
+              />
+            </Col>
+          </Row>
+        </Container>
+      </div>
     </Layout>
   );
 };

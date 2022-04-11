@@ -123,10 +123,13 @@
   line-height: 1.14285714;
   padding: 7px 10px;
   background-color: transparent;
-  color: #42526e;
+  color: #fff !important;
   text-decoration: none;
   word-wrap: break-word;
-  background: #f4f5f7;
+  background: #3867d6;
+  p {
+    color: #fff;
+  }
 }
 
 .mocPluginCard {

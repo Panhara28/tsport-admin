@@ -3,7 +3,7 @@ import { createContext, PropsWithChildren, useContext, useState } from 'react';
 export const TokenContext = createContext<{
   token?: string;
   setToken: (token: string) => void;
-}>(null);
+}>({ token: '', setToken: () => {} });
 
 export function useToken() {
   return useContext(TokenContext);

@@ -1,24 +1,13 @@
-import { faGlobeAsia } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Link from "next/link";
-import React from "react";
-import {
-  ProSidebar,
-  Menu,
-  MenuItem,
-  SubMenu,
-  SidebarHeader,
-  SidebarFooter,
-  SidebarContent,
-} from "react-pro-sidebar";
+import { faCogs, faGlobeAsia } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import React from 'react';
+import { ProSidebar, Menu, MenuItem, SubMenu, SidebarHeader, SidebarFooter, SidebarContent } from 'react-pro-sidebar';
 
-export const Aside = ({
-  image,
-  collapsed,
-  rtl,
-  toggled,
-  handleToggleSidebar,
-}: any) => {
+export const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }: any) => {
+  const router = useRouter();
+
   return (
     <ProSidebar
       image={false}
@@ -31,33 +20,42 @@ export const Aside = ({
       <SidebarHeader>
         <div
           style={{
-            padding: "24px",
-            textTransform: "uppercase",
-            fontWeight: "bold",
+            padding: '24px',
+            textTransform: 'uppercase',
+            fontWeight: 'bold',
             fontSize: 14,
-            letterSpacing: "1px",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            whiteSpace: "nowrap",
+            letterSpacing: '1px',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
           }}
         >
           Ministry Of Commerce
         </div>
       </SidebarHeader>
 
-      <SidebarContent>
-        <Menu iconShape="circle">
-          <Link href="/">
+      <SidebarContent className="sidebar-content">
+        <Link href="/">
+          <a>
+            <Menu iconShape="circle">
+              <MenuItem icon={<FontAwesomeIcon icon={faGlobeAsia} />}>Your website</MenuItem>
+            </Menu>
+          </a>
+        </Link>
+        {router.query.id ? (
+          <Link href={`/mochub/websites/${router.query.id}/settings`}>
             <a>
-              <MenuItem icon={<FontAwesomeIcon icon={faGlobeAsia} />}>
-                Your website
-              </MenuItem>
+              <Menu iconShape="circle">
+                <MenuItem icon={<FontAwesomeIcon icon={faCogs} />}>Settings</MenuItem>
+              </Menu>
             </a>
           </Link>
-          <SubMenu
-            title="withSuffix"
-            icon={<FontAwesomeIcon icon={faGlobeAsia} />}
-          >
+        ) : (
+          ''
+        )}
+
+        <Menu>
+          <SubMenu title="Sample" icon={<FontAwesomeIcon icon={faGlobeAsia} />}>
             <MenuItem>submenu 1</MenuItem>
             <MenuItem>submenu 2</MenuItem>
             <MenuItem>submenu 3</MenuItem>
@@ -68,7 +66,7 @@ export const Aside = ({
         <div
           className="sidebar-btn-wrapper"
           style={{
-            padding: "20px 24px",
+            padding: '20px 24px',
           }}
         >
           <a

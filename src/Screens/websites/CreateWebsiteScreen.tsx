@@ -5,8 +5,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
-import { Title } from '../../components/Title';
-import UploadSingleFile from '../../components/Upload/UploadSingleFile';
 import style from './create-websites.module.scss';
 
 const MUTATION = gql`
@@ -58,7 +56,6 @@ export const CreateWebsiteScreen = () => {
       <div className={style.mocCreateWebsiteWrapper}>
         <div className={style.mocCreateWebsiteContent}>
           <div className={style.mocCreateWebsiteContainer}>
-            <Title title="Create a new websites" />
             <div className={style.formContainer}>
               <Form.Group as={Row} className="mb-3" controlId="formPlaintextEmail">
                 <Form.Label column sm="4" style={{ fontWeight: 'bold', color: '#6b778c', fontSize: 14, width: '20%' }}>
@@ -95,9 +92,7 @@ export const CreateWebsiteScreen = () => {
                   >
                     Upload Logo
                   </Form.Label>
-                  <Col sm="8">
-                    <UploadSingleFile value={src} onChange={setSrc} />
-                  </Col>
+                  <Col sm="8">{/* <UploadSingleFile value={src} onChange={setSrc} /> */}</Col>
                 </Form.Group>
                 <Form.Group as={Row} className="mb-3 mt-4" controlId="formPlaintextEmail">
                   <Form.Label

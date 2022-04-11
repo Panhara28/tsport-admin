@@ -102,7 +102,7 @@ export const useEditor = (toolsList: any, { data, editorRef }: any, options = {}
   return { editor: editorInstance };
 };
 
-export const EditorContainer = ({ editorRef, children, data, options }: any) => {
+export const EditorContainer: any = ({ editorRef, children, data, options }: any) => {
   useEditor(tools, { data, editorRef }, options);
 
   return (

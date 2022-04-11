@@ -16,3 +16,6 @@ declare module '@editorjs/quote';
 declare module '@editorjs/marker';
 declare module 'reactstrap';
 declare module 'toastr';
+declare module 'simplebar-react';
+declare module 'metismenujs';
+declare module 'redux-saga/effects';

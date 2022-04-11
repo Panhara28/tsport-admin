@@ -1,17 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
-// import {
-//   useClearDataCallback,
-//   useLoadData,
-//   useSaveCallback,
-//   useSetData,
-// } from "src/hook/hook";
 import { Button } from 'react-bootstrap';
 import { options } from './options';
 // import 'toastr/build/toastr.min.css';
 import { useLoadData, useSaveCallback, useSetData } from '../../hook/hook';
-
 const Editor: any = dynamic(() => import('./EditorJS').then(mod => mod.EditorContainer), { ssr: false });
 
 type FormEditorType = {
@@ -22,24 +15,6 @@ type FormEditorType = {
 };
 
 export default function FormEditor({ dataKey, data, editDataKey, id }: FormEditorType) {
-  // toastr.options = {
-  //   "closeButton": false,
-  //   "debug": false,
-  //   "newestOnTop": false,
-  //   "progressBar": false,
-  //   "positionClass": "toast-bottom-center",
-  //   "preventDuplicates": false,
-  //   "onclick": null,
-  //   "showDuration": "300",
-  //   "hideDuration": "1000",
-  //   "timeOut": "1000",
-  //   "extendedTimeOut": "1000",
-  //   "showEasing": "swing",
-  //   "hideEasing": "linear",
-  //   "showMethod": "fadeIn",
-  //   "hideMethod": "fadeOut"
-  // }
-
   const [editor, setEditor] = useState(null);
   const [changed, setChanged] = useState(false);
 

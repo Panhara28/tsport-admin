@@ -1,19 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
-import Link from "next/link";
-import PropTypes from "prop-types";
-import React, { useState } from "react";
-import { connect } from "react-redux";
-import { Form, Input, Button, Row, Col } from "reactstrap";
-import { Dropdown, DropdownToggle, DropdownMenu } from "reactstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faDisplay } from "@fortawesome/free-solid-svg-icons";
+import Link from 'next/link';
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { Form, Input, Button, Row, Col } from 'reactstrap';
+import { Dropdown, DropdownToggle, DropdownMenu } from 'reactstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import {
-  showRightSidebarAction,
-  toggleLeftmenu,
-  changeSidebarType,
-} from "../../store/actions";
-import { ProfileMenu } from "../CommonForBoth/TopbarDropdown/ProfileMenu";
+import { showRightSidebarAction, toggleLeftmenu, changeSidebarType } from '../../store/actions';
+import { ProfileMenu } from '../CommonForBoth/TopbarDropdown/ProfileMenu';
+import { faArrowsAlt, faSquareFull } from '@fortawesome/free-solid-svg-icons';
 
 type Props = {
   toggleMenuCallback: any;
@@ -24,18 +20,18 @@ type Props = {
 const Header = (props: Props) => {
   const [search, setsearch] = useState(false);
   const [socialDrp, setsocialDrp] = useState(false);
-  var document: any = process.browser && window.document;
+  let document: any = process.browser && window.document;
 
   function toggleFullscreen() {
     if (
       !document.fullscreenElement &&
-      /* alternative standard method */ !document["mozFullScreenElement"] &&
-      !document["webkitFullscreenElement"]
+      /* alternative standard method */ !document['mozFullScreenElement'] &&
+      !document['webkitFullscreenElement']
     ) {
       // current working methods
       if (document.documentElement.requestFullscreen) {
         document.documentElement.requestFullscreen();
-      } else if (document.documentElement["mozRequestFullScreen"]) {
+      } else if (document.documentElement['mozRequestFullScreen']) {
         document.documentElement.mozRequestFullScreen();
       }
     } else {
@@ -50,9 +46,9 @@ const Header = (props: Props) => {
   }
 
   function tToggle() {
-    var body = document.body;
-    body.classList.toggle("vertical-collpsed");
-    body.classList.toggle("sidebar-enable");
+    let body = document.body;
+    body.classList.toggle('vertical-collpsed');
+    body.classList.toggle('sidebar-enable');
   }
   return (
     <React.Fragment>
@@ -106,13 +102,14 @@ const Header = (props: Props) => {
             <Dropdown className="d-none d-lg-inline-block ms-1">
               <button
                 type="button"
+                title="Fullscreen"
                 onClick={() => {
                   toggleFullscreen();
                 }}
                 className="btn header-item noti-icon waves-effect"
                 data-toggle="fullscreen"
               >
-                <FontAwesomeIcon icon={faDisplay} />
+                <FontAwesomeIcon icon={faArrowsAlt} />
               </button>
             </Dropdown>
             <ProfileMenu />
@@ -134,8 +131,7 @@ Header.propTypes = {
 };
 
 const mapStatetoProps = (state: any) => {
-  const { layoutType, showRightSidebar, leftMenu, leftSideBarType } =
-    state.Layout;
+  const { layoutType, showRightSidebar, leftMenu, leftSideBarType } = state.Layout;
   return { layoutType, showRightSidebar, leftMenu, leftSideBarType };
 };
 

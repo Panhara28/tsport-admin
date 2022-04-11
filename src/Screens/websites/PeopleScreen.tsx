@@ -2,12 +2,12 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { Button, Col, Container, Row } from 'react-bootstrap';
-import { Layout } from '../../components/Layout';
-import { CustomTable } from '../../components/Table/CustomTable';
-import { Title } from '../../components/Title';
+
 import { WebsiteSettingSidebar } from './WebsiteSettingSidebar';
 import style from './create-websites.module.scss';
 import { gql, useQuery } from '@apollo/client';
+import Layout from '../../components/VerticalLayout';
+import { CustomTable } from '../../components/Table/CustomTable';
 
 const QUERY = gql`
   query addedPeopleList($websiteId: Int!) {
@@ -31,11 +31,6 @@ export function PeopleScreen() {
   return (
     <Layout>
       <Container>
-        <Row className="mt-4 mx-4">
-          <Col>
-            <Title title="Website setting" />
-          </Col>
-        </Row>
         <Row className="mx-4">
           <Col md={3} style={{ borderRight: '1px solid #ccc', height: '100vh' }}>
             <WebsiteSettingSidebar />

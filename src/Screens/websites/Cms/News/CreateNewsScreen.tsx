@@ -1,5 +1,5 @@
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { faImage, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faAngleLeft, faImage, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/router';
 import { useContext, useState } from 'react';
@@ -18,6 +18,7 @@ import { MediaListByWebsite } from '../../../../components/Media/MediaListByWebs
 import FormEditor from '../../../../components/Editor/FormEditor';
 import toastr from 'toastr';
 import 'toastr/build/toastr.min.css';
+import Link from 'next/link';
 
 const MUTATION = gql`
   mutation createNews($input: NewsInput, $websiteId: Int!) {
@@ -124,6 +125,14 @@ export function CreateNewsScreen() {
               <Form onSubmit={onSubmit}>
                 <Row>
                   <Col md={9}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <div></div>
+                      <Link href="#">
+                        <a className="btn btn-danger mb-3" style={{ marginLeft: 10 }} onClick={() => router.back()}>
+                          <FontAwesomeIcon icon={faAngleLeft} /> Back
+                        </a>
+                      </Link>
+                    </div>
                     <Card>
                       <CardBody>
                         <Row>
@@ -171,7 +180,7 @@ export function CreateNewsScreen() {
                     <Card>
                       <Card.Body>
                         <Button variant="primary" type="submit" style={{ width: '100%', margin: '10px 0px 25px 0px' }}>
-                          Submit
+                          Save Draft
                         </Button>
 
                         <h6>Category</h6>

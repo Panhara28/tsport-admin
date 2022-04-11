@@ -332,3 +332,22 @@ body {
     max-width: 95% !important;
   }
 }
+
+.reset-list-group-item {
+  position: none !important;
+  display: block;
+  border: none !important;
+  background: none !important;
+  padding: 0 !important;
+  margin-bottom: 0;
+}
+
+.sidebar-content {
+  a {
+    color: #fff;
+  }
+}
+
+.pro-sidebar .pro-menu .pro-menu-item > .pro-inner-item {
+  padding: 0px 35px 0px 20px;
+}

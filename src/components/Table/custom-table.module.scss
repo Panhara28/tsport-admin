@@ -1,0 +1,26 @@
+.mocTable {
+  border-collapse: collapse;
+  width: 100%;
+
+  .mocTableHead {
+    border-bottom: 2px solid rgb(223, 225, 230);
+
+    .mocTableHeader {
+      padding: 4px 8px;
+      border: none;
+      color: rgb(94, 108, 132);
+      box-sizing: border-box;
+      font-size: 16px;
+      font-weight: 600;
+      position: relative;
+      text-align: left;
+      vertical-align: top;
+    }
+  }
+
+  .mocTableData {
+    border: none;
+    padding: 4px 8px;
+    text-align: left;
+  }
+}

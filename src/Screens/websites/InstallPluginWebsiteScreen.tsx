@@ -5,8 +5,7 @@ import { route } from 'next/dist/server/router';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { Col, Container, ListGroup, Row } from 'react-bootstrap';
-import { Layout } from '../../components/Layout';
-import { Title } from '../../components/Title';
+import Layout from '../../components/VerticalLayout';
 import style from './create-websites.module.scss';
 import { WebsiteSettingSidebar } from './WebsiteSettingSidebar';
 
@@ -56,11 +55,6 @@ export function InstallPluginWebsiteScreen() {
   return (
     <Layout>
       <Container>
-        <Row className="mt-4 mx-4">
-          <Col>
-            <Title title="Website setting" />
-          </Col>
-        </Row>
         <Row className="mx-4">
           <Col md={3} style={{ borderRight: '1px solid #ccc', height: '100vh' }}>
             <WebsiteSettingSidebar />

@@ -1,0 +1,51 @@
+.container {
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+  border-radius: 5px;
+  background: #eee;
+
+  i {
+    margin-right: 0.5rem;
+  }
+
+  span {
+    font-size: 0.9rem;
+  }
+}
+
+.containermid {
+  // padding: 0.5rem 1rem;
+  // margin-bottom: 1rem;
+  border-radius: 5px;
+  background: #eee;
+  position: fixed; /* or absolute */
+  top: 7px;
+  right: 7px;
+  z-index: 1000;
+
+  i {
+    margin-left: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    margin-right: 0.5rem;
+  }
+
+  span {
+    font-size: 1rem;
+    margin-right: 1rem;
+  }
+}
+
+.success {
+  background-color: #1abc9c;
+  color: #fff;
+  i {
+    color: #fff;
+  }
+}
+
+.error {
+  i {
+    color: #ff0000;
+  }
+}

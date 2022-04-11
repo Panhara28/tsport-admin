@@ -10,6 +10,7 @@ import toastr from 'toastr';
 import 'toastr/build/toastr.min.css';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import { useRouter } from 'next/router';
 const MySwal = withReactContent(Swal);
 
 const QUERY = gql`
@@ -24,8 +25,8 @@ const QUERY = gql`
 `;
 
 const MUTATION = gql`
-  mutation removeMedia($websiteId: Int!, $mediaId: Int!) {
-    removeMedia(websiteId: $websiteId, mediaId: $mediaId)
+  mutation removeMedia($websiteId: Int!, $mediaId: Int!, $thumbnail: String!) {
+    removeMedia(websiteId: $websiteId, mediaId: $mediaId, thumbnail: $thumbnail)
   }
 `;
 
@@ -46,6 +47,7 @@ export function MediaListByWebsite({
   setSelectImage,
   selectImage,
 }: Props) {
+  const router = useRouter();
   const [removeMediaId, setRemoveMedia] = useState<number | undefined>(undefined);
   const [removeMedia] = useMutation(MUTATION, {
     onCompleted: data => {
@@ -67,8 +69,9 @@ export function MediaListByWebsite({
   });
 
   if (loading || !data) return <div>Loading...</div>;
+  console.log(router);
 
-  const onRemoveMedia = (mediaId: number | undefined) => {
+  const onRemoveMedia = (mediaId: number | undefined, thumbnail: string | undefined) => {
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -77,12 +80,13 @@ export function MediaListByWebsite({
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Yes, delete it!',
-    }).then(result => {
+    }).then((result: any) => {
       if (result.isConfirmed) {
         removeMedia({
           variables: {
             websiteId,
             mediaId,
+            thumbnail,
           },
           refetchQueries: ['mediaList'],
         });
@@ -138,7 +142,7 @@ export function MediaListByWebsite({
                     <FontAwesomeIcon icon={faEye} /> View
                   </a>
                 </Link>
-                <p className="text-danger mt-2" onClick={() => onRemoveMedia(removeMediaId)}>
+                <p className="text-danger mt-2" onClick={() => onRemoveMedia(removeMediaId, selectImage)}>
                   Delete permanently
                 </p>
               </Card.Body>

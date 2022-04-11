@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Col, Container, Form, Row } from 'react-bootstrap';
 import XForm from '../../components/Form/XForm';
-import { Layout } from '../../components/Layout';
-import { Title } from '../../components/Title';
+
 import { WebsiteSettingSidebar } from './WebsiteSettingSidebar';
 import Select from 'react-select';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
+import Layout from '../../components/VerticalLayout';
 
 const QUERY = gql`
   query userList {
@@ -67,11 +67,6 @@ export function AddPeopleToWebsiteScreen() {
   return (
     <Layout>
       <Container>
-        <Row className="mt-4 mx-4">
-          <Col>
-            <Title title="Website setting" />
-          </Col>
-        </Row>
         <Row className="mx-4">
           <Col md={3} style={{ borderRight: '1px solid #ccc', height: '100vh' }}>
             <WebsiteSettingSidebar />
