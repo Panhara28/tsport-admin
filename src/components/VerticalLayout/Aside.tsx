@@ -44,6 +44,7 @@ export const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }: a
             </Link>
           </SubMenu>
         </Menu>
+        {checkUserHavePermissionForSiteBar}
       </>
     );
   }
@@ -87,7 +88,6 @@ export const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }: a
           .map((item: any) => {
             return <>{renderSideBarNavigation}</>;
           })}
-        {checkUserHavePermissionForSiteBar}
       </SidebarContent>
       <SidebarFooter>
         <div

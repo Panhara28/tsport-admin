@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,6 +8,7 @@ import { faUser } from '@fortawesome/free-regular-svg-icons';
 import Link from 'next/link';
 import { gql, useMutation } from '@apollo/client';
 import { useToken } from '../../Authentication/TokenContext';
+import AuthContext from '../../Authentication/AuthContext';
 
 const MUTATION = gql`
   mutation signOut($token: String!) {
@@ -16,6 +17,7 @@ const MUTATION = gql`
 `;
 
 export const ProfileMenu = (props: any) => {
+  const { me } = useContext(AuthContext);
   const [signOut] = useMutation(MUTATION, {
     onCompleted: data => {
       if (data.signOut) {
@@ -47,7 +49,7 @@ export const ProfileMenu = (props: any) => {
             src="http://minible-v-light.react.themesbrand.com/static/media/avatar-4.b23e41d9.jpg"
             alt="Header Avatar"
           />
-          <span className="d-none d-xl-inline-block ms-1 fw-medium font-size-15">Chhouk Tit panhara</span>{' '}
+          <span className="d-none d-xl-inline-block ms-1 fw-medium font-size-15">{me.fullname}</span>{' '}
           <FontAwesomeIcon icon={faAngleDown} className="d-none d-xl-inline-block font-size-15" />
         </DropdownToggle>
         <DropdownMenu className="dropdown-menu-end">

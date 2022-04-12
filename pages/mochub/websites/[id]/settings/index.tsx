@@ -56,8 +56,7 @@ export default function SettingPage() {
   const router = useRouter();
   const { me } = useContext(AuthContext);
   if (me.roleName !== 'Site Administrator') {
-    Notiflix.Notify.failure("You don't have permission!");
-    router.push('/');
+    router.push('/no-permission');
   }
   return (
     <Layout>
