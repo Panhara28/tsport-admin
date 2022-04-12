@@ -1,3 +1,6 @@
+import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { Tab, Tabs } from 'react-bootstrap';
@@ -29,6 +32,14 @@ export function CreateMediaScreen() {
           <hr />
           <Row>
             <Col md={12}>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div></div>
+                <Link href="#">
+                  <a className="btn btn-danger mb-3" style={{ marginLeft: 10 }} onClick={() => router.back()}>
+                    <FontAwesomeIcon icon={faAngleLeft} /> Back
+                  </a>
+                </Link>
+              </div>
               <Card>
                 <CardBody>
                   <Tabs

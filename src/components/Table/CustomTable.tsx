@@ -37,7 +37,10 @@ export function CustomTable({ data, websiteId }: Props) {
               })}
               <td>
                 <Link href={`/mochub/websites/${websiteId}/people/add-role/${rowData.userId}`}>
-                  <a>Assign Role</a>
+                  <a>Assign role</a>
+                </Link>
+                <Link href={`/mochub/websites/${websiteId}/people/add-plugin/${rowData.userId}`}>
+                  <a style={{ marginLeft: 15 }}>Manage Plugin</a>
                 </Link>
               </td>
             </tr>

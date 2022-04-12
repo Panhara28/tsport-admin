@@ -1,5 +1,5 @@
-import { gql, useQuery } from '@apollo/client';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { gql, useMutation, useQuery } from '@apollo/client';
+import { faAngleLeft, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/router';
 import Select from 'react-select';
@@ -15,6 +15,11 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { Modal } from 'react-bootstrap';
 import style from './media.module.scss';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+const MySwal = withReactContent(Swal);
+import toastr from 'toastr';
+import 'toastr/build/toastr.min.css';
 
 const QUERY = gql`
   query mediaList($websiteId: Int!, $pagination: PaginationInput) {
@@ -27,10 +32,28 @@ const QUERY = gql`
   }
 `;
 
+const MUTATION = gql`
+  mutation removeMedia($websiteId: Int!, $mediaId: Int!, $thumbnail: String!) {
+    removeMedia(websiteId: $websiteId, mediaId: $mediaId, thumbnail: $thumbnail)
+  }
+`;
+
 export function MediaListScreen() {
   const router = useRouter();
   const [lgShow, setLgShow] = useState(false);
   const [selectedImage, setSelectedImage] = useState(undefined);
+  const [removeMediaId, setRemoveMedia] = useState<number | undefined>(undefined);
+
+  const [removeMedia] = useMutation(MUTATION, {
+    onCompleted: (data: any) => {
+      if (data.removeMedia) {
+        toastr.success('Save Draft');
+        setLgShow(false);
+      }
+    },
+    refetchQueries: ['mediaList'],
+  });
+
   const { data, loading } = useQuery(QUERY, {
     variables: {
       websiteId: Number(router.query.id),
@@ -44,6 +67,30 @@ export function MediaListScreen() {
 
   if (loading || !data) return <div>Loading...</div>;
 
+  const onRemoveMedia = (mediaId: number | undefined, thumbnail: string | undefined) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result: any) => {
+      if (result.isConfirmed) {
+        removeMedia({
+          variables: {
+            websiteId: Number(router.query.id),
+            mediaId,
+            thumbnail,
+          },
+          refetchQueries: ['mediaList'],
+        });
+        Swal.fire('Deleted!', 'Your image has been deleted.', 'success');
+      }
+    });
+  };
+
   return (
     <Layout>
       <div className="page-content">
@@ -51,15 +98,20 @@ export function MediaListScreen() {
           <Breadcrumb title="Ministry Of Commerce" breadcrumbItem="Media Library" />
           <hr />
           <Row>
-            <Col md={3} className="mb-3">
-              <Link href={`/mochub/websites/${router.query.id}/media/create`}>
-                <a className="btn btn-primary">
-                  <FontAwesomeIcon icon={faPlus} /> Add New
-                </a>
-              </Link>
-            </Col>
             <Col md={12}>
-              <Card>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <Link href={`/mochub/websites/${router.query.id}/media/create`}>
+                  <a className="btn btn-primary">
+                    <FontAwesomeIcon icon={faPlus} /> Add New
+                  </a>
+                </Link>
+                <Link href="#">
+                  <a className="btn btn-danger" style={{ marginLeft: 10 }} onClick={() => router.back()}>
+                    <FontAwesomeIcon icon={faAngleLeft} /> Back
+                  </a>
+                </Link>
+              </div>
+              <Card className="mt-3">
                 <CardBody>
                   <Row>
                     <Col md={2}>
@@ -100,6 +152,7 @@ export function MediaListScreen() {
                           onClick={() => {
                             setLgShow(true);
                             setSelectedImage(item.image_url);
+                            setRemoveMedia(item.id);
                           }}
                         >
                           <Image src={item.image_url} alt="" layout="responsive" width={150} height={150} />
@@ -137,6 +190,10 @@ export function MediaListScreen() {
                         <p>File size: 331 KB</p>
                         <p>Dimensions: 2048 by 1365 pixels</p>
                       </div>
+                      <hr />
+                      <p className="text-danger mt-2" onClick={() => onRemoveMedia(removeMediaId, selectedImage)}>
+                        Delete permanently
+                      </p>
                     </CardBody>
                   </Card>
                 </Col>
