@@ -35,6 +35,24 @@ const QUERY = gql`
   }
 `;
 
+toastr.options = {
+  closeButton: false,
+  debug: false,
+  newestOnTop: false,
+  progressBar: false,
+  positionClass: 'toast-bottom-right',
+  preventDuplicates: false,
+  onclick: null,
+  showDuration: '2000',
+  hideDuration: '2000',
+  timeOut: '2000',
+  extendedTimeOut: '2000',
+  showEasing: 'swing',
+  hideEasing: 'linear',
+  showMethod: 'fadeIn',
+  hideMethod: 'fadeOut',
+};
+
 export function CreateNewsScreen() {
   const [selectImage, setSelectImage] = useState(undefined);
   const [selectedImage, setSelectedImage] = useState(undefined);
@@ -55,6 +73,9 @@ export function CreateNewsScreen() {
         toastr.success('Save Draft');
       }
     },
+    onError: error => {
+      toastr.error(error.message);
+    },
   });
 
   const onSubmit = (e: any) => {
@@ -64,7 +85,7 @@ export function CreateNewsScreen() {
     const description: any = process.browser && localStorage.getItem('newsData');
     const result =
       description === null
-        ? TransformDataEditorJS(data.newsDetail.description)
+        ? TransformDataEditorJS(data?.newsDetail?.description)
         : TransformDataEditorJS(JSON.parse(description));
 
     const input = {

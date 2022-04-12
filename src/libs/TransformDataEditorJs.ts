@@ -1,7 +1,7 @@
 export function TransformDataEditorJS(data: any) {
   const blocks: any[] = [];
 
-  data.blocks.map((item: any) => {
+  data?.blocks?.map((item: any) => {
     if (item.type === 'paragraph') {
       const find = item.data.text.indexOf('</a>');
       if (find > -1) {

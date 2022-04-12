@@ -2,6 +2,8 @@ import { gql, useMutation } from '@apollo/client';
 import { faImage, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
+import toastr from 'toastr';
+import 'toastr/build/toastr.min.css';
 
 export const UPLOAD = gql`
   mutation singleUpload($file: Upload!) {
@@ -58,6 +60,9 @@ export function SignleImageUpload({
         },
         refetchQueries: ['mediaList'],
       });
+    },
+    onError: error => {
+      toastr.error(error.message);
     },
   });
 

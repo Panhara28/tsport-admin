@@ -103,6 +103,10 @@ export function EditNewsScreen() {
       }
     },
     refetchQueries: ['newsDetail'],
+
+    onError: error => {
+      toastr.error(error.message);
+    },
   });
 
   const [updateStatus] = useMutation(UPDATE_NEW_STATUS, {

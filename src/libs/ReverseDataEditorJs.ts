@@ -1,7 +1,7 @@
 export function ReverseDataEditorJS(data: any) {
   const blocks: any[] = [];
 
-  data.blocks.map((item: any) => {
+  data?.blocks?.map((item: any) => {
     if (item.type === 'link') {
       blocks.push({
         id: item.id,
