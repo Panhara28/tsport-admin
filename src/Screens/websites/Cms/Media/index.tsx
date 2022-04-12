@@ -100,7 +100,7 @@ export function MediaListScreen() {
           <Row>
             <Col md={12}>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Link href={`/mochub/websites/${router.query.id}/media/create`}>
+                <Link href={`/mochub/websites/${router.query.id}/cms/media/create`}>
                   <a className="btn btn-primary">
                     <FontAwesomeIcon icon={faPlus} /> Add New
                   </a>

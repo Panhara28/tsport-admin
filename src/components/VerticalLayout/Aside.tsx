@@ -10,7 +10,7 @@ export const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }: a
   const router = useRouter();
   const { me } = useContext(AuthContext);
 
-  let renderSideBarNavigation;
+  let renderSideBarNavigation: JSX.Element;
   let checkUserHavePermissionForSiteBar;
 
   if (me.roleName == 'Site Administrator') {
@@ -32,19 +32,18 @@ export const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }: a
       <>
         <Menu subMenuBullets={true} iconShape="circle">
           <SubMenu title="Media" icon={<FontAwesomeIcon icon={faImages} />}>
-            <Link href={`/mochub/websites/${router.query.id}/media/create`}>
+            <Link href={`/mochub/websites/${router.query.id}/cms/media/create`}>
               <a>
                 <MenuItem>Add media</MenuItem>
               </a>
             </Link>
-            <Link href={`/mochub/websites/${router.query.id}/media`}>
+            <Link href={`/mochub/websites/${router.query.id}/cms/media`}>
               <a>
                 <MenuItem>Library</MenuItem>
               </a>
             </Link>
           </SubMenu>
         </Menu>
-        {checkUserHavePermissionForSiteBar}
       </>
     );
   }
@@ -83,7 +82,12 @@ export const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }: a
             </a>
           </Link>
         </Menu>
-        {renderSideBarNavigation}
+        {me.plugins
+          .filter((x: any) => x.name === 'Media')
+          .map((item: any) => {
+            return <>{renderSideBarNavigation}</>;
+          })}
+        {checkUserHavePermissionForSiteBar}
       </SidebarContent>
       <SidebarFooter>
         <div
