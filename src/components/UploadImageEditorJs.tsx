@@ -1,13 +1,17 @@
-import { createUploadLink } from "apollo-upload-client";
-import { InMemoryCache } from "apollo-cache-inmemory";
-import { ApolloClient } from "apollo-client";
-import { gql } from "apollo-boost";
+import { createUploadLink } from 'apollo-upload-client';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { ApolloClient } from 'apollo-client';
+import { gql } from 'apollo-boost';
 
 const UPLOAD = gql`
   mutation singleUpload($file: Upload!) {
     singleUpload(file: $file) {
       filename
       url
+      fileSize
+      mimetype
+      width
+      height
     }
   }
 `;
@@ -15,7 +19,7 @@ const UPLOAD = gql`
 function createApolloClient() {
   let url = process.env.NEXT_PUBLIC_API_URL;
 
-  const uri = `${url}?token=` + localStorage.getItem("token");
+  const uri = `${url}?token=` + localStorage.getItem('token');
   const client = new ApolloClient({
     link: createUploadLink({ uri }),
     cache: new InMemoryCache(),

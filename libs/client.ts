@@ -2,7 +2,7 @@ import { ApolloClient, InMemoryCache, ApolloLink } from '@apollo/client';
 import { BatchHttpLink } from '@apollo/client/link/batch-http';
 import { createUploadLink } from 'apollo-upload-client';
 
-export default function createApolloClient(token: string = '') {
+export default function createApolloClient(token = '') {
   const uri = process.env.NEXT_PUBLIC_API_URL + '?token=' + token;
   const uploadLink = createUploadLink({ uri });
   const batch = new BatchHttpLink({ uri });

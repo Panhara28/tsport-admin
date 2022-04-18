@@ -27,6 +27,14 @@ const QUERY = gql`
       data {
         id
         image_url
+        upload_storage
+        mimetype
+        created_at
+        width
+        height
+        user {
+          fullname
+        }
       }
     }
   }
@@ -41,7 +49,13 @@ const MUTATION = gql`
 export function MediaListScreen() {
   const router = useRouter();
   const [lgShow, setLgShow] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(undefined);
+  const [selectedImage, setSelectedImage] = useState<any>({
+    featureImage: undefined,
+    createdAt: undefined,
+    fullName: undefined,
+    uploadStorage: undefined,
+    mimetype: undefined,
+  });
   const [removeMediaId, setRemoveMedia] = useState<number | undefined>(undefined);
 
   const [removeMedia] = useMutation(MUTATION, {
@@ -90,6 +104,9 @@ export function MediaListScreen() {
       }
     });
   };
+
+  const uploadStorage = Number(selectedImage?.uploadStorage) * 1024;
+  const fileName = selectedImage && selectedImage?.featureImage?.split('/')[4];
 
   return (
     <Layout>
@@ -151,7 +168,15 @@ export function MediaListScreen() {
                           className={`mb-3`}
                           onClick={() => {
                             setLgShow(true);
-                            setSelectedImage(item.image_url);
+                            setSelectedImage({
+                              featureImage: item.image_url,
+                              createdAt: item.created_at,
+                              fullName: item.user.fullname,
+                              mimetype: item.mimetype,
+                              uploadStorage: item.upload_storage,
+                              width: item.width,
+                              height: item.height,
+                            });
                             setRemoveMedia(item.id);
                           }}
                         >
@@ -171,9 +196,9 @@ export function MediaListScreen() {
             <Modal.Body>
               <Row>
                 <Col md={8}>
-                  {selectedImage ? (
+                  {selectedImage && selectedImage?.featureImage ? (
                     <div style={{ width: '100%', height: 'auto' }}>
-                      <Image src={selectedImage} alt="" layout="responsive" width={1280} height={720} />
+                      <Image src={selectedImage?.featureImage} alt="" layout="responsive" width={1280} height={720} />
                     </div>
                   ) : (
                     ''
@@ -183,15 +208,20 @@ export function MediaListScreen() {
                   <Card>
                     <CardBody>
                       <div className={style.selectedImageInfo}>
-                        <p>Uploaded on: April 11, 2022</p>
-                        <p>Uploaded by: panhara</p>
-                        <p>File name: minister-2.jpg</p>
-                        <p>File type: image/jpeg</p>
-                        <p>File size: 331 KB</p>
-                        <p>Dimensions: 2048 by 1365 pixels</p>
+                        <p>Uploaded on: {selectedImage?.createdAt}</p>
+                        <p>Uploaded by: {selectedImage?.fullName}</p>
+                        <p>File name: {fileName}</p>
+                        <p>File type: {selectedImage?.mimetype}</p>
+                        <p>File size: {uploadStorage.toFixed(0)}kb</p>
+                        <p>
+                          Dimensions: {selectedImage?.width} by {selectedImage?.height} pixels
+                        </p>
                       </div>
                       <hr />
-                      <p className="text-danger mt-2" onClick={() => onRemoveMedia(removeMediaId, selectedImage)}>
+                      <p
+                        className="text-danger mt-2"
+                        onClick={() => onRemoveMedia(removeMediaId, selectedImage?.featureImage)}
+                      >
                         Delete permanently
                       </p>
                     </CardBody>

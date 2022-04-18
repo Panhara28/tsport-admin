@@ -10,6 +10,10 @@ export const UPLOAD = gql`
     singleUpload(file: $file) {
       filename
       url
+      fileSize
+      mimetype
+      width
+      height
     }
   }
 `;
@@ -56,6 +60,10 @@ export function SignleImageUpload({
           websiteId,
           input: {
             image_url: data.singleUpload.url,
+            upload_storage: Number(data.singleUpload.fileSize),
+            mimetype: data.singleUpload.mimetype,
+            width: data.singleUpload.width,
+            height: data.singleUpload.height,
           },
         },
         refetchQueries: ['mediaList'],
