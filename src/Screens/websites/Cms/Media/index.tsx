@@ -20,6 +20,7 @@ import withReactContent from 'sweetalert2-react-content';
 const MySwal = withReactContent(Swal);
 import toastr from 'toastr';
 import 'toastr/build/toastr.min.css';
+import { RenderFileExtensionType } from '../../../../components/Media/RenderExtensionType';
 
 const QUERY = gql`
   query mediaList($websiteId: Int!, $pagination: PaginationInput) {
@@ -162,6 +163,17 @@ export function MediaListScreen() {
                 <CardBody>
                   <Row>
                     {data.mediaList.data.map((item: any) => {
+                      const fileWord = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+                      let convertFileWord;
+                      if (item?.mimetype === fileWord) {
+                        convertFileWord = 'application/word';
+                      }
+                      const renderBackgroundForFile =
+                        item?.mimetype === 'application/pdf' ||
+                        convertFileWord === 'application/word' ||
+                        item?.mimetype === 'text/csv'
+                          ? '#eee'
+                          : 'none';
                       return (
                         <Col
                           md={2}
@@ -179,8 +191,16 @@ export function MediaListScreen() {
                             });
                             setRemoveMedia(item.id);
                           }}
+                          style={{
+                            background: `${renderBackgroundForFile}`,
+                            marginLeft: 10,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'center',
+                            padding: 0,
+                          }}
                         >
-                          <Image src={item.image_url} alt="" layout="responsive" width={150} height={150} />
+                          <RenderFileExtensionType item={item} />
                         </Col>
                       );
                     })}

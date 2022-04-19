@@ -19,7 +19,13 @@ export function CreateMediaScreen() {
   const router = useRouter();
   const [selectImage, setSelectImage] = useState(undefined);
   const [firstFeaturedImage, setFirstFeaturedImage] = useState(undefined);
-  const [selectedImage, setSelectedImage] = useState(undefined);
+  const [selectedImage, setSelectedImage] = useState({
+    featureImage: undefined,
+    createdAt: undefined,
+    fullName: undefined,
+    uploadStorage: undefined,
+    mimetype: undefined,
+  });
 
   const [key, setKey] = useState('upload');
   const [thumbnail, setThumbnail]: any = useState(undefined);
@@ -77,6 +83,7 @@ export function CreateMediaScreen() {
                         setFirstFeaturedImage={setFirstFeaturedImage}
                         selectImage={selectImage}
                         setSelectImage={setSelectImage}
+                        selectedImage={selectedImage}
                       />
                     </Tab>
                   </Tabs>

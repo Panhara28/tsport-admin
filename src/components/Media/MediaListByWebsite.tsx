@@ -11,7 +11,7 @@ import 'toastr/build/toastr.min.css';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { useRouter } from 'next/router';
-const MySwal = withReactContent(Swal);
+import { RenderFileExtensionType } from './RenderExtensionType';
 
 const QUERY = gql`
   query mediaList($websiteId: Int!, $pagination: PaginationInput) {
@@ -19,6 +19,14 @@ const QUERY = gql`
       data {
         id
         image_url
+        upload_storage
+        mimetype
+        created_at
+        width
+        height
+        user {
+          fullname
+        }
       }
     }
   }
@@ -37,6 +45,7 @@ type Props = {
   setFirstFeaturedImage?: any;
   setSelectImage?: any;
   selectImage?: any;
+  selectedImage?: any;
 };
 
 export function MediaListByWebsite({
@@ -46,6 +55,7 @@ export function MediaListByWebsite({
   setFirstFeaturedImage,
   setSelectImage,
   selectImage,
+  selectedImage,
 }: Props) {
   const router = useRouter();
   const [removeMediaId, setRemoveMedia] = useState<number | undefined>(undefined);
@@ -94,18 +104,41 @@ export function MediaListByWebsite({
     });
   };
 
+  const uploadStorage = Number(selectedImage?.uploadStorage) * 1024;
+  const fileName = selectedImage && selectedImage?.featureImage?.split('/')[4];
+
   return (
     <>
       <Row>
         <Col md={9}>
           <Row>
             {data.mediaList.data.map((item: any) => {
+              const fileWord = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+              let convertFileWord;
+              if (item?.mimetype === fileWord) {
+                convertFileWord = 'application/word';
+              }
+              const renderBackgroundForFile =
+                item?.mimetype === 'application/pdf' ||
+                convertFileWord === 'application/word' ||
+                item?.mimetype === 'text/csv'
+                  ? '#eee'
+                  : 'none';
+
               return (
                 <Col
                   md={2}
                   onClick={() => {
                     setSelectImage(item.image_url);
-                    setSelectedImage(item.image_url);
+                    setSelectedImage({
+                      featureImage: item.image_url,
+                      createdAt: item.created_at,
+                      fullName: item.user.fullname,
+                      mimetype: item.mimetype,
+                      uploadStorage: item.upload_storage,
+                      width: item.width,
+                      height: item.height,
+                    });
                     setFirstFeaturedImage(undefined);
                     setRemoveMedia(item.id);
                   }}
@@ -116,8 +149,16 @@ export function MediaListByWebsite({
                       ? style.mocSelectedImage
                       : ''
                   }`}
+                  style={{
+                    background: `${renderBackgroundForFile}`,
+                    marginLeft: 10,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    padding: 0,
+                  }}
                 >
-                  <Image src={item.image_url} alt="" layout="responsive" width={150} height={150} />
+                  <RenderFileExtensionType item={item} />
                 </Col>
               );
             })}
@@ -136,6 +177,17 @@ export function MediaListByWebsite({
                 >
                   <Image src={selectImage} alt="" layout="responsive" width={100} height={100} />
                 </div>
+                <div className={style.selectedImageInfo}>
+                  <p>Uploaded on: {selectedImage?.createdAt}</p>
+                  <p>Uploaded by: {selectedImage?.fullName}</p>
+                  <p>File name: {fileName}</p>
+                  <p>File type: {selectedImage?.mimetype}</p>
+                  <p>File size: {uploadStorage.toFixed(0)}kb</p>
+                  <p>
+                    Dimensions: {selectedImage?.width} by {selectedImage?.height} pixels
+                  </p>
+                </div>
+
                 <Link href={selectImage}>
                   <a target="_blank">
                     <FontAwesomeIcon icon={faEye} /> View
