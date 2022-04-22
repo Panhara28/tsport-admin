@@ -434,6 +434,7 @@ export function EditNewsScreen() {
                               setFirstFeaturedImage={setFirstFeaturedImage}
                               selectImage={selectImage}
                               setSelectImage={setSelectImage}
+                              selectedImage={selectedImage}
                             />
                           </Tab>
                         </Tabs>

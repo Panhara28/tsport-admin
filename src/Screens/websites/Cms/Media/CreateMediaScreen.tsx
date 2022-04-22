@@ -17,7 +17,13 @@ import style from './media.module.scss';
 
 export function CreateMediaScreen() {
   const router = useRouter();
-  const [selectImage, setSelectImage] = useState(undefined);
+  const [selectImage, setSelectImage] = useState({
+    featureImage: undefined,
+    createdAt: undefined,
+    fullName: undefined,
+    uploadStorage: undefined,
+    mimetype: undefined,
+  });
   const [firstFeaturedImage, setFirstFeaturedImage] = useState(undefined);
   const [selectedImage, setSelectedImage] = useState({
     featureImage: undefined,

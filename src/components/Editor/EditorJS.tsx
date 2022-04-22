@@ -11,6 +11,7 @@ import Embed from '@editorjs/embed';
  * @param {*} param1
  * @param {EditorJS.EditorConfig} options
  */
+
 export const useEditor = (toolsList: any, { data, editorRef }: any, options = {}) => {
   const [editorInstance, setEditor] = useState(null);
   const { data: ignoreData, tools: ignoreTools, holder: ignoreHolder, ...editorOptions }: any = options;
@@ -39,7 +40,7 @@ export const useEditor = (toolsList: any, { data, editorRef }: any, options = {}
           class: ImageTool,
           config: {
             types: 'image/*',
-            buttonContent: "<div><i class='fal fa-image fa-lg' style='font-style: normal;'></i> Select an image</div>",
+            buttonContent: "<div><i class='fa fa-image fa-lg' style='font-style: normal;'></i> Select an image</div>",
             endpoints: {
               byFile: `${uri}`, // Your backend file uploader endpoint
               byUrl: `${uri}`, // Your endpoint that provides uploading by Url

@@ -3,7 +3,7 @@ import { faFileCsv } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 
-export function RenderFileExtensionType({ item }: any) {
+export function RenderExtensionTypeImageInfo({ item }: any) {
   const fileWord = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
   let convertFileWord;
   if (item?.mimetype === fileWord) {
@@ -43,13 +43,5 @@ export function RenderFileExtensionType({ item }: any) {
       </>
     );
   }
-  return (
-    <Image
-      src={item?.image_url ? item?.image_url : item?.featureImage}
-      alt=""
-      layout="responsive"
-      width={160}
-      height={160}
-    />
-  );
+  return <Image src={item?.featureImage} alt="" layout="responsive" width={160} height={160} />;
 }

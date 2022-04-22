@@ -12,6 +12,7 @@ import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { useRouter } from 'next/router';
 import { RenderFileExtensionType } from './RenderExtensionType';
+import { RenderExtensionTypeImageInfo } from './RenderExtensionTypeImageInfo';
 
 const QUERY = gql`
   query mediaList($websiteId: Int!, $pagination: PaginationInput) {
@@ -106,7 +107,13 @@ export function MediaListByWebsite({
 
   const uploadStorage = Number(selectedImage?.uploadStorage) * 1024;
   const fileName = selectedImage && selectedImage?.featureImage?.split('/')[4];
-
+  const fileWord = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+  let convertFileWord;
+  if (selectImage?.mimetype === fileWord) {
+    convertFileWord = 'application/word';
+  } else {
+    convertFileWord = selectImage?.mimetype;
+  }
   return (
     <>
       <Row>
@@ -129,7 +136,15 @@ export function MediaListByWebsite({
                 <Col
                   md={2}
                   onClick={() => {
-                    setSelectImage(item.image_url);
+                    setSelectImage({
+                      featureImage: item.image_url,
+                      createdAt: item.created_at,
+                      fullName: item.user.fullname,
+                      mimetype: item.mimetype,
+                      uploadStorage: item.upload_storage,
+                      width: item.width,
+                      height: item.height,
+                    });
                     setSelectedImage({
                       featureImage: item.image_url,
                       createdAt: item.created_at,
@@ -156,6 +171,7 @@ export function MediaListByWebsite({
                     flexDirection: 'column',
                     justifyContent: 'center',
                     padding: 0,
+                    cursor: 'pointer',
                   }}
                 >
                   <RenderFileExtensionType item={item} />
@@ -164,7 +180,7 @@ export function MediaListByWebsite({
             })}
           </Row>
         </Col>
-        {selectImage ? (
+        {selectImage?.featureImage ? (
           <Col md={3}>
             <Card style={{ background: '#f6f7f7', border: '1px solid #f6f7f7', borderLeft: '2px solid #dcdcde' }}>
               <Card.Body>
@@ -173,22 +189,30 @@ export function MediaListByWebsite({
                 </Card.Title>
                 <div
                   className="mb-3"
-                  style={{ width: '80%', height: 'auto', border: '1px solid #dee2e6', padding: 10 }}
+                  style={{
+                    width: '100%',
+                    height: '232px',
+                    border: '1px solid #dee2e6',
+                    padding: 10,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                  }}
                 >
-                  <Image src={selectImage} alt="" layout="responsive" width={100} height={100} />
+                  <RenderExtensionTypeImageInfo item={selectImage} />
                 </div>
                 <div className={style.selectedImageInfo}>
                   <p>Uploaded on: {selectedImage?.createdAt}</p>
                   <p>Uploaded by: {selectedImage?.fullName}</p>
                   <p>File name: {fileName}</p>
-                  <p>File type: {selectedImage?.mimetype}</p>
+                  <p>File type: {convertFileWord}</p>
                   <p>File size: {uploadStorage.toFixed(0)}kb</p>
                   <p>
                     Dimensions: {selectedImage?.width} by {selectedImage?.height} pixels
                   </p>
                 </div>
 
-                <Link href={selectImage}>
+                <Link href={selectImage?.featureImage}>
                   <a target="_blank">
                     <FontAwesomeIcon icon={faEye} /> View
                   </a>

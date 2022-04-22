@@ -21,6 +21,7 @@ const MySwal = withReactContent(Swal);
 import toastr from 'toastr';
 import 'toastr/build/toastr.min.css';
 import { RenderFileExtensionType } from '../../../../components/Media/RenderExtensionType';
+import { RenderExtensionTypeLibraryInfo } from '../../../../components/Media/RenderExtensionTypeLibraryInfo';
 
 const QUERY = gql`
   query mediaList($websiteId: Int!, $pagination: PaginationInput) {
@@ -198,6 +199,7 @@ export function MediaListScreen() {
                             flexDirection: 'column',
                             justifyContent: 'center',
                             padding: 0,
+                            cursor: 'pointer',
                           }}
                         >
                           <RenderFileExtensionType item={item} />
@@ -217,8 +219,19 @@ export function MediaListScreen() {
               <Row>
                 <Col md={8}>
                   {selectedImage && selectedImage?.featureImage ? (
-                    <div style={{ width: '100%', height: 'auto' }}>
-                      <Image src={selectedImage?.featureImage} alt="" layout="responsive" width={1280} height={720} />
+                    <div
+                      className="mb-3"
+                      style={{
+                        width: '100%',
+                        height: 'auto',
+                        border: '1px solid #dee2e6',
+                        padding: 10,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <RenderExtensionTypeLibraryInfo item={selectedImage} />
                     </div>
                   ) : (
                     ''
