@@ -9,6 +9,8 @@ import XForm from '../../components/Form/XForm';
 import Layout from '../../components/VerticalLayout';
 import style from './create-websites.module.scss';
 import { RenderRoleModal } from './RenderRoleModal';
+import toastr from 'toastr';
+import 'toastr/build/toastr.min.css';
 
 const QUERY = gql`
   query adminRoleList($websiteId: Int!, $userId: Int!) {
@@ -31,6 +33,24 @@ const MUTATION = gql`
     adminAssignRoleToUser(userId: $userId, websiteId: $websiteId, roleId: $roleId)
   }
 `;
+
+toastr.options = {
+  closeButton: false,
+  debug: false,
+  newestOnTop: false,
+  progressBar: false,
+  positionClass: 'toast-bottom-center',
+  preventDuplicates: false,
+  onclick: null,
+  showDuration: '2000',
+  hideDuration: '2000',
+  timeOut: '2000',
+  extendedTimeOut: '2000',
+  showEasing: 'swing',
+  hideEasing: 'linear',
+  showMethod: 'fadeIn',
+  hideMethod: 'fadeOut',
+};
 
 export function PeopleRoleScreen() {
   const router = useRouter();
@@ -70,6 +90,11 @@ export function PeopleRoleScreen() {
         userId: Number(router.query.peopleId),
         websiteId: Number(router.query.id),
         roleId: Number(selected),
+      },
+      onCompleted: data => {
+        if (data.adminAssignRoleToUser) {
+          toastr.success('Assign role has been successfully');
+        }
       },
     });
   };

@@ -7,10 +7,12 @@ import { gql, useMutation, useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
 import Layout from '../../components/VerticalLayout';
 import { Breadcrumb } from '../../components/Common/Breadcrumb';
+import toastr from 'toastr';
+import 'toastr/build/toastr.min.css';
 
 const QUERY = gql`
-  query userList {
-    userList {
+  query adminUserList {
+    adminUserList {
       data {
         id
         fullname
@@ -20,15 +22,21 @@ const QUERY = gql`
 `;
 
 const MUTATION = gql`
-  mutation addPeopleToWebsite($websiteId: Int!, $input: [UserInputId]) {
-    addPeopleToWebsite(websiteId: $websiteId, input: $input)
+  mutation adminAddPeopleToWebsite($websiteId: Int!, $input: [UserInputId]) {
+    adminAddPeopleToWebsite(websiteId: $websiteId, input: $input)
   }
 `;
+
 export function AddPeopleToWebsiteScreen() {
   const router = useRouter();
-  const [addPeopleToWebsite] = useMutation(MUTATION, {
+  const [adminAddPeopleToWebsite] = useMutation(MUTATION, {
+    onCompleted: data => {
+      if (data.adminAddPeopleToWebsite) {
+        toastr.success('User has been add successfully');
+      }
+    },
     onError: error => {
-      console.log(error);
+      toastr.error(error.message);
     },
   });
   const [input, setInput]: any[] = useState([]);
@@ -37,7 +45,7 @@ export function AddPeopleToWebsiteScreen() {
   if (loading || !data) return <div>Loading...</div>;
 
   const items: any[] = [];
-  data.userList.data.map((item: any) => {
+  data.adminUserList.data.map((item: any) => {
     items.push({
       label: item.fullname,
       value: item.id,
@@ -53,7 +61,7 @@ export function AddPeopleToWebsiteScreen() {
 
   const onAddPeople = () => {
     if (dataInput.length > 0) {
-      addPeopleToWebsite({
+      adminAddPeopleToWebsite({
         variables: {
           websiteId: Number(router.query.id),
           input: dataInput,

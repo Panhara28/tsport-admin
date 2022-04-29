@@ -102,7 +102,7 @@ export const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }: a
             className="sidebar-btn"
             rel="noopener noreferrer"
           >
-            <span>Profile</span>
+            <span>{new Date().getFullYear()} © Ministry Of Commerce.</span>
           </a>
         </div>
       </SidebarFooter>

@@ -16,6 +16,18 @@ export function WebsiteSettingSidebar() {
           Collaboration
         </h6>
         <ListGroup>
+          <Link href={`/mochub/websites/${router.query.id}/people/create`}>
+            <a
+              className={
+                style.mocSettingList +
+                ` ${router.asPath === `/mochub/websites/${router.query.id}/people/create` ? style.active : ''}`
+              }
+            >
+              <ListGroup.Item as="p" className="reset-list-group-item">
+                Create user
+              </ListGroup.Item>
+            </a>
+          </Link>
           <Link href={`/mochub/websites/${router.query.id}/people`}>
             <a
               className={
@@ -24,7 +36,7 @@ export function WebsiteSettingSidebar() {
               }
             >
               <ListGroup.Item as="p" className="reset-list-group-item">
-                People
+                All Users
               </ListGroup.Item>
             </a>
           </Link>
@@ -36,7 +48,7 @@ export function WebsiteSettingSidebar() {
               }
             >
               <ListGroup.Item as="p" className="reset-list-group-item">
-                Add People
+                Invite User
               </ListGroup.Item>
             </a>
           </Link>
