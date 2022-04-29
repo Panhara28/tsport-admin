@@ -14,7 +14,7 @@ const QUERY = gql`
 `;
 
 const MUTATION = gql`
-  mutation pluginManageAccessForUser(
+  mutation adminPluginManageAccessForUser(
     $websiteId: Int!
     $pluginId: Int!
     $userId: Int!
@@ -23,7 +23,7 @@ const MUTATION = gql`
     $modified: Boolean
     $remove: Boolean
   ) {
-    pluginManageAccessForUser(
+    adminPluginManageAccessForUser(
       websiteId: $websiteId
       pluginId: $pluginId
       userId: $userId
