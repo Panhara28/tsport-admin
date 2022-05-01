@@ -96,12 +96,7 @@ export const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }: a
             padding: '20px 24px',
           }}
         >
-          <a
-            href="https://github.com/azouaoui-med/react-pro-sidebar"
-            target="_blank"
-            className="sidebar-btn"
-            rel="noopener noreferrer"
-          >
+          <a href="#" target="_blank" className="sidebar-btn" rel="noopener noreferrer">
             <span>{new Date().getFullYear()} © Ministry Of Commerce.</span>
           </a>
         </div>
