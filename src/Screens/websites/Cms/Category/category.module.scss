@@ -1,0 +1,7 @@
+.nameInput {
+  border: 2px dashed #bdc3c7;
+  padding: 20px;
+  &::placeholder {
+    font-size: 18px;
+  }
+}

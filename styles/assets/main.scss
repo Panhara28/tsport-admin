@@ -61,7 +61,7 @@ body {
         font-size: 13px;
       }
       &:hover {
-        color: $highlight-color;
+        color: #fff;
       }
     }
   }
@@ -243,6 +243,9 @@ body {
 .sidebar-btn-wrapper {
   a {
     color: #fff;
+    &:hover {
+      color: #fff;
+    }
   }
 }
 
