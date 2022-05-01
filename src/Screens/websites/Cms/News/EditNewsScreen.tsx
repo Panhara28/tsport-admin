@@ -32,8 +32,8 @@ const MUTATION = gql`
 `;
 
 const CREATE_NEWS_CATEGORY = gql`
-  mutation createNewsCategory($input: NewsCategoryInput) {
-    createNewsCategory(input: $input)
+  mutation createNewsCategory($websiteId: Int!, $input: NewsCategoryInput) {
+    createNewsCategory(input: $input, websiteId: $websiteId)
   }
 `;
 
@@ -393,6 +393,7 @@ export function EditNewsScreen() {
         input: {
           name: e,
         },
+        websiteId: Number(router.query.id),
       },
     });
   };
