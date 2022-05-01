@@ -3,7 +3,7 @@ import { faAngleLeft, faPaperPlane, faTimesCircle, faTrash } from '@fortawesome/
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
-import { Button, Card, Col, Container, Form, Modal, Row, Tab, Tabs } from 'react-bootstrap';
+import { Button, Card, Col, Container, Form, Modal, Row, Tab, Tabs, Table } from 'react-bootstrap';
 import { StatusPageBagde } from '../../../../components/StatusPageBagde';
 import { TransformDataEditorJS } from '../../../../libs/TransformDataEditorJs';
 import Switch from 'react-switch';
@@ -11,7 +11,7 @@ import { RenderEditButton } from '../../../../components/RenderEditButton';
 import { ReverseDataEditorJS } from '../../../../libs/ReverseDataEditorJs';
 import Link from 'next/link';
 import style from './news.module.scss';
-import Select from 'react-select';
+import CreatableSelect from 'react-select/creatable';
 import AuthContext from '../../../../components/Authentication/AuthContext';
 import Layout from '../../../../components/VerticalLayout';
 import { Breadcrumb } from '../../../../components/Common/Breadcrumb';
@@ -23,10 +23,17 @@ import { MediaListByWebsite } from '../../../../components/Media/MediaListByWebs
 import { SignleImageUpload } from '../../../../components/SignleImageUpload';
 import Image from 'next/image';
 import { faImage } from '@fortawesome/free-regular-svg-icons';
+import { parseImageUrl } from '../../../../hook/parseImageUrl';
 
 const MUTATION = gql`
   mutation updateNews($id: Int!, $input: NewsInput, $websiteId: Int!) {
     updateNews(id: $id, input: $input, websiteId: $websiteId)
+  }
+`;
+
+const CREATE_NEWS_CATEGORY = gql`
+  mutation createNewsCategory($input: NewsCategoryInput) {
+    createNewsCategory(input: $input)
   }
 `;
 
@@ -51,6 +58,18 @@ const PAGE_DETAIL = gql`
     publicNewsCategoryList {
       id
       name
+    }
+
+    activityLogsNews(websiteId: $websiteId, id: $id) {
+      data {
+        id
+        type
+        user_id
+        activity
+        user {
+          fullname
+        }
+      }
     }
   }
 `;
@@ -78,7 +97,7 @@ export function EditNewsScreen() {
   const [selectImage, setSelectImage] = useState(undefined);
   const [selectedImage, setSelectedImage] = useState(undefined);
   const [firstFeaturedImage, setFirstFeaturedImage] = useState(undefined);
-  const [finaleSelected, setFinaleSelected] = useState(undefined);
+  const [finaleSelected, setFinaleSelected]: any = useState(undefined);
   const [thumbnail, setThumbnail]: any = useState(undefined);
   const [showLog, setShowLog] = useState(false);
   const [logData, setLogData] = useState(undefined);
@@ -92,9 +111,21 @@ export function EditNewsScreen() {
     },
     onCompleted: data => {
       setThumbnail(data.newsDetail.thumbnail);
-      setFinaleSelected(data.newsDetail.thumbnail);
+      if (data?.newsDetail?.thumbnail) {
+        setFinaleSelected({ featureImage: data.newsDetail.thumbnail });
+      }
     },
   });
+
+  const [createNewsCategory] = useMutation(CREATE_NEWS_CATEGORY, {
+    onCompleted: data => {
+      if (data.createNewsCategory) {
+        toastr.success('Category Created!');
+      }
+    },
+    refetchQueries: ['publicNewsCategoryList', 'newsDetail'],
+  });
+
   const [updateNews] = useMutation(MUTATION, {
     onCompleted: data => {
       if (data.updateNews) {
@@ -149,9 +180,9 @@ export function EditNewsScreen() {
     const input = {
       title: titleInput.value,
       description: result,
-      thumbnail: finaleSelected ? finaleSelected : data.newsDetail.thumbnail,
+      thumbnail: finaleSelected ? finaleSelected?.featureImage : data.newsDetail.thumbnail,
       summary: summaryInput.value,
-      new_category_id: categoryInput?.select?.getValue()[0]?.value,
+      new_category_id: categoryInput?.getValue()[0]?.value,
     };
 
     updateNews({
@@ -236,6 +267,88 @@ export function EditNewsScreen() {
     setShowLog(true);
   };
 
+  if (data.activityLogsNews.data.length > 0) {
+    renderNewsLogs = data.activityLogsNews.data.map((item: any) => {
+      return (
+        <>
+          <tr onClick={e => handleShowLog(e, item)} style={{ cursor: 'pointer' }}>
+            {/* <td>
+              <span style={{ fontWeight: 600, fontSize: "10px" }}>
+                {parseTEXT(parseJSON(item.activity).activityType)}
+              </span>
+              <p>{parseJSON(item.activity).changeStatus}</p>
+            </td>
+            <td style={{ fontSize: "12px" }}>
+              {parseJSON(item.activity).logged_at}
+            </td> */}
+            <td>
+              <Row>
+                <Col
+                  md={6}
+                  className="d-flex flex-column"
+                  style={{
+                    fontWeight: 600,
+                    fontSize: '10px',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {parseTEXT(parseJSON(item.activity).activityType)}
+                  <br />
+                  <span
+                    className={`text-${checkStatus(parseJSON(item.activity).changeStatus)}`}
+                    style={{ marginTop: '2px' }}
+                  >
+                    {parseJSON(item.activity).changeStatus}
+                  </span>
+                </Col>
+                <Col md={6} style={{ fontSize: '12px' }}>
+                  {parseJSON(item.activity).logged_at}
+                </Col>
+                <Col md={6}>
+                  <span>
+                    <img
+                      src={item.user.profile}
+                      style={{
+                        width: '50%',
+                        height: 'auto',
+                        borderRadius: '50%',
+                      }}
+                    />
+                  </span>
+                </Col>
+                <Col md={6} style={{ fontSize: '12px', paddingTop: '8px' }}>
+                  {item.user.fullname}
+                </Col>
+              </Row>
+            </td>
+          </tr>
+          {/* <tr>
+            <td style={{ width: "40%", borderTop: "none" }}>
+              <span>
+                <img
+                  src={item.user.profile}
+                  style={{ width: "80%", height: "auto", borderRadius: "50%" }}
+                />
+              </span>
+            </td>
+            <td style={{ borderTop: "none", fontSize: "12px" }}>
+              {item.user.fullname}
+            </td>
+          </tr> */}
+        </>
+      );
+    });
+  } else {
+    renderNewsLogs = (
+      <>
+        <hr />
+        <div className="d-flex flex-row" style={{ justifyContent: 'center' }}>
+          No Record
+        </div>
+      </>
+    );
+  }
+
   const renderPublished =
     me.roleName != 'Content Manager' ? (
       renderButton
@@ -274,6 +387,16 @@ export function EditNewsScreen() {
       </>
     );
 
+  const onHandleCreatableNewsCategory = (e: any) => {
+    createNewsCategory({
+      variables: {
+        input: {
+          name: e,
+        },
+      },
+    });
+  };
+
   const accessPlugin = me.plugins.find((item: any) => item.slug === 'news');
 
   if (!accessPlugin.access.edit) {
@@ -291,7 +414,13 @@ export function EditNewsScreen() {
         <FontAwesomeIcon icon={faTrash} style={{ cursor: 'pointer' }} className="text-danger mb-3" />
       </div>
       <div>
-        <Image src={finaleSelected} alt="" layout="responsive" width={100} height={100} />
+        <Image
+          src={parseImageUrl(finaleSelected?.featureImage, '500x500')}
+          alt=""
+          layout="responsive"
+          width={100}
+          height={100}
+        />
       </div>
     </>
   ) : (
@@ -368,7 +497,8 @@ export function EditNewsScreen() {
                     {renderPublished}
                     <h6>Example</h6>
                     <hr />
-                    <Select
+                    <CreatableSelect
+                      isClearable
                       options={data.publicNewsCategoryList.map((x: any) => {
                         return {
                           value: x.id,
@@ -385,6 +515,7 @@ export function EditNewsScreen() {
                       }}
                       ref={node => (categoryInput = node)}
                       name="category"
+                      onCreateOption={e => onHandleCreatableNewsCategory(e)}
                     />
                     <h6 className="mt-3">Example</h6>
                     <hr />
@@ -455,6 +586,32 @@ export function EditNewsScreen() {
                         </Button>
                       </Modal.Footer>
                     </Modal>
+                  </Card.Body>
+                </Card>
+
+                <Card>
+                  <Card.Body>
+                    <div className="d-flex m-t-10 p-l-10 m-b-10 no-block">
+                      <h5 className="card-title m-b-0 align-self-center">News Activity Logs</h5>
+                    </div>
+                    <div className="table-wrapper bookmarking">
+                      {/* <div className="bookmarking-main">
+          {" "}
+          <span>
+            <i className="fas fa-circle text-primary" />
+            Input
+          </span>
+          <span>
+            <i className="fas fa-circle text-warning" />
+            Output
+          </span>{" "}
+        </div> */}
+                      <div className="scrollbox">
+                        <Table hover responsive className="m-b-5">
+                          <tbody>{renderNewsLogs}</tbody>
+                        </Table>
+                      </div>
+                    </div>
                   </Card.Body>
                 </Card>
               </div>

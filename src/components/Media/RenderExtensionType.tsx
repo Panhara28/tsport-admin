@@ -2,6 +2,7 @@ import { faFilePdf, faFileWord } from '@fortawesome/free-regular-svg-icons';
 import { faFileCsv } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
+import { parseImageUrl } from '../../hook/parseImageUrl';
 
 export function RenderFileExtensionType({ item }: any) {
   const fileWord = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
@@ -43,9 +44,10 @@ export function RenderFileExtensionType({ item }: any) {
       </>
     );
   }
+
   return (
     <Image
-      src={item?.image_url ? item?.image_url : item?.featureImage}
+      src={item?.image_url ? parseImageUrl(item?.image_url, '500x500') : parseImageUrl(item?.featureImage, '500x500')}
       alt=""
       layout="responsive"
       width={160}
