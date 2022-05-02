@@ -1,14 +1,18 @@
 import { gql } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { Col, Container, Row } from 'react-bootstrap';
+import { Col, Container, Form, Row } from 'react-bootstrap';
+import Select from 'react-select';
+import CreatableSelect from 'react-select/creatable';
 import { CardBody } from 'reactstrap';
 import { Card } from 'reactstrap';
 import { Breadcrumb } from '../../../components/Common/Breadcrumb';
 import XForm from '../../../components/Form/XForm';
 import { CreateUpdateForm } from '../../../components/GraphQL/CreateUpdateForm';
 import Layout from '../../../components/VerticalLayout';
+import { getCommune, getDistrict, getProvince, getVillage } from '../../../hook/provinces';
 import { WebsiteSettingSidebar } from '../WebsiteSettingSidebar';
+import style from './people.module.scss';
 
 const CREATE_MUTATION = gql`
   mutation adminCreateUser($input: UserInput) {
@@ -49,6 +53,31 @@ function FormBodyCreate({ update, defaultValues }: any) {
     });
   };
 
+  // const { t } = useTranslation();
+  const router = useRouter();
+
+  const [profile, setProfile] = useState(undefined);
+
+  const [selectContactProvince, setSelectContactProvince] = useState<any>(undefined);
+  const [selectContactDistrict, setSelectContactDistrict] = useState<any>(undefined);
+  const [selectContactCommune, setSelectContactCommune] = useState<any>(undefined);
+  const [selectContactVillage, setSelectContactVillage] = useState<any>(undefined);
+
+  // const [createSiteUser] = useMutation(MUTATION, {
+  //   onCompleted: data => {
+  //     if (data) {
+  //       router.push(`/account-setting/users/edit/${data.createSiteUser}`);
+  //     }
+  //   },
+  //   onError: err => {
+  //     if (err.message.includes('User already exist')) {
+  //       toastr.error(err.message);
+  //     } else {
+  //       toastr.error('Something when wrong!');
+  //     }
+  //   },
+  // });
+
   return (
     <>
       <Row>
@@ -71,9 +100,129 @@ function FormBodyCreate({ update, defaultValues }: any) {
           <XForm.Text label="Fullname" value={fullname} onChange={e => setFullName(e.currentTarget.value)} />
         </Col>
       </Row>
+
       <Row>
-        <Col>
+        <h4>Contact Info</h4>
+        <Col md={6}>
+          <XForm.Text
+            label="Current Address"
+            // value={currentaddress}
+            // onChange={e => setCurrentAddress(e.currentTarget.value)}
+          />
+        </Col>
+
+        <Col md={6}>
+          <XForm.Text
+            label="HomeNo"
+            type="text"
+            name="homeNo"
+            className="form-control"
+            // value=""
+            // onChange={e => setPassword(e.currentTarget.value)}
+          />
+        </Col>
+
+        <Col md={6}>
+          <XForm.Text
+            label="StreetNo"
+            type="text"
+            name="streetNo"
+            // value=""
+            // onChange={e => setPassword(e.currentTarget.value)}
+          />
+        </Col>
+
+        <Col md={6}>
+          <Form.Label className={`${style.label_theme}`}>រាជធានី/ខេត្ត</Form.Label>
+          <Form.Group>
+            <Select
+              options={getProvince()}
+              name="province"
+              className={`${style.select_theme}`}
+              onChange={e => setSelectContactProvince(e)}
+              value={selectContactProvince}
+            />
+          </Form.Group>
+        </Col>
+
+        {selectContactProvince ? (
+          <Col md={6}>
+            <Form.Group>
+              <Form.Label className={`${style.label_theme}`}>ស្រុក/ក្រុង/ខណ្ឌ</Form.Label>
+              <CreatableSelect
+                options={getDistrict(selectContactProvince.value)}
+                onChange={e => setSelectContactDistrict(e)}
+                value={selectContactDistrict}
+                className={`${style.select_theme}`}
+                name="district"
+              />
+            </Form.Group>
+          </Col>
+        ) : (
+          ''
+        )}
+
+        {selectContactDistrict ? (
+          <Col md={6} className="mb-3">
+            <Form.Group>
+              <Form.Label className={`${style.label_theme}`}>ឃុំ/សង្កាត់</Form.Label>
+              <CreatableSelect
+                options={getCommune(selectContactDistrict.value)}
+                onChange={e => setSelectContactCommune(e)}
+                value={selectContactCommune}
+                className={`${style.select_theme}`}
+                name="commune"
+              />
+            </Form.Group>
+          </Col>
+        ) : (
+          ''
+        )}
+
+        {selectContactCommune ? (
+          <Col md={6}>
+            <Form.Group>
+              <Form.Label className={`${style.label_theme}`}>ភូមិ/ក្រុម</Form.Label>
+              <CreatableSelect
+                options={getVillage(selectContactCommune.value)}
+                onChange={e => setSelectContactVillage(e)}
+                value={selectContactVillage}
+                className={`${style.select_theme}`}
+                name="village"
+              />
+            </Form.Group>
+          </Col>
+        ) : (
+          ''
+        )}
+
+        <Col md={6}>
+          <XForm.Text
+            label="Phone Number"
+            type="text"
+            name="phoneNumber"
+            placeholder="Example: 095477325"
+            // value=""
+            // onChange={e => setPassword(e.currentTarget.value)}
+          />
+        </Col>
+
+        <Col md={6}>
+          <XForm.Text
+            label="Email (If any)"
+            type="text"
+            name="email"
+            // value=""
+            // onChange={e => setPassword(e.currentTarget.value)}
+          />
+        </Col>
+      </Row>
+
+      <Row>
+        <Col></Col>
+        <Col md={6}>
           <XForm.Footer>
+            {/* <XForm.Button onClick={onClear}>Clear</XForm.Button> */}
             <XForm.Button onClick={onSave}>Save</XForm.Button>
           </XForm.Footer>
         </Col>
@@ -86,14 +235,18 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
   const [fullname, setFullName] = useState(defaultValues?.fullname || '');
   const [username, setUsername] = useState(defaultValues?.username || '');
   const [password, setPassword] = useState(defaultValues?.password || '');
+  const [currentaddress, setCurrentAddress] = useState(defaultValues?.currentaddress || '');
 
   const onSave = () => {
     update({
       fullname,
       username,
       password,
+      currentaddress,
     });
   };
+
+  const onClear = () => {};
 
   return (
     <>
@@ -106,6 +259,7 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
       <Row>
         <Col>
           <XForm.Footer>
+            {/* <XForm.Button onClick={onClear}>Clear</XForm.Button> */}
             <XForm.Button onClick={onSave}>Save</XForm.Button>
           </XForm.Footer>
         </Col>

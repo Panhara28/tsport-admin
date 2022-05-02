@@ -1,0 +1,22 @@
+.label_theme {
+  color: rgb(107, 119, 140);
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 16px;
+  padding: 0px;
+  margin-bottom: 4px;
+}
+
+.select_theme {
+  background-color: rgb(250, 251, 252);
+  border: 2px solid rgb(223, 225, 230);
+  border-radius: 3px;
+  outline: none;
+
+  & > div {
+    background-color: rgb(250, 251, 252);
+    border: 0px solid rgb(223, 225, 230);
+    border-radius: 3px;
+  }
+}
