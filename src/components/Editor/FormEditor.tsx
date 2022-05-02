@@ -78,7 +78,7 @@ export default function FormEditor({ dataKey, data, editDataKey, id }: FormEdito
         }
 
         .editorContainer {
-          width: 100%;
+          width: 94%;
           margin-bottom: 10px;
         }
 
