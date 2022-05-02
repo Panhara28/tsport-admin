@@ -303,6 +303,7 @@ export function CreateNewsScreen() {
                                     setFirstFeaturedImage={setFirstFeaturedImage}
                                     selectImage={selectImage}
                                     setSelectImage={setSelectImage}
+                                    selectedImage={selectedImage}
                                   />
                                 </Tab>
                               </Tabs>

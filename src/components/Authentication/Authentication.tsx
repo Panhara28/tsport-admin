@@ -11,6 +11,7 @@ const ME = gql`
     adminMe(websiteId: $websiteId) {
       id
       fullname
+      profilePicture
       plugins {
         name
         slug
