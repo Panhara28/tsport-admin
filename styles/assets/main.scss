@@ -61,7 +61,7 @@ body {
         font-size: 13px;
       }
       &:hover {
-        color: $highlight-color;
+        color: #fff;
       }
     }
   }
@@ -243,6 +243,9 @@ body {
 .sidebar-btn-wrapper {
   a {
     color: #fff;
+    &:hover {
+      color: #fff;
+    }
   }
 }
 
@@ -313,12 +316,21 @@ body {
   }
 }
 
+.ce-settings {
+  right: -50px;
+}
+
+.ce-paragraph {
+  font-size: 16px;
+  line-height: 1.8em !important;
+}
+
 .ce-toolbar__content {
-  max-width: 91%;
+  max-width: 90%;
 }
 
 .ce-block__content {
-  max-width: 91%;
+  max-width: 90%;
 }
 
 .mainEditor {

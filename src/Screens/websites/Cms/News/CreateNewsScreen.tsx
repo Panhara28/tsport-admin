@@ -6,7 +6,7 @@ import { useContext, useState } from 'react';
 import { CardBody } from 'reactstrap';
 
 import { Form, Row, Col, Card, Button, Container, Modal, Tabs, Tab } from 'react-bootstrap';
-import Select from 'react-select';
+import CreatableSelect from 'react-select/creatable';
 import AuthContext from '../../../../components/Authentication/AuthContext';
 import { TransformDataEditorJS } from '../../../../libs/TransformDataEditorJs';
 import style from './news.module.scss';
@@ -19,10 +19,17 @@ import FormEditor from '../../../../components/Editor/FormEditor';
 import toastr from 'toastr';
 import 'toastr/build/toastr.min.css';
 import Link from 'next/link';
+import { parseImageUrl } from '../../../../hook/parseImageUrl';
 
 const MUTATION = gql`
   mutation createNews($input: NewsInput, $websiteId: Int!) {
     createNews(input: $input, websiteId: $websiteId)
+  }
+`;
+
+const CREATE_NEWS_CATEGORY = gql`
+  mutation createNewsCategory($websiteId: Int!, $input: NewsCategoryInput) {
+    createNewsCategory(input: $input, websiteId: $websiteId)
   }
 `;
 
@@ -55,9 +62,9 @@ toastr.options = {
 
 export function CreateNewsScreen() {
   const [selectImage, setSelectImage] = useState(undefined);
-  const [selectedImage, setSelectedImage] = useState(undefined);
-  const [firstFeaturedImage, setFirstFeaturedImage] = useState(undefined);
-  const [finaleSelected, setFinaleSelected] = useState(undefined);
+  const [selectedImage, setSelectedImage]: any = useState(undefined);
+  const [firstFeaturedImage, setFirstFeaturedImage]: any = useState(undefined);
+  const [finaleSelected, setFinaleSelected]: any = useState(undefined);
 
   const [key, setKey] = useState('media');
   const [lgShow, setLgShow] = useState(false);
@@ -65,6 +72,15 @@ export function CreateNewsScreen() {
   const [thumbnail, setThumbnail]: any = useState(undefined);
   const router = useRouter();
   const { data, loading } = useQuery(QUERY);
+
+  const [createNewsCategory] = useMutation(CREATE_NEWS_CATEGORY, {
+    onCompleted: data => {
+      if (data.createNewsCategory) {
+        toastr.success('Category Created!');
+      }
+    },
+    refetchQueries: ['publicNewsCategoryList'],
+  });
 
   const [addNews] = useMutation(MUTATION, {
     onCompleted: (data: any) => {
@@ -91,7 +107,7 @@ export function CreateNewsScreen() {
     const input = {
       title: x.title.value,
       description: result,
-      thumbnail: firstFeaturedImage ? firstFeaturedImage : selectedImage,
+      thumbnail: firstFeaturedImage ? firstFeaturedImage?.featureImage : selectedImage?.featureImage,
       summary: x.summary.value,
       new_category_id: Number(x.category.value),
     };
@@ -103,6 +119,17 @@ export function CreateNewsScreen() {
       },
     });
     process.browser && localStorage.removeItem('newsData');
+  };
+
+  const onHandleCreatableNewsCategory = (e: any) => {
+    createNewsCategory({
+      variables: {
+        input: {
+          name: e,
+        },
+        websiteId: Number(router.query.id),
+      },
+    });
   };
 
   const accessPlugin = me.plugins.find((item: any) => item.slug === 'news');
@@ -124,7 +151,13 @@ export function CreateNewsScreen() {
         <FontAwesomeIcon icon={faTrash} style={{ cursor: 'pointer' }} className="text-danger mb-3" />
       </div>
       <div>
-        <Image src={finaleSelected} alt="" layout="responsive" width={100} height={100} />
+        <Image
+          src={parseImageUrl(finaleSelected?.featureImage, '500x500')}
+          alt=""
+          layout="responsive"
+          width={100}
+          height={100}
+        />
       </div>
     </>
   ) : (
@@ -211,13 +244,15 @@ export function CreateNewsScreen() {
 
                           <h6>Category</h6>
                           <hr />
-                          <Select
+                          <CreatableSelect
+                            isClearable
                             options={data?.publicNewsCategoryList?.map((x: any) => {
                               return {
                                 value: x.id,
                                 label: x.name,
                               };
                             })}
+                            onCreateOption={e => onHandleCreatableNewsCategory(e)}
                             name="category"
                           />
                           <h6 className="mt-3">Feature Image</h6>
@@ -268,6 +303,7 @@ export function CreateNewsScreen() {
                                     setFirstFeaturedImage={setFirstFeaturedImage}
                                     selectImage={selectImage}
                                     setSelectImage={setSelectImage}
+                                    selectedImage={selectedImage}
                                   />
                                 </Tab>
                               </Tabs>

@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { showRightSidebarAction, toggleLeftmenu, changeSidebarType } from '../../store/actions';
 import { ProfileMenu } from '../CommonForBoth/TopbarDropdown/ProfileMenu';
 import { faArrowsAlt, faSquareFull } from '@fortawesome/free-solid-svg-icons';
+import { useRouter } from 'next/router';
 
 type Props = {
   toggleMenuCallback: any;
@@ -18,6 +19,7 @@ type Props = {
 };
 
 const Header = (props: Props) => {
+  const router = useRouter();
   const [search, setsearch] = useState(false);
   const [socialDrp, setsocialDrp] = useState(false);
   let document: any = process.browser && window.document;
@@ -112,7 +114,7 @@ const Header = (props: Props) => {
                 <FontAwesomeIcon icon={faArrowsAlt} />
               </button>
             </Dropdown>
-            <ProfileMenu />
+            <ProfileMenu websiteId={Number(router.query.id)} />
           </div>
         </div>
       </header>
