@@ -1,14 +1,21 @@
-import { gql } from '@apollo/client';
+import { gql, useQuery } from '@apollo/client';
+import { faImage, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/router';
 import Notiflix from 'notiflix';
 import { useContext, useState } from 'react';
-import { Col, Container, Row } from 'react-bootstrap';
+import { Button, Card, Col, Container, Form, Modal, Row, Tab, Tabs } from 'react-bootstrap';
 import AuthContext from '../../../../../src/components/Authentication/AuthContext';
 import { Breadcrumb } from '../../../../../src/components/Common/Breadcrumb';
 import XForm from '../../../../../src/components/Form/XForm';
 import { CreateUpdateForm } from '../../../../../src/components/GraphQL/CreateUpdateForm';
 import Layout from '../../../../../src/components/VerticalLayout';
 import { WebsiteSettingSidebar } from '../../../../../src/Screens/websites/WebsiteSettingSidebar';
+import Image from 'next/image';
+import style from './setting.module.scss';
+import { Label } from 'reactstrap';
+import { SignleImageUpload } from '../../../../../src/components/SignleImageUpload';
+import { MediaListByWebsite } from '../../../../../src/components/Media/MediaListByWebsite';
 
 const QUERY = gql`
   query website($id: Int!) {
@@ -33,6 +40,18 @@ const MUTATION_UPDATE = gql`
 `;
 
 function FormBody({ update, defaultValues }: any) {
+  const [selectImage, setSelectImage] = useState(undefined);
+  const [selectedImage, setSelectedImage]: any = useState(undefined);
+  const [firstFeaturedImage, setFirstFeaturedImage]: any = useState(undefined);
+  const [finaleSelected, setFinaleSelected]: any = useState(undefined);
+
+  const [key, setKey] = useState('media');
+  const [lgShow, setLgShow] = useState(false);
+  const { me } = useContext(AuthContext);
+  const [thumbnail, setThumbnail]: any = useState(undefined);
+  const router = useRouter();
+  const { data, loading } = useQuery(QUERY);
+
   const [name, setName] = useState(defaultValues?.name || '');
   const [description, setDescription] = useState(defaultValues?.description || '');
   const onSave = () => {
@@ -41,8 +60,114 @@ function FormBody({ update, defaultValues }: any) {
       description,
     });
   };
+
+  const renderFeaturedImage = finaleSelected ? (
+    <>
+      <div
+        style={{ display: 'flex', justifyContent: 'end' }}
+        onClick={() => {
+          setFinaleSelected(undefined);
+        }}
+      >
+        <FontAwesomeIcon icon={faTrash} style={{ cursor: 'pointer' }} className="text-danger mb-3" />
+      </div>
+      <div>
+        <Image
+          src={parseImageUrl(finaleSelected?.featureImage, '500x500')}
+          alt=""
+          layout="responsive"
+          width={100}
+          height={100}
+        />
+      </div>
+    </>
+  ) : (
+    <div className={style.newsFeatureImageContainer} onClick={() => setLgShow(true)}>
+      <div className={style.newsFeatureImageIcon}>
+        <FontAwesomeIcon icon={faImage} />
+      </div>
+    </div>
+  );
+
   return (
     <>
+      <Form.Label className={`${style.label_theme}`}>Feature Image</Form.Label>
+      <Row>
+        <Col md={3}>
+          <Card>
+            <Card.Body>
+              {renderFeaturedImage}
+              <Modal
+                size="lg"
+                show={lgShow}
+                onHide={() => setLgShow(false)}
+                aria-labelledby="example-modal-sizes-title-lg"
+              >
+                <Modal.Header closeButton>
+                  <Modal.Title id="example-modal-sizes-title-sm">Media</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <Tabs
+                    activeKey={key}
+                    onSelect={(k: any) => {
+                      setKey(k);
+                    }}
+                    id="uncontrolled-tab-example"
+                    className="mb-3"
+                  >
+                    <Tab eventKey="upload" title="Upload">
+                      <div className={style.newsUploadWrapper}>
+                        <div className="text-center">
+                          <h4>Drop files to upload</h4>
+                          <p>or</p>
+                        </div>
+                        <div className={style.newsUploadContainer}>
+                          <SignleImageUpload
+                            setImage={setThumbnail}
+                            setKey={setKey}
+                            width="15%"
+                            height="150px"
+                            websiteId={Number(router.query.id)}
+                            setFirstFeaturedImage={setFirstFeaturedImage}
+                            setSelectImage={setSelectImage}
+                          />
+                        </div>
+                      </div>
+                    </Tab>
+                    <Tab eventKey="media" title="Media">
+                      <MediaListByWebsite
+                        websiteId={Number(router.query.id)}
+                        setSelectedImage={setSelectedImage}
+                        firstFeaturedImage={firstFeaturedImage}
+                        setFirstFeaturedImage={setFirstFeaturedImage}
+                        selectImage={selectImage}
+                        setSelectImage={setSelectImage}
+                        selectedImage={selectedImage}
+                      />
+                    </Tab>
+                  </Tabs>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button
+                    variant="primary"
+                    onClick={() => {
+                      setLgShow(false);
+                      if (firstFeaturedImage) {
+                        setFinaleSelected(firstFeaturedImage);
+                      } else {
+                        setFinaleSelected(selectedImage);
+                      }
+                    }}
+                  >
+                    Set featured image
+                  </Button>
+                </Modal.Footer>
+              </Modal>
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col md={9}></Col>
+      </Row>
       <XForm.Text label="Website name" value={name} onChange={e => setName(e.currentTarget.value)} />
       <XForm.TextArea label="Description" value={description} onChange={e => setDescription(e.currentTarget.value)} />
       <XForm.Footer>
@@ -84,4 +209,7 @@ export default function SettingPage() {
       </div>
     </Layout>
   );
+}
+function parseImageUrl(featureImage: any, arg1: string): string | (StaticRequire | StaticImageData) {
+  throw new Error('Function not implemented.');
 }
