@@ -1,5 +1,5 @@
 import { gql, useQuery } from '@apollo/client';
-import { faImage, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faIcons, faImage, faToolbox, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/router';
 import Notiflix from 'notiflix';
@@ -13,9 +13,9 @@ import Layout from '../../../../../src/components/VerticalLayout';
 import { WebsiteSettingSidebar } from '../../../../../src/Screens/websites/WebsiteSettingSidebar';
 import Image from 'next/image';
 import style from './setting.module.scss';
-import { Label } from 'reactstrap';
 import { SignleImageUpload } from '../../../../../src/components/SignleImageUpload';
 import { MediaListByWebsite } from '../../../../../src/components/Media/MediaListByWebsite';
+import Select from 'react-select';
 
 const QUERY = gql`
   query website($id: Int!) {
@@ -91,88 +91,94 @@ function FormBody({ update, defaultValues }: any) {
 
   return (
     <>
-      <Form.Label className={`${style.label_theme}`}>Feature Image</Form.Label>
+      <Form.Label className={`${style.label_theme}`}>Logo Image</Form.Label>
       <Row>
         <Col md={3}>
-          <Card>
-            <Card.Body>
-              {renderFeaturedImage}
-              <Modal
-                size="lg"
-                show={lgShow}
-                onHide={() => setLgShow(false)}
-                aria-labelledby="example-modal-sizes-title-lg"
-              >
-                <Modal.Header closeButton>
-                  <Modal.Title id="example-modal-sizes-title-sm">Media</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                  <Tabs
-                    activeKey={key}
-                    onSelect={(k: any) => {
-                      setKey(k);
-                    }}
-                    id="uncontrolled-tab-example"
-                    className="mb-3"
-                  >
-                    <Tab eventKey="upload" title="Upload">
-                      <div className={style.newsUploadWrapper}>
-                        <div className="text-center">
-                          <h4>Drop files to upload</h4>
-                          <p>or</p>
-                        </div>
-                        <div className={style.newsUploadContainer}>
-                          <SignleImageUpload
-                            setImage={setThumbnail}
-                            setKey={setKey}
-                            width="15%"
-                            height="150px"
-                            websiteId={Number(router.query.id)}
-                            setFirstFeaturedImage={setFirstFeaturedImage}
-                            setSelectImage={setSelectImage}
-                          />
-                        </div>
-                      </div>
-                    </Tab>
-                    <Tab eventKey="media" title="Media">
-                      <MediaListByWebsite
-                        websiteId={Number(router.query.id)}
-                        setSelectedImage={setSelectedImage}
-                        firstFeaturedImage={firstFeaturedImage}
-                        setFirstFeaturedImage={setFirstFeaturedImage}
-                        selectImage={selectImage}
-                        setSelectImage={setSelectImage}
-                        selectedImage={selectedImage}
-                      />
-                    </Tab>
-                  </Tabs>
-                </Modal.Body>
-                <Modal.Footer>
-                  <Button
-                    variant="primary"
-                    onClick={() => {
-                      setLgShow(false);
-                      if (firstFeaturedImage) {
-                        setFinaleSelected(firstFeaturedImage);
-                      } else {
-                        setFinaleSelected(selectedImage);
-                      }
-                    }}
-                  >
-                    Set featured image
-                  </Button>
-                </Modal.Footer>
-              </Modal>
-            </Card.Body>
-          </Card>
+          <div className={`${style.icon_upload}`}>{renderFeaturedImage}</div>
         </Col>
-        <Col md={9}></Col>
       </Row>
       <XForm.Text label="Website name" value={name} onChange={e => setName(e.currentTarget.value)} />
       <XForm.TextArea label="Description" value={description} onChange={e => setDescription(e.currentTarget.value)} />
+      <div className={`${style.icon_container} d-flex`}>
+        <div className={`${style.sub_icon}`}>
+          <FontAwesomeIcon icon={faImage} style={{ fontSize: '1.5em' }} />
+        </div>
+        <div className={`${style.sub_link}`}>
+          <XForm.Text
+            placeholder="Input Link"
+            // value={name}
+            // onChange={e => setName(e.currentTarget.value)}
+          />
+        </div>
+      </div>
+      <Row>
+        <Col md={12}></Col>
+      </Row>
       <XForm.Footer>
         <XForm.Button onClick={onSave}>Save</XForm.Button>
       </XForm.Footer>
+
+      <Modal size="lg" show={lgShow} onHide={() => setLgShow(false)} aria-labelledby="example-modal-sizes-title-lg">
+        <Modal.Header closeButton>
+          <Modal.Title id="example-modal-sizes-title-sm">Media</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Tabs
+            activeKey={key}
+            onSelect={(k: any) => {
+              setKey(k);
+            }}
+            id="uncontrolled-tab-example"
+            className="mb-3"
+          >
+            <Tab eventKey="upload" title="Upload">
+              <div className={style.newsUploadWrapper}>
+                <div className="text-center">
+                  <h4>Drop files to upload</h4>
+                  <p>or</p>
+                </div>
+                <div className={style.newsUploadContainer}>
+                  <SignleImageUpload
+                    setImage={setThumbnail}
+                    setKey={setKey}
+                    width="15%"
+                    height="150px"
+                    websiteId={Number(router.query.id)}
+                    setFirstFeaturedImage={setFirstFeaturedImage}
+                    setSelectImage={setSelectImage}
+                  />
+                </div>
+              </div>
+            </Tab>
+            <Tab eventKey="media" title="Media">
+              <MediaListByWebsite
+                websiteId={Number(router.query.id)}
+                setSelectedImage={setSelectedImage}
+                firstFeaturedImage={firstFeaturedImage}
+                setFirstFeaturedImage={setFirstFeaturedImage}
+                selectImage={selectImage}
+                setSelectImage={setSelectImage}
+                selectedImage={selectedImage}
+              />
+            </Tab>
+          </Tabs>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="primary"
+            onClick={() => {
+              setLgShow(false);
+              if (firstFeaturedImage) {
+                setFinaleSelected(firstFeaturedImage);
+              } else {
+                setFinaleSelected(selectedImage);
+              }
+            }}
+          >
+            Set featured image
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }
@@ -210,6 +216,7 @@ export default function SettingPage() {
     </Layout>
   );
 }
+
 function parseImageUrl(featureImage: any, arg1: string): string | (StaticRequire | StaticImageData) {
   throw new Error('Function not implemented.');
 }

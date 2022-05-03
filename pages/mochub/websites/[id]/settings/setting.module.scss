@@ -42,3 +42,38 @@
     margin-bottom: 3px;
   }
 }
+
+.select_theme {
+  background-color: rgb(250, 251, 252);
+  border: 2px solid rgb(223, 225, 230);
+  border-radius: 3px;
+  outline: none;
+
+  & > div {
+    background-color: rgb(250, 251, 252);
+    border: 0px solid rgb(223, 225, 230);
+    border-radius: 3px;
+  }
+}
+
+.newsFeatureImageContainer,
+.icon_upload {
+  width: 5em;
+  height: 5em;
+  background-color: #fff;
+  padding: 0;
+  margin: 1em 0;
+}
+
+.icon_container {
+  width: 100%;
+
+  .sub_icon {
+    width: 3%;
+    line-height: 3.5;
+  }
+
+  .sub_link {
+    width: 100%;
+  }
+}
