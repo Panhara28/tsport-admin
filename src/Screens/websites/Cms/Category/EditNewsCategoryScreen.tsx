@@ -103,7 +103,7 @@ export function EditNewsCategoryScreen() {
                           type="text"
                           placeholder="Enter your category here..."
                           name="title"
-                          className={`${style.nameInput} form-control`}
+                          className={`form-control`}
                           defaultValue={data ? data.newsCategoryDetail.name : ''}
                           ref={node => (nameInput = node)}
                         />

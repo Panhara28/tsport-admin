@@ -74,7 +74,7 @@ export function CreateNewsCategoryScreen() {
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <div></div>
                 <Link href="#">
-                  <a className="btn btn-danger" onClick={() => router.back()}>
+                  <a className="btn btn-danger mb-3" onClick={() => router.back()}>
                     <FontAwesomeIcon icon={faAngleLeft} /> Back
                   </a>
                 </Link>
@@ -89,7 +89,7 @@ export function CreateNewsCategoryScreen() {
                           type="text"
                           placeholder="Enter your category here..."
                           name="title"
-                          className={`${style.nameInput} form-control`}
+                          className={`form-control`}
                           ref={node => (nameInput = node)}
                         />
                       </Form.Group>
