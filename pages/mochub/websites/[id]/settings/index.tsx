@@ -16,6 +16,8 @@ import style from './setting.module.scss';
 import { SignleImageUpload } from '../../../../../src/components/SignleImageUpload';
 import { MediaListByWebsite } from '../../../../../src/components/Media/MediaListByWebsite';
 import Select from 'react-select';
+import { Label } from 'reactstrap';
+import { faFacebook, faTelegram } from '@fortawesome/free-brands-svg-icons';
 
 const QUERY = gql`
   query website($id: Int!) {
@@ -99,9 +101,23 @@ function FormBody({ update, defaultValues }: any) {
       </Row>
       <XForm.Text label="Website name" value={name} onChange={e => setName(e.currentTarget.value)} />
       <XForm.TextArea label="Description" value={description} onChange={e => setDescription(e.currentTarget.value)} />
+      <Form.Label className={`${style.label_theme}`}>Facebook</Form.Label>
       <div className={`${style.icon_container} d-flex`}>
         <div className={`${style.sub_icon}`}>
-          <FontAwesomeIcon icon={faImage} style={{ fontSize: '1.5em' }} />
+          <FontAwesomeIcon icon={faFacebook} className={`${style.facebookIcon}`} />
+        </div>
+        <div className={`${style.sub_link}`}>
+          <XForm.Text
+            placeholder="Input Link"
+            // value={name}
+            // onChange={e => setName(e.currentTarget.value)}
+          />
+        </div>
+      </div>
+      <Form.Label className={`${style.label_theme}`}>Telegram</Form.Label>
+      <div className={`${style.icon_container} d-flex`}>
+        <div className={`${style.sub_icon}`}>
+          <FontAwesomeIcon icon={faTelegram} className={`${style.TelegramIcon}`} />
         </div>
         <div className={`${style.sub_link}`}>
           <XForm.Text

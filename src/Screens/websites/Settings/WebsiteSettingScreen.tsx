@@ -42,7 +42,7 @@ function FormBody({ update, defaultValues }: any) {
     <>
       <XForm.Text label="Website name" value={name} onChange={e => setName(e.currentTarget.value)} />
       <XForm.TextArea label="Description" value={description} onChange={e => setDescription(e.currentTarget.value)} />
-      
+
       <XForm.Footer>
         <XForm.Button onClick={onSave}>Save</XForm.Button>
       </XForm.Footer>

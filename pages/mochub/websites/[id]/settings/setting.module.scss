@@ -71,6 +71,20 @@
   .sub_icon {
     width: 3%;
     line-height: 3.5;
+
+    .facebookIcon {
+      width: 100%;
+      font-size: 2em;
+      max-width: 100%;
+      color: #0b8af0;
+    }
+
+    .TelegramIcon {
+      width: 100%;
+      font-size: 2em;
+      max-width: 100%;
+      color: #2aa9ea;
+    }
   }
 
   .sub_link {
