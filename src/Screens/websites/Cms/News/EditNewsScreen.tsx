@@ -24,6 +24,10 @@ import { SignleImageUpload } from '../../../../components/SignleImageUpload';
 import Image from 'next/image';
 import { faImage } from '@fortawesome/free-regular-svg-icons';
 import { parseImageUrl } from '../../../../hook/parseImageUrl';
+import { Label } from 'reactstrap';
+import { Input } from 'reactstrap';
+import requirePermission from '../../../../hook/requirePermission';
+import { WEBSITE_ID } from '../../../../config';
 
 const MUTATION = gql`
   mutation updateNews($id: Int!, $input: NewsInput, $websiteId: Int!) {
@@ -349,7 +353,7 @@ export function EditNewsScreen() {
     );
   }
 
-  const renderPublished =
+  const renderPublishedOld =
     me.roleName != 'Content Manager' ? (
       renderButton
     ) : (
@@ -432,6 +436,45 @@ export function EditNewsScreen() {
     </div>
   );
 
+  const renderPublished = !requirePermission({
+    permissions: ['Site Administrator', 'Content Manager', 'Administrator'],
+  }) ? (
+    renderButton
+  ) : (
+    <>
+      <Form.Group controlId="formBasicCheckbox">
+        <Switch
+          checked={data.newsDetail.status === 'PUBLISHED' ? true : false}
+          onChange={(checked: any) => {
+            if (!checked) {
+              const isDeactived = window.confirm('Are you sure you want to unpublished this page ?');
+              if (isDeactived) {
+                updateStatus({
+                  variables: {
+                    id: Number(router.query.newsEditId),
+                    websiteId: Number(router.query.id),
+                    status: checked ? 'PUBLISHED' : 'REVERSION',
+                  },
+                });
+              }
+            } else {
+              const isDeactived = window.confirm('Are you sure you want to published this page ?');
+              if (isDeactived) {
+                updateStatus({
+                  variables: {
+                    id: Number(router.query.newsEditId),
+                    websiteId: Number(router.query.id),
+                    status: checked ? 'PUBLISHED' : 'REVERSION',
+                  },
+                });
+              }
+            }
+          }}
+        />
+      </Form.Group>
+    </>
+  );
+
   return (
     <Layout>
       <div className="page-content">
@@ -494,8 +537,13 @@ export function EditNewsScreen() {
               <div style={{ position: 'sticky', top: '90px', marginBottom: '25px' }}>
                 <Card>
                   <Card.Body>
-                    {renderEditButton}
+                    <h6>Public</h6>
+                    <hr />
                     {renderPublished}
+                    <h6>Reversion</h6>
+                    <hr />
+                    {renderEditButton}
+                    {renderPublishedOld}
                     <h6>Example</h6>
                     <hr />
                     <CreatableSelect
@@ -597,16 +645,16 @@ export function EditNewsScreen() {
                     </div>
                     <div className="table-wrapper bookmarking">
                       {/* <div className="bookmarking-main">
-          {" "}
-          <span>
-            <i className="fas fa-circle text-primary" />
-            Input
-          </span>
-          <span>
-            <i className="fas fa-circle text-warning" />
-            Output
-          </span>{" "}
-        </div> */}
+                        {" "}
+                        <span>
+                          <i className="fas fa-circle text-primary" />
+                          Input
+                        </span>
+                        <span>
+                          <i className="fas fa-circle text-warning" />
+                          Output
+                        </span>{" "}
+                      </div> */}
                       <div className="scrollbox">
                         <Table hover responsive className="m-b-5">
                           <tbody>{renderNewsLogs}</tbody>
