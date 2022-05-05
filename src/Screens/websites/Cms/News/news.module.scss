@@ -100,3 +100,8 @@
 .custom-switch.custom-switch-xl {
   @include switch('xl');
 }
+
+.img_radius {
+  border-radius: 50%;
+  width: 50% !important;
+}

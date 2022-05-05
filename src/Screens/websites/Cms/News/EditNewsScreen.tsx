@@ -30,6 +30,7 @@ import requirePermission from '../../../../hook/requirePermission';
 import { WEBSITE_ID } from '../../../../config';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import styled from 'styled-components';
 
 const MUTATION = gql`
   mutation updateNews($id: Int!, $input: NewsInput, $websiteId: Int!) {
@@ -313,13 +314,14 @@ export function EditNewsScreen() {
                 </Col>
                 <Col md={6}>
                   <span>
-                    <img
-                      src={item.user.profile}
-                      style={{
-                        width: '50%',
-                        height: 'auto',
-                        borderRadius: '50%',
-                      }}
+                    <Image
+                      src={parseImageUrl('/icons/js.png', '500x500')}
+                      // src={parseImageUrl('/icons/js.png', '500x500')}
+                      alt=""
+                      layout="responsive"
+                      width={10}
+                      height={10}
+                      className={`${style.img_radius}`}
                     />
                   </span>
                 </Col>
@@ -651,6 +653,58 @@ export function EditNewsScreen() {
                   </Card.Body>
                 </Card>
 
+                <Modal show={showLog} onHide={() => setShowLog(false)} size="lg">
+                  <Modal.Header closeButton>Activity Logs</Modal.Header>
+
+                  <Modal.Body>
+                    <Row>
+                      <LineCol md={6}>
+                        <Row className="p-10" style={{ gap: '20px' }}>
+                          <Col>
+                            <Image
+                              src={
+                                logData?.user?.profile
+                                  ? parseImageUrl(logData?.user?.profile, '244x244')
+                                  : parseImageUrl('/user-placeholder-image.jpeg', '244x244')
+                              }
+                              width="250px"
+                              height="250px"
+                            />
+                          </Col>
+                          <Col>
+                            <p style={{ fontSize: '1.6rem' }}>{logData?.user?.fullname}</p>
+                            <p>Nationality: </p>
+                            <p>Gender: </p>
+                          </Col>
+                        </Row>
+                      </LineCol>
+                      <Col md={6}>
+                        <Row className="p-10" style={{ gap: '20px' }}>
+                          <Col>
+                            <p style={{ fontSize: '1.6rem' }}>Activity Log</p>
+                            <p>
+                              type:
+                              {/* {logData?.type} */}
+                            </p>
+                            <p>activity: {parseTEXT(parseJSON(logData?.activity)?.activityType)}</p>
+                            {parseJSON(logData?.activity)?.changeStatus ? (
+                              <p>
+                                status to:{' '}
+                                <span className={`text-${checkStatus(parseJSON(logData?.activity)?.changeStatus)}`}>
+                                  {parseJSON(logData?.activity)?.changeStatus}
+                                </span>
+                              </p>
+                            ) : (
+                              ''
+                            )}
+                            <p>changed at: {parseJSON(logData?.activity)?.logged_at}</p>
+                          </Col>
+                        </Row>
+                      </Col>
+                    </Row>
+                  </Modal.Body>
+                </Modal>
+
                 <Card>
                   <Card.Body>
                     <div className="d-flex m-t-10 p-l-10 m-b-10 no-block">
@@ -684,3 +738,11 @@ export function EditNewsScreen() {
     </Layout>
   );
 }
+
+const LineCol = styled(Col)`
+  border-right: 0px;
+
+  @media screen and (min-width: 992px) {
+    border-right: 2px solid #0e0e0e0e;
+  }
+`;
