@@ -28,6 +28,8 @@ import { Label } from 'reactstrap';
 import { Input } from 'reactstrap';
 import requirePermission from '../../../../hook/requirePermission';
 import { WEBSITE_ID } from '../../../../config';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const MUTATION = gql`
   mutation updateNews($id: Int!, $input: NewsInput, $websiteId: Int!) {
@@ -107,6 +109,7 @@ export function EditNewsScreen() {
   const [logData, setLogData] = useState(undefined);
   const [lgShow, setLgShow] = useState(false);
   const [key, setKey] = useState('media');
+  const [documentDate, setDocumentDate] = useState(new Date());
 
   const { data, loading } = useQuery(PAGE_DETAIL, {
     variables: {
@@ -540,11 +543,21 @@ export function EditNewsScreen() {
                     <h6>Public</h6>
                     <hr />
                     {renderPublished}
+                    <hr />
                     <h6>Reversion</h6>
                     <hr />
                     {renderEditButton}
                     {renderPublishedOld}
-                    <h6>Example</h6>
+
+                    <Col md={6}>
+                      <Form.Label>Select Date</Form.Label>
+                      <DatePicker
+                        selected={documentDate}
+                        onChange={date => setDocumentDate(date)}
+                        className="form-control"
+                        dateFormat="dd/MM/yyyy"
+                      />
+                    </Col>
                     <hr />
                     <CreatableSelect
                       isClearable
@@ -566,7 +579,7 @@ export function EditNewsScreen() {
                       name="category"
                       onCreateOption={e => onHandleCreatableNewsCategory(e)}
                     />
-                    <h6 className="mt-3">Example</h6>
+                    <h6 className="mt-3">Upload File</h6>
                     <hr />
                     {renderFeaturedImage}
                     <Modal
