@@ -24,6 +24,13 @@ import { SignleImageUpload } from '../../../../components/SignleImageUpload';
 import Image from 'next/image';
 import { faImage } from '@fortawesome/free-regular-svg-icons';
 import { parseImageUrl } from '../../../../hook/parseImageUrl';
+import { Label } from 'reactstrap';
+import { Input } from 'reactstrap';
+import requirePermission from '../../../../hook/requirePermission';
+import { WEBSITE_ID } from '../../../../config';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import styled from 'styled-components';
 
 const MUTATION = gql`
   mutation updateNews($id: Int!, $input: NewsInput, $websiteId: Int!) {
@@ -103,6 +110,7 @@ export function EditNewsScreen() {
   const [logData, setLogData] = useState(undefined);
   const [lgShow, setLgShow] = useState(false);
   const [key, setKey] = useState('media');
+  const [documentDate, setDocumentDate] = useState(new Date());
 
   const { data, loading } = useQuery(PAGE_DETAIL, {
     variables: {
@@ -306,13 +314,14 @@ export function EditNewsScreen() {
                 </Col>
                 <Col md={6}>
                   <span>
-                    <img
-                      src={item.user.profile}
-                      style={{
-                        width: '50%',
-                        height: 'auto',
-                        borderRadius: '50%',
-                      }}
+                    <Image
+                      src={parseImageUrl('/icons/js.png', '500x500')}
+                      // src={parseImageUrl('/icons/js.png', '500x500')}
+                      alt=""
+                      layout="responsive"
+                      width={10}
+                      height={10}
+                      className={`${style.img_radius}`}
                     />
                   </span>
                 </Col>
@@ -349,7 +358,7 @@ export function EditNewsScreen() {
     );
   }
 
-  const renderPublished =
+  const renderPublishedOld =
     me.roleName != 'Content Manager' ? (
       renderButton
     ) : (
@@ -432,6 +441,45 @@ export function EditNewsScreen() {
     </div>
   );
 
+  const renderPublished = !requirePermission({
+    permissions: ['Site Administrator', 'Content Manager', 'Administrator'],
+  }) ? (
+    renderButton
+  ) : (
+    <>
+      <Form.Group controlId="formBasicCheckbox">
+        <Switch
+          checked={data.newsDetail.status === 'PUBLISHED' ? true : false}
+          onChange={(checked: any) => {
+            if (!checked) {
+              const isDeactived = window.confirm('Are you sure you want to unpublished this page ?');
+              if (isDeactived) {
+                updateStatus({
+                  variables: {
+                    id: Number(router.query.newsEditId),
+                    websiteId: Number(router.query.id),
+                    status: checked ? 'PUBLISHED' : 'REVERSION',
+                  },
+                });
+              }
+            } else {
+              const isDeactived = window.confirm('Are you sure you want to published this page ?');
+              if (isDeactived) {
+                updateStatus({
+                  variables: {
+                    id: Number(router.query.newsEditId),
+                    websiteId: Number(router.query.id),
+                    status: checked ? 'PUBLISHED' : 'REVERSION',
+                  },
+                });
+              }
+            }
+          }}
+        />
+      </Form.Group>
+    </>
+  );
+
   return (
     <Layout>
       <div className="page-content">
@@ -494,9 +542,24 @@ export function EditNewsScreen() {
               <div style={{ position: 'sticky', top: '90px', marginBottom: '25px' }}>
                 <Card>
                   <Card.Body>
-                    {renderEditButton}
+                    <h6>Public</h6>
+                    <hr />
                     {renderPublished}
-                    <h6>Example</h6>
+                    <hr />
+                    <h6>Reversion</h6>
+                    <hr />
+                    {renderEditButton}
+                    {renderPublishedOld}
+
+                    <Col md={6}>
+                      <Form.Label>Select Date</Form.Label>
+                      <DatePicker
+                        selected={documentDate}
+                        onChange={date => setDocumentDate(date)}
+                        className="form-control"
+                        dateFormat="dd/MM/yyyy"
+                      />
+                    </Col>
                     <hr />
                     <CreatableSelect
                       isClearable
@@ -518,7 +581,7 @@ export function EditNewsScreen() {
                       name="category"
                       onCreateOption={e => onHandleCreatableNewsCategory(e)}
                     />
-                    <h6 className="mt-3">Example</h6>
+                    <h6 className="mt-3">Upload File</h6>
                     <hr />
                     {renderFeaturedImage}
                     <Modal
@@ -590,6 +653,58 @@ export function EditNewsScreen() {
                   </Card.Body>
                 </Card>
 
+                <Modal show={showLog} onHide={() => setShowLog(false)} size="lg">
+                  <Modal.Header closeButton>Activity Logs</Modal.Header>
+
+                  <Modal.Body>
+                    <Row>
+                      <LineCol md={6}>
+                        <Row className="p-10" style={{ gap: '20px' }}>
+                          <Col>
+                            <Image
+                              src={
+                                logData?.user?.profile
+                                  ? parseImageUrl(logData?.user?.profile, '244x244')
+                                  : parseImageUrl('/user-placeholder-image.jpeg', '244x244')
+                              }
+                              width="250px"
+                              height="250px"
+                            />
+                          </Col>
+                          <Col>
+                            <p style={{ fontSize: '1.6rem' }}>{logData?.user?.fullname}</p>
+                            <p>Nationality: </p>
+                            <p>Gender: </p>
+                          </Col>
+                        </Row>
+                      </LineCol>
+                      <Col md={6}>
+                        <Row className="p-10" style={{ gap: '20px' }}>
+                          <Col>
+                            <p style={{ fontSize: '1.6rem' }}>Activity Log</p>
+                            <p>
+                              type:
+                              {/* {logData?.type} */}
+                            </p>
+                            <p>activity: {parseTEXT(parseJSON(logData?.activity)?.activityType)}</p>
+                            {parseJSON(logData?.activity)?.changeStatus ? (
+                              <p>
+                                status to:{' '}
+                                <span className={`text-${checkStatus(parseJSON(logData?.activity)?.changeStatus)}`}>
+                                  {parseJSON(logData?.activity)?.changeStatus}
+                                </span>
+                              </p>
+                            ) : (
+                              ''
+                            )}
+                            <p>changed at: {parseJSON(logData?.activity)?.logged_at}</p>
+                          </Col>
+                        </Row>
+                      </Col>
+                    </Row>
+                  </Modal.Body>
+                </Modal>
+
                 <Card>
                   <Card.Body>
                     <div className="d-flex m-t-10 p-l-10 m-b-10 no-block">
@@ -597,16 +712,16 @@ export function EditNewsScreen() {
                     </div>
                     <div className="table-wrapper bookmarking">
                       {/* <div className="bookmarking-main">
-          {" "}
-          <span>
-            <i className="fas fa-circle text-primary" />
-            Input
-          </span>
-          <span>
-            <i className="fas fa-circle text-warning" />
-            Output
-          </span>{" "}
-        </div> */}
+                        {" "}
+                        <span>
+                          <i className="fas fa-circle text-primary" />
+                          Input
+                        </span>
+                        <span>
+                          <i className="fas fa-circle text-warning" />
+                          Output
+                        </span>{" "}
+                      </div> */}
                       <div className="scrollbox">
                         <Table hover responsive className="m-b-5">
                           <tbody>{renderNewsLogs}</tbody>
@@ -623,3 +738,11 @@ export function EditNewsScreen() {
     </Layout>
   );
 }
+
+const LineCol = styled(Col)`
+  border-right: 0px;
+
+  @media screen and (min-width: 992px) {
+    border-right: 2px solid #0e0e0e0e;
+  }
+`;

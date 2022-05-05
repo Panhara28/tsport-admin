@@ -99,6 +99,45 @@ function FormBodyCreate({ update, defaultValues }: any) {
         <Col md={6}>
           <XForm.Text label="Fullname" value={fullname} onChange={e => setFullName(e.currentTarget.value)} />
         </Col>
+
+        <Col md={6}>
+          <Form.Label className={`${style.label_theme}`}>Gender</Form.Label>
+          <Form.Select aria-label="Default select example" className={`${style.select_theme}`}>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </Form.Select>
+        </Col>
+
+        <Col md={6}>
+          <XForm.Text
+            label="National"
+            name="nationality"
+            // value=""
+            // onChange={e => setFullName(e.currentTarget.value)}
+          />
+        </Col>
+
+        <Col md={6}>
+          <XForm.Text
+            label="Fullname Latin"
+            name="namelatin"
+            // value=""
+            // onChange={e => setFullName(e.currentTarget.value)}
+          />
+        </Col>
+
+        <Col md={6} className="mb-4">
+          <Form.Group>
+            <Form.Label className={`${style.label_theme}`}>Date of Birth</Form.Label>
+            <input
+              type="date"
+              name="dob"
+              min="1000-01-01"
+              max="3000-01-01"
+              className={`form-control ${style.select_theme}`}
+            />
+          </Form.Group>
+        </Col>
       </Row>
 
       <Row>
@@ -133,7 +172,7 @@ function FormBodyCreate({ update, defaultValues }: any) {
         </Col>
 
         <Col md={6}>
-          <Form.Label className={`${style.label_theme}`}>រាជធានី/ខេត្ត</Form.Label>
+          <Form.Label className={`${style.label_theme}`}>Capital City/Province</Form.Label>
           <Form.Group>
             <Select
               options={getProvince()}
@@ -148,7 +187,7 @@ function FormBodyCreate({ update, defaultValues }: any) {
         {selectContactProvince ? (
           <Col md={6}>
             <Form.Group>
-              <Form.Label className={`${style.label_theme}`}>ស្រុក/ក្រុង/ខណ្ឌ</Form.Label>
+              <Form.Label className={`${style.label_theme}`}>District/City/Khan</Form.Label>
               <CreatableSelect
                 options={getDistrict(selectContactProvince.value)}
                 onChange={e => setSelectContactDistrict(e)}
@@ -165,7 +204,7 @@ function FormBodyCreate({ update, defaultValues }: any) {
         {selectContactDistrict ? (
           <Col md={6} className="mb-3">
             <Form.Group>
-              <Form.Label className={`${style.label_theme}`}>ឃុំ/សង្កាត់</Form.Label>
+              <Form.Label className={`${style.label_theme}`}>Commune/Sangkat</Form.Label>
               <CreatableSelect
                 options={getCommune(selectContactDistrict.value)}
                 onChange={e => setSelectContactCommune(e)}
@@ -182,7 +221,7 @@ function FormBodyCreate({ update, defaultValues }: any) {
         {selectContactCommune ? (
           <Col md={6}>
             <Form.Group>
-              <Form.Label className={`${style.label_theme}`}>ភូមិ/ក្រុម</Form.Label>
+              <Form.Label className={`${style.label_theme}`}>Village/Group</Form.Label>
               <CreatableSelect
                 options={getVillage(selectContactCommune.value)}
                 onChange={e => setSelectContactVillage(e)}
@@ -222,7 +261,6 @@ function FormBodyCreate({ update, defaultValues }: any) {
         <Col></Col>
         <Col md={6}>
           <XForm.Footer>
-            {/* <XForm.Button onClick={onClear}>Clear</XForm.Button> */}
             <XForm.Button onClick={onSave}>Save</XForm.Button>
           </XForm.Footer>
         </Col>
@@ -259,7 +297,6 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
       <Row>
         <Col>
           <XForm.Footer>
-            {/* <XForm.Button onClick={onClear}>Clear</XForm.Button> */}
             <XForm.Button onClick={onSave}>Save</XForm.Button>
           </XForm.Footer>
         </Col>
