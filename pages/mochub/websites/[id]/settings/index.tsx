@@ -18,6 +18,7 @@ import { MediaListByWebsite } from '../../../../../src/components/Media/MediaLis
 import Select from 'react-select';
 import { Label } from 'reactstrap';
 import { faFacebook, faTelegram } from '@fortawesome/free-brands-svg-icons';
+import { parseImageUrl } from '../../../../../src/hook/parseImageUrl';
 
 const QUERY = gql`
   query website($id: Int!) {
@@ -74,13 +75,19 @@ function FormBody({ update, defaultValues }: any) {
         <FontAwesomeIcon icon={faTrash} style={{ cursor: 'pointer' }} className="text-danger mb-3" />
       </div>
       <div>
-        <Image
-          src={parseImageUrl(finaleSelected?.featureImage, '500x500')}
-          alt=""
-          layout="responsive"
-          width={100}
-          height={100}
-        />
+        {finaleSelected?.featureImage ? (
+          <Image
+            src={parseImageUrl(finaleSelected?.featureImage, '500x500')}
+            alt=""
+            layout="responsive"
+            width={100}
+            height={100}
+          />
+        ) : finaleSelected ? (
+          <Image src={parseImageUrl(finaleSelected, '500x500')} alt="" layout="responsive" width={100} height={100} />
+        ) : (
+          undefined
+        )}
       </div>
     </>
   ) : (
@@ -231,8 +238,4 @@ export default function SettingPage() {
       </div>
     </Layout>
   );
-}
-
-function parseImageUrl(featureImage: any, arg1: string): string | (StaticRequire | StaticImageData) {
-  throw new Error('Function not implemented.');
 }

@@ -78,12 +78,45 @@ function FormBodyCreate({ update, defaultValues }: any) {
   //   },
   // });
 
+  const onHandleSubmit = (e: any) => {
+    e.preventDefault();
+
+    const x: any = e.target;
+
+    const input = {
+      username: username,
+      password: password,
+      fullname: fullname,
+      fullname_en: x.fullname_en.value,
+      gender: x.gender.value,
+      nationality: x.nationality.value,
+      dob: x.dob.value,
+      contact_district: selectContactDistrict?.label,
+      contact_commune: selectContactCommune?.label,
+      contact_city_or_province: selectContactProvince?.label,
+      contact_village: selectContactVillage?.label,
+      email: x.email.value,
+      phoneNumber: x.phoneNumber.value,
+      homeNo: x.homeNo.value,
+      streetNo: x.streetNo.value,
+    };
+
+    update({
+      ...input,
+    });
+  };
+
   return (
-    <>
+    <Form onSubmit={onHandleSubmit}>
       <Row>
         <h4>Security Info</h4>
         <Col md={6}>
-          <XForm.Text label="Username" value={username} onChange={e => setUsername(e.currentTarget.value)} />
+          <XForm.Text
+            label="Username"
+            value={username}
+            name="username"
+            onChange={e => setUsername(e.currentTarget.value)}
+          />
         </Col>
         <Col md={6}>
           <XForm.Text
@@ -97,20 +130,25 @@ function FormBodyCreate({ update, defaultValues }: any) {
       <Row>
         <h4>User Info</h4>
         <Col md={6}>
-          <XForm.Text label="Fullname" value={fullname} onChange={e => setFullName(e.currentTarget.value)} />
+          <XForm.Text
+            label="Fullname"
+            name="fullname"
+            value={fullname}
+            onChange={e => setFullName(e.currentTarget.value)}
+          />
         </Col>
 
         <Col md={6}>
           <Form.Label className={`${style.label_theme}`}>Gender</Form.Label>
-          <Form.Select aria-label="Default select example" className={`${style.select_theme}`}>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
+          <Form.Select aria-label="Default select example" name="gender" className={`${style.select_theme}`}>
+            <option value="MALE">Male</option>
+            <option value="FEMALE">Female</option>
           </Form.Select>
         </Col>
 
         <Col md={6}>
           <XForm.Text
-            label="National"
+            label="Nationality"
             name="nationality"
             // value=""
             // onChange={e => setFullName(e.currentTarget.value)}
@@ -120,7 +158,7 @@ function FormBodyCreate({ update, defaultValues }: any) {
         <Col md={6}>
           <XForm.Text
             label="Fullname Latin"
-            name="namelatin"
+            name="fullname_en"
             // value=""
             // onChange={e => setFullName(e.currentTarget.value)}
           />
@@ -142,13 +180,6 @@ function FormBodyCreate({ update, defaultValues }: any) {
 
       <Row>
         <h4>Contact Info</h4>
-        <Col md={6}>
-          <XForm.Text
-            label="Current Address"
-            // value={currentaddress}
-            // onChange={e => setCurrentAddress(e.currentTarget.value)}
-          />
-        </Col>
 
         <Col md={6}>
           <XForm.Text
@@ -176,7 +207,7 @@ function FormBodyCreate({ update, defaultValues }: any) {
           <Form.Group>
             <Select
               options={getProvince()}
-              name="province"
+              name="contact_city_or_province"
               className={`${style.select_theme}`}
               onChange={e => setSelectContactProvince(e)}
               value={selectContactProvince}
@@ -193,7 +224,7 @@ function FormBodyCreate({ update, defaultValues }: any) {
                 onChange={e => setSelectContactDistrict(e)}
                 value={selectContactDistrict}
                 className={`${style.select_theme}`}
-                name="district"
+                name="contact_district"
               />
             </Form.Group>
           </Col>
@@ -210,7 +241,7 @@ function FormBodyCreate({ update, defaultValues }: any) {
                 onChange={e => setSelectContactCommune(e)}
                 value={selectContactCommune}
                 className={`${style.select_theme}`}
-                name="commune"
+                name="contact_commune"
               />
             </Form.Group>
           </Col>
@@ -227,7 +258,7 @@ function FormBodyCreate({ update, defaultValues }: any) {
                 onChange={e => setSelectContactVillage(e)}
                 value={selectContactVillage}
                 className={`${style.select_theme}`}
-                name="village"
+                name="contact_village"
               />
             </Form.Group>
           </Col>
@@ -261,47 +292,253 @@ function FormBodyCreate({ update, defaultValues }: any) {
         <Col></Col>
         <Col md={6}>
           <XForm.Footer>
-            <XForm.Button onClick={onSave}>Save</XForm.Button>
+            <XForm.Button type="submit">Save</XForm.Button>
           </XForm.Footer>
         </Col>
       </Row>
-    </>
+    </Form>
   );
 }
 
 const FormBodyEdit = ({ update, defaultValues }: any) => {
+  const [selectContactProvince, setSelectContactProvince] = useState<any>(undefined);
+  const [selectContactDistrict, setSelectContactDistrict] = useState<any>(undefined);
+  const [selectContactCommune, setSelectContactCommune] = useState<any>(undefined);
+  const [selectContactVillage, setSelectContactVillage] = useState<any>(undefined);
+
   const [fullname, setFullName] = useState(defaultValues?.fullname || '');
   const [username, setUsername] = useState(defaultValues?.username || '');
   const [password, setPassword] = useState(defaultValues?.password || '');
-  const [currentaddress, setCurrentAddress] = useState(defaultValues?.currentaddress || '');
 
   const onSave = () => {
     update({
       fullname,
       username,
       password,
-      currentaddress,
     });
   };
 
   const onClear = () => {};
 
+  const onHandleSubmit = (e: any) => {
+    e.preventDefault();
+
+    const x: any = e.target;
+
+    const input = {
+      username: username,
+      password: password,
+      fullname: fullname,
+      fullname_en: x.fullname_en.value,
+      gender: x.gender.value,
+      nationality: x.nationality.value,
+      dob: x.dob.value,
+      contact_district: selectContactDistrict?.label,
+      contact_commune: selectContactCommune?.label,
+      contact_city_or_province: selectContactProvince?.label,
+      contact_village: selectContactVillage?.label,
+      email: x.email.value,
+      phoneNumber: x.phoneNumber.value,
+      homeNo: x.homeNo.value,
+      streetNo: x.streetNo.value,
+    };
+
+    update({
+      input,
+    });
+  };
+
   return (
-    <>
+    <Form onSubmit={onHandleSubmit}>
+      <Row>
+        <h4>Security Info</h4>
+        <Col md={6}>
+          <XForm.Text
+            label="Username"
+            value={username}
+            name="username"
+            onChange={e => setUsername(e.currentTarget.value)}
+          />
+        </Col>
+        <Col md={6}>
+          <XForm.Text
+            label="Password"
+            type="password"
+            value={password}
+            onChange={e => setPassword(e.currentTarget.value)}
+          />
+        </Col>
+      </Row>
       <Row>
         <h4>User Info</h4>
         <Col md={6}>
-          <XForm.Text label="Fullname" value={fullname} onChange={e => setFullName(e.currentTarget.value)} />
+          <XForm.Text
+            label="Fullname"
+            name="fullname"
+            value={fullname}
+            onChange={e => setFullName(e.currentTarget.value)}
+          />
+        </Col>
+
+        <Col md={6}>
+          <Form.Label className={`${style.label_theme}`}>Gender</Form.Label>
+          <Form.Select aria-label="Default select example" name="gender" className={`${style.select_theme}`}>
+            <option value="MALE">Male</option>
+            <option value="FEMALE">Female</option>
+          </Form.Select>
+        </Col>
+
+        <Col md={6}>
+          <XForm.Text
+            label="Nationality"
+            name="nationality"
+            // value=""
+            // onChange={e => setFullName(e.currentTarget.value)}
+          />
+        </Col>
+
+        <Col md={6}>
+          <XForm.Text
+            label="Fullname Latin"
+            name="fullname_en"
+            // value=""
+            // onChange={e => setFullName(e.currentTarget.value)}
+          />
+        </Col>
+
+        <Col md={6} className="mb-4">
+          <Form.Group>
+            <Form.Label className={`${style.label_theme}`}>Date of Birth</Form.Label>
+            <input
+              type="date"
+              name="dob"
+              min="1000-01-01"
+              max="3000-01-01"
+              className={`form-control ${style.select_theme}`}
+            />
+          </Form.Group>
         </Col>
       </Row>
+
       <Row>
-        <Col>
+        <h4>Contact Info</h4>
+
+        <Col md={6}>
+          <XForm.Text
+            label="HomeNo"
+            type="text"
+            name="homeNo"
+            className="form-control"
+            // value=""
+            // onChange={e => setPassword(e.currentTarget.value)}
+          />
+        </Col>
+
+        <Col md={6}>
+          <XForm.Text
+            label="StreetNo"
+            type="text"
+            name="streetNo"
+            // value=""
+            // onChange={e => setPassword(e.currentTarget.value)}
+          />
+        </Col>
+
+        <Col md={6}>
+          <Form.Label className={`${style.label_theme}`}>Capital City/Province</Form.Label>
+          <Form.Group>
+            <Select
+              options={getProvince()}
+              name="contact_city_or_province"
+              className={`${style.select_theme}`}
+              onChange={e => setSelectContactProvince(e)}
+              value={selectContactProvince}
+            />
+          </Form.Group>
+        </Col>
+
+        {selectContactProvince ? (
+          <Col md={6}>
+            <Form.Group>
+              <Form.Label className={`${style.label_theme}`}>District/City/Khan</Form.Label>
+              <CreatableSelect
+                options={getDistrict(selectContactProvince.value)}
+                onChange={e => setSelectContactDistrict(e)}
+                value={selectContactDistrict}
+                className={`${style.select_theme}`}
+                name="contact_district"
+              />
+            </Form.Group>
+          </Col>
+        ) : (
+          ''
+        )}
+
+        {selectContactDistrict ? (
+          <Col md={6} className="mb-3">
+            <Form.Group>
+              <Form.Label className={`${style.label_theme}`}>Commune/Sangkat</Form.Label>
+              <CreatableSelect
+                options={getCommune(selectContactDistrict.value)}
+                onChange={e => setSelectContactCommune(e)}
+                value={selectContactCommune}
+                className={`${style.select_theme}`}
+                name="contact_commune"
+              />
+            </Form.Group>
+          </Col>
+        ) : (
+          ''
+        )}
+
+        {selectContactCommune ? (
+          <Col md={6}>
+            <Form.Group>
+              <Form.Label className={`${style.label_theme}`}>Village/Group</Form.Label>
+              <CreatableSelect
+                options={getVillage(selectContactCommune.value)}
+                onChange={e => setSelectContactVillage(e)}
+                value={selectContactVillage}
+                className={`${style.select_theme}`}
+                name="contact_village"
+              />
+            </Form.Group>
+          </Col>
+        ) : (
+          ''
+        )}
+
+        <Col md={6}>
+          <XForm.Text
+            label="Phone Number"
+            type="text"
+            name="phoneNumber"
+            placeholder="Example: 095477325"
+            // value=""
+            // onChange={e => setPassword(e.currentTarget.value)}
+          />
+        </Col>
+
+        <Col md={6}>
+          <XForm.Text
+            label="Email (If any)"
+            type="text"
+            name="email"
+            // value=""
+            // onChange={e => setPassword(e.currentTarget.value)}
+          />
+        </Col>
+      </Row>
+
+      <Row>
+        <Col></Col>
+        <Col md={6}>
           <XForm.Footer>
-            <XForm.Button onClick={onSave}>Save</XForm.Button>
+            <XForm.Button type="submit">Save</XForm.Button>
           </XForm.Footer>
         </Col>
       </Row>
-    </>
+    </Form>
   );
 };
 
