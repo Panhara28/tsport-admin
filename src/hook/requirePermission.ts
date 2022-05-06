@@ -9,7 +9,7 @@ export default function requirePermission({ permissions }: requirePermissionProp
 
   let isAllowed = false;
 
-  if (permissions.find(x => x === me.roleName)) {
+  if (permissions?.find(x => x === me.roleName)) {
     isAllowed = true;
   }
 

@@ -70,13 +70,12 @@ function FormBody({ update, defaultValues }: any) {
         style={{
           display: 'flex',
           justifyContent: 'end',
-          backgroundColor: '#F5F6F8',
+          backgroundColor: 'unset',
           flexDirection: 'row',
           position: 'absolute',
           top: 20,
           right: 20,
           zIndex: 999,
-          backgroundColor: 'unset',
         }}
         onClick={() => {
           setFinaleSelected(undefined);

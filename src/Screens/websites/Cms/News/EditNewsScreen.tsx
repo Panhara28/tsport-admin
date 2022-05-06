@@ -107,7 +107,7 @@ export function EditNewsScreen() {
   const [finaleSelected, setFinaleSelected]: any = useState(undefined);
   const [thumbnail, setThumbnail]: any = useState(undefined);
   const [showLog, setShowLog] = useState(false);
-  const [logData, setLogData] = useState(undefined);
+  const [logData, setLogData]: any = useState(undefined);
   const [lgShow, setLgShow] = useState(false);
   const [key, setKey] = useState('media');
   const [documentDate, setDocumentDate] = useState(new Date());
@@ -561,7 +561,7 @@ export function EditNewsScreen() {
                       <Form.Label>Select Date</Form.Label>
                       <DatePicker
                         selected={documentDate}
-                        onChange={date => setDocumentDate(date)}
+                        onChange={(date: any) => setDocumentDate(date)}
                         className="form-control"
                         dateFormat="dd/MM/yyyy"
                       />
