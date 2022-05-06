@@ -65,9 +65,19 @@ function FormBody({ update, defaultValues }: any) {
   };
 
   const renderFeaturedImage = finaleSelected ? (
-    <>
+    <div>
       <div
-        style={{ display: 'flex', justifyContent: 'end' }}
+        style={{
+          display: 'flex',
+          justifyContent: 'end',
+          backgroundColor: '#F5F6F8',
+          flexDirection: 'row',
+          position: 'absolute',
+          top: 20,
+          right: 20,
+          zIndex: 999,
+          backgroundColor: 'unset',
+        }}
         onClick={() => {
           setFinaleSelected(undefined);
         }}
@@ -80,8 +90,8 @@ function FormBody({ update, defaultValues }: any) {
             src={parseImageUrl(finaleSelected?.featureImage, '500x500')}
             alt=""
             layout="responsive"
-            width={100}
-            height={100}
+            width={130}
+            height={130}
           />
         ) : finaleSelected ? (
           <Image src={parseImageUrl(finaleSelected, '500x500')} alt="" layout="responsive" width={100} height={100} />
@@ -89,9 +99,9 @@ function FormBody({ update, defaultValues }: any) {
           undefined
         )}
       </div>
-    </>
+    </div>
   ) : (
-    <div className={style.newsFeatureImageContainer} onClick={() => setLgShow(true)}>
+    <div className={style.newsFeatureImageContainer} style={{ height: '90%' }} onClick={() => setLgShow(true)}>
       <div className={style.newsFeatureImageIcon}>
         <FontAwesomeIcon icon={faImage} />
       </div>
@@ -103,7 +113,9 @@ function FormBody({ update, defaultValues }: any) {
       <Form.Label className={`${style.label_theme}`}>Logo Image</Form.Label>
       <Row>
         <Col md={3}>
-          <div className={`${style.icon_upload}`}>{renderFeaturedImage}</div>
+          <div className={`${style.icon_upload}`} style={{ height: 230, backgroundColor: '#F5F6F8' }}>
+            {renderFeaturedImage}
+          </div>
         </Col>
       </Row>
       <XForm.Text label="Website name" value={name} onChange={e => setName(e.currentTarget.value)} />
