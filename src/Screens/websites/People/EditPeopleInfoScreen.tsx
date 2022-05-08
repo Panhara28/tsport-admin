@@ -35,6 +35,15 @@ const QUERY = gql`
       id
       fullname
       username
+      nationality
+      fullname_en
+      dob
+      homeNo
+      streetNo
+      contact_village
+      contact_district
+      contact_commune
+      contact_city_or_province
     }
   }
 `;
@@ -91,18 +100,28 @@ function FormBodyCreate({ update, defaultValues }: any) {
   );
 }
 
+// dob
+//     homeNo
+//     streetNo
+//     contact_village
+//     contact_district
+//     contact_commune
+//     contact_city_or_province
 const FormBodyEdit = ({ update, defaultValues }: any) => {
   const [fullname, setFullName] = useState(defaultValues?.fullname || '');
   const [username, setUsername] = useState(defaultValues?.username || '');
   const [password, setPassword] = useState(defaultValues?.password || '');
-
-  const onSave = () => {
-    update({
-      fullname,
-      username,
-      password,
-    });
-  };
+  const [nationality, setNationality] = useState(defaultValues?.nationality || '');
+  const [fullname_en, setFullNameEn] = useState(defaultValues?.fullname_en);
+  const [dob, setDob] = useState(defaultValues?.dob || '');
+  const [home_no, setHomeNo] = useState(defaultValues?.homeNo || '');
+  const [street_no, setStreetNo] = useState(defaultValues?.streetNo || '');
+  // const [contactVillage, setContactVillage] = useState(defaultValues?.values.contact_village || '');
+  // const [contactDistrict, setContactDistrict] = useState(defaultValues?.values.contact || '');
+  // const [contactCommune, setContactCommune] = useState(defaultValues?.values.contact_commune);
+  // const [contactCityOrProvince, setContactCityOrProvince] = useState(
+  //   defaultValues?.values.contact_city_or_province || '',
+  // );
 
   const router = useRouter();
 
@@ -112,6 +131,20 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
   const [selectContactDistrict, setSelectContactDistrict] = useState<any>(undefined);
   const [selectContactCommune, setSelectContactCommune] = useState<any>(undefined);
   const [selectContactVillage, setSelectContactVillage] = useState<any>(undefined);
+
+  const onSave = () => {
+    update({
+      fullname,
+      username,
+      password,
+      nationality,
+      fullname_en,
+      dob,
+      homeNo: home_no,
+      streetNo: street_no,
+      district: selectContactDistrict ? selectContactDistrict.label : defaultValues?.district,
+    });
+  };
 
   return (
     <>
@@ -148,8 +181,8 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
           <XForm.Text
             label="National"
             name="nationality"
-            // value=""
-            // onChange={e => setFullName(e.currentTarget.value)}
+            value={nationality}
+            onChange={e => setNationality(e.currentTarget.value)}
           />
         </Col>
 
@@ -157,8 +190,8 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
           <XForm.Text
             label="Fullname Latin"
             name="namelatin"
-            // value=""
-            // onChange={e => setFullName(e.currentTarget.value)}
+            value={fullname_en}
+            onChange={e => setFullNameEn(e.currentTarget.value)}
           />
         </Col>
 
@@ -171,6 +204,8 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
               min="1000-01-01"
               max="3000-01-01"
               className={`form-control ${style.select_theme}`}
+              value={dob}
+              onChange={e => setDob(e.currentTarget.value)}
             />
           </Form.Group>
         </Col>
@@ -178,13 +213,6 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
 
       <Row>
         <h4>Contact Info</h4>
-        <Col md={6}>
-          <XForm.Text
-            label="Current Address"
-            // value={currentaddress}
-            // onChange={e => setCurrentAddress(e.currentTarget.value)}
-          />
-        </Col>
 
         <Col md={6}>
           <XForm.Text
@@ -192,8 +220,8 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
             type="text"
             name="homeNo"
             className="form-control"
-            // value=""
-            // onChange={e => setPassword(e.currentTarget.value)}
+            value={home_no}
+            onChange={e => setHomeNo(e.currentTarget.value)}
           />
         </Col>
 
@@ -202,8 +230,8 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
             label="StreetNo"
             type="text"
             name="streetNo"
-            // value=""
-            // onChange={e => setPassword(e.currentTarget.value)}
+            value={street_no}
+            onChange={e => setStreetNo(e.currentTarget.value)}
           />
         </Col>
 
