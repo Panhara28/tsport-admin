@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { Form } from 'react-bootstrap';
@@ -26,6 +26,15 @@ const CREATE_MUTATION = gql`
 const UPDATE_MUTATION = gql`
   mutation adminUpdateUser($id: Int!, $input: UserInput) {
     adminUpdateUser(id: $id, input: $input)
+  }
+`;
+
+const PROVINCES = gql`
+  query provinceList {
+    provinceList {
+      id
+      name
+    }
   }
 `;
 
@@ -108,6 +117,7 @@ function FormBodyCreate({ update, defaultValues }: any) {
 //     contact_commune
 //     contact_city_or_province
 const FormBodyEdit = ({ update, defaultValues }: any) => {
+  const { data, loading } = useQuery(PROVINCES);
   const [fullname, setFullName] = useState(defaultValues?.fullname || '');
   const [username, setUsername] = useState(defaultValues?.username || '');
   const [password, setPassword] = useState(defaultValues?.password || '');
@@ -131,7 +141,8 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
   const [selectContactDistrict, setSelectContactDistrict] = useState<any>(undefined);
   const [selectContactCommune, setSelectContactCommune] = useState<any>(undefined);
   const [selectContactVillage, setSelectContactVillage] = useState<any>(undefined);
-
+  console.log(defaultValues);
+  if (loading || !data) return <div>Loading...</div>;
   const onSave = () => {
     update({
       fullname,
@@ -142,6 +153,9 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
       dob,
       homeNo: home_no,
       streetNo: street_no,
+      contact_city_or_province: selectContactProvince
+        ? selectContactProvince.label
+        : defaultValues?.contact_city_or_province,
       district: selectContactDistrict ? selectContactDistrict.label : defaultValues?.district,
     });
   };
@@ -243,7 +257,10 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
               name="province"
               className={`${style.select_theme}`}
               onChange={e => setSelectContactProvince(e)}
-              value={selectContactProvince}
+              // defaultValue={{
+              //   value: data.provinceList.filter((item: any) => item.id === data.user.province_id)[0]?.id,
+              //   label: data.provinceList.filter((item: any) => item.id === data.user.province_id)[0]?.name,
+              // }}
             />
           </Form.Group>
         </Col>
