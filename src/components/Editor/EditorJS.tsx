@@ -32,9 +32,6 @@ export const useEditor = (toolsList: any, { data, editorRef }: any, options = {}
        */
       tools: {
         ...toolsList,
-        linkTool: {
-          class: LinkTool,
-        },
         embed: Embed,
         image: {
           class: ImageTool,
