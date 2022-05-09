@@ -6,7 +6,25 @@ import { useQuery, useMutation } from '@apollo/client';
 import { BlockLoading } from '../BlockLoading';
 import MutationStatus from './MutationStatus';
 import { useRouter } from 'next/router';
-
+import toastr from 'toastr';
+import 'toastr/build/toastr.min.css';
+toastr.options = {
+  closeButton: false,
+  debug: false,
+  newestOnTop: false,
+  progressBar: false,
+  positionClass: 'toast-bottom-center',
+  preventDuplicates: false,
+  onclick: null,
+  showDuration: '2000',
+  hideDuration: '2000',
+  timeOut: '2000',
+  extendedTimeOut: '2000',
+  showEasing: 'swing',
+  hideEasing: 'linear',
+  showMethod: 'fadeIn',
+  hideMethod: 'fadeOut',
+};
 export interface CreateUpdateProps<T, K = T> {
   update: (data: T) => void;
   defaultValues: K;
@@ -36,6 +54,8 @@ export function CreateUpdateForm<T, K>(props: {
 
   const onUpdatedCompleted = (): void => {
     if (props.updateReturned) {
+      toastr.success('Record has already update');
+
       history.push(props.updateReturned);
     }
   };
