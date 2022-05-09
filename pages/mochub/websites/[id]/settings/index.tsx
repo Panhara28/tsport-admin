@@ -26,6 +26,9 @@ const QUERY = gql`
       id
       name
       description
+      website_logo
+      facebook_link
+      telegram_link
     }
   }
 `;
@@ -37,30 +40,34 @@ const MUTATION_CREATE = gql`
 `;
 
 const MUTATION_UPDATE = gql`
-  mutation updateWebsite($id: Int!, $input: WebsiteInput) {
-    updateWebsite(id: $id, input: $input)
+  mutation adminUpdateWebsite($id: Int!, $input: WebsiteInput) {
+    adminUpdateWebsite(id: $id, input: $input)
   }
 `;
 
 function FormBody({ update, defaultValues }: any) {
   const [selectImage, setSelectImage] = useState(undefined);
-  const [selectedImage, setSelectedImage]: any = useState(undefined);
   const [firstFeaturedImage, setFirstFeaturedImage]: any = useState(undefined);
-  const [finaleSelected, setFinaleSelected]: any = useState(undefined);
+  const [finaleSelected, setFinaleSelected]: any = useState(defaultValues?.website_logo || undefined);
 
   const [key, setKey] = useState('media');
   const [lgShow, setLgShow] = useState(false);
-  const { me } = useContext(AuthContext);
   const [thumbnail, setThumbnail]: any = useState(undefined);
   const router = useRouter();
-  const { data, loading } = useQuery(QUERY);
+  const [selectedImage, setSelectedImage]: any = useState(defaultValues?.website_logo || undefined);
 
   const [name, setName] = useState(defaultValues?.name || '');
   const [description, setDescription] = useState(defaultValues?.description || '');
+  const [facebook_link, setFacebookLink] = useState(defaultValues?.facebook_link || '');
+  const [telegram_link, setTelegramLink] = useState(defaultValues?.telegram_link || '');
+
   const onSave = () => {
     update({
       name,
       description,
+      website_logo: selectedImage.featureImage,
+      facebook_link,
+      telegram_link,
     });
   };
 
@@ -127,8 +134,8 @@ function FormBody({ update, defaultValues }: any) {
         <div className={`${style.sub_link}`}>
           <XForm.Text
             placeholder="Input Link"
-            // value={name}
-            // onChange={e => setName(e.currentTarget.value)}
+            value={facebook_link}
+            onChange={e => setFacebookLink(e.currentTarget.value)}
           />
         </div>
       </div>
@@ -140,8 +147,8 @@ function FormBody({ update, defaultValues }: any) {
         <div className={`${style.sub_link}`}>
           <XForm.Text
             placeholder="Input Link"
-            // value={name}
-            // onChange={e => setName(e.currentTarget.value)}
+            value={telegram_link}
+            onChange={e => setTelegramLink(e.currentTarget.value)}
           />
         </div>
       </div>
@@ -241,7 +248,8 @@ export default function SettingPage() {
                 create={MUTATION_CREATE}
                 query={QUERY}
                 id={Number(router.query.id)}
-                createReturned={'/brand_list/list'}
+                updateReturned={`/mochub/websites/${router.query.id}/settings`}
+                refectQuery="website"
               />
             </Col>
           </Row>
