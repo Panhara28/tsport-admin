@@ -2,6 +2,7 @@ import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import React, { ReactNode } from 'react';
+import { useRouter } from 'next/router';
 
 type Props = {
   total: number;
@@ -21,10 +22,16 @@ export function CustomPagination(props: Props) {
   // start -= start - diff > 0 ? diff : 0;
   let start: any;
   let pages: ReactNode[] = [];
+  const router = useRouter();
 
   const search = new URLSearchParams(process?.browser ? window?.location?.search : []);
   search.delete(variableName);
-  const base: string = '?' + (search.toString() !== '' ? search.toString() + '&' : '');
+  // const base: string = '?' + (search.toString() !== '' ? search.toString() + '&' : '');
+
+  const current_url: string = router.asPath.split('?')[0];
+  const base: string = current_url + '?' + (search.toString() !== '' ? search.toString() + '&' : '');
+
+  console.log(base);
 
   let pagesPage = Math.ceil(props.total / props.limit!);
 

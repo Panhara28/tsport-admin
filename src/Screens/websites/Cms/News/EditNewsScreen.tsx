@@ -2,7 +2,7 @@ import { gql, useMutation, useQuery } from '@apollo/client';
 import { faAngleLeft, faPaperPlane, faTimesCircle, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/router';
-import { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Button, Card, Col, Container, Form, Modal, Row, Tab, Tabs, Table } from 'react-bootstrap';
 import { StatusPageBagde } from '../../../../components/StatusPageBagde';
 import { TransformDataEditorJS } from '../../../../libs/TransformDataEditorJs';
@@ -31,6 +31,7 @@ import { WEBSITE_ID } from '../../../../config';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import styled from 'styled-components';
+import { CustomPagination } from '../../../../components/Paginations';
 
 const MUTATION = gql`
   mutation updateNews($id: Int!, $input: NewsInput, $websiteId: Int!) {
@@ -51,7 +52,7 @@ export const UPDATE_NEW_STATUS = gql`
 `;
 
 const PAGE_DETAIL = gql`
-  query newsDetail($id: Int!, $websiteId: Int!) {
+  query newsDetail($id: Int!, $websiteId: Int!, $pagination: PaginationInput!) {
     newsDetail(id: $id, websiteId: $websiteId) {
       id
       title
@@ -67,7 +68,7 @@ const PAGE_DETAIL = gql`
       name
     }
 
-    activityLogsNews(websiteId: $websiteId, id: $id) {
+    activityLogsNews(websiteId: $websiteId, id: $id, pagination: $pagination) {
       data {
         id
         type
@@ -76,6 +77,11 @@ const PAGE_DETAIL = gql`
         user {
           fullname
         }
+      }
+      pagination {
+        total
+        size
+        current
       }
     }
   }
@@ -99,6 +105,10 @@ export function EditNewsScreen() {
     showMethod: 'fadeIn',
     hideMethod: 'fadeOut',
   };
+
+  const query = new URLSearchParams(process.browser ? window.location.search : '');
+  const page = query.get('page') ? Number(query.get('page')) : 1;
+
   const { me } = useContext(AuthContext);
   const router = useRouter();
   const [selectImage, setSelectImage] = useState(undefined);
@@ -116,6 +126,10 @@ export function EditNewsScreen() {
     variables: {
       id: Number(router.query.newsEditId),
       websiteId: Number(router.query.id),
+      pagination: {
+        page,
+        size: 10,
+      },
     },
     onCompleted: data => {
       setThumbnail(data.newsDetail.thumbnail);
@@ -732,6 +746,12 @@ export function EditNewsScreen() {
                         <Table hover responsive className="m-b-5">
                           <tbody>{renderNewsLogs}</tbody>
                         </Table>
+                        <CustomPagination
+                          total={data?.activityLogsNews?.pagination?.total}
+                          currentPage={data?.activityLogsNews?.pagination?.current}
+                          size={data?.activityLogsNews?.pagination?.size}
+                          limit={10}
+                        />
                       </div>
                     </div>
                   </Card.Body>
