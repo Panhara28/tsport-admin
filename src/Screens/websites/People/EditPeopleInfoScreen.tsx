@@ -53,6 +53,8 @@ const QUERY = gql`
       contact_district
       contact_commune
       contact_city_or_province
+      phoneNumber
+      email
     }
   }
 `;
@@ -64,13 +66,11 @@ type Props = {
 function FormBodyCreate({ update, defaultValues }: any) {
   const [fullname, setFullName] = useState(defaultValues?.fullname || '');
   const [username, setUsername] = useState(defaultValues?.username || '');
-  const [password, setPassword] = useState(defaultValues?.password || '');
 
   const onSave = () => {
     update({
       fullname,
       username,
-      password,
     });
   };
 
@@ -81,14 +81,6 @@ function FormBodyCreate({ update, defaultValues }: any) {
         <hr />
         <Col md={6}>
           <XForm.Text label="Username" value={username} onChange={e => setUsername(e.currentTarget.value)} />
-        </Col>
-        <Col md={6}>
-          <XForm.Text
-            label="Password"
-            type="password"
-            value={password}
-            onChange={e => setPassword(e.currentTarget.value)}
-          />
         </Col>
       </Row>
       <Row>
@@ -120,60 +112,74 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
   const { data, loading } = useQuery(PROVINCES);
   const [fullname, setFullName] = useState(defaultValues?.fullname || '');
   const [username, setUsername] = useState(defaultValues?.username || '');
-  const [password, setPassword] = useState(defaultValues?.password || '');
   const [nationality, setNationality] = useState(defaultValues?.nationality || '');
-  const [fullname_en, setFullNameEn] = useState(defaultValues?.fullname_en);
+  const [fullname_en, setFullNameEn] = useState(defaultValues?.fullname_en || '');
   const [dob, setDob] = useState(defaultValues?.dob || '');
   const [home_no, setHomeNo] = useState(defaultValues?.homeNo || '');
   const [street_no, setStreetNo] = useState(defaultValues?.streetNo || '');
-  // const [contactVillage, setContactVillage] = useState(defaultValues?.values.contact_village || '');
-  // const [contactDistrict, setContactDistrict] = useState(defaultValues?.values.contact || '');
-  // const [contactCommune, setContactCommune] = useState(defaultValues?.values.contact_commune);
-  // const [contactCityOrProvince, setContactCityOrProvince] = useState(
-  //   defaultValues?.values.contact_city_or_province || '',
-  // );
-
-  const router = useRouter();
 
   const [profile, setProfile] = useState(undefined);
 
-  const [selectContactProvince, setSelectContactProvince] = useState<any>(undefined);
-  const [selectContactDistrict, setSelectContactDistrict] = useState<any>(undefined);
-  const [selectContactCommune, setSelectContactCommune] = useState<any>(undefined);
-  const [selectContactVillage, setSelectContactVillage] = useState<any>(undefined);
-  console.log(defaultValues);
+  const [selectContactProvince, setSelectContactProvince] = useState<any>(
+    defaultValues?.contact_city_or_province
+      ? {
+          label: defaultValues?.contact_city_or_province,
+          value: defaultValues?.contact_city_or_province,
+        }
+      : undefined,
+  );
+  const [selectContactDistrict, setSelectContactDistrict] = useState<any>(
+    defaultValues?.contact_district
+      ? { label: defaultValues?.contact_district, value: defaultValues?.contact_district }
+      : undefined,
+  );
+  const [selectContactCommune, setSelectContactCommune] = useState<any>(
+    defaultValues?.contact_commune
+      ? { label: defaultValues?.contact_commune, value: defaultValues?.contact_commune }
+      : undefined,
+  );
+  const [selectContactVillage, setSelectContactVillage] = useState<any>(
+    defaultValues?.contact_village
+      ? { label: defaultValues?.contact_village, value: defaultValues?.contact_village }
+      : undefined,
+  );
+
   if (loading || !data) return <div>Loading...</div>;
-  const onSave = () => {
-    update({
-      fullname,
-      username,
-      password,
-      nationality,
-      fullname_en,
-      dob,
-      homeNo: home_no,
-      streetNo: street_no,
+  const onSave = (e: any) => {
+    e.preventDefault();
+
+    const x: any = e.target;
+
+    const input = {
+      username: username,
+      fullname: fullname,
+      fullname_en: fullname_en,
+      gender: x.gender?.value,
+      nationality: x.nationality?.value,
+      dob: x.dob?.value,
+      email: x.email?.value,
+      phoneNumber: x.phoneNumber?.value,
+      homeNo: x.homeNo?.value,
+      streetNo: x.streetNo?.value,
       contact_city_or_province: selectContactProvince
         ? selectContactProvince.label
         : defaultValues?.contact_city_or_province,
-      district: selectContactDistrict ? selectContactDistrict.label : defaultValues?.district,
+      contact_district: selectContactDistrict ? selectContactDistrict.label : defaultValues?.contact_district,
+      contact_commune: selectContactCommune ? selectContactCommune.label : defaultValues?.contact_commune,
+      contact_village: selectContactVillage ? selectContactVillage.label : defaultValues?.contact_village,
+    };
+
+    update({
+      ...input,
     });
   };
 
   return (
-    <>
+    <Form onSubmit={onSave}>
       <Row>
         <h4>Security Info</h4>
         <Col md={6}>
           <XForm.Text label="Username" value={username} onChange={e => setUsername(e.currentTarget.value)} />
-        </Col>
-        <Col md={6}>
-          <XForm.Text
-            label="Password"
-            type="password"
-            value={password}
-            onChange={e => setPassword(e.currentTarget.value)}
-          />
         </Col>
       </Row>
       <Row>
@@ -185,9 +191,9 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
 
         <Col md={6}>
           <Form.Label className={`${style.label_theme}`}>Gender</Form.Label>
-          <Form.Select aria-label="Default select example" className={`${style.select_theme}`}>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
+          <Form.Select aria-label="Default select example" name="gender" className={`${style.select_theme}`}>
+            <option value="MALE">Male</option>
+            <option value="FEMALE">Female</option>
           </Form.Select>
         </Col>
 
@@ -257,6 +263,7 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
               name="province"
               className={`${style.select_theme}`}
               onChange={e => setSelectContactProvince(e)}
+              value={selectContactProvince}
               // defaultValue={{
               //   value: data.provinceList.filter((item: any) => item.id === data.user.province_id)[0]?.id,
               //   label: data.provinceList.filter((item: any) => item.id === data.user.province_id)[0]?.name,
@@ -270,7 +277,9 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
             <Form.Group>
               <Form.Label className={`${style.label_theme}`}>District/City/Khan</Form.Label>
               <CreatableSelect
-                options={getDistrict(selectContactProvince.value)}
+                options={getDistrict(
+                  selectContactProvince.value ? selectContactProvince.value : defaultValues?.contact_city_or_province,
+                )}
                 onChange={e => setSelectContactDistrict(e)}
                 value={selectContactDistrict}
                 className={`${style.select_theme}`}
@@ -287,7 +296,9 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
             <Form.Group>
               <Form.Label className={`${style.label_theme}`}>Commune/Sangkat</Form.Label>
               <CreatableSelect
-                options={getCommune(selectContactDistrict.value)}
+                options={getCommune(
+                  selectContactDistrict.value ? selectContactDistrict.value : defaultValues.contact_district,
+                )}
                 onChange={e => setSelectContactCommune(e)}
                 value={selectContactCommune}
                 className={`${style.select_theme}`}
@@ -304,11 +315,13 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
             <Form.Group>
               <Form.Label className={`${style.label_theme}`}>Village/Group</Form.Label>
               <CreatableSelect
-                options={getVillage(selectContactCommune.value)}
+                options={getVillage(
+                  selectContactCommune.value ? selectContactCommune.value : defaultValues?.contact_commune,
+                )}
                 onChange={e => setSelectContactVillage(e)}
                 value={selectContactVillage}
                 className={`${style.select_theme}`}
-                name="village"
+                name="contact_village"
               />
             </Form.Group>
           </Col>
@@ -322,30 +335,23 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
             type="text"
             name="phoneNumber"
             placeholder="Example: 095477325"
-            // value=""
-            // onChange={e => setPassword(e.currentTarget.value)}
+            defaultValue={defaultValues?.phoneNumber}
           />
         </Col>
 
         <Col md={6}>
-          <XForm.Text
-            label="Email (If any)"
-            type="text"
-            name="email"
-            // value=""
-            // onChange={e => setPassword(e.currentTarget.value)}
-          />
+          <XForm.Text label="Email (If any)" type="text" name="email" defaultValue={defaultValues?.email} />
         </Col>
       </Row>
 
       <Row>
         <Col>
           <XForm.Footer>
-            <XForm.Button onClick={onSave}>Save</XForm.Button>
+            <XForm.Button type="submit">Save</XForm.Button>
           </XForm.Footer>
         </Col>
       </Row>
-    </>
+    </Form>
   );
 };
 

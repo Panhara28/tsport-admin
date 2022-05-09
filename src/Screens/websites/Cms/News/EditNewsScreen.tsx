@@ -246,10 +246,10 @@ export function EditNewsScreen() {
       </Button>
     ) : (
       <>
-        <p style={{ fontStyle: 'italic' }}>Example</p>
+        {/* <p style={{ fontStyle: 'italic' }}>Example</p>
         <Button className="mb-3" variant="danger" style={{ width: '100%' }} onClick={() => onInReview('REVERSION')}>
           <FontAwesomeIcon icon={faTimesCircle} /> Reversion
-        </Button>
+        </Button> */}
       </>
     );
 
@@ -562,13 +562,13 @@ export function EditNewsScreen() {
               <div style={{ position: 'sticky', top: '90px', marginBottom: '25px' }}>
                 <Card>
                   <Card.Body>
-                    <h6>Public</h6>
+                    <h6>Publish</h6>
                     <hr />
                     {renderPublished}
                     <hr />
                     <h6>Reversion</h6>
                     <hr />
-                    {renderEditButton}
+                    {/* {renderEditButton} */}
                     {renderPublishedOld}
 
                     <Col md={6}>

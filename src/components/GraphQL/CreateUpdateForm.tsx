@@ -52,11 +52,11 @@ export function CreateUpdateForm<T, K>(props: {
 
   const history = useRouter();
 
-  const onUpdatedCompleted = (): void => {
-    if (props.updateReturned) {
+  const onUpdatedCompleted = (data: any): void => {
+    if (data?.adminUpdateUser) {
       toastr.success('Record has already update');
 
-      history.push(props.updateReturned);
+      // history.push(props.updateReturned);
     }
   };
 
