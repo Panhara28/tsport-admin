@@ -3,9 +3,28 @@ import Head from 'next/head';
 import dynamic from 'next/dynamic';
 import { Button } from 'react-bootstrap';
 import { options } from './options';
-// import 'toastr/build/toastr.min.css';
+import toastr from 'toastr';
+import 'toastr/build/toastr.min.css';
 import { useLoadData, useSaveCallback, useSetData } from '../../hook/hook';
 const Editor: any = dynamic(() => import('./EditorJS').then(mod => mod.EditorContainer), { ssr: false });
+
+toastr.options = {
+  closeButton: false,
+  debug: false,
+  newestOnTop: false,
+  progressBar: false,
+  positionClass: 'toast-bottom-center',
+  preventDuplicates: false,
+  onclick: null,
+  showDuration: '2000',
+  hideDuration: '2000',
+  timeOut: '2000',
+  extendedTimeOut: '2000',
+  showEasing: 'swing',
+  hideEasing: 'linear',
+  showMethod: 'fadeIn',
+  hideMethod: 'fadeOut',
+};
 
 type FormEditorType = {
   dataKey?: string;
@@ -35,7 +54,7 @@ export default function FormEditor({ dataKey, data, editDataKey, id }: FormEdito
       setTimeout(() => {
         onSave();
         setChanged(false);
-        // toastr.success("Saved Draft!")
+        toastr.success('Saved Draft!');
 
         if (id) {
           localStorage.setItem('usedNews', id + '');

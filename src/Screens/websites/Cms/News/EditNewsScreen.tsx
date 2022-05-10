@@ -182,8 +182,10 @@ export function EditNewsScreen() {
 
   useEffect(() => {
     let usedNewKey = localStorage.getItem('usedNews');
-    if (usedNewKey !== router.query.id + '') {
+    if (usedNewKey !== router.query.newsEditId + '') {
       localStorage.removeItem('newsDataEdit');
+      localStorage.removeItem('newsTitleEdit');
+      localStorage.removeItem('newsSummaryEdit');
     }
   }, []);
 
@@ -240,16 +242,47 @@ export function EditNewsScreen() {
   const renderInReview = <StatusPageBagde status={data.newsDetail.status} />;
 
   const renderButton =
-    data.newsDetail.status === 'PENDING' || data.newsDetail.status === 'REVERSION' ? (
-      <Button className="mb-3" variant="warning" style={{ width: '100%' }} onClick={() => onInReview('INREVIEW')}>
-        <FontAwesomeIcon icon={faPaperPlane} /> Edit & Review
-      </Button>
+    me.roleName != 'Content Manager' ? (
+      data.newsDetail.status === 'PENDING' || data.newsDetail.status === 'REVERSION' ? (
+        <>
+          <h6>Reversion</h6>
+          <hr />
+          <Button className="mb-3" variant="warning" style={{ width: '100%' }} onClick={() => onInReview('INREVIEW')}>
+            <FontAwesomeIcon icon={faPaperPlane} /> Edit & Review
+          </Button>
+          <hr />
+        </>
+      ) : (
+        data.newsDetail.status !== 'PUBLISHED' && (
+          <>
+            <h6>Reversion</h6>
+            <hr />
+            <p style={{ fontStyle: 'italic' }}>Example</p>
+            <Button className="mb-3" variant="danger" style={{ width: '100%' }} onClick={() => onInReview('REVERSION')}>
+              <FontAwesomeIcon icon={faTimesCircle} /> Reversion
+            </Button>
+            <hr />
+          </>
+        )
+      )
+    ) : data.newsDetail.status === 'PENDING' || data.newsDetail.status === 'REVERSION' ? (
+      <>
+        <h6>Reversion</h6>
+        <hr />
+        <Button className="mb-3" variant="warning" style={{ width: '100%' }} onClick={() => onInReview('INREVIEW')}>
+          <FontAwesomeIcon icon={faPaperPlane} /> Edit & Review
+        </Button>
+        <hr />
+      </>
     ) : (
       <>
-        {/* <p style={{ fontStyle: 'italic' }}>Example</p>
+        <h6>Reversion</h6>
+        <hr />
+        <p style={{ fontStyle: 'italic' }}>Example</p>
         <Button className="mb-3" variant="danger" style={{ width: '100%' }} onClick={() => onInReview('REVERSION')}>
           <FontAwesomeIcon icon={faTimesCircle} /> Reversion
-        </Button> */}
+        </Button>
+        <hr />
       </>
     );
 
@@ -287,6 +320,23 @@ export function EditNewsScreen() {
 
     setLogData(item);
     setShowLog(true);
+  };
+
+  const draftedTitle = localStorage.getItem('newsTitleEdit');
+  const draftedSummary = localStorage.getItem('newsSummaryEdit');
+
+  const onHandleTitleChange = (e: any) => {
+    e.preventDefault();
+
+    toastr.success('Draft Saved!');
+    localStorage.setItem('newsTitleEdit', e.target.value);
+  };
+
+  const onHandleSummaryChange = (e: any) => {
+    e.preventDefault();
+
+    toastr.success('Draft Saved!');
+    localStorage.setItem('newsSummaryEdit', e.target.value);
   };
 
   if (data.activityLogsNews.data.length > 0) {
@@ -464,9 +514,12 @@ export function EditNewsScreen() {
   const renderPublished = !requirePermission({
     permissions: ['Site Administrator', 'Content Manager', 'Administrator'],
   }) ? (
-    renderButton
+    // renderButton
+    <></>
   ) : (
     <>
+      <h6>Publish</h6>
+      <hr />
       <Form.Group controlId="formBasicCheckbox">
         <Switch
           checked={data.newsDetail.status === 'PUBLISHED' ? true : false}
@@ -528,8 +581,9 @@ export function EditNewsScreen() {
                           placeholder="Enter your title here..."
                           name="title"
                           className={`${style.titleInput} form-control`}
-                          defaultValue={data ? data.newsDetail.title : ''}
+                          defaultValue={draftedTitle ? draftedTitle : data ? data.newsDetail.title : ''}
                           ref={node => (titleInput = node)}
+                          onBlur={e => onHandleTitleChange(e)}
                         />
                       </Form.Group>
                     </Col>
@@ -544,15 +598,20 @@ export function EditNewsScreen() {
                           rows={3}
                           placeholder="Enter your summary here..."
                           name="summary"
-                          defaultValue={data ? data.newsDetail.summary : ''}
+                          defaultValue={draftedSummary ? draftedSummary : data ? data.newsDetail.summary : ''}
                           ref={node => (summaryInput = node)}
+                          onBlur={e => onHandleSummaryChange(e)}
                         ></textarea>
                       </Form.Group>
                     </Col>
                   </Row>
                   <Row className="mt-4">
                     <Form.Group controlId="formBasicEmail">
-                      <FormEditor editDataKey="newsDataEdit" data={renderEditorJS} id={router.query.newsEditId} />
+                      <FormEditor
+                        editDataKey="newsDataEdit"
+                        data={renderEditorJS}
+                        id={Number(router.query.newsEditId)}
+                      />
                     </Form.Group>
                   </Row>
                 </CardBody>
@@ -562,25 +621,10 @@ export function EditNewsScreen() {
               <div style={{ position: 'sticky', top: '90px', marginBottom: '25px' }}>
                 <Card>
                   <Card.Body>
-                    <h6>Publish</h6>
-                    <hr />
                     {renderPublished}
-                    <hr />
-                    <h6>Reversion</h6>
-                    <hr />
-                    {/* {renderEditButton} */}
-                    {renderPublishedOld}
 
-                    <Col md={6}>
-                      <Form.Label>Select Date</Form.Label>
-                      <DatePicker
-                        selected={documentDate}
-                        onChange={(date: any) => setDocumentDate(date)}
-                        className="form-control"
-                        dateFormat="dd/MM/yyyy"
-                      />
-                    </Col>
-                    <hr />
+                    {renderButton}
+                    <Form.Label>News Category</Form.Label>
                     <CreatableSelect
                       isClearable
                       options={data.publicNewsCategoryList.map((x: any) => {

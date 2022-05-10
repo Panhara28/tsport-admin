@@ -7,12 +7,13 @@ import { Col, Container, Row, Table } from 'react-bootstrap';
 import moment from 'moment';
 import { CustomPagination } from '../../../../components/Paginations';
 import Select, { StylesConfig } from 'react-select';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { StatusOption, statusOptions } from '../../../../libs/ReactSelectColor';
 import Layout from '../../../../components/VerticalLayout';
 import { Breadcrumb } from '../../../../components/Common/Breadcrumb';
 import { Card, CardBody, CardTitle, Label } from 'reactstrap';
 import { faSquarePlus } from '@fortawesome/free-regular-svg-icons';
+import AuthContext from '../../../../components/Authentication/AuthContext';
 
 const QUERY = gql`
   query newsList($filter: FilterNews, $pagination: PaginationInput!, $websiteId: Int!) {
@@ -32,6 +33,7 @@ const QUERY = gql`
 `;
 
 export function NewsListScreen() {
+  const { me } = useContext(AuthContext);
   const [searchByName, setSearchByName] = useState(undefined);
   const dot = (color = '#4886ff') => ({
     alignItems: 'center',
@@ -62,7 +64,7 @@ export function NewsListScreen() {
     },
     singleValue: (styles, { data }) => ({ ...styles, ...dot(data.color) }),
   };
-  const [filterStatus, setFilterStatus] = useState({
+  const [filterStatus, setFilterStatus] = useState<any>({
     value: 'PENDING',
     label: 'Pending',
   });
@@ -80,6 +82,12 @@ export function NewsListScreen() {
       websiteId: Number(router.query.id),
     },
   });
+
+  useEffect(() => {
+    if (me.roleName === 'Content Manager') {
+      setFilterStatus({ value: 'INREVIEW', label: 'In review', color: '#fa7d03' });
+    }
+  }, []);
 
   if (loading || !data) return <div>Loading...</div>;
 

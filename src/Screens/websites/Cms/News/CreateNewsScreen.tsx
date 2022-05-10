@@ -119,6 +119,8 @@ export function CreateNewsScreen() {
       },
     });
     process.browser && localStorage.removeItem('newsData');
+    process.browser && localStorage.removeItem('newsTitle');
+    process.browser && localStorage.removeItem('newsSummary');
   };
 
   const onHandleCreatableNewsCategory = (e: any) => {
@@ -130,6 +132,24 @@ export function CreateNewsScreen() {
         websiteId: Number(router.query.id),
       },
     });
+  };
+
+  const draftedTitle = localStorage.getItem('newsTitle');
+
+  const onHandleTitleChange = (e: any) => {
+    e.preventDefault();
+
+    toastr.success('Draft Saved!');
+    localStorage.setItem('newsTitle', e.target.value);
+  };
+
+  const draftedSummary = localStorage.getItem('newsSummary');
+
+  const onHandleSummaryChange = (e: any) => {
+    e.preventDefault();
+
+    toastr.success('Draft Saved!');
+    localStorage.setItem('newsSummary', e.target.value);
   };
 
   const accessPlugin = me.plugins.find((item: any) => item.slug === 'news');
@@ -205,6 +225,8 @@ export function CreateNewsScreen() {
                                 name="title"
                                 className={`${style.titleInput} form-control`}
                                 autoFocus
+                                defaultValue={draftedTitle ? draftedTitle : ''}
+                                onBlur={e => onHandleTitleChange(e)}
                               />
                             </Form.Group>
                           </Col>
@@ -220,6 +242,8 @@ export function CreateNewsScreen() {
                                 rows={3}
                                 placeholder="Enter your summary here..."
                                 name="summary"
+                                defaultValue={draftedSummary ? draftedSummary : ''}
+                                onBlur={e => onHandleSummaryChange(e)}
                               ></textarea>
                             </Form.Group>
                           </Col>
