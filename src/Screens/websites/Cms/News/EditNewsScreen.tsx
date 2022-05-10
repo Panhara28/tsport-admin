@@ -2,8 +2,8 @@ import { gql, useMutation, useQuery } from '@apollo/client';
 import { faAngleLeft, faPaperPlane, faTimesCircle, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useRouter } from 'next/router';
-import { useContext, useEffect, useState } from 'react';
-import { Button, Card, Col, Container, Form, Modal, Row, Tab, Tabs } from 'react-bootstrap';
+import React, { useContext, useEffect, useState } from 'react';
+import { Button, Card, Col, Container, Form, Modal, Row, Tab, Tabs, Table } from 'react-bootstrap';
 import { StatusPageBagde } from '../../../../components/StatusPageBagde';
 import { TransformDataEditorJS } from '../../../../libs/TransformDataEditorJs';
 import Switch from 'react-switch';
@@ -11,7 +11,7 @@ import { RenderEditButton } from '../../../../components/RenderEditButton';
 import { ReverseDataEditorJS } from '../../../../libs/ReverseDataEditorJs';
 import Link from 'next/link';
 import style from './news.module.scss';
-import Select from 'react-select';
+import CreatableSelect from 'react-select/creatable';
 import AuthContext from '../../../../components/Authentication/AuthContext';
 import Layout from '../../../../components/VerticalLayout';
 import { Breadcrumb } from '../../../../components/Common/Breadcrumb';
@@ -23,10 +23,25 @@ import { MediaListByWebsite } from '../../../../components/Media/MediaListByWebs
 import { SignleImageUpload } from '../../../../components/SignleImageUpload';
 import Image from 'next/image';
 import { faImage } from '@fortawesome/free-regular-svg-icons';
+import { parseImageUrl } from '../../../../hook/parseImageUrl';
+import { Label } from 'reactstrap';
+import { Input } from 'reactstrap';
+import requirePermission from '../../../../hook/requirePermission';
+import { WEBSITE_ID } from '../../../../config';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import styled from 'styled-components';
+import { CustomPagination } from '../../../../components/Paginations';
 
 const MUTATION = gql`
   mutation updateNews($id: Int!, $input: NewsInput, $websiteId: Int!) {
     updateNews(id: $id, input: $input, websiteId: $websiteId)
+  }
+`;
+
+const CREATE_NEWS_CATEGORY = gql`
+  mutation createNewsCategory($websiteId: Int!, $input: NewsCategoryInput) {
+    createNewsCategory(input: $input, websiteId: $websiteId)
   }
 `;
 
@@ -37,7 +52,7 @@ export const UPDATE_NEW_STATUS = gql`
 `;
 
 const PAGE_DETAIL = gql`
-  query newsDetail($id: Int!, $websiteId: Int!) {
+  query newsDetail($id: Int!, $websiteId: Int!, $pagination: PaginationInput!) {
     newsDetail(id: $id, websiteId: $websiteId) {
       id
       title
@@ -51,6 +66,23 @@ const PAGE_DETAIL = gql`
     publicNewsCategoryList {
       id
       name
+    }
+
+    activityLogsNews(websiteId: $websiteId, id: $id, pagination: $pagination) {
+      data {
+        id
+        type
+        user_id
+        activity
+        user {
+          fullname
+        }
+      }
+      pagination {
+        total
+        size
+        current
+      }
     }
   }
 `;
@@ -73,28 +105,49 @@ export function EditNewsScreen() {
     showMethod: 'fadeIn',
     hideMethod: 'fadeOut',
   };
+
+  const query = new URLSearchParams(process.browser ? window.location.search : '');
+  const page = query.get('page') ? Number(query.get('page')) : 1;
+
   const { me } = useContext(AuthContext);
   const router = useRouter();
   const [selectImage, setSelectImage] = useState(undefined);
   const [selectedImage, setSelectedImage] = useState(undefined);
   const [firstFeaturedImage, setFirstFeaturedImage] = useState(undefined);
-  const [finaleSelected, setFinaleSelected] = useState(undefined);
+  const [finaleSelected, setFinaleSelected]: any = useState(undefined);
   const [thumbnail, setThumbnail]: any = useState(undefined);
   const [showLog, setShowLog] = useState(false);
-  const [logData, setLogData] = useState(undefined);
+  const [logData, setLogData]: any = useState(undefined);
   const [lgShow, setLgShow] = useState(false);
   const [key, setKey] = useState('media');
+  const [documentDate, setDocumentDate] = useState(new Date());
 
   const { data, loading } = useQuery(PAGE_DETAIL, {
     variables: {
       id: Number(router.query.newsEditId),
       websiteId: Number(router.query.id),
+      pagination: {
+        page,
+        size: 10,
+      },
     },
     onCompleted: data => {
       setThumbnail(data.newsDetail.thumbnail);
-      setFinaleSelected(data.newsDetail.thumbnail);
+      if (data?.newsDetail?.thumbnail) {
+        setFinaleSelected({ featureImage: data.newsDetail.thumbnail });
+      }
     },
   });
+
+  const [createNewsCategory] = useMutation(CREATE_NEWS_CATEGORY, {
+    onCompleted: data => {
+      if (data.createNewsCategory) {
+        toastr.success('Category Created!');
+      }
+    },
+    refetchQueries: ['publicNewsCategoryList', 'newsDetail'],
+  });
+
   const [updateNews] = useMutation(MUTATION, {
     onCompleted: data => {
       if (data.updateNews) {
@@ -149,9 +202,9 @@ export function EditNewsScreen() {
     const input = {
       title: titleInput.value,
       description: result,
-      thumbnail: finaleSelected ? finaleSelected : data.newsDetail.thumbnail,
+      thumbnail: finaleSelected ? finaleSelected?.featureImage : data.newsDetail.thumbnail,
       summary: summaryInput.value,
-      new_category_id: categoryInput?.select?.getValue()[0]?.value,
+      new_category_id: categoryInput?.getValue()[0]?.value,
     };
 
     updateNews({
@@ -193,10 +246,10 @@ export function EditNewsScreen() {
       </Button>
     ) : (
       <>
-        <p style={{ fontStyle: 'italic' }}>Example</p>
+        {/* <p style={{ fontStyle: 'italic' }}>Example</p>
         <Button className="mb-3" variant="danger" style={{ width: '100%' }} onClick={() => onInReview('REVERSION')}>
           <FontAwesomeIcon icon={faTimesCircle} /> Reversion
-        </Button>
+        </Button> */}
       </>
     );
 
@@ -236,7 +289,90 @@ export function EditNewsScreen() {
     setShowLog(true);
   };
 
-  const renderPublished =
+  if (data.activityLogsNews.data.length > 0) {
+    renderNewsLogs = data.activityLogsNews.data.map((item: any) => {
+      return (
+        <>
+          <tr onClick={e => handleShowLog(e, item)} style={{ cursor: 'pointer' }}>
+            {/* <td>
+              <span style={{ fontWeight: 600, fontSize: "10px" }}>
+                {parseTEXT(parseJSON(item.activity).activityType)}
+              </span>
+              <p>{parseJSON(item.activity).changeStatus}</p>
+            </td>
+            <td style={{ fontSize: "12px" }}>
+              {parseJSON(item.activity).logged_at}
+            </td> */}
+            <td>
+              <Row>
+                <Col
+                  md={6}
+                  className="d-flex flex-column"
+                  style={{
+                    fontWeight: 600,
+                    fontSize: '10px',
+                    justifyContent: 'center',
+                  }}
+                >
+                  {parseTEXT(parseJSON(item.activity).activityType)}
+                  <br />
+                  <span
+                    className={`text-${checkStatus(parseJSON(item.activity).changeStatus)}`}
+                    style={{ marginTop: '2px' }}
+                  >
+                    {parseJSON(item.activity).changeStatus}
+                  </span>
+                </Col>
+                <Col md={6} style={{ fontSize: '12px' }}>
+                  {parseJSON(item.activity).logged_at}
+                </Col>
+                <Col md={6}>
+                  <span>
+                    <Image
+                      src={parseImageUrl('/icons/js.png', '500x500')}
+                      // src={parseImageUrl('/icons/js.png', '500x500')}
+                      alt=""
+                      layout="responsive"
+                      width={10}
+                      height={10}
+                      className={`${style.img_radius}`}
+                    />
+                  </span>
+                </Col>
+                <Col md={6} style={{ fontSize: '12px', paddingTop: '8px' }}>
+                  {item.user.fullname}
+                </Col>
+              </Row>
+            </td>
+          </tr>
+          {/* <tr>
+            <td style={{ width: "40%", borderTop: "none" }}>
+              <span>
+                <img
+                  src={item.user.profile}
+                  style={{ width: "80%", height: "auto", borderRadius: "50%" }}
+                />
+              </span>
+            </td>
+            <td style={{ borderTop: "none", fontSize: "12px" }}>
+              {item.user.fullname}
+            </td>
+          </tr> */}
+        </>
+      );
+    });
+  } else {
+    renderNewsLogs = (
+      <>
+        <hr />
+        <div className="d-flex flex-row" style={{ justifyContent: 'center' }}>
+          No Record
+        </div>
+      </>
+    );
+  }
+
+  const renderPublishedOld =
     me.roleName != 'Content Manager' ? (
       renderButton
     ) : (
@@ -274,6 +410,17 @@ export function EditNewsScreen() {
       </>
     );
 
+  const onHandleCreatableNewsCategory = (e: any) => {
+    createNewsCategory({
+      variables: {
+        input: {
+          name: e,
+        },
+        websiteId: Number(router.query.id),
+      },
+    });
+  };
+
   const accessPlugin = me.plugins.find((item: any) => item.slug === 'news');
 
   if (!accessPlugin.access.edit) {
@@ -291,7 +438,19 @@ export function EditNewsScreen() {
         <FontAwesomeIcon icon={faTrash} style={{ cursor: 'pointer' }} className="text-danger mb-3" />
       </div>
       <div>
-        <Image src={finaleSelected} alt="" layout="responsive" width={100} height={100} />
+        {finaleSelected?.featureImage ? (
+          <Image
+            src={parseImageUrl(finaleSelected?.featureImage, '500x500')}
+            alt=""
+            layout="responsive"
+            width={100}
+            height={100}
+          />
+        ) : finaleSelected ? (
+          <Image src={parseImageUrl(finaleSelected, '500x500')} alt="" layout="responsive" width={100} height={100} />
+        ) : (
+          undefined
+        )}
       </div>
     </>
   ) : (
@@ -300,6 +459,45 @@ export function EditNewsScreen() {
         <FontAwesomeIcon icon={faImage} />
       </div>
     </div>
+  );
+
+  const renderPublished = !requirePermission({
+    permissions: ['Site Administrator', 'Content Manager', 'Administrator'],
+  }) ? (
+    renderButton
+  ) : (
+    <>
+      <Form.Group controlId="formBasicCheckbox">
+        <Switch
+          checked={data.newsDetail.status === 'PUBLISHED' ? true : false}
+          onChange={(checked: any) => {
+            if (!checked) {
+              const isDeactived = window.confirm('Are you sure you want to unpublished this page ?');
+              if (isDeactived) {
+                updateStatus({
+                  variables: {
+                    id: Number(router.query.newsEditId),
+                    websiteId: Number(router.query.id),
+                    status: checked ? 'PUBLISHED' : 'REVERSION',
+                  },
+                });
+              }
+            } else {
+              const isDeactived = window.confirm('Are you sure you want to published this page ?');
+              if (isDeactived) {
+                updateStatus({
+                  variables: {
+                    id: Number(router.query.newsEditId),
+                    websiteId: Number(router.query.id),
+                    status: checked ? 'PUBLISHED' : 'REVERSION',
+                  },
+                });
+              }
+            }
+          }}
+        />
+      </Form.Group>
+    </>
   );
 
   return (
@@ -364,11 +562,27 @@ export function EditNewsScreen() {
               <div style={{ position: 'sticky', top: '90px', marginBottom: '25px' }}>
                 <Card>
                   <Card.Body>
-                    {renderEditButton}
-                    {renderPublished}
-                    <h6>Example</h6>
+                    <h6>Publish</h6>
                     <hr />
-                    <Select
+                    {renderPublished}
+                    <hr />
+                    <h6>Reversion</h6>
+                    <hr />
+                    {/* {renderEditButton} */}
+                    {renderPublishedOld}
+
+                    <Col md={6}>
+                      <Form.Label>Select Date</Form.Label>
+                      <DatePicker
+                        selected={documentDate}
+                        onChange={(date: any) => setDocumentDate(date)}
+                        className="form-control"
+                        dateFormat="dd/MM/yyyy"
+                      />
+                    </Col>
+                    <hr />
+                    <CreatableSelect
+                      isClearable
                       options={data.publicNewsCategoryList.map((x: any) => {
                         return {
                           value: x.id,
@@ -385,8 +599,9 @@ export function EditNewsScreen() {
                       }}
                       ref={node => (categoryInput = node)}
                       name="category"
+                      onCreateOption={e => onHandleCreatableNewsCategory(e)}
                     />
-                    <h6 className="mt-3">Example</h6>
+                    <h6 className="mt-3">Upload File</h6>
                     <hr />
                     {renderFeaturedImage}
                     <Modal
@@ -457,6 +672,90 @@ export function EditNewsScreen() {
                     </Modal>
                   </Card.Body>
                 </Card>
+
+                <Modal show={showLog} onHide={() => setShowLog(false)} size="lg">
+                  <Modal.Header closeButton>Activity Logs</Modal.Header>
+
+                  <Modal.Body>
+                    <Row>
+                      <LineCol md={6}>
+                        <Row className="p-10" style={{ gap: '20px' }}>
+                          <Col>
+                            <Image
+                              src={
+                                logData?.user?.profile
+                                  ? parseImageUrl(logData?.user?.profile, '244x244')
+                                  : parseImageUrl('/user-placeholder-image.jpeg', '244x244')
+                              }
+                              width="250px"
+                              height="250px"
+                            />
+                          </Col>
+                          <Col>
+                            <p style={{ fontSize: '1.6rem' }}>{logData?.user?.fullname}</p>
+                            <p>Nationality: </p>
+                            <p>Gender: </p>
+                          </Col>
+                        </Row>
+                      </LineCol>
+                      <Col md={6}>
+                        <Row className="p-10" style={{ gap: '20px' }}>
+                          <Col>
+                            <p style={{ fontSize: '1.6rem' }}>Activity Log</p>
+                            <p>
+                              type:
+                              {/* {logData?.type} */}
+                            </p>
+                            <p>activity: {parseTEXT(parseJSON(logData?.activity)?.activityType)}</p>
+                            {parseJSON(logData?.activity)?.changeStatus ? (
+                              <p>
+                                status to:{' '}
+                                <span className={`text-${checkStatus(parseJSON(logData?.activity)?.changeStatus)}`}>
+                                  {parseJSON(logData?.activity)?.changeStatus}
+                                </span>
+                              </p>
+                            ) : (
+                              ''
+                            )}
+                            <p>changed at: {parseJSON(logData?.activity)?.logged_at}</p>
+                          </Col>
+                        </Row>
+                      </Col>
+                    </Row>
+                  </Modal.Body>
+                </Modal>
+
+                <Card>
+                  <Card.Body>
+                    <div className="d-flex m-t-10 p-l-10 m-b-10 no-block">
+                      <h5 className="card-title m-b-0 align-self-center">News Activity Logs</h5>
+                    </div>
+                    <div className="table-wrapper bookmarking">
+                      {/* <div className="bookmarking-main">
+                        {" "}
+                        <span>
+                          <i className="fas fa-circle text-primary" />
+                          Input
+                        </span>
+                        <span>
+                          <i className="fas fa-circle text-warning" />
+                          Output
+                        </span>{" "}
+                      </div> */}
+                      <div className="scrollbox">
+                        <Table hover responsive className="m-b-5">
+                          <tbody>{renderNewsLogs}</tbody>
+                        </Table>
+                        <CustomPagination
+                          total={data?.activityLogsNews?.pagination?.total}
+                          currentPage={data?.activityLogsNews?.pagination?.current}
+                          size={data?.activityLogsNews?.pagination?.size}
+                          limit={10}
+                        />
+                      </div>
+                    </div>
+                  </Card.Body>
+                </Card>
               </div>
             </Col>
           </Row>
@@ -465,3 +764,11 @@ export function EditNewsScreen() {
     </Layout>
   );
 }
+
+const LineCol = styled(Col)`
+  border-right: 0px;
+
+  @media screen and (min-width: 992px) {
+    border-right: 2px solid #0e0e0e0e;
+  }
+`;

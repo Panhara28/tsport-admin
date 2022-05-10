@@ -114,6 +114,9 @@ export function MediaListByWebsite({
   } else {
     convertFileWord = selectImage?.mimetype;
   }
+
+  console.log('selectedImage', selectedImage);
+
   return (
     <>
       <Row>
