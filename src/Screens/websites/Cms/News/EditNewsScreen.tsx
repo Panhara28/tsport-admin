@@ -194,7 +194,7 @@ export function EditNewsScreen() {
   let categoryInput: any;
 
   const onSubmit = (e: any) => {
-    e.preventDefault();
+    e?.preventDefault();
     const description = localStorage.getItem('newsDataEdit');
     const result =
       description === null
@@ -247,7 +247,15 @@ export function EditNewsScreen() {
         <>
           <h6>Reversion</h6>
           <hr />
-          <Button className="mb-3" variant="warning" style={{ width: '100%' }} onClick={() => onInReview('INREVIEW')}>
+          <Button
+            className="mb-3"
+            variant="warning"
+            style={{ width: '100%' }}
+            onClick={(e: any) => {
+              onInReview('INREVIEW');
+              onSubmit(e);
+            }}
+          >
             <FontAwesomeIcon icon={faPaperPlane} /> Edit & Review
           </Button>
           <hr />
@@ -258,7 +266,15 @@ export function EditNewsScreen() {
             <h6>Reversion</h6>
             <hr />
             <p style={{ fontStyle: 'italic' }}>Example</p>
-            <Button className="mb-3" variant="danger" style={{ width: '100%' }} onClick={() => onInReview('REVERSION')}>
+            <Button
+              className="mb-3"
+              variant="danger"
+              style={{ width: '100%' }}
+              onClick={(e: any) => {
+                onInReview('REVERSION');
+                onSubmit(e);
+              }}
+            >
               <FontAwesomeIcon icon={faTimesCircle} /> Reversion
             </Button>
             <hr />
@@ -269,7 +285,15 @@ export function EditNewsScreen() {
       <>
         <h6>Reversion</h6>
         <hr />
-        <Button className="mb-3" variant="warning" style={{ width: '100%' }} onClick={() => onInReview('INREVIEW')}>
+        <Button
+          className="mb-3"
+          variant="warning"
+          style={{ width: '100%' }}
+          onClick={(e: any) => {
+            onInReview('INREVIEW');
+            onSubmit(e);
+          }}
+        >
           <FontAwesomeIcon icon={faPaperPlane} /> Edit & Review
         </Button>
         <hr />
@@ -279,7 +303,15 @@ export function EditNewsScreen() {
         <h6>Reversion</h6>
         <hr />
         <p style={{ fontStyle: 'italic' }}>Example</p>
-        <Button className="mb-3" variant="danger" style={{ width: '100%' }} onClick={() => onInReview('REVERSION')}>
+        <Button
+          className="mb-3"
+          variant="danger"
+          style={{ width: '100%' }}
+          onClick={(e: any) => {
+            onInReview('REVERSION');
+            onSubmit(e);
+          }}
+        >
           <FontAwesomeIcon icon={faTimesCircle} /> Reversion
         </Button>
         <hr />
@@ -498,6 +530,14 @@ export function EditNewsScreen() {
           />
         ) : finaleSelected ? (
           <Image src={parseImageUrl(finaleSelected, '500x500')} alt="" layout="responsive" width={100} height={100} />
+        ) : data?.newsDetail?.thumbnail ? (
+          <Image
+            src={parseImageUrl(data?.newsDetail?.thumbnail, '500x500')}
+            alt=""
+            layout="responsive"
+            width={100}
+            height={100}
+          />
         ) : (
           undefined
         )}
@@ -527,6 +567,7 @@ export function EditNewsScreen() {
             if (!checked) {
               const isDeactived = window.confirm('Are you sure you want to unpublished this page ?');
               if (isDeactived) {
+                onSubmit(undefined);
                 updateStatus({
                   variables: {
                     id: Number(router.query.newsEditId),
@@ -538,6 +579,7 @@ export function EditNewsScreen() {
             } else {
               const isDeactived = window.confirm('Are you sure you want to published this page ?');
               if (isDeactived) {
+                onSubmit(undefined);
                 updateStatus({
                   variables: {
                     id: Number(router.query.newsEditId),
