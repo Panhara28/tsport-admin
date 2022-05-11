@@ -31,8 +31,6 @@ export function CustomPagination(props: Props) {
   const current_url: string = router.asPath.split('?')[0];
   const base: string = current_url + '?' + (search.toString() !== '' ? search.toString() + '&' : '');
 
-  console.log(base);
-
   let pagesPage = Math.ceil(props.total / props.limit!);
 
   let middle = pagesPage < 5 ? pagesPage : 5;

@@ -65,7 +65,7 @@ function FormBody({ update, defaultValues }: any) {
     update({
       name,
       description,
-      website_logo: selectedImage.featureImage,
+      website_logo: selectedImage?.featureImage,
       facebook_link,
       telegram_link,
     });

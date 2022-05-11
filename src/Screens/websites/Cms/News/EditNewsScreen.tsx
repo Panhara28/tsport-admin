@@ -41,7 +41,13 @@ const MUTATION = gql`
 
 const CREATE_NEWS_CATEGORY = gql`
   mutation createNewsCategory($websiteId: Int!, $input: NewsCategoryInput) {
-    createNewsCategory(input: $input, websiteId: $websiteId)
+    createNewsCategory(input: $input, websiteId: $websiteId) {
+      success
+      category {
+        id
+        name
+      }
+    }
   }
 `;
 
@@ -76,6 +82,7 @@ const PAGE_DETAIL = gql`
         activity
         user {
           fullname
+          profile_picture
         }
       }
       pagination {
@@ -108,6 +115,7 @@ export function EditNewsScreen() {
 
   const query = new URLSearchParams(process.browser ? window.location.search : '');
   const page = query.get('page') ? Number(query.get('page')) : 1;
+  const [newsCategory, setNewsCategory] = useState<any>(undefined);
 
   const { me } = useContext(AuthContext);
   const router = useRouter();
@@ -143,6 +151,10 @@ export function EditNewsScreen() {
     onCompleted: data => {
       if (data.createNewsCategory) {
         toastr.success('Category Created!');
+        setNewsCategory({
+          label: data.createNewsCategory?.category?.name,
+          value: data.createNewsCategory?.category?.id,
+        });
       }
     },
     refetchQueries: ['publicNewsCategoryList', 'newsDetail'],
@@ -411,7 +423,10 @@ export function EditNewsScreen() {
                 <Col md={6}>
                   <div style={{ width: 50, height: 50 }}>
                     <Image
-                      src={parseImageUrl('/userplacehoder.png', '200x200')}
+                      src={parseImageUrl(
+                        item?.user?.profile_picture ? item?.user?.profile_picture : '/userplacehoder.png',
+                        '200x200',
+                      )}
                       // src={parseImageUrl('/icons/js.png', '500x500')}
                       alt=""
                       layout="responsive"
@@ -676,14 +691,20 @@ export function EditNewsScreen() {
                         };
                       })}
                       defaultValue={{
-                        value: data.publicNewsCategoryList.filter(
-                          (news: { id: any }) => news.id === data.newsDetail.new_category_id,
-                        )[0]?.id,
-                        label: data.publicNewsCategoryList.filter(
-                          (news: { id: any }) => news.id === data.newsDetail.new_category_id,
-                        )[0]?.name,
+                        value: data?.newsDetail?.new_category_id
+                          ? data.publicNewsCategoryList.filter(
+                              (news: { id: any }) => news.id === data.newsDetail.new_category_id,
+                            )[0]?.id
+                          : undefined,
+                        label: data?.newsDetail?.new_category_id
+                          ? data.publicNewsCategoryList.filter(
+                              (news: { id: any }) => news.id === data.newsDetail.new_category_id,
+                            )[0]?.name
+                          : 'សកម្មភាពប្រចាំថ្ងៃ',
                       }}
                       ref={node => (categoryInput = node)}
+                      value={newsCategory}
+                      onChange={(e: any) => setNewsCategory(e)}
                       name="category"
                       onCreateOption={e => onHandleCreatableNewsCategory(e)}
                     />
@@ -769,8 +790,8 @@ export function EditNewsScreen() {
                           <Col>
                             <Image
                               src={
-                                logData?.user?.profile
-                                  ? parseImageUrl(logData?.user?.profile, '244x244')
+                                logData?.user?.profile_picture
+                                  ? parseImageUrl(logData?.user?.profile_picture, '244x244')
                                   : parseImageUrl('/user-placeholder-image.jpeg', '244x244')
                               }
                               width="250px"

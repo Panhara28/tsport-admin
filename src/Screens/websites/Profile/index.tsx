@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { faEdit, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Link from 'next/link';
 import { useContext } from 'react';
 import { Row } from 'reactstrap';
 import { Col } from 'reactstrap';
@@ -18,6 +19,9 @@ import Layout from '../../../components/VerticalLayout';
 export function ProfileScreen() {
   const { me } = useContext(AuthContext);
   const renderProfilePicture = me.profilePicture ? me.profilePicture : '/userplacehoder.png';
+
+  console.log(me);
+
   return (
     <Layout>
       <div className="page-content">
@@ -47,9 +51,11 @@ export function ProfileScreen() {
                     <p className="text-muted">Software Developer</p>
 
                     <div className="mt-4">
-                      <button type="button" className="btn btn-primary btn-sm">
-                        <FontAwesomeIcon icon={faEdit} className="me-2" /> Edit Profile
-                      </button>
+                      <Link href="/mochub/profile/edit">
+                        <button type="button" className="btn btn-primary btn-sm">
+                          <FontAwesomeIcon icon={faEdit} className="me-2" /> Edit Profile
+                        </button>
+                      </Link>
                     </div>
                   </div>
 
@@ -63,15 +69,46 @@ export function ProfileScreen() {
                       </div>
                       <div className="mt-4">
                         <p className="mb-1">Mobile :</p>
-                        <h5 className="font-size-16">012-234-5678</h5>
+                        <h5 className="font-size-16">{me.phoneNumber}</h5>
                       </div>
                       <div className="mt-4">
                         <p className="mb-1">E-mail :</p>
-                        <h5 className="font-size-16">marcus@minible.com</h5>
+                        <h5 className="font-size-16">{me.email}</h5>
                       </div>
                       <div className="mt-4">
                         <p className="mb-1">Location :</p>
-                        <h5 className="font-size-16">California, United States</h5>
+                        <h5 className="font-size-16" style={{ lineHeight: '24px' }}>
+                          {me.contact_city_or_province ? (
+                            <>
+                              <b>ខេត្ត/ក្រុង:</b> me.contact_city_or_province
+                            </>
+                          ) : (
+                            undefined
+                          )}
+                          {me.contact_district ? (
+                            <>
+                              , <b>ស្រុក/ខណ្ឌ:</b>
+                              {me.contact_district}
+                            </>
+                          ) : (
+                            undefined
+                          )}
+                          {me.contact_commune ? (
+                            <>
+                              , <b>ឃុំ/សង្កាត់: </b>
+                              {me.contact_commune}
+                            </>
+                          ) : (
+                            undefined
+                          )}
+                          {me.contact_village ? (
+                            <>
+                              , <b>ភូមិ: </b> {me.contact_village}
+                            </>
+                          ) : (
+                            undefined
+                          )}
+                        </h5>
                       </div>
                     </div>
                   </div>

@@ -1,6 +1,6 @@
-import { gql, useQuery } from '@apollo/client';
+import { gql, useMutation, useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Button, Form, Modal, Tab, Tabs } from 'react-bootstrap';
 import { Row } from 'reactstrap';
 import { Col } from 'reactstrap';
@@ -22,25 +22,32 @@ import { faImage, faTrash } from '@fortawesome/free-solid-svg-icons';
 import Image from 'next/image';
 import { SignleImageUpload } from '../../../components/SignleImageUpload';
 import { MediaListByWebsite } from '../../../components/Media/MediaListByWebsite';
+import AuthContext from '../../../components/Authentication/AuthContext';
+import toastr from 'toastr';
+import 'toastr/build/toastr.min.css';
+import { ProfileUpload } from '../../../components/ProfileUpload';
 
-const CREATE_MUTATION = gql`
-  mutation adminCreateUser($input: UserInput) {
-    adminCreateUser(input: $input)
-  }
-`;
+toastr.options = {
+  closeButton: false,
+  debug: false,
+  newestOnTop: false,
+  progressBar: false,
+  positionClass: 'toast-bottom-right',
+  preventDuplicates: false,
+  onclick: null,
+  showDuration: '2000',
+  hideDuration: '2000',
+  timeOut: '2000',
+  extendedTimeOut: '2000',
+  showEasing: 'swing',
+  hideEasing: 'linear',
+  showMethod: 'fadeIn',
+  hideMethod: 'fadeOut',
+};
 
 const UPDATE_MUTATION = gql`
   mutation adminUpdateUser($id: Int!, $input: UserInput) {
     adminUpdateUser(id: $id, input: $input)
-  }
-`;
-
-const PROVINCES = gql`
-  query provinceList {
-    provinceList {
-      id
-      name
-    }
   }
 `;
 
@@ -70,53 +77,7 @@ type Props = {
   peopleEditId?: number;
 };
 
-function FormBodyCreate({ update, defaultValues }: any) {
-  const [fullname, setFullName] = useState(defaultValues?.fullname || '');
-  const [username, setUsername] = useState(defaultValues?.username || '');
-
-  const onSave = () => {
-    update({
-      fullname,
-      username,
-    });
-  };
-
-  return (
-    <>
-      <Row>
-        <h4>Security Info</h4>
-        <hr />
-        <Col md={6}>
-          <XForm.Text label="Username" value={username} onChange={e => setUsername(e.currentTarget.value)} />
-        </Col>
-      </Row>
-      <Row>
-        <h4>User Info</h4>
-        <hr />
-        <Col md={6}>
-          <XForm.Text label="Fullname" value={fullname} onChange={e => setFullName(e.currentTarget.value)} />
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <XForm.Footer>
-            <XForm.Button onClick={onSave}>Save</XForm.Button>
-          </XForm.Footer>
-        </Col>
-      </Row>
-    </>
-  );
-}
-
-// dob
-//     homeNo
-//     streetNo
-//     contact_village
-//     contact_district
-//     contact_commune
-//     contact_city_or_province
 const FormBodyEdit = ({ update, defaultValues }: any) => {
-  const { data, loading } = useQuery(PROVINCES);
   const [fullname, setFullName] = useState(defaultValues?.fullname || '');
   const [username, setUsername] = useState(defaultValues?.username || '');
   const [nationality, setNationality] = useState(defaultValues?.nationality || '');
@@ -160,7 +121,7 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
       : undefined,
   );
 
-  if (loading || !data) return <div>Loading...</div>;
+  // if (loading || !data) return <div>Loading...</div>;
   const onSave = (e: any) => {
     e.preventDefault();
 
@@ -183,7 +144,7 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
       contact_district: selectContactDistrict ? selectContactDistrict.label : defaultValues?.contact_district,
       contact_commune: selectContactCommune ? selectContactCommune.label : defaultValues?.contact_commune,
       contact_village: selectContactVillage ? selectContactVillage.label : defaultValues?.contact_village,
-      profile_picture: selectedImage?.featureImage,
+      profile_picture: finaleSelected,
     };
 
     update({
@@ -228,9 +189,17 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
     </div>
   ) : (
     <div className={style.newsFeatureImageContainer} style={{ height: '90%' }} onClick={() => setLgShow(true)}>
-      <div className={style.newsFeatureImageIcon}>
-        <FontAwesomeIcon icon={faImage} />
-      </div>
+      {/* <div className={style.newsFeatureImageIcon}> */}
+      {/* <FontAwesomeIcon icon={faImage} /> */}
+      <ProfileUpload
+        setImage={setFinaleSelected}
+        setKey={setKey}
+        height="100%"
+        width="100%"
+        setFirstFeaturedImage={setFirstFeaturedImage}
+        setSelectImage={setSelectedImage}
+      />
+      {/* </div> */}
     </div>
   );
 
@@ -240,67 +209,7 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
         <h4>Profile</h4>
         <div style={{ width: 140, height: 140 }}>{renderFeaturedImage}</div>
       </Row>
-      <Modal size="lg" show={lgShow} onHide={() => setLgShow(false)} aria-labelledby="example-modal-sizes-title-lg">
-        <Modal.Header closeButton>
-          <Modal.Title id="example-modal-sizes-title-sm">Media</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Tabs
-            activeKey={key}
-            onSelect={(k: any) => {
-              setKey(k);
-            }}
-            id="uncontrolled-tab-example"
-            className="mb-3"
-          >
-            <Tab eventKey="upload" title="Upload">
-              <div className={style.newsUploadWrapper}>
-                <div className="text-center">
-                  <h4>Drop files to upload</h4>
-                  <p>or</p>
-                </div>
-                <div className={style.newsUploadContainer}>
-                  <SignleImageUpload
-                    setImage={setThumbnail}
-                    setKey={setKey}
-                    width="15%"
-                    height="150px"
-                    websiteId={Number(router.query.id)}
-                    setFirstFeaturedImage={setFirstFeaturedImage}
-                    setSelectImage={setSelectImage}
-                  />
-                </div>
-              </div>
-            </Tab>
-            <Tab eventKey="media" title="Media">
-              <MediaListByWebsite
-                websiteId={Number(router.query.id)}
-                setSelectedImage={setSelectedImage}
-                firstFeaturedImage={firstFeaturedImage}
-                setFirstFeaturedImage={setFirstFeaturedImage}
-                selectImage={selectImage}
-                setSelectImage={setSelectImage}
-                selectedImage={selectedImage}
-              />
-            </Tab>
-          </Tabs>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button
-            variant="primary"
-            onClick={() => {
-              setLgShow(false);
-              if (firstFeaturedImage) {
-                setFinaleSelected(firstFeaturedImage);
-              } else {
-                setFinaleSelected(selectedImage);
-              }
-            }}
-          >
-            Set featured image
-          </Button>
-        </Modal.Footer>
-      </Modal>
+
       <Row className="mt-4">
         <h4>Security Info</h4>
         <Col md={6}>
@@ -480,8 +389,35 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
   );
 };
 
-export function EditPeopleInfoScreen({ peopleEditId }: Props) {
+export default function EditProfileInfoScreen({ peopleEditId }: Props) {
   const router = useRouter();
+  const { me } = useContext(AuthContext);
+
+  const [updateProfile] = useMutation(UPDATE_MUTATION, {
+    onCompleted: data => {
+      if (data) {
+        toastr.success('Profile Updated!');
+      }
+    },
+  });
+
+  const update = (input: any) => {
+    updateProfile({
+      variables: {
+        input,
+        id: me?.id,
+      },
+    });
+  };
+
+  const { data, loading } = useQuery(QUERY, {
+    variables: {
+      id: me?.id,
+    },
+  });
+
+  if (!data || loading) return <></>;
+
   return (
     <Layout>
       <div className="page-content">
@@ -489,21 +425,10 @@ export function EditPeopleInfoScreen({ peopleEditId }: Props) {
           <Breadcrumb title="Ministry Of Commerce" breadcrumbItem="Edit Info" />
           <hr />
           <Row>
-            <Col md={3} style={{ borderRight: '1px solid #ccc', height: '100vh' }}>
-              <WebsiteSettingSidebar />
-            </Col>
             <Col md={9}>
               <Card>
                 <CardBody>
-                  <CreateUpdateForm
-                    body={!peopleEditId ? FormBodyCreate : FormBodyEdit}
-                    update={UPDATE_MUTATION}
-                    create={CREATE_MUTATION}
-                    query={QUERY}
-                    id={Number(peopleEditId)}
-                    createReturned={`/mochub/websites/${router.query.id}/add-people`}
-                    refectQuery="userList"
-                  />
+                  <FormBodyEdit defaultValues={data?.adminUserDetail} update={update} />
                 </CardBody>
               </Card>
             </Col>

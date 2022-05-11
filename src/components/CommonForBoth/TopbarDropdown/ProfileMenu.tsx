@@ -3,7 +3,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDown, faArrowAltCircleLeft } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faArrowAltCircleLeft, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { faUser } from '@fortawesome/free-regular-svg-icons';
 import Link from 'next/link';
 import { gql, useMutation } from '@apollo/client';
@@ -53,6 +53,13 @@ export const ProfileMenu = () => {
           <Link href={`/mochub/profile`}>
             <a className="dropdown-item">
               <FontAwesomeIcon icon={faUser} className="font-size-14 align-middle text-muted me-1" /> Profile
+            </a>
+          </Link>
+          <div className="dropdown-divider" />
+          <Link href="/mochub/profile/edit">
+            <a className="dropdown-item">
+              <FontAwesomeIcon icon={faEdit} className=" font-size-14 align-middle me-1 text-muted" />{' '}
+              <span>Edit Profile</span>
             </a>
           </Link>
           <div className="dropdown-divider" />

@@ -8,6 +8,35 @@
   margin-bottom: 4px;
 }
 
+.newsFeatureImageContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 0px 60px;
+  border: 2px dashed #bdc3c7;
+  cursor: pointer;
+  .newsFeatureImageIcon {
+    svg {
+      font-size: 32px;
+      color: #bdc3c7;
+    }
+  }
+}
+
+.newsFeatureImageContainer,
+.icon_upload {
+  height: 5em;
+  background-color: #fff;
+  padding: 0;
+  margin: 1em 0;
+}
+
+.newsUploadContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .select_theme {
   background-color: rgb(250, 251, 252);
   border: 2px solid rgb(223, 225, 230);
