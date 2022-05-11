@@ -409,17 +409,17 @@ export function EditNewsScreen() {
                   {parseJSON(item.activity).logged_at}
                 </Col>
                 <Col md={6}>
-                  <span>
+                  <div style={{ width: 50, height: 50 }}>
                     <Image
-                      src={parseImageUrl('/icons/js.png', '500x500')}
+                      src={parseImageUrl('/userplacehoder.png', '200x200')}
                       // src={parseImageUrl('/icons/js.png', '500x500')}
                       alt=""
                       layout="responsive"
-                      width={10}
-                      height={10}
+                      width={210}
+                      height={210}
                       className={`${style.img_radius}`}
                     />
-                  </span>
+                  </div>
                 </Col>
                 <Col md={6} style={{ fontSize: '12px', paddingTop: '8px' }}>
                   {item.user.fullname}

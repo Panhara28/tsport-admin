@@ -10,17 +10,13 @@ import { gql, useMutation } from '@apollo/client';
 import { useToken } from '../../Authentication/TokenContext';
 import AuthContext from '../../Authentication/AuthContext';
 
-type Props = {
-  websiteId: number;
-};
-
 const MUTATION = gql`
   mutation signOut($token: String!) {
     signOut(token: $token)
   }
 `;
 
-export const ProfileMenu = ({ websiteId }: Props) => {
+export const ProfileMenu = () => {
   const { me } = useContext(AuthContext);
   const [signOut] = useMutation(MUTATION, {
     onCompleted: data => {
@@ -54,7 +50,7 @@ export const ProfileMenu = ({ websiteId }: Props) => {
           <FontAwesomeIcon icon={faAngleDown} className="d-none d-xl-inline-block font-size-15" />
         </DropdownToggle>
         <DropdownMenu className="dropdown-menu-end">
-          <Link href={`/mochub/websites/${websiteId}/profile`}>
+          <Link href={`/mochub/profile`}>
             <a className="dropdown-item">
               <FontAwesomeIcon icon={faUser} className="font-size-14 align-middle text-muted me-1" /> Profile
             </a>
