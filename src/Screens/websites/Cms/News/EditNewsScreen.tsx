@@ -145,6 +145,7 @@ export function EditNewsScreen() {
         setFinaleSelected({ featureImage: data.newsDetail.thumbnail });
       }
     },
+    fetchPolicy: "no-cache"
   });
 
   const [createNewsCategory] = useMutation(CREATE_NEWS_CATEGORY, {
