@@ -29,7 +29,13 @@ const MUTATION = gql`
 
 const CREATE_NEWS_CATEGORY = gql`
   mutation createNewsCategory($websiteId: Int!, $input: NewsCategoryInput) {
-    createNewsCategory(input: $input, websiteId: $websiteId)
+    createNewsCategory(input: $input, websiteId: $websiteId) {
+      success
+      category {
+        id
+        name
+      }
+    }
   }
 `;
 
@@ -65,6 +71,7 @@ export function CreateNewsScreen() {
   const [selectedImage, setSelectedImage]: any = useState(undefined);
   const [firstFeaturedImage, setFirstFeaturedImage]: any = useState(undefined);
   const [finaleSelected, setFinaleSelected]: any = useState(undefined);
+  const [newsCategory, setNewsCategory] = useState<any>(undefined);
 
   const [key, setKey] = useState('media');
   const [lgShow, setLgShow] = useState(false);
@@ -77,6 +84,10 @@ export function CreateNewsScreen() {
     onCompleted: data => {
       if (data.createNewsCategory) {
         toastr.success('Category Created!');
+        setNewsCategory({
+          label: data.createNewsCategory?.category?.name,
+          value: data.createNewsCategory?.category?.id,
+        });
       }
     },
     refetchQueries: ['publicNewsCategoryList'],
@@ -283,6 +294,8 @@ export function CreateNewsScreen() {
                               };
                             })}
                             onCreateOption={e => onHandleCreatableNewsCategory(e)}
+                            onChange={(e: any) => setNewsCategory(e)}
+                            value={newsCategory}
                             name="category"
                           />
                           <h6 className="mt-3">Feature Image</h6>

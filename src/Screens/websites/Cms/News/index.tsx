@@ -1,5 +1,5 @@
 import { gql, useQuery } from '@apollo/client';
-import { faAngleLeft, faEdit, faEye, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faAngleLeft, faEdit, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -12,7 +12,6 @@ import { StatusOption, statusOptions } from '../../../../libs/ReactSelectColor';
 import Layout from '../../../../components/VerticalLayout';
 import { Breadcrumb } from '../../../../components/Common/Breadcrumb';
 import { Card, CardBody, CardTitle, Label } from 'reactstrap';
-import { faSquarePlus } from '@fortawesome/free-regular-svg-icons';
 import AuthContext from '../../../../components/Authentication/AuthContext';
 
 const QUERY = gql`
@@ -64,10 +63,12 @@ export function NewsListScreen() {
     },
     singleValue: (styles, { data }) => ({ ...styles, ...dot(data.color) }),
   };
+
   const [filterStatus, setFilterStatus] = useState<any>({
-    value: 'PENDING',
-    label: 'Pending',
+    value: 'All',
+    label: 'ALL',
   });
+
   const router = useRouter();
   const { data, loading } = useQuery(QUERY, {
     variables: {
@@ -76,7 +77,7 @@ export function NewsListScreen() {
         size: 10,
       },
       filter: {
-        status: filterStatus.value,
+        status: filterStatus.value === 'All' ? undefined : filterStatus.value,
         name: searchByName,
       },
       websiteId: Number(router.query.id),

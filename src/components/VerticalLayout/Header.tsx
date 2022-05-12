@@ -114,7 +114,7 @@ const Header = (props: Props) => {
                 <FontAwesomeIcon icon={faArrowsAlt} />
               </button>
             </Dropdown>
-            <ProfileMenu websiteId={Number(router.query.id)} />
+            <ProfileMenu />
           </div>
         </div>
       </header>
