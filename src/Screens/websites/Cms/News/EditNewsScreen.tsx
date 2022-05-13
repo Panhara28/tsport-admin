@@ -174,7 +174,6 @@ export function EditNewsScreen() {
   });
 
   const [updateStatus] = useMutation(UPDATE_NEW_STATUS, {
-    refetchQueries: ['newsDetail'],
     onError: error => {
       console.log(error.message);
     },
