@@ -31,7 +31,6 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import styled from 'styled-components';
 import { CustomPagination } from '../../../../components/Paginations';
-import RequirePermission from '../../../../hook/requirePermission';
 
 const MUTATION = gql`
   mutation updateNews($id: Int!, $input: NewsInput, $websiteId: Int!) {
@@ -99,7 +98,7 @@ toastr.options = {
   debug: false,
   newestOnTop: false,
   progressBar: false,
-  positionClass: 'toast-bottom-right',
+  positionClass: 'toast-bottom-center',
   preventDuplicates: false,
   onclick: null,
   showDuration: '2000',
@@ -162,7 +161,6 @@ export function EditNewsScreen() {
   const [updateNews] = useMutation(MUTATION, {
     onCompleted: data => {
       if (data.updateNews) {
-        router.push(`/mochub/websites/${router.query.id}/cms/news/${router.query.newsEditId}/edit`);
         toastr.success('Save Draft');
       }
     },
