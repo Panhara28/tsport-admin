@@ -185,6 +185,7 @@ export function EditNewsScreen() {
         status,
       },
     });
+    window.location.reload();
   };
 
   useEffect(() => {
