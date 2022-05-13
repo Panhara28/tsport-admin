@@ -1,11 +1,12 @@
-import { useAuthContext } from '../components/Authentication/AuthContext';
+import { useContext } from 'react';
+import AuthContext, { useAuthContext } from '../components/Authentication/AuthContext';
 
 type requirePermissionProps = {
   permissions?: string[];
 };
 
-export default function requirePermission({ permissions }: requirePermissionProps) {
-  const { me } = useAuthContext();
+export default function RequirePermission({ permissions }: requirePermissionProps) {
+  const { me } = useContext(AuthContext);
 
   let isAllowed = false;
 
