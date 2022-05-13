@@ -26,12 +26,12 @@ import { faImage } from '@fortawesome/free-regular-svg-icons';
 import { parseImageUrl } from '../../../../hook/parseImageUrl';
 import { Label } from 'reactstrap';
 import { Input } from 'reactstrap';
-import requirePermission from '../../../../hook/requirePermission';
 import { WEBSITE_ID } from '../../../../config';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import styled from 'styled-components';
 import { CustomPagination } from '../../../../components/Paginations';
+import RequirePermission from '../../../../hook/requirePermission';
 
 const MUTATION = gql`
   mutation updateNews($id: Int!, $input: NewsInput, $websiteId: Int!) {
@@ -94,31 +94,28 @@ const PAGE_DETAIL = gql`
   }
 `;
 
-export function EditNewsScreen() {
-  toastr.options = {
-    closeButton: false,
-    debug: false,
-    newestOnTop: false,
-    progressBar: false,
-    positionClass: 'toast-bottom-right',
-    preventDuplicates: false,
-    onclick: null,
-    showDuration: '2000',
-    hideDuration: '2000',
-    timeOut: '2000',
-    extendedTimeOut: '2000',
-    showEasing: 'swing',
-    hideEasing: 'linear',
-    showMethod: 'fadeIn',
-    hideMethod: 'fadeOut',
-  };
+toastr.options = {
+  closeButton: false,
+  debug: false,
+  newestOnTop: false,
+  progressBar: false,
+  positionClass: 'toast-bottom-right',
+  preventDuplicates: false,
+  onclick: null,
+  showDuration: '2000',
+  hideDuration: '2000',
+  timeOut: '2000',
+  extendedTimeOut: '2000',
+  showEasing: 'swing',
+  hideEasing: 'linear',
+  showMethod: 'fadeIn',
+  hideMethod: 'fadeOut',
+};
 
+export function EditNewsScreen() {
   const query = new URLSearchParams(process.browser ? window.location.search : '');
   const page = query.get('page') ? Number(query.get('page')) : 1;
   const [newsCategory, setNewsCategory] = useState<any>(undefined);
-
-  const { me } = useContext(AuthContext);
-  const router = useRouter();
   const [selectImage, setSelectImage] = useState(undefined);
   const [selectedImage, setSelectedImage] = useState(undefined);
   const [firstFeaturedImage, setFirstFeaturedImage] = useState(undefined);
@@ -129,6 +126,8 @@ export function EditNewsScreen() {
   const [lgShow, setLgShow] = useState(false);
   const [key, setKey] = useState('media');
   const [documentDate, setDocumentDate] = useState(new Date());
+  const { me } = useContext(AuthContext);
+  const router = useRouter();
 
   const { data, loading } = useQuery(PAGE_DETAIL, {
     variables: {
@@ -384,19 +383,10 @@ export function EditNewsScreen() {
   };
 
   if (data.activityLogsNews.data.length > 0) {
-    renderNewsLogs = data.activityLogsNews.data.map((item: any) => {
+    renderNewsLogs = data.activityLogsNews.data.map((item: any, key: number) => {
       return (
         <>
-          <tr onClick={e => handleShowLog(e, item)} style={{ cursor: 'pointer' }}>
-            {/* <td>
-              <span style={{ fontWeight: 600, fontSize: "10px" }}>
-                {parseTEXT(parseJSON(item.activity).activityType)}
-              </span>
-              <p>{parseJSON(item.activity).changeStatus}</p>
-            </td>
-            <td style={{ fontSize: "12px" }}>
-              {parseJSON(item.activity).logged_at}
-            </td> */}
+          <tr key={key} onClick={e => handleShowLog(e, item)} style={{ cursor: 'pointer' }}>
             <td>
               <Row>
                 <Col
@@ -427,7 +417,6 @@ export function EditNewsScreen() {
                         item?.user?.profile_picture ? item?.user?.profile_picture : '/userplacehoder.png',
                         '200x200',
                       )}
-                      // src={parseImageUrl('/icons/js.png', '500x500')}
                       alt=""
                       layout="responsive"
                       width={210}
@@ -442,19 +431,6 @@ export function EditNewsScreen() {
               </Row>
             </td>
           </tr>
-          {/* <tr>
-            <td style={{ width: "40%", borderTop: "none" }}>
-              <span>
-                <img
-                  src={item.user.profile}
-                  style={{ width: "80%", height: "auto", borderRadius: "50%" }}
-                />
-              </span>
-            </td>
-            <td style={{ borderTop: "none", fontSize: "12px" }}>
-              {item.user.fullname}
-            </td>
-          </tr> */}
         </>
       );
     });
@@ -566,49 +542,90 @@ export function EditNewsScreen() {
     </div>
   );
 
-  const renderPublished = !requirePermission({
-    permissions: ['Site Administrator', 'Content Manager', 'Administrator'],
-  }) ? (
-    // renderButton
-    <></>
-  ) : (
-    <>
-      <h6>Publish</h6>
-      <hr />
-      <Form.Group controlId="formBasicCheckbox">
-        <Switch
-          checked={data.newsDetail.status === 'PUBLISHED' ? true : false}
-          onChange={(checked: any) => {
-            if (!checked) {
-              const isDeactived = window.confirm('Are you sure you want to unpublished this page ?');
-              if (isDeactived) {
-                onSubmit(undefined);
-                updateStatus({
-                  variables: {
-                    id: Number(router.query.newsEditId),
-                    websiteId: Number(router.query.id),
-                    status: checked ? 'PUBLISHED' : 'REVERSION',
-                  },
-                });
+  let renderPublished;
+
+  if (me.roleName === 'Site Administrator' || me.roleName === 'Content Manager' || me.roleName === 'Administrator') {
+    renderPublished = (
+      <>
+        <h6>Publish</h6>
+        <hr />
+        <Form.Group controlId="formBasicCheckbox">
+          <Switch
+            checked={data.newsDetail.status === 'PUBLISHED' ? true : false}
+            onChange={(checked: any) => {
+              if (!checked) {
+                const isDeactived = window.confirm('Are you sure you want to unpublished this page ?');
+                if (isDeactived) {
+                  onSubmit(undefined);
+                  updateStatus({
+                    variables: {
+                      id: Number(router.query.newsEditId),
+                      websiteId: Number(router.query.id),
+                      status: checked ? 'PUBLISHED' : 'REVERSION',
+                    },
+                  });
+                }
+              } else {
+                const isDeactived = window.confirm('Are you sure you want to published this page ?');
+                if (isDeactived) {
+                  onSubmit(undefined);
+                  updateStatus({
+                    variables: {
+                      id: Number(router.query.newsEditId),
+                      websiteId: Number(router.query.id),
+                      status: checked ? 'PUBLISHED' : 'REVERSION',
+                    },
+                  });
+                }
               }
-            } else {
-              const isDeactived = window.confirm('Are you sure you want to published this page ?');
-              if (isDeactived) {
-                onSubmit(undefined);
-                updateStatus({
-                  variables: {
-                    id: Number(router.query.newsEditId),
-                    websiteId: Number(router.query.id),
-                    status: checked ? 'PUBLISHED' : 'REVERSION',
-                  },
-                });
-              }
-            }
-          }}
-        />
-      </Form.Group>
-    </>
-  );
+            }}
+          />
+        </Form.Group>
+      </>
+    );
+  }
+  // const renderPublished = !RequirePermission({
+  //   permissions: ['Site Administrator', 'Content Manager', 'Administrator'],
+  // }) ? (
+  //   <></>
+  // ) : (
+  //   <>
+  //     <h6>Publish</h6>
+  //     <hr />
+  //     <Form.Group controlId="formBasicCheckbox">
+  //       <Switch
+  //         checked={data.newsDetail.status === 'PUBLISHED' ? true : false}
+  //         onChange={(checked: any) => {
+  //           if (!checked) {
+  //             const isDeactived = window.confirm('Are you sure you want to unpublished this page ?');
+  //             if (isDeactived) {
+  //               onSubmit(undefined);
+  //               updateStatus({
+  //                 variables: {
+  //                   id: Number(router.query.newsEditId),
+  //                   websiteId: Number(router.query.id),
+  //                   status: checked ? 'PUBLISHED' : 'REVERSION',
+  //                 },
+  //               });
+  //             }
+  //           } else {
+  //             const isDeactived = window.confirm('Are you sure you want to published this page ?');
+  //             if (isDeactived) {
+  //               onSubmit(undefined);
+  //               updateStatus({
+  //                 variables: {
+  //                   id: Number(router.query.newsEditId),
+  //                   websiteId: Number(router.query.id),
+  //                   status: checked ? 'PUBLISHED' : 'REVERSION',
+  //                 },
+  //               });
+  //             }
+  //           }
+  //         }}
+  //       />
+  //     </Form.Group>
+  //   </>
+  // );
 
   return (
     <Layout>
@@ -789,6 +806,7 @@ export function EditNewsScreen() {
                         <Row className="p-10" style={{ gap: '20px' }}>
                           <Col>
                             <Image
+                              layout="responsive"
                               src={
                                 logData?.user?.profile_picture
                                   ? parseImageUrl(logData?.user?.profile_picture, '244x244')
@@ -796,6 +814,7 @@ export function EditNewsScreen() {
                               }
                               width="250px"
                               height="250px"
+                              alt=""
                             />
                           </Col>
                           <Col>
@@ -809,10 +828,6 @@ export function EditNewsScreen() {
                         <Row className="p-10" style={{ gap: '20px' }}>
                           <Col>
                             <p style={{ fontSize: '1.6rem' }}>Activity Log</p>
-                            <p>
-                              type:
-                              {/* {logData?.type} */}
-                            </p>
                             <p>activity: {parseTEXT(parseJSON(logData?.activity)?.activityType)}</p>
                             {parseJSON(logData?.activity)?.changeStatus ? (
                               <p>
@@ -838,17 +853,6 @@ export function EditNewsScreen() {
                       <h5 className="card-title m-b-0 align-self-center">News Activity Logs</h5>
                     </div>
                     <div className="table-wrapper bookmarking">
-                      {/* <div className="bookmarking-main">
-                        {" "}
-                        <span>
-                          <i className="fas fa-circle text-primary" />
-                          Input
-                        </span>
-                        <span>
-                          <i className="fas fa-circle text-warning" />
-                          Output
-                        </span>{" "}
-                      </div> */}
                       <div className="scrollbox">
                         <Table hover responsive className="m-b-5">
                           <tbody>{renderNewsLogs}</tbody>

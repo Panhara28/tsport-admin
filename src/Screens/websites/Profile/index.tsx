@@ -20,8 +20,6 @@ export function ProfileScreen() {
   const { me } = useContext(AuthContext);
   const renderProfilePicture = me.profilePicture ? me.profilePicture : '/userplacehoder.png';
 
-  console.log(me);
-
   return (
     <Layout>
       <div className="page-content">
