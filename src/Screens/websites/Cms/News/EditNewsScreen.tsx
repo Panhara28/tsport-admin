@@ -167,7 +167,11 @@ export function EditNewsScreen() {
     },
   });
 
-  const [updateStatus] = useMutation(UPDATE_NEW_STATUS);
+  const [updateStatus] = useMutation(UPDATE_NEW_STATUS, {
+    onCompleted: () => {
+      window.location.replace(`/mochub/websites/${router.query.id}/cms/news/${router.query.newsEditId}/edit`);
+    },
+  });
 
   const onInReview = (status: string) => {
     updateStatus({
