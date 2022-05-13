@@ -143,7 +143,7 @@ export function EditNewsScreen() {
         setFinaleSelected({ featureImage: data.newsDetail.thumbnail });
       }
     },
-    fetchPolicy: "no-cache"
+    fetchPolicy: 'no-cache',
   });
 
   const [createNewsCategory] = useMutation(CREATE_NEWS_CATEGORY, {
@@ -156,7 +156,7 @@ export function EditNewsScreen() {
         });
       }
     },
-    refetchQueries: ['publicNewsCategoryList', 'newsDetail'],
+    refetchQueries: ['publicNewsCategoryList'],
   });
 
   const [updateNews] = useMutation(MUTATION, {
@@ -165,18 +165,9 @@ export function EditNewsScreen() {
         toastr.success('Save Draft');
       }
     },
-    refetchQueries: ['newsDetail'],
-
-    onError: error => {
-      toastr.error(error.message);
-    },
   });
 
-  const [updateStatus] = useMutation(UPDATE_NEW_STATUS, {
-    onError: error => {
-      console.log(error.message);
-    },
-  });
+  const [updateStatus] = useMutation(UPDATE_NEW_STATUS);
 
   const onInReview = (status: string) => {
     updateStatus({
@@ -185,8 +176,8 @@ export function EditNewsScreen() {
         websiteId: Number(router.query.id),
         status,
       },
+      refetchQueries: ['newsDetail'],
     });
-    window.location.reload();
   };
 
   useEffect(() => {
@@ -262,7 +253,7 @@ export function EditNewsScreen() {
             style={{ width: '100%' }}
             onClick={(e: any) => {
               onInReview('INREVIEW');
-              onSubmit(e);
+              // onSubmit(e);
             }}
           >
             <FontAwesomeIcon icon={faPaperPlane} /> Edit & Review
@@ -281,7 +272,7 @@ export function EditNewsScreen() {
               style={{ width: '100%' }}
               onClick={(e: any) => {
                 onInReview('REVERSION');
-                onSubmit(e);
+                // onSubmit(e);
               }}
             >
               <FontAwesomeIcon icon={faTimesCircle} /> Reversion
@@ -300,7 +291,7 @@ export function EditNewsScreen() {
           style={{ width: '100%' }}
           onClick={(e: any) => {
             onInReview('INREVIEW');
-            onSubmit(e);
+            // onSubmit(e);
           }}
         >
           <FontAwesomeIcon icon={faPaperPlane} /> Edit & Review
@@ -318,7 +309,7 @@ export function EditNewsScreen() {
           style={{ width: '100%' }}
           onClick={(e: any) => {
             onInReview('REVERSION');
-            onSubmit(e);
+            // onSubmit(e);
           }}
         >
           <FontAwesomeIcon icon={faTimesCircle} /> Reversion
