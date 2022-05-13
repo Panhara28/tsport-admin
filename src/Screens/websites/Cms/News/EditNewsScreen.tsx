@@ -186,7 +186,6 @@ export function EditNewsScreen() {
         websiteId: Number(router.query.id),
         status,
       },
-      refetchQueries: ['newsDetail'],
     });
   };
 
@@ -202,6 +201,8 @@ export function EditNewsScreen() {
   let titleInput: any;
   let summaryInput: any;
   let categoryInput: any;
+
+  if (loading || !data) return <div>Loading...</div>;
 
   const onSubmit = (e: any) => {
     e?.preventDefault();
@@ -229,8 +230,6 @@ export function EditNewsScreen() {
 
     localStorage.removeItem('newsData');
   };
-
-  if (loading || !data) return <div>Loading...</div>;
 
   const parseJSON = (json: string) => {
     if (json === undefined || json === null) {
