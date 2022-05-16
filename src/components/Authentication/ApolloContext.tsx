@@ -5,6 +5,6 @@ import { useToken } from './TokenContext';
 
 export default function ApolloContext(props: PropsWithChildren<{}>) {
   const { token } = useToken();
-  const client = useMemo(() => createApolloClient(token), [token]);
+  const client = createApolloClient(token);
   return <ApolloProvider client={client}>{props.children}</ApolloProvider>;
 }
