@@ -13,25 +13,19 @@ import createApolloClient, { myClient } from '../libs/client';
 
 function MyApp({ Component, pageProps }: any) {
   return (
-    // <Provider store={store}>
-    //   <TokenContainer>
-    //     <ApolloContext>
-    //       <Authentication>
-    //         <AppScreen>
-    //           <Component {...pageProps} />
-    //         </AppScreen>
-    //       </Authentication>
-    //     </ApolloContext>
-    //   </TokenContainer>
-    // </Provider>
-        <Provider store={store}>
-          <ApolloProvider client={myClient}>
-            <Component {...pageProps} />
-          </ApolloProvider>
-        </Provider>
-
-
+    <Provider store={store}>
+      <TokenContainer>
+        <ApolloContext>
+          <Authentication>
+            <AppScreen>
+              <Component {...pageProps} />
+            </AppScreen>
+          </Authentication>
+        </ApolloContext>
+      </TokenContainer>
+    </Provider>
   );
 }
 
 export default MyApp;
+
