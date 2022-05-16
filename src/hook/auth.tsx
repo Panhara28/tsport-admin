@@ -50,22 +50,29 @@ function useProvideAuth() {
 
   const signIn = async ({ username, password }: any) => {
     const client = createApolloClient();
-    const LoginMutation = gql`
-      mutation LoginMutation($username: String!, $password: String!) {
-        login(username: $username, password: $password) {
+
+    const LOGIN_MUTATION = gql`
+      mutation signIn($input: SignInInput) {
+        signIn(input: $input) {
           token
         }
       }
     `;
+
     const result = await client.mutate({
-      mutation: LoginMutation,
-      variables: { username, password },
+      mutation: LOGIN_MUTATION,
+      variables: {
+        input: {
+          username,
+          password,
+        },
+      },
     });
 
-    console.log(result);
+    console.log('result', result);
 
-    if (result?.data?.login?.token) {
-      setAuthToken(result.data.login.token);
+    if (result?.data?.signIn?.token) {
+      setAuthToken(result?.data?.signIn?.token);
     }
   };
 
