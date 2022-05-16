@@ -19,7 +19,7 @@ const MUTATION = gql`
 
 export default function PlaygroundPage() {
   let titleInput: any;
-  const { data, loading } = useQuery(QUERY);
+  const { data, loading } = useQuery(QUERY, { fetchPolicy: 'no-cache' });
   const [createPlayground] = useMutation(MUTATION);
   if (loading || !data) return <div>Loading..</div>;
   const onSave = () => {
