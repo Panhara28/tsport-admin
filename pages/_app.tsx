@@ -15,13 +15,16 @@ function MyApp({ Component, pageProps }: any) {
   return (
     <Provider store={store}>
       <TokenContainer>
-        <ApolloContext>
+        {/* <ApolloContext> */}
           {/* <Authentication> */}
-            <AppScreen>
+          <ApolloProvider client={myClient}>
+          <AppScreen>
               <Component {...pageProps} />
             </AppScreen>
+          </ApolloProvider>
+          
           {/* </Authentication> */}
-        </ApolloContext>
+        {/* </ApolloContext> */}
       </TokenContainer>
     </Provider>
   );
