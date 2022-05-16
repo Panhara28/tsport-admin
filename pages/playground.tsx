@@ -30,6 +30,7 @@ export default function PlaygroundPage() {
         },
       },
       refetchQueries: ['playgroundList'],
+      fetchPolicy: 'network-only',
     });
     titleInput.value = '';
   };
