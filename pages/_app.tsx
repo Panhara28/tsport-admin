@@ -24,9 +24,13 @@ function MyApp({ Component, pageProps }: any) {
     //     </ApolloContext>
     //   </TokenContainer>
     // </Provider>
-    <ApolloProvider client={myClient}>
-      <Component {...pageProps} />
-    </ApolloProvider>
+        <Provider store={store}>
+          <ApolloProvider client={myClient}>
+            <Component {...pageProps} />
+          </ApolloProvider>
+        </Provider>
+
+
   );
 }
 
