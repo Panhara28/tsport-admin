@@ -101,8 +101,6 @@ function useProvideAuth(token?: string) {
       },
     });
 
-    console.log('result', result);
-
     if (result?.data?.signIn?.token) {
       setAuthToken(result?.data?.signIn?.token);
       process.browser && localStorage.setItem('token', result?.data?.signIn?.token);

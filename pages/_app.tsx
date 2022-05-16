@@ -14,27 +14,17 @@ import { AuthProvider } from '../src/hook/auth';
 
 function MyApp({ Component, pageProps }: any) {
   return (
-    // <Provider store={store}>
-    //   <TokenContainer>
-    //     <ApolloContext>
-    //       <Authentication>
-    //         <AppScreen>
-    //           <Component {...pageProps} />
-    //         </AppScreen>
-    //       </Authentication>
-    //     </ApolloContext>
-    //   </TokenContainer>
-    // </Provider>
-    <TokenContainer>
-      <AuthProvider>
-        <LoginVerification>
-          <AppScreen>
-            <Component {...pageProps} />
-          </AppScreen>
-        </LoginVerification>
-      </AuthProvider>
-    </TokenContainer>
-
+    <Provider store={store}>
+      <TokenContainer>
+        <AuthProvider>
+          <LoginVerification>
+            <AppScreen>
+              <Component {...pageProps} />
+            </AppScreen>
+          </LoginVerification>
+        </AuthProvider>
+      </TokenContainer>
+    </Provider>
   );
 }
 
