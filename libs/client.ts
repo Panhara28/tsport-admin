@@ -14,10 +14,10 @@ export default function createApolloClient(token = '') {
     cache: new InMemoryCache(),
     defaultOptions: {
       query: {
-        fetchPolicy: 'no-cache',
+        fetchPolicy: 'network-only',
       },
       watchQuery: {
-        fetchPolicy: 'no-cache',
+        fetchPolicy: 'network-only',
       },
     },
   });
