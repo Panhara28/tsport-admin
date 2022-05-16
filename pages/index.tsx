@@ -8,14 +8,16 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { Card } from "../src/components/Card";
 import { useAuth } from "../src/hook/auth";
+import SignIn from "../src/components/SignIn";
 
 
 const Home: NextPage = () => {
     const {isSignedIn} = useAuth()
-    console.log(!isSignedIn);
     
   return (
-    <></>
+    <>
+      {!isSignedIn() && <SignIn />}
+    </>
   );
 };
 

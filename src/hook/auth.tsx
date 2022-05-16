@@ -35,6 +35,7 @@ function useProvideAuth() {
   function createApolloClient() {
     const link = new HttpLink({
       uri: 'http://localhost:8080',
+      headers: getAuthHeaders(),
     });
 
     return new ApolloClient({
