@@ -64,19 +64,6 @@ function useProvideAuth(token?: string) {
     };
   };
 
-  // function createApolloClient(token?: string) {
-  //   const authorization = token ? `?token=${token}` : '';
-  //   const link = new HttpLink({
-  //     uri: 'http://localhost:8080' + authorization,
-  //     headers: getAuthHeaders(),
-  //   });
-
-  //   return new ApolloClient({
-  //     link,
-  //     cache: new InMemoryCache(),
-  //   });
-  // }
-
   const signOut = () => {
     setAuthToken(null);
   };
