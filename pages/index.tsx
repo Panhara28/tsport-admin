@@ -9,15 +9,22 @@ import Link from "next/link";
 import { Card } from "../src/components/Card";
 import { useAuth } from "../src/hook/auth";
 import SignIn from "../src/components/SignIn";
+import { useContext } from "react";
+import AuthContext from "../src/components/Authentication/AuthContext";
+import { TokenContext } from "../src/components/Authentication/TokenContext";
 
 
 const Home: NextPage = () => {
-    const {isSignedIn} = useAuth()
-    
+  const {isSignedIn} = useAuth()
+
+  if(!isSignedIn()){
+    return <SignIn />
+  }
+
   return (
-    <>
-      {!isSignedIn() && <SignIn />}
-    </>
+
+      <div>hello</div>
+ 
   );
 };
 

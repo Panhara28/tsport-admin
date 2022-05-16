@@ -5,10 +5,11 @@ import AuthContext from './AuthContext';
 import { LoginScreen } from './LoginScreen';
 import Notiflix from 'notiflix';
 import { TokenContext } from './TokenContext';
+import SignIn from '../SignIn';
 
 const ME = gql`
-  query adminMe($websiteId: Int) {
-    adminMe(websiteId: $websiteId) {
+  query adminMe($websiteId: Int, $clientToken: String) {
+    adminMe(websiteId: $websiteId, clientToken: $clientToken) {
       id
       fullname
       profilePicture
@@ -34,29 +35,30 @@ const ME = gql`
   }
 `;
 
-export default function Authentication(props: PropsWithChildren<{}>) {
+export default function LoginVerification(props: PropsWithChildren<{}>) {
   const router = useRouter();
   const { token } = useContext(TokenContext);
+
   const { data, loading } = useQuery(ME, {
     variables: {
       websiteId: Number(router.query.id),
+      clientToken: token,
     },
     fetchPolicy: 'no-cache',
     onError: error => {
       if (token === '') {
         Notiflix.Notify.failure('You need to sign in!');
-        localStorage.removeItem('token');
       } else if (error) {
         Notiflix.Notify.failure('Please contact your site admin to add you to application!');
-        localStorage.removeItem('token');
       }
     },
   });
 
-  if (loading) return <div>Loading...</div>;
+  if (loading || !data) return <div>Loading...</div>;
+  console.log('data', data);
 
   if (data === undefined || data.adminMe === null) {
-    return <LoginScreen />;
+    return <SignIn />;
   }
 
   if (data && data?.adminMe) {

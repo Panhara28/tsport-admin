@@ -1,4 +1,6 @@
 import { gql, useMutation, useQuery } from '@apollo/client';
+import SignIn from '../src/components/SignIn';
+import { useAuth } from '../src/hook/auth';
 
 const QUERY = gql`
   query playgroundList {
@@ -19,6 +21,8 @@ const MUTATION = gql`
 
 export default function PlaygroundPage() {
   let titleInput: any;
+  const { isSignedIn } = useAuth();
+
   const { data, loading } = useQuery(QUERY, { fetchPolicy: 'no-cache' });
   const [createPlayground] = useMutation(MUTATION);
   if (loading || !data) return <div>Loading..</div>;
@@ -34,6 +38,11 @@ export default function PlaygroundPage() {
     });
     titleInput.value = '';
   };
+
+  if (!isSignedIn()) {
+    return <SignIn />;
+  }
+
   return (
     <>
       <ul>

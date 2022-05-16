@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import store from '../src/store';
 import { TokenContainer } from '../src/components/Authentication/TokenContext';
 import ApolloContext from '../src/components/Authentication/ApolloContext';
-import Authentication from '../src/components/Authentication/Authentication';
+import LoginVerification from '../src/components/Authentication/LoginVerification';
 import AppScreen from '../src/components/AppScreen';
 import { ApolloProvider } from '@apollo/client';
 import { useMemo } from 'react';
@@ -25,9 +25,16 @@ function MyApp({ Component, pageProps }: any) {
     //     </ApolloContext>
     //   </TokenContainer>
     // </Provider>
-    <AuthProvider>
-        <Component {...pageProps} />
-    </AuthProvider>
+    <TokenContainer>
+      <AuthProvider>
+        <LoginVerification>
+          <AppScreen>
+            <Component {...pageProps} />
+          </AppScreen>
+        </LoginVerification>
+      </AuthProvider>
+    </TokenContainer>
+
   );
 }
 

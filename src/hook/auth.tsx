@@ -1,16 +1,49 @@
 import React, { useState, useContext, createContext } from 'react';
-import { ApolloProvider, ApolloClient, InMemoryCache, ApolloLink, gql, HttpLink } from '@apollo/client';
+import { ApolloProvider, ApolloClient, InMemoryCache, ApolloLink, gql, HttpLink, useQuery } from '@apollo/client';
 import { BatchHttpLink } from '@apollo/client/link/batch-http';
 import { createUploadLink } from 'apollo-upload-client';
+import { TokenContext } from '../components/Authentication/TokenContext';
+import router from 'next/router';
+import Notiflix from 'notiflix';
+
+const ME = gql`
+  query adminMe($websiteId: Int) {
+    adminMe(websiteId: $websiteId) {
+      id
+      fullname
+      profilePicture
+      contact_city_or_province
+      contact_district
+      contact_commune
+      contact_village
+      email
+      phoneNumber
+      plugins {
+        name
+        slug
+        access {
+          read
+          create
+          edit
+          remove
+        }
+      }
+      roleName
+      roleId
+    }
+  }
+`;
 
 const authContext = createContext<{ isSignedIn?: any; signOut?: any; signIn?: any; createApolloClient?: any }>({});
 
 export function AuthProvider({ children }: any) {
-  const auth = useProvideAuth();
+  const { token } = useContext(TokenContext);
+
+  const auth = useProvideAuth(token);
 
   return (
     <authContext.Provider value={auth}>
-      <ApolloProvider client={auth.createApolloClient()}>{children}</ApolloProvider>
+      <ApolloProvider client={auth.createApolloClient(token)}>{children}</ApolloProvider>
     </authContext.Provider>
   );
 }
@@ -19,12 +52,10 @@ export const useAuth = () => {
   return useContext(authContext);
 };
 
-function useProvideAuth() {
-  const [authToken, setAuthToken] = useState(null);
+function useProvideAuth(token?: string) {
+  const [authToken, setAuthToken] = useState<any>(token);
 
   const getAuthHeaders = () => {
-    console.log('getAuthHeaders', authToken);
-
     if (!authToken) return null;
 
     return {
@@ -32,9 +63,10 @@ function useProvideAuth() {
     };
   };
 
-  function createApolloClient() {
+  function createApolloClient(token?: string) {
+    const authorization = token ? `?token=${token}` : '';
     const link = new HttpLink({
-      uri: 'http://localhost:8080',
+      uri: 'http://localhost:8080' + authorization,
       headers: getAuthHeaders(),
     });
 
@@ -73,6 +105,8 @@ function useProvideAuth() {
 
     if (result?.data?.signIn?.token) {
       setAuthToken(result?.data?.signIn?.token);
+      process.browser && localStorage.setItem('token', result?.data?.signIn?.token);
+      window.location.replace(`/`);
     }
   };
 
