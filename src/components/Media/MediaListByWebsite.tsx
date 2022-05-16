@@ -64,7 +64,7 @@ export function MediaListByWebsite({
     onCompleted: data => {
       if (data.removeMedia) {
         setSelectImage(undefined);
-        toastr.success('Save Draft');
+        toastr.success('Media has been removed');
       }
     },
   });
@@ -218,7 +218,7 @@ export function MediaListByWebsite({
                     <FontAwesomeIcon icon={faEye} /> View
                   </a>
                 </Link>
-                <p className="text-danger mt-2" onClick={() => onRemoveMedia(removeMediaId, selectImage)}>
+                <p className="text-danger mt-2" onClick={() => onRemoveMedia(removeMediaId, selectImage.featureImage)}>
                   Delete permanently
                 </p>
               </Card.Body>

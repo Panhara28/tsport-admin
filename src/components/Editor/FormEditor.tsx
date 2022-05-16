@@ -59,7 +59,7 @@ export default function FormEditor({ dataKey, data, editDataKey, id }: FormEdito
         if (id) {
           localStorage.setItem('usedNews', id + '');
         }
-      }, 2000);
+      }, 1500);
     }
   }, [editor, changed]);
 

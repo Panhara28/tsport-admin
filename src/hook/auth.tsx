@@ -5,6 +5,7 @@ import { createUploadLink } from 'apollo-upload-client';
 import { TokenContext } from '../components/Authentication/TokenContext';
 import router from 'next/router';
 import Notiflix from 'notiflix';
+import createApolloClient from '../../libs/client';
 
 const ME = gql`
   query adminMe($websiteId: Int) {
@@ -63,18 +64,18 @@ function useProvideAuth(token?: string) {
     };
   };
 
-  function createApolloClient(token?: string) {
-    const authorization = token ? `?token=${token}` : '';
-    const link = new HttpLink({
-      uri: 'http://localhost:8080' + authorization,
-      headers: getAuthHeaders(),
-    });
+  // function createApolloClient(token?: string) {
+  //   const authorization = token ? `?token=${token}` : '';
+  //   const link = new HttpLink({
+  //     uri: 'http://localhost:8080' + authorization,
+  //     headers: getAuthHeaders(),
+  //   });
 
-    return new ApolloClient({
-      link,
-      cache: new InMemoryCache(),
-    });
-  }
+  //   return new ApolloClient({
+  //     link,
+  //     cache: new InMemoryCache(),
+  //   });
+  // }
 
   const signOut = () => {
     setAuthToken(null);

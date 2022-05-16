@@ -63,7 +63,7 @@ export function MediaListScreen() {
   const [removeMedia] = useMutation(MUTATION, {
     onCompleted: (data: any) => {
       if (data.removeMedia) {
-        toastr.success('Save Draft');
+        toastr.success('Media has been removed');
         setLgShow(false);
       }
     },
@@ -78,7 +78,7 @@ export function MediaListScreen() {
         size: 10,
       },
     },
-    fetchPolicy: 'cache-and-network',
+    fetchPolicy: 'no-cache',
   });
 
   if (loading || !data) return <div>Loading...</div>;

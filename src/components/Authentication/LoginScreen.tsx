@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React from 'react';
 import { gql, useMutation } from '@apollo/client';
 import Notiflix from 'notiflix';
@@ -6,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGlobeAsia } from '@fortawesome/free-solid-svg-icons';
 import XForm from '../Form/XForm';
 import Image from 'next/image';
+import { useAuth } from '../../hook/auth';
 
 const LOGIN_MUTATION = gql`
   mutation signIn($input: SignInInput) {
@@ -18,34 +20,18 @@ const LOGIN_MUTATION = gql`
 export function LoginScreen() {
   let usernameInput: any;
   let passwordInput: any;
-  const [signIn] = useMutation(LOGIN_MUTATION, {
-    onCompleted: data => {
-      process.browser && localStorage.setItem('token', data.signIn.token);
-      process.browser && window.location.replace('/');
-      Notiflix.Notify.success("You're signed in!");
-    },
-    onError: error => {
-      let errorMessage = JSON.parse(error.message).errorMessage;
-      Notiflix.Notify.failure(errorMessage);
-    },
-  });
+  const { signIn } = useAuth();
 
-  const onSubmit = () => {
-    signIn({
-      variables: {
-        input: {
-          username: usernameInput.value,
-          password: passwordInput.value,
-        },
-      },
-    });
-  };
+  function onSubmit(e: any) {
+    e.preventDefault();
+    signIn({ username: usernameInput.value, password: passwordInput.value });
+  }
 
   return (
     <>
       <div className={style.loginContainer}>
         <header className={style.loginHeader}>
-          <Image src="/cpp-no-text.png" width={50} height={50} />
+          <img src="/cpp-no-text.png" width={50} height={50} alt="" />
           &nbsp; Cambodia People Party Ministry Of Commerce
         </header>
         <div className={style.loginCard}>
@@ -57,7 +43,7 @@ export function LoginScreen() {
           <label>Password</label>
           <XForm.Text ref={node => (passwordInput = node)} type="password" />
           <div className="mt-3"></div>
-          <button className={style.loginButton} onClick={() => onSubmit()}>
+          <button className={style.loginButton} onClick={onSubmit}>
             Login
           </button>
         </div>

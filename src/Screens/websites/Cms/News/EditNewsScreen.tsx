@@ -159,17 +159,11 @@ export function EditNewsScreen() {
     refetchQueries: ['publicNewsCategoryList'],
   });
 
-  const [updateNews] = useMutation(MUTATION, {
-    onCompleted: data => {
-      if (data.updateNews) {
-        toastr.success('Save Draft');
-      }
-    },
-  });
+  const [updateNews] = useMutation(MUTATION);
 
   const [updateStatus] = useMutation(UPDATE_NEW_STATUS, {
     onCompleted: () => {
-      window.location.replace(`/mochub/websites/${router.query.id}/cms/news/${router.query.newsEditId}/edit`);
+      router.push(`/mochub/websites/${router.query.id}/cms/news/${router.query.newsEditId}/edit`);
     },
   });
 
@@ -181,6 +175,15 @@ export function EditNewsScreen() {
         status,
       },
       refetchQueries: ['newsDetail'],
+      onCompleted: () => {
+        if (status === 'PUBLISHED') {
+          toastr.success(`News #${data.newsDetail.id} has been ${status}!`);
+        } else if (status === 'INREVIEW') {
+          toastr.warning(`News #${data.newsDetail.id} has been  ${status}!`);
+        } else if (status === 'REVERSION') {
+          toastr.error(`News #${data.newsDetail.id} has been  ${status}`);
+        }
+      },
     });
   };
 
@@ -295,7 +298,7 @@ export function EditNewsScreen() {
           style={{ width: '100%' }}
           onClick={(e: any) => {
             onInReview('INREVIEW');
-            // onSubmit(e);
+            onSubmit(e);
           }}
         >
           <FontAwesomeIcon icon={faPaperPlane} /> Edit & Review
@@ -313,7 +316,6 @@ export function EditNewsScreen() {
           style={{ width: '100%' }}
           onClick={(e: any) => {
             onInReview('REVERSION');
-            // onSubmit(e);
           }}
         >
           <FontAwesomeIcon icon={faTimesCircle} /> Reversion
@@ -321,8 +323,6 @@ export function EditNewsScreen() {
         <hr />
       </>
     );
-
-  const renderEditButton = <RenderEditButton status={data.newsDetail.status} onSubmit={onSubmit} />;
 
   const defaultJSON = {
     time: 1587670998983,
@@ -364,14 +364,14 @@ export function EditNewsScreen() {
   const onHandleTitleChange = (e: any) => {
     e.preventDefault();
 
-    toastr.success('Draft Saved!');
+    toastr.success('Save Draft');
     localStorage.setItem('newsTitleEdit', e.target.value);
   };
 
   const onHandleSummaryChange = (e: any) => {
     e.preventDefault();
 
-    toastr.success('Draft Saved!');
+    toastr.success('Save Draft');
     localStorage.setItem('newsSummaryEdit', e.target.value);
   };
 
@@ -437,44 +437,6 @@ export function EditNewsScreen() {
       </>
     );
   }
-
-  const renderPublishedOld =
-    me.roleName != 'Content Manager' ? (
-      renderButton
-    ) : (
-      <>
-        <Form.Group controlId="formBasicCheckbox">
-          <Switch
-            checked={data.newsDetail.status === 'PUBLISHED' ? true : false}
-            onChange={(checked: any) => {
-              if (!checked) {
-                const isDeactived = window.confirm('Are you sure you want to unpublished this page ?');
-                if (isDeactived) {
-                  updateStatus({
-                    variables: {
-                      id: Number(router.query.newsEditId),
-                      websiteId: Number(router.query.id),
-                      status: checked ? 'PUBLISHED' : 'REVERSION',
-                    },
-                  });
-                }
-              } else {
-                const isDeactived = window.confirm('Are you sure you want to published this page ?');
-                if (isDeactived) {
-                  updateStatus({
-                    variables: {
-                      id: Number(router.query.newsEditId),
-                      websiteId: Number(router.query.id),
-                      status: checked ? 'PUBLISHED' : 'REVERSION',
-                    },
-                  });
-                }
-              }
-            }}
-          />
-        </Form.Group>
-      </>
-    );
 
   const onHandleCreatableNewsCategory = (e: any) => {
     createNewsCategory({
@@ -556,6 +518,9 @@ export function EditNewsScreen() {
                       websiteId: Number(router.query.id),
                       status: checked ? 'PUBLISHED' : 'REVERSION',
                     },
+                    onCompleted: () => {
+                      toastr.error(`News #${data.newsDetail.id} has been unpublished`);
+                    },
                   });
                 }
               } else {
@@ -568,6 +533,9 @@ export function EditNewsScreen() {
                       websiteId: Number(router.query.id),
                       status: checked ? 'PUBLISHED' : 'REVERSION',
                     },
+                    onCompleted: () => {
+                      toastr.success(`News #${data.newsDetail.id} has been published`);
+                    },
                   });
                 }
               }
@@ -577,48 +545,6 @@ export function EditNewsScreen() {
       </>
     );
   }
-  // const renderPublished = !RequirePermission({
-  //   permissions: ['Site Administrator', 'Content Manager', 'Administrator'],
-  // }) ? (
-  //   <></>
-  // ) : (
-  //   <>
-  //     <h6>Publish</h6>
-  //     <hr />
-  //     <Form.Group controlId="formBasicCheckbox">
-  //       <Switch
-  //         checked={data.newsDetail.status === 'PUBLISHED' ? true : false}
-  //         onChange={(checked: any) => {
-  //           if (!checked) {
-  //             const isDeactived = window.confirm('Are you sure you want to unpublished this page ?');
-  //             if (isDeactived) {
-  //               onSubmit(undefined);
-  //               updateStatus({
-  //                 variables: {
-  //                   id: Number(router.query.newsEditId),
-  //                   websiteId: Number(router.query.id),
-  //                   status: checked ? 'PUBLISHED' : 'REVERSION',
-  //                 },
-  //               });
-  //             }
-  //           } else {
-  //             const isDeactived = window.confirm('Are you sure you want to published this page ?');
-  //             if (isDeactived) {
-  //               onSubmit(undefined);
-  //               updateStatus({
-  //                 variables: {
-  //                   id: Number(router.query.newsEditId),
-  //                   websiteId: Number(router.query.id),
-  //                   status: checked ? 'PUBLISHED' : 'REVERSION',
-  //                 },
-  //               });
-  //             }
-  //           }
-  //         }}
-  //       />
-  //     </Form.Group>
-  //   </>
-  // );
 
   return (
     <Layout>

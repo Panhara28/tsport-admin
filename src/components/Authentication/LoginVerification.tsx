@@ -5,7 +5,6 @@ import AuthContext from './AuthContext';
 import { LoginScreen } from './LoginScreen';
 import Notiflix from 'notiflix';
 import { TokenContext } from './TokenContext';
-import SignIn from '../SignIn';
 
 const ME = gql`
   query adminMe($websiteId: Int, $clientToken: String) {
@@ -55,10 +54,9 @@ export default function LoginVerification(props: PropsWithChildren<{}>) {
   });
 
   if (loading || !data) return <div>Loading...</div>;
-  console.log('data', data);
 
   if (data === undefined || data.adminMe === null) {
-    return <SignIn />;
+    return <LoginScreen />;
   }
 
   if (data && data?.adminMe) {
