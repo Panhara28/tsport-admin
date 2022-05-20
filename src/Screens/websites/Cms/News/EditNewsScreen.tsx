@@ -31,6 +31,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import styled from 'styled-components';
 import { CustomPagination } from '../../../../components/Paginations';
+import moment from 'moment';
 
 const MUTATION = gql`
   mutation updateNews($id: Int!, $input: NewsInput, $websiteId: Int!) {
@@ -66,6 +67,7 @@ const PAGE_DETAIL = gql`
       status
       new_category_id
       summary
+      published_date
     }
 
     publicNewsCategoryList {
@@ -127,6 +129,7 @@ export function EditNewsScreen() {
   const [documentDate, setDocumentDate] = useState(new Date());
   const { me } = useContext(AuthContext);
   const router = useRouter();
+  const [publishedDate, setPublishedDate] = useState('');
 
   const { data, loading } = useQuery(PAGE_DETAIL, {
     variables: {
@@ -199,11 +202,14 @@ export function EditNewsScreen() {
   let titleInput: any;
   let summaryInput: any;
   let categoryInput: any;
+  let publishedDateInput: any;
 
   if (loading || !data) return <div>Loading...</div>;
 
   const onSubmit = (e: any) => {
     e?.preventDefault();
+    console.log(publishedDateInput.value);
+
     const description = localStorage.getItem('newsDataEdit');
     const result =
       description === null
@@ -275,7 +281,6 @@ export function EditNewsScreen() {
               style={{ width: '100%' }}
               onClick={(e: any) => {
                 onInReview('REVERSION');
-                onSubmit(e);
               }}
             >
               <FontAwesomeIcon icon={faTimesCircle} /> Reversion
@@ -612,7 +617,13 @@ export function EditNewsScreen() {
                   <Card.Body>
                     {renderPublished}
                     <Form.Label>Published Datetime</Form.Label>
-                    <input className="form-control" type="datetime-local" />
+                    <input
+                      className="form-control"
+                      type="datetime-local"
+                      name="published_date"
+                      ref={node => (publishedDateInput = node)}
+                      defaultValue={'2022-05-20T20:38'}
+                    />
                     {renderButton}
                     <Form.Label className="mt-3">News Category</Form.Label>
                     <CreatableSelect
