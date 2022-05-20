@@ -252,15 +252,13 @@ export function EditNewsScreen() {
     me.roleName != 'Content Manager' ? (
       data.newsDetail.status === 'PENDING' || data.newsDetail.status === 'REVERSION' ? (
         <>
-          <h6>Reversion</h6>
           <hr />
           <Button
-            className="mb-3"
             variant="warning"
             style={{ width: '100%' }}
             onClick={(e: any) => {
               onInReview('INREVIEW');
-              // onSubmit(e);
+              onSubmit(e);
             }}
           >
             <FontAwesomeIcon icon={faPaperPlane} /> Edit & Review
@@ -270,16 +268,14 @@ export function EditNewsScreen() {
       ) : (
         data.newsDetail.status !== 'PUBLISHED' && (
           <>
-            <h6>Reversion</h6>
             <hr />
-            <p style={{ fontStyle: 'italic' }}>Example</p>
             <Button
               className="mb-3"
               variant="danger"
               style={{ width: '100%' }}
               onClick={(e: any) => {
                 onInReview('REVERSION');
-                // onSubmit(e);
+                onSubmit(e);
               }}
             >
               <FontAwesomeIcon icon={faTimesCircle} /> Reversion
@@ -615,9 +611,10 @@ export function EditNewsScreen() {
                 <Card>
                   <Card.Body>
                     {renderPublished}
-
+                    <Form.Label>Published Datetime</Form.Label>
+                    <input className="form-control" type="datetime-local" />
                     {renderButton}
-                    <Form.Label>News Category</Form.Label>
+                    <Form.Label className="mt-3">News Category</Form.Label>
                     <CreatableSelect
                       isClearable
                       options={data.publicNewsCategoryList.map((x: any) => {
