@@ -162,7 +162,13 @@ export function EditNewsScreen() {
     refetchQueries: ['publicNewsCategoryList'],
   });
 
-  const [updateNews] = useMutation(MUTATION);
+  const [updateNews] = useMutation(MUTATION, {
+    onCompleted: data => {
+      if (data.updateNews) {
+        toastr.success(`Save draft`);
+      }
+    },
+  });
 
   const [updateStatus] = useMutation(UPDATE_NEW_STATUS, {
     onCompleted: () => {
@@ -208,8 +214,6 @@ export function EditNewsScreen() {
 
   const onSubmit = (e: any) => {
     e?.preventDefault();
-    console.log(publishedDateInput.value);
-
     const description = localStorage.getItem('newsDataEdit');
     const result =
       description === null
@@ -222,6 +226,7 @@ export function EditNewsScreen() {
       thumbnail: finaleSelected ? finaleSelected?.featureImage : data.newsDetail.thumbnail,
       summary: summaryInput.value,
       new_category_id: categoryInput?.getValue()[0]?.value,
+      published_date: publishedDateInput.value,
     };
 
     updateNews({
@@ -264,7 +269,6 @@ export function EditNewsScreen() {
             style={{ width: '100%' }}
             onClick={(e: any) => {
               onInReview('INREVIEW');
-              onSubmit(e);
             }}
           >
             <FontAwesomeIcon icon={faPaperPlane} /> Edit & Review
@@ -299,7 +303,6 @@ export function EditNewsScreen() {
           style={{ width: '100%' }}
           onClick={(e: any) => {
             onInReview('INREVIEW');
-            onSubmit(e);
           }}
         >
           <FontAwesomeIcon icon={faPaperPlane} /> Edit & Review
@@ -615,6 +618,18 @@ export function EditNewsScreen() {
               <div style={{ position: 'sticky', top: '90px', marginBottom: '25px' }}>
                 <Card>
                   <Card.Body>
+                    {data.newsDetail.status === 'PUBLISHED' ? (
+                      ''
+                    ) : (
+                      <button
+                        type="button"
+                        className="btn btn-primary mb-3"
+                        style={{ width: '100%' }}
+                        onClick={e => onSubmit(e)}
+                      >
+                        Save Draft
+                      </button>
+                    )}
                     {renderPublished}
                     <Form.Label>Published Datetime</Form.Label>
                     <input
@@ -622,7 +637,11 @@ export function EditNewsScreen() {
                       type="datetime-local"
                       name="published_date"
                       ref={node => (publishedDateInput = node)}
-                      defaultValue={'2022-05-20T20:38'}
+                      defaultValue={
+                        data.newsDetail.published_date
+                          ? moment(Number(data.newsDetail.published_date)).format('YYYY-MM-DDThh:mm')
+                          : '2022-05-20T20:38'
+                      }
                     />
                     {renderButton}
                     <Form.Label className="mt-3">News Category</Form.Label>
