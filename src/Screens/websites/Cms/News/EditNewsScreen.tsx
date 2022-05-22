@@ -515,7 +515,6 @@ export function EditNewsScreen() {
               if (!checked) {
                 const isDeactived = window.confirm('Are you sure you want to unpublished this page ?');
                 if (isDeactived) {
-                  onSubmit(undefined);
                   updateStatus({
                     variables: {
                       id: Number(router.query.newsEditId),
@@ -530,7 +529,6 @@ export function EditNewsScreen() {
               } else {
                 const isDeactived = window.confirm('Are you sure you want to published this page ?');
                 if (isDeactived) {
-                  onSubmit(undefined);
                   updateStatus({
                     variables: {
                       id: Number(router.query.newsEditId),
@@ -631,18 +629,24 @@ export function EditNewsScreen() {
                       </button>
                     )}
                     {renderPublished}
-                    <Form.Label>Published Datetime</Form.Label>
-                    <input
-                      className="form-control"
-                      type="datetime-local"
-                      name="published_date"
-                      ref={node => (publishedDateInput = node)}
-                      defaultValue={
-                        data.newsDetail.published_date
-                          ? moment(Number(data.newsDetail.published_date)).format('YYYY-MM-DDThh:mm')
-                          : '2022-05-20T20:38'
-                      }
-                    />
+                    {data.newsDetail.status === 'PUBLISHED' ? (
+                      ''
+                    ) : (
+                      <>
+                        <Form.Label>Published Datetime</Form.Label>
+                        <input
+                          className="form-control"
+                          type="datetime-local"
+                          name="published_date"
+                          ref={node => (publishedDateInput = node)}
+                          defaultValue={
+                            data.newsDetail.published_date
+                              ? moment(Number(data.newsDetail.published_date)).format('YYYY-MM-DDThh:mm')
+                              : '2022-05-20T20:38'
+                          }
+                        />
+                      </>
+                    )}
                     {renderButton}
                     <Form.Label className="mt-3">News Category</Form.Label>
                     <CreatableSelect
