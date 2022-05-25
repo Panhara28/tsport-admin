@@ -639,8 +639,8 @@ export function EditNewsScreen() {
                       ref={node => (publishedDateInput = node)}
                       defaultValue={
                         data.newsDetail.published_date
-                          ? moment(Number(data.newsDetail.published_date)).format('YYYY-MM-DDThh:mm')
-                          : '2022-05-20T20:38'
+                          ? moment(Number(data.newsDetail.published_date)).format('YYYY-MM-DDTHH:mm')
+                          : moment(Number(new Date())).format('YYYY-MM-DDTHH:mm')
                       }
                     />
                     {renderButton}
