@@ -515,7 +515,6 @@ export function EditNewsScreen() {
               if (!checked) {
                 const isDeactived = window.confirm('Are you sure you want to unpublished this page ?');
                 if (isDeactived) {
-                  onSubmit(undefined);
                   updateStatus({
                     variables: {
                       id: Number(router.query.newsEditId),
@@ -530,7 +529,6 @@ export function EditNewsScreen() {
               } else {
                 const isDeactived = window.confirm('Are you sure you want to published this page ?');
                 if (isDeactived) {
-                  onSubmit(undefined);
                   updateStatus({
                     variables: {
                       id: Number(router.query.newsEditId),

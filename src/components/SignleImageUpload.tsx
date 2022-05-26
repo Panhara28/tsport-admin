@@ -69,6 +69,7 @@ export function SignleImageUpload({
         refetchQueries: ['mediaList'],
       });
     },
+    refetchQueries: ['mediaList'],
     onError: error => {
       toastr.error(error.message);
     },
