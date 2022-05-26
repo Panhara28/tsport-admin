@@ -629,24 +629,18 @@ export function EditNewsScreen() {
                       </button>
                     )}
                     {renderPublished}
-                    {data.newsDetail.status === 'PUBLISHED' ? (
-                      ''
-                    ) : (
-                      <>
-                        <Form.Label>Published Datetime</Form.Label>
-                        <input
-                          className="form-control"
-                          type="datetime-local"
-                          name="published_date"
-                          ref={node => (publishedDateInput = node)}
-                          defaultValue={
-                            data.newsDetail.published_date
-                              ? moment(Number(data.newsDetail.published_date)).format('YYYY-MM-DDThh:mm')
-                              : '2022-05-20T20:38'
-                          }
-                        />
-                      </>
-                    )}
+                    <Form.Label>Published Datetime</Form.Label>
+                    <input
+                      className="form-control"
+                      type="datetime-local"
+                      name="published_date"
+                      ref={node => (publishedDateInput = node)}
+                      defaultValue={
+                        data.newsDetail.published_date
+                          ? moment(Number(data.newsDetail.published_date)).format('YYYY-MM-DDTHH:mm')
+                          : moment(Number(new Date())).format('YYYY-MM-DDTHH:mm')
+                      }
+                    />
                     {renderButton}
                     <Form.Label className="mt-3">News Category</Form.Label>
                     <CreatableSelect
