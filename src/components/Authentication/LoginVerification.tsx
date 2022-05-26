@@ -49,6 +49,8 @@ export default function LoginVerification(props: PropsWithChildren<{}>) {
         Notiflix.Notify.failure('You need to sign in!');
       } else if (error) {
         Notiflix.Notify.failure('Please contact your site admin to add you to application!');
+        localStorage.removeItem('token');
+        window.location.reload();
       }
     },
   });
