@@ -24,14 +24,11 @@ import { SignleImageUpload } from '../../../../components/SignleImageUpload';
 import Image from 'next/image';
 import { faImage } from '@fortawesome/free-regular-svg-icons';
 import { parseImageUrl } from '../../../../hook/parseImageUrl';
-import { Label } from 'reactstrap';
-import { Input } from 'reactstrap';
-import { WEBSITE_ID } from '../../../../config';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import styled from 'styled-components';
 import { CustomPagination } from '../../../../components/Paginations';
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 const MUTATION = gql`
   mutation updateNews($id: Int!, $input: NewsInput, $websiteId: Int!) {
@@ -637,8 +634,12 @@ export function EditNewsScreen() {
                       ref={node => (publishedDateInput = node)}
                       defaultValue={
                         data.newsDetail.published_date
-                          ? moment(Number(data.newsDetail.published_date)).format('YYYY-MM-DDTHH:mm')
-                          : moment(Number(new Date())).format('YYYY-MM-DDTHH:mm')
+                          ? moment(Number(data.newsDetail.published_date))
+                              .tz('Asia/Phnom_Penh')
+                              .format('YYYY-MM-DDTHH:mm')
+                          : moment(Number(new Date()))
+                              .tz('Asia/Phnom_Penh')
+                              .format('YYYY-MM-DDTHH:mm')
                       }
                     />
                     {renderButton}
