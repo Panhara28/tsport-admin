@@ -4,9 +4,18 @@ import { createUploadLink } from 'apollo-upload-client';
 
 export default function createApolloClient(token = '') {
   const uri = process.env.NEXT_PUBLIC_API_URL + '?token=' + token;
-  const uploadLink = createUploadLink({ uri });
+  const uploadLink: any = createUploadLink({ uri });
   const batch = new BatchHttpLink({ uri });
-  const link = ApolloLink.split(op => op.operationName === 'singleUpload', uploadLink, batch);
+  const link = ApolloLink.split(
+    op => {
+      if (op.operationName !== 'singleUpload') {
+        return true;
+      }
+      return op.operationName === 'singleUpload';
+    },
+    uploadLink,
+    batch,
+  );
 
   return new ApolloClient({
     uri,
