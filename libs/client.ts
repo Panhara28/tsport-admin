@@ -11,7 +11,7 @@ export default function createApolloClient(token = '') {
       if (op.operationName !== 'singleUpload') {
         return true;
       }
-      return false;
+      return op.operationName === 'singleUpload';
     },
     uploadLink,
     batch,
