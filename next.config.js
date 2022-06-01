@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['cpp-s1.moc.gov.kh'],
+    domains: ['imagerium.blockerium.com'],
   },
 };
 
