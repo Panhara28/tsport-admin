@@ -7,7 +7,7 @@ export default function createApolloClient(token = '') {
   const uploadLink: any = createUploadLink({ uri });
   const batch = new BatchHttpLink({ uri });
   const link = ApolloLink.split(
-    (op: any) => {
+    op => {
       if (op.operationName !== 'singleUpload') {
         return true;
       }
