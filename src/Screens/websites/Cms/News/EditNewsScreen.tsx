@@ -636,7 +636,7 @@ export function EditNewsScreen() {
                       ref={node => (publishedDateInput = node)}
                       defaultValue={
                         data.newsDetail.published_date
-                          ? data.newsDetail.published_date
+                          ? moment(Number(data.newsDetail.published_date)).format('YYYY-MM-DDTHH:mm')
                           : moment(Number(new Date()))
                               .tz('Asia/Phnom_Penh')
                               .format('YYYY-MM-DDTHH:mm')
