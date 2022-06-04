@@ -5,7 +5,7 @@ import Table from '@editorjs/table';
 import Image from '@editorjs/image';
 import Quote from '@editorjs/quote';
 import Marker from '@editorjs/marker';
-// import EmbedTool from "../plugins/editorjs/embed";
+import EmbedTool from './plugins/editorjs/embed';
 
 export const tools = {
   header: {
@@ -23,4 +23,5 @@ export const tools = {
   image: Image,
   quote: Quote,
   marker: Marker,
+  embedTool: EmbedTool,
 };

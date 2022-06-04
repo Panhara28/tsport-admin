@@ -3,8 +3,6 @@ import EditorJS from '@editorjs/editorjs';
 import { tools } from './tools';
 import { UploadImageEditorJs } from '../UploadImageEditorJs';
 import ImageTool from '@editorjs/image';
-import LinkTool from '@editorjs/link';
-import Embed from '@editorjs/embed';
 /**
  *
  * @param {EditorJS.Tool[]} toolsList
@@ -32,7 +30,6 @@ export const useEditor = (toolsList: any, { data, editorRef }: any, options = {}
        */
       tools: {
         ...toolsList,
-        embed: Embed,
         image: {
           class: ImageTool,
           config: {
