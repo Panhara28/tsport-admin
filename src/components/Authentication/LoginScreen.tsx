@@ -1,13 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import React from 'react';
 import { gql, useMutation } from '@apollo/client';
-import Notiflix from 'notiflix';
 import style from './login.module.scss';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGlobeAsia } from '@fortawesome/free-solid-svg-icons';
 import XForm from '../Form/XForm';
-import Image from 'next/image';
 import { useAuth } from '../../hook/auth';
+import { setting } from '../../libs/settings';
 
 const LOGIN_MUTATION = gql`
   mutation signIn($input: SignInInput) {
@@ -31,11 +28,13 @@ export function LoginScreen() {
     <>
       <div className={style.loginContainer}>
         <header className={style.loginHeader}>
-          <img src="/cpp-no-text.png" width={50} height={50} alt="" />
-          &nbsp; Cambodia People Party Ministry Of Commerce
+          <div className={style.adminLogoContainer}>
+            <img className={style.adminLogo} src={setting.logo ? setting.logo : '/logo/logo-placeholder.png'} alt="" />
+          </div>
+          <h3>{setting.title}</h3>
         </header>
         <div className={style.loginCard}>
-          <h5>Login to continue to: Moc hub</h5>
+          <h5>Login to continue to: {setting.title}</h5>
           <div className="mt-3"></div>
           <label>Username</label>
           <XForm.Text ref={node => (usernameInput = node)} />

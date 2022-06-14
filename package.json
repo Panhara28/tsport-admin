@@ -67,7 +67,7 @@
     "sass": "^1.45.0",
     "simplebar-react": "^2.3.6",
     "styled-components": "^5.3.5",
-    "sweetalert2": "^11.4.8",
+    "sweetalert2": "^11.4.17",
     "sweetalert2-react-content": "^4.2.0",
     "toastr": "^2.1.4"
   },

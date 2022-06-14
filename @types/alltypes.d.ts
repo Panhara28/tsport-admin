@@ -19,3 +19,4 @@ declare module 'toastr';
 declare module 'simplebar-react';
 declare module 'metismenujs';
 declare module 'redux-saga/effects';
+declare module 'sweetalert2';

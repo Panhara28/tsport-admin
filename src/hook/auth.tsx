@@ -1,11 +1,9 @@
 import React, { useState, useContext, createContext } from 'react';
-import { ApolloProvider, ApolloClient, InMemoryCache, ApolloLink, gql, HttpLink, useQuery } from '@apollo/client';
-import { BatchHttpLink } from '@apollo/client/link/batch-http';
-import { createUploadLink } from 'apollo-upload-client';
+import { ApolloProvider, gql } from '@apollo/client';
 import { TokenContext } from '../components/Authentication/TokenContext';
-import router from 'next/router';
-import Notiflix from 'notiflix';
-import createApolloClient from '../../libs/client';
+import createApolloClient from '../../apollo/client';
+import Swal from 'sweetalert2';
+import { setting } from '../libs/settings';
 
 const ME = gql`
   query adminMe($websiteId: Int) {
@@ -79,20 +77,40 @@ function useProvideAuth(token?: string) {
       }
     `;
 
-    const result = await client.mutate({
-      mutation: LOGIN_MUTATION,
-      variables: {
-        input: {
-          username,
-          password,
+    const result = await client
+      .mutate({
+        mutation: LOGIN_MUTATION,
+        variables: {
+          input: {
+            username,
+            password,
+          },
         },
-      },
-    });
+      })
+      .catch(err => {
+        const error = JSON.parse(err.message);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: `${error.errorMessage}`,
+          footer: '<a href="#">Why do I have this issue?</a>',
+          confirmButtonText: 'Continue',
+        });
+      });
 
     if (result?.data?.signIn?.token) {
       setAuthToken(result?.data?.signIn?.token);
       process.browser && localStorage.setItem('token', result?.data?.signIn?.token);
-      window.location.replace(`/`);
+      Swal.fire({
+        icon: 'success',
+        title: 'Great!',
+        text: `You've logged in`,
+        footer: `Welcom to ${setting.title}`,
+        showConfirmButton: false,
+        timer: 1500,
+      }).then(() => {
+        window.location.replace(`/`);
+      });
     }
   };
 

@@ -6,10 +6,24 @@
 
   .loginHeader {
     display: flex;
-    align-items: center;
+    flex-direction: column;
     justify-content: center;
-    text-align: center;
-    padding: 40px 0px;
+    align-items: center;
+    color: rgb(94, 108, 132);
+    .adminLogoContainer {
+      margin-top: 20px;
+      margin-bottom: 20px;
+      .adminLogo {
+        width: 100%;
+        height: auto;
+      }
+    }
+
+    h3 {
+      width: 400px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
   }
 
   .loginCard {
@@ -56,6 +70,13 @@
     p {
       color: #0052cc;
       font-size: 14px;
+    }
+  }
+
+  .adminLogo {
+    img {
+      width: 100%;
+      height: auto;
     }
   }
 }
