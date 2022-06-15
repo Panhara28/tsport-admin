@@ -22,6 +22,7 @@ import toastr from 'toastr';
 import 'toastr/build/toastr.min.css';
 import { RenderFileExtensionType } from '../../../../components/Media/RenderExtensionType';
 import { RenderExtensionTypeLibraryInfo } from '../../../../components/Media/RenderExtensionTypeLibraryInfo';
+import { CustomPagination } from '../../../../components/Paginations';
 
 const QUERY = gql`
   query mediaList($websiteId: Int!, $pagination: PaginationInput) {
@@ -38,6 +39,11 @@ const QUERY = gql`
           fullname
         }
       }
+      pagination {
+        total
+        size
+        current
+      }
     }
   }
 `;
@@ -50,6 +56,8 @@ const MUTATION = gql`
 
 export function MediaListScreen() {
   const router = useRouter();
+  console.log(router);
+
   const [lgShow, setLgShow] = useState(false);
   const [selectedImage, setSelectedImage] = useState<any>({
     featureImage: undefined,
@@ -74,8 +82,8 @@ export function MediaListScreen() {
     variables: {
       websiteId: Number(router.query.id),
       pagination: {
-        page: 1,
-        size: 10,
+        page: router.query.page ? Number(router.query.page) : 1,
+        size: 15,
       },
     },
     fetchPolicy: 'no-cache',
@@ -207,6 +215,14 @@ export function MediaListScreen() {
                       );
                     })}
                   </Row>
+                  <Row>
+                    <CustomPagination
+                      total={data.mediaList.pagination.total}
+                      currentPage={data.mediaList.pagination.current}
+                      size={data.mediaList.pagination.size}
+                      limit={10}
+                    />
+                  </Row>
                 </CardBody>
               </Card>
             </Col>
@@ -223,7 +239,6 @@ export function MediaListScreen() {
                       className="mb-3"
                       style={{
                         width: '100%',
-                        height: 'auto',
                         border: '1px solid #dee2e6',
                         padding: 10,
                         display: 'flex',

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { faFilePdf, faFileWord } from '@fortawesome/free-regular-svg-icons';
 import { faFileCsv } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -43,5 +44,16 @@ export function RenderExtensionTypeLibraryInfo({ item }: any) {
       </>
     );
   }
-  return <Image src={item?.featureImage} alt="" layout="responsive" width={1280} height={720} />;
+  // return <Image src={item?.featureImage} alt="" layout="responsive" width={1280} height={720} />;
+
+  return (
+    <img
+      src={item?.featureImage}
+      alt=""
+      style={{
+        width: '100%',
+        height: 'auto',
+      }}
+    />
+  );
 }
