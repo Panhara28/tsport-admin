@@ -13,6 +13,7 @@ import withReactContent from 'sweetalert2-react-content';
 import { useRouter } from 'next/router';
 import { RenderFileExtensionType } from './RenderExtensionType';
 import { RenderExtensionTypeImageInfo } from './RenderExtensionTypeImageInfo';
+import { CustomPagination } from '../Paginations';
 
 const QUERY = gql`
   query mediaList($websiteId: Int!, $pagination: PaginationInput) {
@@ -28,6 +29,11 @@ const QUERY = gql`
         user {
           fullname
         }
+      }
+      pagination {
+        total
+        size
+        current
       }
     }
   }
@@ -72,7 +78,7 @@ export function MediaListByWebsite({
     variables: {
       websiteId,
       pagination: {
-        page: 1,
+        page: router.query.page ? Number(router.query.page) : 1,
         size: 15,
       },
     },
@@ -179,6 +185,14 @@ export function MediaListByWebsite({
                 </Col>
               );
             })}
+          </Row>
+          <Row>
+            <CustomPagination
+              total={data.mediaList.pagination.total}
+              currentPage={data.mediaList.pagination.current}
+              size={data.mediaList.pagination.size}
+              limit={10}
+            />
           </Row>
         </Col>
         {selectImage?.featureImage ? (
