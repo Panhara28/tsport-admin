@@ -198,7 +198,12 @@ export function CreateNewsScreen() {
       </div>
     </>
   ) : (
-    <div className={style.newsFeatureImageContainer} onClick={() => setLgShow(true)}>
+    <div
+      className={style.newsFeatureImageContainer}
+      onClick={() => {
+        setLgShow(true);
+      }}
+    >
       <div className={style.newsFeatureImageIcon}>
         <FontAwesomeIcon icon={faImage} />
       </div>
@@ -303,8 +308,11 @@ export function CreateNewsScreen() {
                           {renderFeaturedImage}
                           <Modal
                             size="lg"
-                            show={lgShow}
-                            onHide={() => setLgShow(false)}
+                            show={router.query.type === 'media' ? true : lgShow}
+                            onHide={() => {
+                              setLgShow(false);
+                              router.push(`/mochub/websites/${router.query.id}/cms/news/create`);
+                            }}
                             aria-labelledby="example-modal-sizes-title-lg"
                           >
                             <Modal.Header closeButton>

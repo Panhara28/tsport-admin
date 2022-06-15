@@ -138,7 +138,6 @@ export function MediaListByWebsite({
                 item?.mimetype === 'text/csv'
                   ? '#eee'
                   : 'none';
-
               return (
                 <Col
                   md={2}
@@ -167,7 +166,7 @@ export function MediaListByWebsite({
                   className={`mb-3 ${
                     firstFeaturedImage === item.image_url
                       ? style.mocSelectedImage
-                      : selectImage === item.image_url
+                      : selectImage?.featureImage === item.image_url
                       ? style.mocSelectedImage
                       : ''
                   }`}

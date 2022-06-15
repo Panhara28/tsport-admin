@@ -14,19 +14,12 @@ type Props = {
 
 export function CustomPagination(props: Props) {
   const variableName: any = props.variableName ? props.variableName : 'page';
-  // let pageCount = Math.ceil((props.total * props.currentPage) / props.size);
-  // let start = props.currentPage < 4 ? 1 : props.currentPage - 1;
-  // let end = 3 + start;
-  // end = pageCount < end ? pageCount : end;
-  // let diff = start - end + 4;
-  // start -= start - diff > 0 ? diff : 0;
   let start: any;
   let pages: ReactNode[] = [];
   const router = useRouter();
 
   const search = new URLSearchParams(process?.browser ? window?.location?.search : []);
   search.delete(variableName);
-  // const base: string = '?' + (search.toString() !== '' ? search.toString() + '&' : '');
 
   const current_url: string = router.asPath.split('?')[0];
   const base: string = current_url + '?' + (search.toString() !== '' ? search.toString() + '&' : '');
@@ -56,35 +49,6 @@ export function CustomPagination(props: Props) {
     </li>,
   );
 
-  // if (start > 1) {
-  //   pages.push(
-  //     <li
-  //       key="_first"
-  //       className={
-  //         "paginate_button page-item " +
-  //         (props.currentPage === 1 ? "" : "d-none d-sm-block")
-  //       }
-  //     >
-  //       <Link href={base + variableName + "=" + 1}>
-  //         <a className={`page-link ${props.currentPage === 1 ? "active" : ""}`}>
-  //           1
-  //         </a>
-  //       </Link>
-  //     </li>
-  //   );
-
-  //   pages.push(
-  //     <li
-  //       key="_first-dot"
-  //       className={"paginate_button page-item disabled d-none d-sm-block"}
-  //     >
-  //       <Link href="#">
-  //         <a className="page-link">• • •</a>
-  //       </Link>
-  //     </li>
-  //   );
-  // }
-
   if (props.currentPage > 5) {
     pages.push(
       <li key="_first-dot" className={'paginate_button page-item disabled d-none d-sm-block'}>
@@ -106,40 +70,12 @@ export function CustomPagination(props: Props) {
           (i + start === props.currentPage ? 'disabled' : '')
         }
       >
-        <Link href={base + variableName + '=' + (i + start)}>
+        <Link href={base + variableName + '=' + (i + start) + '&type=media'}>
           <a className={`page-link`}>{i + start}</a>
         </Link>
       </li>,
     );
   }
-
-  //Construct Next Page
-  // if (end < pageCount) {
-  // pages.push(
-  //   <li
-  //     key="_last-dot"
-  //     className={"paginate_button page-item disabled d-none d-sm-block"}
-  //   >
-  //     <Link href="#">
-  //       <a className="page-link">• • •</a>
-  //     </Link>
-  //   </li>
-  // );
-
-  //   pages.push(
-  //     <li
-  //       key="_last"
-  //       className={
-  //         "paginate_button page-item " +
-  //         (props.currentPage === pageCount ? "active" : "d-none d-sm-block")
-  //       }
-  //     >
-  //       <Link href={base + variableName + "=" + pageCount}>
-  //         <a className="page-link">{pageCount}</a>
-  //       </Link>
-  //     </li>
-  //   );
-  // }
 
   pages.push(
     <li
@@ -157,14 +93,6 @@ export function CustomPagination(props: Props) {
   return (
     <div className="row mb-5">
       <div className="col-12">
-        {/* <div className="text-center">
-          Showing{" "}
-          {(props.currentPage - 1) * props.size + (props.total > 0 ? 1 : 0)} to{" "}
-          {props.currentPage * props.size > props.total
-            ? (props.currentPage - 1) * props.size + props.total
-            : props.currentPage * props.size}{" "}
-          of {props.total} entries
-        </div> */}
         <div className="text-center">
           Showing {props.limit ? (props.currentPage - 1) * props.limit + 1 : (props.currentPage - 1) * 10 + 1} to{' '}
           {(props.currentPage - 1) * props.limit! + props.size} of {props.total} entries

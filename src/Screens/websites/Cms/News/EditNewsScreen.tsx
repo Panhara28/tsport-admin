@@ -675,8 +675,11 @@ export function EditNewsScreen() {
                     {renderFeaturedImage}
                     <Modal
                       size="lg"
-                      show={lgShow}
-                      onHide={() => setLgShow(false)}
+                      show={router.query.type === 'media' ? true : lgShow}
+                      onHide={() => {
+                        setLgShow(false);
+                        router.push(`/mochub/websites/${router.query.id}/cms/news/${router.query.newsEditId}/edit`);
+                      }}
                       aria-labelledby="example-modal-sizes-title-lg"
                     >
                       <Modal.Header closeButton>
