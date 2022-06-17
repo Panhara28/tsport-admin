@@ -11,6 +11,7 @@ import XForm from '../../../components/Form/XForm';
 import { CreateUpdateForm } from '../../../components/GraphQL/CreateUpdateForm';
 import Layout from '../../../components/VerticalLayout';
 import { getCommune, getDistrict, getProvince, getVillage } from '../../../hook/provinces';
+import { setting } from '../../../libs/settings';
 import { WebsiteSettingSidebar } from '../WebsiteSettingSidebar';
 import style from './people.module.scss';
 
@@ -548,7 +549,7 @@ export function AddPeopleToSystemScreen({ peopleEditId }: Props) {
     <Layout>
       <div className="page-content">
         <Container fluid>
-          <Breadcrumb title="Ministry Of Commerce" breadcrumbItem="Create user" />
+          <Breadcrumb title={setting.title} breadcrumbItem="Create user" />
           <hr />
           <Row>
             <Col md={3} style={{ borderRight: '1px solid #ccc', height: '100vh' }}>

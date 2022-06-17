@@ -15,6 +15,7 @@ import { Container } from 'reactstrap';
 import { Breadcrumb } from '../../../../components/Common/Breadcrumb';
 import { CustomPagination } from '../../../../components/Paginations';
 import Layout from '../../../../components/VerticalLayout';
+import { setting } from '../../../../libs/settings';
 
 const QUERY = gql`
   query newsCategoryList($websiteId: Int!, $pagination: PaginationInput) {
@@ -49,7 +50,7 @@ export function CategoryListScreen() {
     <Layout>
       <div className="page-content">
         <Container fluid>
-          <Breadcrumb title="Ministry Of Commerce" breadcrumbItem="News Category" />
+          <Breadcrumb title={setting.title} breadcrumbItem="News Category" />
           <hr />
           <Row>
             <Col md={9}>

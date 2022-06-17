@@ -11,6 +11,7 @@ import Layout from '../../components/VerticalLayout';
 import { Breadcrumb } from '../../components/Common/Breadcrumb';
 import { Card } from 'reactstrap';
 import { CardBody } from 'reactstrap';
+import { setting } from '../../libs/settings';
 
 const QUERY = gql`
   query installedPluginList($websiteId: Int!) {
@@ -75,7 +76,7 @@ export function PeoplePluginScreen() {
       <Layout>
         <div className="page-content">
           <Container fluid>
-            <Breadcrumb title="Ministry Of Commerce" breadcrumbItem="News" />
+            <Breadcrumb title={setting.title} breadcrumbItem="News" />
             <hr />
             <Row>
               <Col md={8}>

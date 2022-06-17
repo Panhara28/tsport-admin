@@ -23,6 +23,7 @@ import 'toastr/build/toastr.min.css';
 import { RenderFileExtensionType } from '../../../../components/Media/RenderExtensionType';
 import { RenderExtensionTypeLibraryInfo } from '../../../../components/Media/RenderExtensionTypeLibraryInfo';
 import { CustomPagination } from '../../../../components/Paginations';
+import { setting } from '../../../../libs/settings';
 
 const QUERY = gql`
   query mediaList($websiteId: Int!, $pagination: PaginationInput) {
@@ -122,7 +123,7 @@ export function MediaListScreen() {
     <Layout>
       <div className="page-content">
         <Container fluid>
-          <Breadcrumb title="Ministry Of Commerce" breadcrumbItem="Media Library" />
+          <Breadcrumb title={setting.title} breadcrumbItem="Media Library" />
           <hr />
           <Row>
             <Col md={12}>

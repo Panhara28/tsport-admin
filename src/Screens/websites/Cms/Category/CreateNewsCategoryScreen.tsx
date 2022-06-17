@@ -13,6 +13,7 @@ import toastr from 'toastr';
 import 'toastr/build/toastr.min.css';
 import { gql } from 'apollo-boost';
 import { useMutation } from '@apollo/client';
+import { setting } from '../../../../libs/settings';
 
 toastr.options = {
   closeButton: false,
@@ -67,7 +68,7 @@ export function CreateNewsCategoryScreen() {
     <Layout>
       <div className="page-content">
         <Container fluid>
-          <Breadcrumb title="Ministry Of Commerce" breadcrumbItem="Create category" />
+          <Breadcrumb title={setting.title} breadcrumbItem="Create category" />
           <hr />
           <Row>
             <Col md={9}>

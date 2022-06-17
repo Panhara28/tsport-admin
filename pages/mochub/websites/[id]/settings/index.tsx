@@ -19,6 +19,7 @@ import Select from 'react-select';
 import { Label } from 'reactstrap';
 import { faFacebook, faTelegram } from '@fortawesome/free-brands-svg-icons';
 import { parseImageUrl } from '../../../../../src/hook/parseImageUrl';
+import { setting } from '../../../../../src/libs/settings';
 
 const QUERY = gql`
   query website($id: Int!) {
@@ -234,7 +235,7 @@ export default function SettingPage() {
     <Layout>
       <div className="page-content">
         <Container fluid>
-          <Breadcrumb title="Ministry Of Commerce" breadcrumbItem="Website Setting" />
+          <Breadcrumb title={setting.title} breadcrumbItem="Website Setting" />
           <hr />
           <Row>
             <Col md={3} style={{ borderRight: '1px solid #ccc', height: '100vh' }}>

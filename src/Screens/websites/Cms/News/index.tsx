@@ -13,6 +13,7 @@ import Layout from '../../../../components/VerticalLayout';
 import { Breadcrumb } from '../../../../components/Common/Breadcrumb';
 import { Card, CardBody, CardTitle, Label } from 'reactstrap';
 import AuthContext from '../../../../components/Authentication/AuthContext';
+import { setting } from '../../../../libs/settings';
 
 const QUERY = gql`
   query newsList($filter: FilterNews, $pagination: PaginationInput!, $websiteId: Int!) {
@@ -100,7 +101,7 @@ export function NewsListScreen() {
     <Layout>
       <div className="page-content">
         <Container fluid>
-          <Breadcrumb title="Ministry Of Commerce" breadcrumbItem="News" />
+          <Breadcrumb title={setting.title} breadcrumbItem="News" />
           <hr />
           <Row>
             <Col lg={9}>

@@ -11,6 +11,7 @@ import Layout from '../../../../components/VerticalLayout';
 import style from './category.module.scss';
 import toastr from 'toastr';
 import 'toastr/build/toastr.min.css';
+import { setting } from '../../../../libs/settings';
 
 const QUERY = gql`
   query newsCategoryDetail($websiteId: Int!, $id: Int!) {
@@ -81,7 +82,7 @@ export function EditNewsCategoryScreen() {
     <Layout>
       <div className="page-content">
         <Container fluid>
-          <Breadcrumb title="Ministry Of Commerce" breadcrumbItem="Edit category" />
+          <Breadcrumb title={setting.title} breadcrumbItem="Edit category" />
           <hr />
           <Row>
             <Col md={9}>

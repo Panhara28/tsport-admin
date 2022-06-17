@@ -20,6 +20,7 @@ import toastr from 'toastr';
 import 'toastr/build/toastr.min.css';
 import Link from 'next/link';
 import { parseImageUrl } from '../../../../hook/parseImageUrl';
+import { setting } from '../../../../libs/settings';
 
 const MUTATION = gql`
   mutation createNews($input: NewsInput, $websiteId: Int!) {
@@ -214,7 +215,7 @@ export function CreateNewsScreen() {
     <Layout>
       <div className="page-content">
         <Container fluid>
-          <Breadcrumb title="Ministry Of Commerce" breadcrumbItem="News" />
+          <Breadcrumb title={setting.title} breadcrumbItem="News" />
           <hr />
           <Row>
             <Col md={12}>

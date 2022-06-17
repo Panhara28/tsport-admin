@@ -10,6 +10,7 @@ import { Breadcrumb } from '../../../components/Common/Breadcrumb';
 import Layout from '../../../components/VerticalLayout';
 import toastr from 'toastr';
 import 'toastr/build/toastr.min.css';
+import { setting } from '../../../libs/settings';
 
 const MUTATION = gql`
   mutation changePassword($password: String!) {
@@ -50,7 +51,7 @@ export function ChangePasswordScreen() {
     <Layout>
       <div className="page-content">
         <Container fluid>
-          <Breadcrumb title="Ministry Of Commerce" breadcrumbItem="Change password" />
+          <Breadcrumb title={setting.title} breadcrumbItem="Change password" />
           <hr />
           <Row className="mb-4">
             <Col xl="4">

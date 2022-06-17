@@ -104,7 +104,7 @@ export function PeopleRoleScreen() {
       <Layout>
         <div className="page-content">
           <Container fluid>
-            <Breadcrumb title="Ministry Of Commerce" breadcrumbItem="Add People" />
+            <Breadcrumb title={setting.title} breadcrumbItem="Add People" />
             <hr />
             <Row>
               <Col md={8}>

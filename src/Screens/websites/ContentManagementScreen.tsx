@@ -8,6 +8,7 @@ import { Card, Col, Container, Row } from 'react-bootstrap';
 import AuthContext from '../../components/Authentication/AuthContext';
 import { Breadcrumb } from '../../components/Common/Breadcrumb';
 import Layout from '../../components/VerticalLayout';
+import { setting } from '../../libs/settings';
 import style from './create-websites.module.scss';
 
 export function ContentManagementScreen() {
@@ -18,7 +19,7 @@ export function ContentManagementScreen() {
     <Layout>
       <div className="page-content">
         <Container fluid>
-          <Breadcrumb title="Ministry Of Commerce" breadcrumbItem="Your Plugins" />
+          <Breadcrumb title={setting.title} breadcrumbItem="Your Plugins" />
           <hr />
           <div style={{ display: 'flex', justifyContent: 'space-between' }}>
             <div></div>

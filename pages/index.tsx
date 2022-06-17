@@ -7,6 +7,7 @@ import Notiflix from "notiflix";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import { Card } from "../src/components/Card";
+import { setting } from "../src/libs/settings";
 
 const QUERY = gql`
   query applicationByUserList {
@@ -36,7 +37,7 @@ const Home: NextPage = () => {
       <div className="page-content">
         <Container fluid>
           <Breadcrumb
-            title="Ministry Of Commerce"
+            title={setting.title}
             breadcrumbItem="Your websites"
           />
           <hr />

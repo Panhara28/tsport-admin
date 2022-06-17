@@ -15,6 +15,7 @@ import { Container } from 'reactstrap';
 import AuthContext from '../../../components/Authentication/AuthContext';
 import { Breadcrumb } from '../../../components/Common/Breadcrumb';
 import Layout from '../../../components/VerticalLayout';
+import { setting } from '../../../libs/settings';
 
 export function ProfileScreen() {
   const { me } = useContext(AuthContext);
@@ -24,7 +25,7 @@ export function ProfileScreen() {
     <Layout>
       <div className="page-content">
         <Container fluid>
-          <Breadcrumb title="Ministry Of Commerce" breadcrumbItem="Profile" />
+          <Breadcrumb title={setting.title} breadcrumbItem="Profile" />
           <hr />
           <Row className="mb-4">
             <Col xl="4">

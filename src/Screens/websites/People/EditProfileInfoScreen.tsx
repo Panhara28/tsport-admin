@@ -26,6 +26,7 @@ import AuthContext from '../../../components/Authentication/AuthContext';
 import toastr from 'toastr';
 import 'toastr/build/toastr.min.css';
 import { ProfileUpload } from '../../../components/ProfileUpload';
+import { setting } from '../../../libs/settings';
 
 toastr.options = {
   closeButton: false,
@@ -422,7 +423,7 @@ export default function EditProfileInfoScreen({ peopleEditId }: Props) {
     <Layout>
       <div className="page-content">
         <Container fluid>
-          <Breadcrumb title="Ministry Of Commerce" breadcrumbItem="Edit Info" />
+          <Breadcrumb title={setting.title} breadcrumbItem="Edit Info" />
           <hr />
           <Row>
             <Col md={9}>

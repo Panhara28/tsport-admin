@@ -29,6 +29,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import styled from 'styled-components';
 import { CustomPagination } from '../../../../components/Paginations';
 import moment from 'moment-timezone';
+import { setting } from '../../../../libs/settings';
 
 const MUTATION = gql`
   mutation updateNews($id: Int!, $input: NewsInput, $websiteId: Int!) {
@@ -551,7 +552,7 @@ export function EditNewsScreen() {
     <Layout>
       <div className="page-content">
         <Container fluid>
-          <Breadcrumb title="Ministry Of Commerce" breadcrumbItem="News" />
+          <Breadcrumb title={setting.title} breadcrumbItem="News" />
           <hr />
 
           <Row>

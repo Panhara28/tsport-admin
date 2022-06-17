@@ -9,6 +9,7 @@ import Layout from '../../components/VerticalLayout';
 import { Breadcrumb } from '../../components/Common/Breadcrumb';
 import toastr from 'toastr';
 import 'toastr/build/toastr.min.css';
+import { setting } from '../../libs/settings';
 
 const QUERY = gql`
   query adminUserList {
@@ -76,7 +77,7 @@ export function AddPeopleToWebsiteScreen() {
     <Layout>
       <div className="page-content">
         <Container fluid>
-          <Breadcrumb title="Ministry Of Commerce" breadcrumbItem="Add People" />
+          <Breadcrumb title={setting.title} breadcrumbItem="Add People" />
           <hr />
           <Row>
             <Col md={3} style={{ borderRight: '1px solid #ccc', height: '100vh' }}>

@@ -13,6 +13,7 @@ import { Breadcrumb } from '../../../../components/Common/Breadcrumb';
 import { MediaListByWebsite } from '../../../../components/Media/MediaListByWebsite';
 import { SignleImageUpload } from '../../../../components/SignleImageUpload';
 import Layout from '../../../../components/VerticalLayout';
+import { setting } from '../../../../libs/settings';
 import style from './media.module.scss';
 
 export function CreateMediaScreen() {
@@ -40,7 +41,7 @@ export function CreateMediaScreen() {
     <Layout>
       <div className="page-content">
         <Container fluid>
-          <Breadcrumb title="Ministry Of Commerce" breadcrumbItem="Upload new media" />
+          <Breadcrumb title={setting.title} breadcrumbItem="Upload new media" />
           <hr />
           <Row>
             <Col md={12}>

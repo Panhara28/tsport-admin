@@ -22,6 +22,7 @@ import { faImage, faTrash } from '@fortawesome/free-solid-svg-icons';
 import Image from 'next/image';
 import { SignleImageUpload } from '../../../components/SignleImageUpload';
 import { MediaListByWebsite } from '../../../components/Media/MediaListByWebsite';
+import { setting } from '../../../libs/settings';
 
 const CREATE_MUTATION = gql`
   mutation adminCreateUser($input: UserInput) {
@@ -486,7 +487,7 @@ export function EditPeopleInfoScreen({ peopleEditId }: Props) {
     <Layout>
       <div className="page-content">
         <Container fluid>
-          <Breadcrumb title="Ministry Of Commerce" breadcrumbItem="Edit Info" />
+          <Breadcrumb title={setting.title} breadcrumbItem="Edit Info" />
           <hr />
           <Row>
             <Col md={3} style={{ borderRight: '1px solid #ccc', height: '100vh' }}>

@@ -1,23 +1,31 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { Button, Col, Container, Row } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
 
 import { WebsiteSettingSidebar } from './WebsiteSettingSidebar';
 import style from './create-websites.module.scss';
 import { gql, useQuery } from '@apollo/client';
 import Layout from '../../components/VerticalLayout';
-import { CustomTable } from '../../components/Table/CustomTable';
 import { Breadcrumb } from '../../components/Common/Breadcrumb';
 import { Table } from 'reactstrap';
 import { CardBody } from 'reactstrap';
 import { Card } from 'reactstrap';
+import { setting } from '../../libs/settings';
+import { CustomPagination } from '../../components/Paginations';
 
 const QUERY = gql`
-  query addedPeopleList($websiteId: Int!) {
-    addedPeopleList(websiteId: $websiteId) {
-      userId
-      fullName
+  query addedPeopleList($websiteId: Int!, $pagination: PaginationInput) {
+    addedPeopleList(websiteId: $websiteId, pagination: $pagination) {
+      data {
+        userId
+        fullName
+      }
+      pagination {
+        total
+        current
+        size
+      }
     }
   }
 `;
@@ -28,6 +36,10 @@ export function PeopleScreen() {
   const { data, loading } = useQuery(QUERY, {
     variables: {
       websiteId: Number(router.query.id),
+      pagination: {
+        page: 1,
+        size: 10,
+      },
     },
   });
 
@@ -37,7 +49,7 @@ export function PeopleScreen() {
     <Layout>
       <div className="page-content">
         <Container fluid>
-          <Breadcrumb title="Ministry Of Commerce" breadcrumbItem="All People" />
+          <Breadcrumb title={setting.title} breadcrumbItem="All People" />
           <hr />
           <Row>
             <Col md={3} style={{ borderRight: '1px solid #ccc', height: '100vh' }}>
@@ -49,7 +61,6 @@ export function PeopleScreen() {
                 <Link href={`/mochub/websites/${router.query.id}/add-people`}>
                   <a className={style.mocAddPeopleButton}>Add People</a>
                 </Link>
-                {/* <Button style={{ background: 'rgb(0, 82, 204)' }}>Add People</Button> */}
               </div>
               <Card>
                 <CardBody>
@@ -62,7 +73,7 @@ export function PeopleScreen() {
                       </tr>
                     </thead>
                     <tbody>
-                      {data?.addedPeopleList.map((item: any) => {
+                      {data?.addedPeopleList.data.map((item: any) => {
                         return (
                           <tr>
                             <td>{item.userId}</td>
@@ -88,9 +99,13 @@ export function PeopleScreen() {
                     </tbody>
                   </Table>
                 </CardBody>
+                <CustomPagination
+                  total={data?.addedPeopleList.pagination.total}
+                  currentPage={data?.addedPeopleList.pagination.current}
+                  size={data?.addedPeopleList.pagination.size}
+                  limit={10}
+                />
               </Card>
-
-              {/* <CustomTable data={data?.addedPeopleList} websiteId={Number(router.query.id)} /> */}
             </Col>
           </Row>
         </Container>
