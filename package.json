@@ -69,7 +69,8 @@
     "styled-components": "^5.3.5",
     "sweetalert2": "^11.4.8",
     "sweetalert2-react-content": "^4.2.0",
-    "toastr": "^2.1.4"
+    "toastr": "^2.1.4",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
