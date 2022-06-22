@@ -1,4 +1,4 @@
-import { CommercialInformationScreen } from '../../../../../../src/Screens/websites/Cms/CommercialInformation';
+import { StatisticsScreen } from '../../../../../../src/Screens/websites/Cms/Statistics';
 import { NewsListScreen } from '../../../../../../src/Screens/websites/Cms/News';
 import { OfficialDocumentScreen } from '../../../../../../src/Screens/websites/Cms/OfficialDocuments';
 
@@ -8,8 +8,8 @@ export default function Cms({ slug }: { slug: string }) {
     plugin = <NewsListScreen />;
   } else if (slug === 'official-documents') {
     plugin = <OfficialDocumentScreen />;
-  } else if (slug === 'commercial-information') {
-    plugin = <CommercialInformationScreen />;
+  } else if (slug === 'statistics') {
+    plugin = <StatisticsScreen />;
   }
   return plugin;
 }
