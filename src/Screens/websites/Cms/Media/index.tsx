@@ -84,7 +84,7 @@ export function MediaListScreen() {
       websiteId: Number(router.query.id),
       pagination: {
         page: router.query.page ? Number(router.query.page) : 1,
-        size: 15,
+        size: 5,
       },
     },
     fetchPolicy: 'no-cache',
@@ -221,7 +221,7 @@ export function MediaListScreen() {
                       total={data.mediaList.pagination.total}
                       currentPage={data.mediaList.pagination.current}
                       size={data.mediaList.pagination.size}
-                      limit={10}
+                      isMedia={false}
                     />
                   </Row>
                 </CardBody>

@@ -10,6 +10,7 @@ type Props = {
   currentPage: number;
   limit?: 10;
   variableName?: string;
+  isMedia?: boolean;
 };
 
 export function CustomPagination(props: Props) {
@@ -70,7 +71,7 @@ export function CustomPagination(props: Props) {
           (i + start === props.currentPage ? 'disabled' : '')
         }
       >
-        <Link href={base + variableName + '=' + (i + start) + '&type=media'}>
+        <Link href={base + variableName + '=' + (i + start) + `${props.isMedia ? '&type=media' : ''}`}>
           <a className={`page-link`}>{i + start}</a>
         </Link>
       </li>,
@@ -94,8 +95,7 @@ export function CustomPagination(props: Props) {
     <div className="row mb-5">
       <div className="col-12">
         <div className="text-center">
-          Showing {props.limit ? (props.currentPage - 1) * props.limit + 1 : (props.currentPage - 1) * 10 + 1} to{' '}
-          {(props.currentPage - 1) * props.limit! + props.size} of {props.total} entries
+          Showing {props.size} to of {props.total} entries
         </div>
       </div>
 

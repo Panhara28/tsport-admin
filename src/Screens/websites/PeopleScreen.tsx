@@ -37,8 +37,8 @@ export function PeopleScreen() {
     variables: {
       websiteId: Number(router.query.id),
       pagination: {
-        page: 1,
-        size: 10,
+        page: router.query.page ? Number(router.query.page) : 1,
+        size: 5,
       },
     },
   });
@@ -103,7 +103,7 @@ export function PeopleScreen() {
                   total={data?.addedPeopleList.pagination.total}
                   currentPage={data?.addedPeopleList.pagination.current}
                   size={data?.addedPeopleList.pagination.size}
-                  limit={10}
+                  isMedia={false}
                 />
               </Card>
             </Col>
