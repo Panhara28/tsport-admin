@@ -76,26 +76,28 @@ export function StatisticsScreen() {
             </Col>
 
             <Col md={6} xl={3}>
-              <Card>
-                <CardBody>
-                  <div className="float-end mt-2">
-                    <FontAwesomeIcon icon={faFile} style={{ fontSize: '36px' }} color="#3867D6" />
-                  </div>
-                  <div>
-                    <h4 className="mb-1 mt-1">
-                      <span></span>
-                    </h4>
-                    <p className="text-muted mb-0" style={{ fontSize: '18px', fontWeight: 600 }}>
-                      Reports
+              <a href={`/mochub/websites/${router?.query?.id}/cms/statistics/reports`}>
+                <Card>
+                  <CardBody>
+                    <div className="float-end mt-2">
+                      <FontAwesomeIcon icon={faFile} style={{ fontSize: '36px' }} color="#3867D6" />
+                    </div>
+                    <div>
+                      <h4 className="mb-1 mt-1">
+                        <span></span>
+                      </h4>
+                      <p className="text-muted mb-0" style={{ fontSize: '18px', fontWeight: 600 }}>
+                        Reports
+                      </p>
+                    </div>
+                    <p className="text-muted mt-3 mb-0">
+                      <span className={'text-' + 'pimary' + ' me-1'}>
+                        <FontAwesomeIcon icon={faPlusCircle} style={{ fontSize: '26px' }} color="#3867D6" />
+                      </span>
                     </p>
-                  </div>
-                  <p className="text-muted mt-3 mb-0">
-                    <span className={'text-' + 'pimary' + ' me-1'}>
-                      <FontAwesomeIcon icon={faPlusCircle} style={{ fontSize: '26px' }} color="#3867D6" />
-                    </span>
-                  </p>
-                </CardBody>
-              </Card>
+                  </CardBody>
+                </Card>
+              </a>
             </Col>
           </Row>
         </Container>

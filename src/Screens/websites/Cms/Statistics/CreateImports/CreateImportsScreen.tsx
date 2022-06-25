@@ -94,6 +94,7 @@ export function CreateImportsScreen() {
       variables: {
         input: {
           name: e?.target?.files[0]?.name,
+          websiteId: Number(router?.query?.id),
           data: input,
         },
       },
