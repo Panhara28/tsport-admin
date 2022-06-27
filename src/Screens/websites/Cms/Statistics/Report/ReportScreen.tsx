@@ -9,6 +9,8 @@ import AuthContext from '../../../../../components/Authentication/AuthContext';
 import Select from 'react-select';
 import { CardHeader } from 'reactstrap';
 import moment from 'moment';
+import 'react-datepicker/dist/react-datepicker.css';
+import DatePicker from 'react-datepicker';
 
 export const CREATE_EXPORTS = gql`
   mutation createExports($input: ExportsInput) {
@@ -29,9 +31,15 @@ export default function ReportScreen() {
 
   const [fetchReport, { called, loading, data }] = useLazyQuery(LAZYQUERY);
 
+  const [filterType, setFilterType] = useState<any>(undefined);
   const [timeframe, setTimeframe] = useState<any>(undefined);
   const [semesterType, setSemesterType] = useState<any>(undefined);
   const [trimesterType, setTrimesterType] = useState<any>(undefined);
+
+  const [year, setYear] = useState(new Date());
+  const [secondYear, setSecondYear] = useState(new Date());
+  const [month, setMonth] = useState(new Date());
+  const [secondMonth, setSecondMonth] = useState(new Date());
 
   const filterTypeOptions = [
     {
@@ -94,9 +102,17 @@ export default function ReportScreen() {
   ];
 
   useEffect(() => {
-    setTimeframe(filterTimeframe.filter((x: any) => query?.timeframeType === x?.value)[0]);
-    setTrimesterType(trimesterTypeOptions.filter((x: any) => Number(query?.trimesterType) === x?.value)[0]);
-    setSemesterType(semesterTypeOptions.filter((x: any) => Number(query?.semesterType) === x?.value)[0]);
+    query?.filterType && setFilterType(filterTypeOptions.filter((x: any) => query.filterType === x?.value)[0]);
+    query?.timeframeType && setTimeframe(filterTimeframe.filter((x: any) => query?.timeframeType === x?.value)[0]);
+    query?.trimesterType &&
+      setTrimesterType(trimesterTypeOptions.filter((x: any) => Number(query?.trimesterType) === x?.value)[0]);
+    query?.semesterType &&
+      setSemesterType(semesterTypeOptions.filter((x: any) => Number(query?.semesterType) === x?.value)[0]);
+    query?.year && setYear(new Date(Number(query?.year), 1, 1));
+    query?.second_year && setSecondYear(new Date(Number(query?.second_year), 1, 1));
+    query?.month && setMonth(new Date(Number(query?.year) ? Number(query?.year) : 0, Number(query?.month), 0));
+    query?.second_month &&
+      setSecondMonth(new Date(Number(query?.year) ? Number(query?.year) : 0, Number(query?.second_month), 0));
   }, []);
 
   const removeUndefined: any = (o: any) => {
@@ -106,6 +122,17 @@ export default function ReportScreen() {
         result[key] = val;
         return result;
       }, {});
+  };
+
+  const onChangeFilterType = (type: any) => {
+    router.push({
+      pathname: pathname?.replace('[id]', query?.id),
+      query: removeUndefined({
+        ...query,
+        id: undefined,
+        filterType: type?.value ? type?.value : undefined,
+      }),
+    });
   };
 
   const onChangeTimeframType = (type: any) => {
@@ -140,13 +167,46 @@ export default function ReportScreen() {
     });
   };
 
-  const onChangeYear = (e: any) => {
+  const onChangeYear = (date: any) => {
     router.push({
       pathname: pathname?.replace('[id]', query?.id),
       query: removeUndefined({
         ...query,
         id: undefined,
-        year: e?.target?.value ? e?.target?.value : undefined,
+        year: date ? moment(date).format('YYYY') : undefined,
+      }),
+    });
+  };
+
+  const onChangeSecondYear = (date: any) => {
+    router.push({
+      pathname: pathname?.replace('[id]', query?.id),
+      query: removeUndefined({
+        ...query,
+        id: undefined,
+        second_year: date ? moment(date).format('YYYY') : undefined,
+      }),
+    });
+  };
+
+  const onChangeMonth = (date: any) => {
+    router.push({
+      pathname: pathname?.replace('[id]', query?.id),
+      query: removeUndefined({
+        ...query,
+        id: undefined,
+        month: date ? moment(date).format('MM') : undefined,
+      }),
+    });
+  };
+
+  const onChangeSecondMonth = (date: any) => {
+    router.push({
+      pathname: pathname?.replace('[id]', query?.id),
+      query: removeUndefined({
+        ...query,
+        id: undefined,
+        second_month: date ? moment(date).format('MM') : undefined,
       }),
     });
   };
@@ -154,21 +214,17 @@ export default function ReportScreen() {
   const onHandleReport = (e: any) => {
     e.preventDefault();
 
-    const x: any = e.target;
-
     fetchReport({
       variables: {
         filter: {
           countries: ['CN', 'BE'],
           timeframe: timeframe?.value,
-          year: e?.target?.year?.value ? moment(e?.target?.year?.value).format('YYYY') : undefined,
-          second_year: e?.target?.second_year?.value ? moment(e?.target?.second_year?.value).format('YYYY') : undefined,
-          month: e?.target?.month?.value ? moment(e?.target?.month?.value).format('YYYY') : undefined,
-          second_month: e?.target?.second_month?.value
-            ? moment(e?.target?.second_month?.value).format('YYYY')
-            : undefined,
-          trimester: trimesterType?.value ? Number(trimesterType?.value) - 1 : undefined,
-          semester: semesterType?.value ? Number(semesterType?.value) - 1 : undefined,
+          year: year ? moment(year).format('YYYY') : undefined,
+          second_year: secondYear ? moment(secondYear).format('YYYY') : undefined,
+          month: month ? moment(month).format('MM') : undefined,
+          second_month: secondMonth ? moment(secondMonth).format('MM') : undefined,
+          trimester: trimesterType?.value ? (Number(trimesterType?.value) - 1).toString() : undefined,
+          semester: semesterType?.value ? (Number(semesterType?.value) - 1).toString() : undefined,
         },
       },
     });
@@ -188,12 +244,17 @@ export default function ReportScreen() {
                     {/* <CardTitle className="h4 mb-4"> Reports</CardTitle> */}
                     <Row style={{ rowGap: 20 }}>
                       <Col md={3}>
-                        <label>Filter Type</label>
-                        <Select options={filterTypeOptions} placeholder="Filter Type" />
+                        <label>Filter by Type</label>
+                        <Select
+                          options={filterTypeOptions}
+                          placeholder="Filter Type"
+                          onChange={onChangeFilterType}
+                          value={filterType}
+                        />
                       </Col>
 
                       <Col md={3}>
-                        <label>Filter Timeframe</label>
+                        <label>Filter by Timeframe</label>
                         <Select
                           options={filterTimeframe}
                           placeholder="Filter Timeframe"
@@ -204,31 +265,50 @@ export default function ReportScreen() {
 
                       <Col md={3}>
                         <label>Select Year</label>
-                        {/* <Select options={filterTimeframe} placeholder="Select Year" /> */}
-                        <input type="date" className="form-control" name="year" onChange={onChangeYear} />
+                        <DatePicker
+                          selected={year}
+                          onChange={onChangeYear}
+                          showYearPicker
+                          className="form-control"
+                          dateFormat="yyyy"
+                        />
                       </Col>
 
                       {timeframe?.value === 'Year' && (
                         <Col md={3}>
                           <label>Select Second Year</label>
-                          {/* <Select options={filterTimeframe} placeholder="Select Second Year" /> */}
-                          <input type="date" className="form-control" name="second_year" />
+                          <DatePicker
+                            selected={secondYear}
+                            onChange={onChangeSecondYear}
+                            showYearPicker
+                            dateFormat="yyyy"
+                          />
                         </Col>
                       )}
 
                       {timeframe?.value === 'Month' && (
                         <Col md={3}>
                           <label>Select Month</label>
-                          {/* <Select options={filterTimeframe} placeholder="Select Month" /> */}
-                          <input type="date" className="form-control" name="month" />
+                          <DatePicker
+                            selected={month}
+                            onChange={onChangeMonth}
+                            dateFormat="MM"
+                            showMonthYearPicker
+                            className="form-control"
+                          />
                         </Col>
                       )}
 
                       {timeframe?.value === 'Month' && (
                         <Col md={3}>
                           <label>Select Second Month</label>
-                          {/* <Select options={filterTimeframe} placeholder="Select Second Month" /> */}
-                          <input type="date" className="form-control" name="second_month" />
+                          <DatePicker
+                            selected={secondMonth}
+                            onChange={onChangeSecondMonth}
+                            dateFormat="MM"
+                            showMonthYearPicker
+                            className="form-control"
+                          />
                         </Col>
                       )}
 
