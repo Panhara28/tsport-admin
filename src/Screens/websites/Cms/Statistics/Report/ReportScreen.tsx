@@ -1,7 +1,7 @@
 import { gql, useLazyQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Layout from '../../../../../components/VerticalLayout';
 import { Breadcrumb } from '../../../../../components/Common/Breadcrumb';
 import { Card, CardBody, CardTitle } from 'reactstrap';
@@ -25,6 +25,7 @@ const LAZYQUERY = gql`
 export default function ReportScreen() {
   const { me } = useContext(AuthContext);
   const router = useRouter();
+  const { pathname, query }: any = router;
 
   const [fetchReport, { called, loading, data }] = useLazyQuery(LAZYQUERY);
 
@@ -65,32 +66,90 @@ export default function ReportScreen() {
   const semesterTypeOptions = [
     {
       label: 'Semester 1',
-      value: 0,
+      value: 1,
     },
     {
       label: 'Semester 2',
-      value: 1,
+      value: 2,
     },
   ];
 
   const trimesterTypeOptions = [
     {
       label: 'Trimester 1',
-      value: 0,
-    },
-    {
-      label: 'Trimester 2',
       value: 1,
     },
     {
-      label: 'Trimester 3',
+      label: 'Trimester 2',
       value: 2,
     },
     {
-      label: 'Trimester 4',
+      label: 'Trimester 3',
       value: 3,
     },
+    {
+      label: 'Trimester 4',
+      value: 4,
+    },
   ];
+
+  useEffect(() => {
+    setTimeframe(filterTimeframe.filter((x: any) => query?.timeframeType === x?.value)[0]);
+    setTrimesterType(trimesterTypeOptions.filter((x: any) => Number(query?.trimesterType) === x?.value)[0]);
+    setSemesterType(semesterTypeOptions.filter((x: any) => Number(query?.semesterType) === x?.value)[0]);
+  }, []);
+
+  const removeUndefined: any = (o: any) => {
+    return Object.entries(o)
+      .filter(([, val]: any) => val !== undefined)
+      .reduce((result: any, [key, val]: any) => {
+        result[key] = val;
+        return result;
+      }, {});
+  };
+
+  const onChangeTimeframType = (type: any) => {
+    router.push({
+      pathname: pathname?.replace('[id]', query?.id),
+      query: removeUndefined({
+        ...query,
+        id: undefined,
+        timeframeType: type?.value ? type?.value : undefined,
+      }),
+    });
+  };
+
+  const onChangeSemesterType = (type: any) => {
+    router.push({
+      pathname: pathname?.replace('[id]', query?.id),
+      query: removeUndefined({
+        ...query,
+        id: undefined,
+        semesterType: type?.value ? type?.value : undefined,
+      }),
+    });
+  };
+  const onChangeTrimesterType = (type: any) => {
+    router.push({
+      pathname: pathname?.replace('[id]', query?.id),
+      query: removeUndefined({
+        ...query,
+        id: undefined,
+        trimesterType: type?.value ? type?.value : undefined,
+      }),
+    });
+  };
+
+  const onChangeYear = (e: any) => {
+    router.push({
+      pathname: pathname?.replace('[id]', query?.id),
+      query: removeUndefined({
+        ...query,
+        id: undefined,
+        year: e?.target?.value ? e?.target?.value : undefined,
+      }),
+    });
+  };
 
   const onHandleReport = (e: any) => {
     e.preventDefault();
@@ -108,14 +167,12 @@ export default function ReportScreen() {
           second_month: e?.target?.second_month?.value
             ? moment(e?.target?.second_month?.value).format('YYYY')
             : undefined,
-          trimester: trimesterType?.value,
-          semester: semesterType?.value,
+          trimester: trimesterType?.value ? Number(trimesterType?.value) - 1 : undefined,
+          semester: semesterType?.value ? Number(semesterType?.value) - 1 : undefined,
         },
       },
     });
   };
-
-  console.log(data);
 
   return (
     <Layout>
@@ -140,7 +197,7 @@ export default function ReportScreen() {
                         <Select
                           options={filterTimeframe}
                           placeholder="Filter Timeframe"
-                          onChange={e => setTimeframe(e)}
+                          onChange={onChangeTimeframType}
                           value={timeframe}
                         />
                       </Col>
@@ -148,7 +205,7 @@ export default function ReportScreen() {
                       <Col md={3}>
                         <label>Select Year</label>
                         {/* <Select options={filterTimeframe} placeholder="Select Year" /> */}
-                        <input type="date" className="form-control" name="year" />
+                        <input type="date" className="form-control" name="year" onChange={onChangeYear} />
                       </Col>
 
                       {timeframe?.value === 'Year' && (
@@ -181,7 +238,7 @@ export default function ReportScreen() {
                           <Select
                             options={semesterTypeOptions}
                             placeholder="Select Semester"
-                            onChange={e => setSemesterType(e)}
+                            onChange={onChangeSemesterType}
                             value={semesterType}
                           />
                         </Col>
@@ -193,7 +250,7 @@ export default function ReportScreen() {
                           <Select
                             options={trimesterTypeOptions}
                             placeholder="Select Trimester"
-                            onChange={e => setTrimesterType(e)}
+                            onChange={onChangeTrimesterType}
                             value={trimesterType}
                           />
                         </Col>
