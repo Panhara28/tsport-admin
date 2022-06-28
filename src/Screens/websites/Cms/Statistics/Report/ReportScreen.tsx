@@ -139,7 +139,7 @@ export default function ReportScreen() {
     router.push({
       pathname: pathname?.replace('[id]', query?.id),
       query: removeUndefined({
-        ...query,
+        filterType: query?.filterType,
         id: undefined,
         timeframeType: type?.value ? type?.value : undefined,
       }),
@@ -214,19 +214,27 @@ export default function ReportScreen() {
   const onHandleReport = (e: any) => {
     e.preventDefault();
 
-    fetchReport({
-      variables: {
-        filter: {
-          countries: ['CN', 'BE'],
-          timeframe: timeframe?.value,
-          year: year ? moment(year).format('YYYY') : undefined,
-          second_year: secondYear ? moment(secondYear).format('YYYY') : undefined,
-          month: month ? moment(month).format('MM') : undefined,
-          second_month: secondMonth ? moment(secondMonth).format('MM') : undefined,
-          trimester: trimesterType?.value ? (Number(trimesterType?.value) - 1).toString() : undefined,
-          semester: semesterType?.value ? (Number(semesterType?.value) - 1).toString() : undefined,
-        },
-      },
+    // fetchReport({
+    //   variables: {
+    //     filter: {
+    //       countries: ['CN', 'BE'],
+    //       timeframe: timeframe?.value,
+    //       year: year ? moment(year).format('YYYY') : undefined,
+    //       second_year: secondYear ? moment(secondYear).format('YYYY') : undefined,
+    //       month: month ? moment(month).format('MM') : undefined,
+    //       second_month: secondMonth ? moment(secondMonth).format('MM') : undefined,
+    //       trimester: trimesterType?.value ? (Number(trimesterType?.value) - 1).toString() : undefined,
+    //       semester: semesterType?.value ? (Number(semesterType?.value) - 1).toString() : undefined,
+    //     },
+    //   },
+    // });
+
+    router.push({
+      pathname: (pathname + '/form')?.replace('[id]', query?.id),
+      query: removeUndefined({
+        ...query,
+        id: undefined,
+      }),
     });
   };
 
@@ -253,6 +261,18 @@ export default function ReportScreen() {
                         />
                       </Col>
 
+                      {/* <Col md={3}>
+                        <label>Select Countries</label>
+                        <Select
+                          // defaultValue={[colourOptions[2], colourOptions[3]]}
+                          isMulti
+                          name="colors"
+                          // options={colourOptions}
+                          className="basic-multi-select"
+                          classNamePrefix="select"
+                        />
+                      </Col> */}
+
                       <Col md={3}>
                         <label>Filter by Timeframe</label>
                         <Select
@@ -264,7 +284,7 @@ export default function ReportScreen() {
                       </Col>
 
                       <Col md={3}>
-                        <label>Select Year</label>
+                        <label>Select Year Start</label>
                         <DatePicker
                           selected={year}
                           onChange={onChangeYear}
@@ -276,11 +296,12 @@ export default function ReportScreen() {
 
                       {timeframe?.value === 'Year' && (
                         <Col md={3}>
-                          <label>Select Second Year</label>
+                          <label>Select Year End</label>
                           <DatePicker
                             selected={secondYear}
                             onChange={onChangeSecondYear}
                             showYearPicker
+                            className="form-control"
                             dateFormat="yyyy"
                           />
                         </Col>
