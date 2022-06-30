@@ -43,12 +43,44 @@ export default function ReportScreen() {
 
   const [countries, setCountries] = useState<any>(undefined);
 
-  const [year, setYear] = useState(new Date());
-  const [secondYear, setSecondYear] = useState(new Date());
-  const [month, setMonth] = useState(new Date());
-  const [secondMonth, setSecondMonth] = useState(new Date());
+  const [year, setYear] = useState<any>(undefined);
+  const [secondYear, setSecondYear] = useState<any>(undefined);
+  const [month, setMonth] = useState<any>(undefined);
+  const [secondMonth, setSecondMonth] = useState<any>(undefined);
 
-  const { data, loading } = useQuery(QUERY);
+  const { data, loading } = useQuery(QUERY, {
+    onCompleted: data => {
+      if (data) {
+        query?.filterType && setFilterType(filterTypeOptions.filter((x: any) => query.filterType === x?.value)[0]);
+        query?.timeframeType && setTimeframe(filterTimeframe.filter((x: any) => query?.timeframeType === x?.value)[0]);
+        query?.trimesterType &&
+          setTrimesterType(trimesterTypeOptions.filter((x: any) => Number(query?.trimesterType) === x?.value)[0]);
+        query?.semesterType &&
+          setSemesterType(semesterTypeOptions.filter((x: any) => Number(query?.semesterType) === x?.value)[0]);
+        query?.year && setYear(new Date(Number(query?.year), 1, 1));
+        query?.second_year && setSecondYear(new Date(Number(query?.second_year), 1, 1));
+        query?.month && setMonth(new Date(Number(query?.year) ? Number(query?.year) : 0, Number(query?.month), 0));
+        query?.second_month &&
+          setSecondMonth(new Date(Number(query?.year) ? Number(query?.year) : 0, Number(query?.second_month), 0));
+
+        if (query?.countries) {
+          const country = query?.countries?.split(',');
+          let defaultCountry = [];
+
+          for (const y of country) {
+            const item = data.statCountriesList.data.find((x: any) => x.code === y);
+
+            defaultCountry.push({
+              label: item?.country_name,
+              value: item?.code,
+            });
+          }
+
+          setCountries(defaultCountry);
+        }
+      }
+    },
+  });
 
   const filterTypeOptions = [
     {
@@ -110,26 +142,6 @@ export default function ReportScreen() {
     },
   ];
 
-  useEffect(() => {
-    query?.filterType && setFilterType(filterTypeOptions.filter((x: any) => query.filterType === x?.value)[0]);
-    query?.timeframeType && setTimeframe(filterTimeframe.filter((x: any) => query?.timeframeType === x?.value)[0]);
-    query?.trimesterType &&
-      setTrimesterType(trimesterTypeOptions.filter((x: any) => Number(query?.trimesterType) === x?.value)[0]);
-    query?.semesterType &&
-      setSemesterType(semesterTypeOptions.filter((x: any) => Number(query?.semesterType) === x?.value)[0]);
-    query?.year && setYear(new Date(Number(query?.year), 1, 1));
-    query?.second_year && setSecondYear(new Date(Number(query?.second_year), 1, 1));
-    query?.month && setMonth(new Date(Number(query?.year) ? Number(query?.year) : 0, Number(query?.month), 0));
-    query?.second_month &&
-      setSecondMonth(new Date(Number(query?.year) ? Number(query?.year) : 0, Number(query?.second_month), 0));
-
-    if (query?.countries) {
-      const country = query?.countries?.split(',');
-
-      setCountries(country);
-    }
-  }, []);
-
   if (!data || loading) return <>Loading</>;
 
   const countriesOptions = data.statCountriesList.data.map((x: any) => {
@@ -164,6 +176,7 @@ export default function ReportScreen() {
       pathname: pathname?.replace('[id]', query?.id),
       query: removeUndefined({
         filterType: query?.filterType,
+        countries: query?.countries,
         id: undefined,
         timeframeType: type?.value ? type?.value : undefined,
       }),
@@ -245,7 +258,7 @@ export default function ReportScreen() {
       query: removeUndefined({
         ...query,
         id: undefined,
-        countries: input,
+        countries: input?.join(`\,`),
       }),
     });
   };
@@ -292,6 +305,7 @@ export default function ReportScreen() {
                           name="colors"
                           options={countriesOptions}
                           className="basic-multi-select"
+                          value={countries}
                           classNamePrefix="select"
                         />
                       </Col>

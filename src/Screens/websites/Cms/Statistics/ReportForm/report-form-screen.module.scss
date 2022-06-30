@@ -72,3 +72,17 @@
 .import_export_percentage {
   color: #7d80de !important;
 }
+
+.stat_form_header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.stat_form_header_left {
+  position: absolute;
+  top: 0;
+  left: 0;
+}

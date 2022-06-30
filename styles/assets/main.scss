@@ -371,3 +371,14 @@ body {
 .pro-sidebar .pro-menu a:before {
   content: none;
 }
+
+// PRINT
+
+@media print {
+  @page {
+    size: landscape;
+    // margin: 25mm 25mm 25mm 25mm;
+    // size: auto;
+    margin: 5mm;
+  }
+}

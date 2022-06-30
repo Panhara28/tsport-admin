@@ -1,11 +1,13 @@
 import { gql, useQuery } from '@apollo/client';
-import React from 'react';
+import React, { useRef } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '../../../../../components/VerticalLayout';
-import { Card } from 'reactstrap';
-import { CardBody } from 'reactstrap';
+import { Card } from 'react-bootstrap';
 import { Table } from 'reactstrap';
 import style from './report-form-screen.module.scss';
+import { CardHeader } from 'reactstrap';
+import { Button } from 'react-bootstrap';
+import ReactToPrint from 'react-to-print';
 
 const QUERY = gql`
   query importExportReport($filter: ImportExportFilter) {
@@ -16,12 +18,23 @@ const QUERY = gql`
 const ReportFormScreen = (props: any) => {
   const router = useRouter();
 
-  const { timeframeType, year, second_year, month, second_month, trimesterType, semesterType } = router.query;
+  const elRef = useRef<any>();
+
+  const {
+    timeframeType,
+    year,
+    second_year,
+    month,
+    second_month,
+    trimesterType,
+    semesterType,
+    countries,
+  }: any = router.query;
 
   const { loading, data } = useQuery(QUERY, {
     variables: {
       filter: {
-        countries: ['CN', 'BE'],
+        countries: countries?.split(','),
         timeframe: timeframeType,
         year: year,
         second_year: second_year,
@@ -91,7 +104,35 @@ const ReportFormScreen = (props: any) => {
     <Layout>
       <div className="page-content">
         <Card>
-          <CardBody>
+          <CardHeader>
+            <ReactToPrint
+              trigger={() => {
+                return (
+                  <Button className="btn-primary" style={{ float: 'right' }}>
+                    Print
+                  </Button>
+                );
+              }}
+              content={() => elRef.current}
+            />
+          </CardHeader>
+          <Card.Body ref={elRef} className={style.print_content + ' print_t'}>
+            <div className={style.stat_form_header}>
+              <div className={style.stat_form_header_left}>
+                <img
+                  src="/logo/logo-placeholder.png"
+                  style={{ height: 'auto', width: '120px', marginBottom: '20px' }}
+                />
+                <h4>MINISTRY OF COMMERCE</h4>
+                <h5>GENERAL DEPARTMENT OF DOMESTIC TRADE</h5>
+                <h6>DEPARTMENT OF PLANNING STATISTICS AND TRADE INFORMATION</h6>
+              </div>
+
+              <h4>KINGDOM OF CAMBODIA</h4>
+              <h5 style={{ marginBottom: 180 }}>NATION RELIGION KING</h5>
+
+              <h4>CAMBODIA&apos;S EXPORT AND IMPORT BY SELECTED COUNTRY (USD) FROM 2021 TO 2022</h4>
+            </div>
             <Table className={style.custom_table}>
               <thead>
                 <tr>
@@ -256,7 +297,7 @@ const ReportFormScreen = (props: any) => {
                 </tr>
               </tbody>
             </Table>
-          </CardBody>
+          </Card.Body>
         </Card>
       </div>
     </Layout>
