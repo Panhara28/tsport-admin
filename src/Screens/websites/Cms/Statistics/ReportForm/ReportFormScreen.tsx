@@ -116,7 +116,7 @@ const ReportFormScreen = (props: any) => {
               content={() => elRef.current}
             />
           </CardHeader>
-          <Card.Body ref={elRef} className={style.print_content + ' print_t'}>
+          <Card.Body ref={elRef} className={style.print_content}>
             <div className={style.stat_form_header}>
               <div className={style.stat_form_header_left}>
                 <img
