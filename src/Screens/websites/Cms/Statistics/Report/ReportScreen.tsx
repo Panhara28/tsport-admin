@@ -1,4 +1,4 @@
-import { gql, useLazyQuery } from '@apollo/client';
+import { gql, useLazyQuery, useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import React, { useContext, useEffect, useState } from 'react';
@@ -18,9 +18,16 @@ export const CREATE_EXPORTS = gql`
   }
 `;
 
-const LAZYQUERY = gql`
-  query importExportReport($filter: ImportExportFilter) {
-    importExportReport(filter: $filter)
+const QUERY = gql`
+  query statCountriesList {
+    statCountriesList {
+      data {
+        id
+        code
+        country_name
+        country_name_kh
+      }
+    }
   }
 `;
 
@@ -29,17 +36,51 @@ export default function ReportScreen() {
   const router = useRouter();
   const { pathname, query }: any = router;
 
-  const [fetchReport, { called, loading, data }] = useLazyQuery(LAZYQUERY);
-
   const [filterType, setFilterType] = useState<any>(undefined);
   const [timeframe, setTimeframe] = useState<any>(undefined);
   const [semesterType, setSemesterType] = useState<any>(undefined);
   const [trimesterType, setTrimesterType] = useState<any>(undefined);
 
-  const [year, setYear] = useState(new Date());
-  const [secondYear, setSecondYear] = useState(new Date());
-  const [month, setMonth] = useState(new Date());
-  const [secondMonth, setSecondMonth] = useState(new Date());
+  const [countries, setCountries] = useState<any>(undefined);
+
+  const [year, setYear] = useState<any>(undefined);
+  const [secondYear, setSecondYear] = useState<any>(undefined);
+  const [month, setMonth] = useState<any>(undefined);
+  const [secondMonth, setSecondMonth] = useState<any>(undefined);
+
+  const { data, loading } = useQuery(QUERY, {
+    onCompleted: data => {
+      if (data) {
+        query?.filterType && setFilterType(filterTypeOptions.filter((x: any) => query.filterType === x?.value)[0]);
+        query?.timeframeType && setTimeframe(filterTimeframe.filter((x: any) => query?.timeframeType === x?.value)[0]);
+        query?.trimesterType &&
+          setTrimesterType(trimesterTypeOptions.filter((x: any) => Number(query?.trimesterType) === x?.value)[0]);
+        query?.semesterType &&
+          setSemesterType(semesterTypeOptions.filter((x: any) => Number(query?.semesterType) === x?.value)[0]);
+        query?.year && setYear(new Date(Number(query?.year), 1, 1));
+        query?.second_year && setSecondYear(new Date(Number(query?.second_year), 1, 1));
+        query?.month && setMonth(new Date(Number(query?.year) ? Number(query?.year) : 0, Number(query?.month), 0));
+        query?.second_month &&
+          setSecondMonth(new Date(Number(query?.year) ? Number(query?.year) : 0, Number(query?.second_month), 0));
+
+        if (query?.countries) {
+          const country = query?.countries?.split(',');
+          let defaultCountry = [];
+
+          for (const y of country) {
+            const item = data.statCountriesList.data.find((x: any) => x.code === y);
+
+            defaultCountry.push({
+              label: item?.country_name,
+              value: item?.code,
+            });
+          }
+
+          setCountries(defaultCountry);
+        }
+      }
+    },
+  });
 
   const filterTypeOptions = [
     {
@@ -101,19 +142,14 @@ export default function ReportScreen() {
     },
   ];
 
-  useEffect(() => {
-    query?.filterType && setFilterType(filterTypeOptions.filter((x: any) => query.filterType === x?.value)[0]);
-    query?.timeframeType && setTimeframe(filterTimeframe.filter((x: any) => query?.timeframeType === x?.value)[0]);
-    query?.trimesterType &&
-      setTrimesterType(trimesterTypeOptions.filter((x: any) => Number(query?.trimesterType) === x?.value)[0]);
-    query?.semesterType &&
-      setSemesterType(semesterTypeOptions.filter((x: any) => Number(query?.semesterType) === x?.value)[0]);
-    query?.year && setYear(new Date(Number(query?.year), 1, 1));
-    query?.second_year && setSecondYear(new Date(Number(query?.second_year), 1, 1));
-    query?.month && setMonth(new Date(Number(query?.year) ? Number(query?.year) : 0, Number(query?.month), 0));
-    query?.second_month &&
-      setSecondMonth(new Date(Number(query?.year) ? Number(query?.year) : 0, Number(query?.second_month), 0));
-  }, []);
+  if (!data || loading) return <>Loading</>;
+
+  const countriesOptions = data.statCountriesList.data.map((x: any) => {
+    return {
+      label: x?.country_name,
+      value: x?.code,
+    };
+  });
 
   const removeUndefined: any = (o: any) => {
     return Object.entries(o)
@@ -140,6 +176,7 @@ export default function ReportScreen() {
       pathname: pathname?.replace('[id]', query?.id),
       query: removeUndefined({
         filterType: query?.filterType,
+        countries: query?.countries,
         id: undefined,
         timeframeType: type?.value ? type?.value : undefined,
       }),
@@ -211,24 +248,23 @@ export default function ReportScreen() {
     });
   };
 
+  const onChangeCountries = (data: any) => {
+    const input = data.map((x: any) => {
+      return x.value;
+    });
+
+    router.push({
+      pathname: pathname?.replace('[id]', query?.id),
+      query: removeUndefined({
+        ...query,
+        id: undefined,
+        countries: input?.join(`\,`),
+      }),
+    });
+  };
+
   const onHandleReport = (e: any) => {
     e.preventDefault();
-
-    // fetchReport({
-    //   variables: {
-    //     filter: {
-    //       countries: ['CN', 'BE'],
-    //       timeframe: timeframe?.value,
-    //       year: year ? moment(year).format('YYYY') : undefined,
-    //       second_year: secondYear ? moment(secondYear).format('YYYY') : undefined,
-    //       month: month ? moment(month).format('MM') : undefined,
-    //       second_month: secondMonth ? moment(secondMonth).format('MM') : undefined,
-    //       trimester: trimesterType?.value ? (Number(trimesterType?.value) - 1).toString() : undefined,
-    //       semester: semesterType?.value ? (Number(semesterType?.value) - 1).toString() : undefined,
-    //     },
-    //   },
-    // });
-
     router.push({
       pathname: (pathname + '/form')?.replace('[id]', query?.id),
       query: removeUndefined({
@@ -261,17 +297,18 @@ export default function ReportScreen() {
                         />
                       </Col>
 
-                      {/* <Col md={3}>
+                      <Col md={3}>
                         <label>Select Countries</label>
                         <Select
-                          // defaultValue={[colourOptions[2], colourOptions[3]]}
+                          onChange={onChangeCountries}
                           isMulti
                           name="colors"
-                          // options={colourOptions}
+                          options={countriesOptions}
                           className="basic-multi-select"
+                          value={countries}
                           classNamePrefix="select"
                         />
-                      </Col> */}
+                      </Col>
 
                       <Col md={3}>
                         <label>Filter by Timeframe</label>
@@ -284,7 +321,7 @@ export default function ReportScreen() {
                       </Col>
 
                       <Col md={3}>
-                        <label>Select Year Start</label>
+                        <label>Started Year</label>
                         <DatePicker
                           selected={year}
                           onChange={onChangeYear}
@@ -296,7 +333,7 @@ export default function ReportScreen() {
 
                       {timeframe?.value === 'Year' && (
                         <Col md={3}>
-                          <label>Select Year End</label>
+                          <label>Ended Year</label>
                           <DatePicker
                             selected={secondYear}
                             onChange={onChangeSecondYear}
@@ -309,7 +346,7 @@ export default function ReportScreen() {
 
                       {timeframe?.value === 'Month' && (
                         <Col md={3}>
-                          <label>Select Month</label>
+                          <label>Started Month</label>
                           <DatePicker
                             selected={month}
                             onChange={onChangeMonth}
@@ -322,7 +359,7 @@ export default function ReportScreen() {
 
                       {timeframe?.value === 'Month' && (
                         <Col md={3}>
-                          <label>Select Second Month</label>
+                          <label>Ended Month</label>
                           <DatePicker
                             selected={secondMonth}
                             onChange={onChangeSecondMonth}
@@ -357,21 +394,13 @@ export default function ReportScreen() {
                         </Col>
                       )}
                     </Row>
-                  </CardBody>
-                </Card>
-              </Col>
-            </Row>
 
-            <Row>
-              <Col md={10}></Col>
-
-              <Col md={2}>
-                <Card>
-                  <CardHeader>Actions</CardHeader>
-
-                  <CardBody>
                     <Row>
-                      <Button type="submit">Report</Button>
+                      <Col md={2} style={{ marginLeft: 'auto', marginTop: '10px' }}>
+                        <Button type="submit" style={{ width: '100%' }}>
+                          Report
+                        </Button>
+                      </Col>
                     </Row>
                   </CardBody>
                 </Card>
