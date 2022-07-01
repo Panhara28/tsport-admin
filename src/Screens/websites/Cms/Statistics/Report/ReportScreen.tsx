@@ -285,19 +285,8 @@ export default function ReportScreen() {
               <Col md={12}>
                 <Card>
                   <CardBody>
-                    {/* <CardTitle className="h4 mb-4"> Reports</CardTitle> */}
-                    <Row style={{ rowGap: 20 }}>
-                      <Col md={3}>
-                        <label>Filter by Type</label>
-                        <Select
-                          options={filterTypeOptions}
-                          placeholder="Filter Type"
-                          onChange={onChangeFilterType}
-                          value={filterType}
-                        />
-                      </Col>
-
-                      <Col md={3}>
+                    <Row>
+                      <Col md={12}>
                         <label>Select Countries</label>
                         <Select
                           onChange={onChangeCountries}
@@ -307,6 +296,23 @@ export default function ReportScreen() {
                           className="basic-multi-select"
                           value={countries}
                           classNamePrefix="select"
+                        />
+                      </Col>
+                    </Row>
+                  </CardBody>
+                </Card>
+
+                <Card>
+                  <CardBody>
+                    {/* <CardTitle className="h4 mb-4"> Reports</CardTitle> */}
+                    <Row style={{ rowGap: 20 }}>
+                      <Col md={3}>
+                        <label>Filter by Type</label>
+                        <Select
+                          options={filterTypeOptions}
+                          placeholder="Filter Type"
+                          onChange={onChangeFilterType}
+                          value={filterType}
                         />
                       </Col>
 
@@ -375,7 +381,7 @@ export default function ReportScreen() {
                           <label>Select Semester</label>
                           <Select
                             options={semesterTypeOptions}
-                            placeholder="Select Semester"
+                            placeholder=""
                             onChange={onChangeSemesterType}
                             value={semesterType}
                           />
@@ -387,7 +393,7 @@ export default function ReportScreen() {
                           <label>Select Trimester</label>
                           <Select
                             options={trimesterTypeOptions}
-                            placeholder="Select Trimester"
+                            placeholder=""
                             onChange={onChangeTrimesterType}
                             value={trimesterType}
                           />

@@ -8,6 +8,7 @@ import style from './report-form-screen.module.scss';
 import { CardHeader } from 'reactstrap';
 import { Button } from 'react-bootstrap';
 import ReactToPrint from 'react-to-print';
+import Image from 'next/image';
 
 const QUERY = gql`
   query importExportReport($filter: ImportExportFilter) {
@@ -52,6 +53,10 @@ const ReportFormScreen = (props: any) => {
     const x1 = Number(first_price);
     const x2 = Number(last_price);
 
+    if (x1 === 0 && x2 === 0) {
+      return '0';
+    }
+
     if (x1 === 0) {
       return '100';
     }
@@ -76,6 +81,17 @@ const ReportFormScreen = (props: any) => {
 
     return 'Trimester ' + trimester + ', ';
   };
+
+  function commafy(num: string) {
+    var str = num.split('.');
+    if (str[0].length >= 5) {
+      str[0] = str[0].replace(/(\d)(?=(\d{3})+$)/g, '$1,');
+    }
+    if (str[1] && str[1].length >= 5) {
+      str[1] = str[1].replace(/(\d{3})/g, '$1 ');
+    }
+    return str.join('.');
+  }
 
   const renderMonth = (month_start: string, month_end: string) => {
     const months = [
@@ -119,19 +135,21 @@ const ReportFormScreen = (props: any) => {
           <Card.Body ref={elRef} className={style.print_content}>
             <div className={style.stat_form_header}>
               <div className={style.stat_form_header_left}>
-                <img
-                  src="/logo/logo-placeholder.png"
-                  style={{ height: 'auto', width: '120px', marginBottom: '20px' }}
-                />
+                <img src="/logo/moc-logo.png" style={{ height: 'auto', width: '120px', marginBottom: '20px' }} />
                 <h4>MINISTRY OF COMMERCE</h4>
                 <h5>GENERAL DEPARTMENT OF DOMESTIC TRADE</h5>
                 <h6>DEPARTMENT OF PLANNING STATISTICS AND TRADE INFORMATION</h6>
               </div>
 
               <h4>KINGDOM OF CAMBODIA</h4>
-              <h5 style={{ marginBottom: 180 }}>NATION RELIGION KING</h5>
+              <h5>NATION RELIGION KING</h5>
+              <Image src="/logo/tacteing-style.png" width="150px" height="15px" />
 
-              <h4>CAMBODIA&apos;S EXPORT AND IMPORT BY SELECTED COUNTRY (USD) FROM 2021 TO 2022</h4>
+              <h4 style={{ marginTop: 180 }}>
+                CAMBODIA&apos;S EXPORT AND IMPORT BY SELECTED COUNTRY (USD) FROM{' '}
+                {data?.importExportReport[0]?.data?.year?.year} TO{' '}
+                {data?.importExportReport[0]?.data?.second_year?.year}
+              </h4>
             </div>
             <Table className={style.custom_table}>
               <thead>
@@ -181,18 +199,18 @@ const ReportFormScreen = (props: any) => {
                   return (
                     <tr>
                       <td>{x?.country_name}</td>
-                      <td>{x?.data?.year?.imports ? x?.data?.year?.imports.toFixed(2) : 0}</td>
-                      <td>{x?.data?.year?.exports ? x?.data?.year?.exports.toFixed(2) : 0}</td>
+                      <td>{x?.data?.year?.imports ? commafy(x?.data?.year?.imports.toFixed(2)) : 0}</td>
+                      <td>{x?.data?.year?.exports ? commafy(x?.data?.year?.exports.toFixed(2)) : 0}</td>
                       <td className={style.balance_value}>
-                        {x?.data?.year?.balances ? x?.data?.year?.balances.toFixed(2) : 0}
+                        {x?.data?.year?.balances ? commafy(x?.data?.year?.balances.toFixed(2)) : 0}
                       </td>
-                      <td>{x?.data?.year?.volumes ? x?.data?.year?.volumes.toFixed(2) : 0}</td>
-                      <td>{x?.data?.second_year?.imports ? x?.data?.second_year?.imports.toFixed(2) : 0}</td>
-                      <td>{x?.data?.second_year?.exports ? x?.data?.second_year?.exports.toFixed(2) : 0}</td>
+                      <td>{x?.data?.year?.volumes ? commafy(x?.data?.year?.volumes.toFixed(2)) : 0}</td>
+                      <td>{x?.data?.second_year?.imports ? commafy(x?.data?.second_year?.imports.toFixed(2)) : 0}</td>
+                      <td>{x?.data?.second_year?.exports ? commafy(x?.data?.second_year?.exports.toFixed(2)) : 0}</td>
                       <td className={style.balance_value}>
-                        {x?.data?.second_year?.balances ? x?.data?.second_year?.balances.toFixed(2) : 0}
+                        {x?.data?.second_year?.balances ? commafy(x?.data?.second_year?.balances.toFixed(2)) : 0}
                       </td>
-                      <td>{x?.data?.second_year?.volumes ? x?.data?.second_year?.volumes.toFixed(2) : 0}</td>
+                      <td>{x?.data?.second_year?.volumes ? commafy(x?.data?.second_year?.volumes.toFixed(2)) : 0}</td>
                       <td className={style.import_export_percentage}>
                         {percentChange(x?.data?.year?.imports, x?.data?.second_year?.imports)}%
                       </td>
@@ -206,60 +224,76 @@ const ReportFormScreen = (props: any) => {
                 <tr className={style.total_row}>
                   <td className={style.total_row_label}>Total:</td>
                   <td>
-                    {data?.importExportReport
-                      ?.reduce((prev: any, cur: any) => {
-                        return cur?.data?.year?.imports + prev;
-                      }, 0)
-                      .toFixed(2)}
+                    {commafy(
+                      data?.importExportReport
+                        ?.reduce((prev: any, cur: any) => {
+                          return cur?.data?.year?.imports + prev;
+                        }, 0)
+                        .toFixed(2),
+                    )}
                   </td>
                   <td>
-                    {data?.importExportReport
-                      ?.reduce((prev: any, cur: any) => {
-                        return cur?.data?.year?.exports + prev;
-                      }, 0)
-                      .toFixed(2)}
+                    {commafy(
+                      data?.importExportReport
+                        ?.reduce((prev: any, cur: any) => {
+                          return cur?.data?.year?.exports + prev;
+                        }, 0)
+                        .toFixed(2),
+                    )}
                   </td>
                   <td className={style.balance_value}>
-                    {data?.importExportReport
-                      ?.reduce((prev: any, cur: any) => {
-                        return cur?.data?.year?.balances + prev;
-                      }, 0)
-                      .toFixed(2)}
+                    {commafy(
+                      data?.importExportReport
+                        ?.reduce((prev: any, cur: any) => {
+                          return cur?.data?.year?.balances + prev;
+                        }, 0)
+                        .toFixed(2),
+                    )}
                   </td>
                   <td>
-                    {data?.importExportReport
-                      ?.reduce((prev: any, cur: any) => {
-                        return cur?.data?.year?.volumes + prev;
-                      }, 0)
-                      .toFixed(2)}
+                    {commafy(
+                      data?.importExportReport
+                        ?.reduce((prev: any, cur: any) => {
+                          return cur?.data?.year?.volumes + prev;
+                        }, 0)
+                        .toFixed(2),
+                    )}
                   </td>
                   <td>
-                    {data?.importExportReport
-                      ?.reduce((prev: any, cur: any) => {
-                        return cur?.data?.second_year?.imports + prev;
-                      }, 0)
-                      .toFixed(2)}
+                    {commafy(
+                      data?.importExportReport
+                        ?.reduce((prev: any, cur: any) => {
+                          return cur?.data?.second_year?.imports + prev;
+                        }, 0)
+                        .toFixed(2),
+                    )}
                   </td>
                   <td>
-                    {data?.importExportReport
-                      ?.reduce((prev: any, cur: any) => {
-                        return cur?.data?.second_year?.exports + prev;
-                      }, 0)
-                      .toFixed(2)}
+                    {commafy(
+                      data?.importExportReport
+                        ?.reduce((prev: any, cur: any) => {
+                          return cur?.data?.second_year?.exports + prev;
+                        }, 0)
+                        .toFixed(2),
+                    )}
                   </td>
                   <td className={style.balance_value}>
-                    {data?.importExportReport
-                      ?.reduce((prev: any, cur: any) => {
-                        return cur?.data?.second_year?.balances + prev;
-                      }, 0)
-                      .toFixed(2)}
+                    {commafy(
+                      data?.importExportReport
+                        ?.reduce((prev: any, cur: any) => {
+                          return cur?.data?.second_year?.balances + prev;
+                        }, 0)
+                        .toFixed(2),
+                    )}
                   </td>
                   <td>
-                    {data?.importExportReport
-                      ?.reduce((prev: any, cur: any) => {
-                        return cur?.data?.second_year?.volumes + prev;
-                      }, 0)
-                      .toFixed(2)}
+                    {commafy(
+                      data?.importExportReport
+                        ?.reduce((prev: any, cur: any) => {
+                          return cur?.data?.second_year?.volumes + prev;
+                        }, 0)
+                        .toFixed(2),
+                    )}
                   </td>
                   <td>
                     {percentChange(
