@@ -3,14 +3,16 @@ import { Button, Card, Col, Nav, Row } from 'react-bootstrap';
 import { Container } from 'reactstrap';
 import Image from 'next/image';
 import style from './overview.module.scss';
-import ReactApexChart from 'react-apexcharts';
+import dynamic from 'next/dynamic';
+import { RevenueReports } from '../../../../../../../src/components/ApexCharts/Avenue';
 
+const ReactApexChart: any = dynamic(() => import('react-apexcharts'), { ssr: false });
 export default function Overview() {
   const [state, setState] = useState({
     series: [
       {
         name: 'Desktops',
-        data: [10, 41, 35, 51, 49, 62, 69, 91, 148],
+        data: [5, 10, 15, 9, 17, 13, 16, 25],
       },
     ],
     options: {
@@ -27,19 +29,19 @@ export default function Overview() {
       stroke: {
         curve: 'straight',
       },
-      title: {
-        text: 'Product Trends by Month',
-        align: 'left',
-      },
+      // title: {
+      //   text: 'Product Trends by Month',
+      //   align: 'left',
+      // },
       grid: {
         row: {
           colors: ['#f3f3f3', 'transparent'],
           opacity: 0.5,
         },
       },
-      xaxis: {
-        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
-      },
+      // xaxis: {
+      //   categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+      // },
     },
   });
 
@@ -57,10 +59,19 @@ export default function Overview() {
             </Col>
           </Row>
           <Row>
+            <Col md={12} xl={12}>
+              <Card className={style.card}>
+                <Card.Body>
+                  <Card.Text>Nav</Card.Text>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+          <Row>
             <Col md={6} xl={4}>
               <Card className={style.card}>
                 <Card.Body>
-                  <h5>Congratulations 🎉 John!</h5>
+                  <h5>Trade Information of Planning Statistics</h5>
                   <p className={`${style.txt_p} card-text font-small-3`}> You have won gold medal </p>
                   <h3 className={`${style.txt_price} mb-75 mt-2 pt-50`}>
                     <a href="#">$99.99k</a>
@@ -78,6 +89,21 @@ export default function Overview() {
                 <Card.Body>
                   <Card.Text>
                     <h5>Statistics</h5>
+                    {/* <Row>
+                      <Col sm={6} xl={3}>
+                        <div className="media d-flex">
+                          <div className="media-aside"></div>
+                          <div className="media-body">
+                            <h3 className="font-weight-bolder mb-1">5.67k</h3>
+                          </div>
+                        </div>
+                      </Col>
+                      <Col sm={6} xl={3}></Col>
+                      <Col sm={6} xl={3}></Col>
+                      <Col sm={6} xl={3}></Col>
+                    </Row> */}
+                    <RevenueReports options={state.options} series={state.series} type="line" height={350} />
+                    
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -102,7 +128,7 @@ export default function Overview() {
                       <Card.Text>
                         <h5>Profit</h5>
                         <h3 className="font-weight-bolder mb-1">6,92k</h3>
-                        {/* <ReactApexChart options={state.options} series={state.series} type="line" height={350} /> */}
+                        <ReactApexChart options={state.options} series={state.series} type="line" height={350} />
                       </Card.Text>
                     </Card.Body>
                   </Card>
@@ -110,8 +136,10 @@ export default function Overview() {
                 <Col md={6} lg={12}>
                   <Card className={style.card}>
                     <Card.Body>
-                      <Card.Title>Card Title</Card.Title>
-                      <Card.Text>Some quick example text to build on the card title and make up the bulk</Card.Text>
+                      <Card.Title>Revenue Report</Card.Title>
+                      <Card.Text>
+                        {/* <RevenueReports options={state.options} series={state.series} type="line" height={350} /> */}
+                      </Card.Text>
                     </Card.Body>
                   </Card>
                 </Col>
