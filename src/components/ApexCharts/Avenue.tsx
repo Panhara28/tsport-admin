@@ -60,7 +60,7 @@ export class RevenueReports extends React.Component {
         //   '05/01/2003',
         //   '06/01/2003',
         // ],
-        
+
         tooltip: {
           shared: false,
           intersect: false,

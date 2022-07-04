@@ -1,4 +1,3 @@
-import moment from 'moment';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
@@ -6,94 +5,52 @@ const ReactApexChart: any = dynamic(() => import('react-apexcharts'), { ssr: fal
 export class AreaChart extends React.Component {
   constructor(props: any) {
     super(props);
-    
+
     this.state = {
-      
-      series: [{
-        name: 'PRODUCT A',
-        data: [5, 10, 15, 9, 17, 13, 16, 25],
-        // data: dataSet[0]
-      }, 
-      {
-        name: 'PRODUCT B',
-        data: [2, 4, 15, 6, 10, 13, 8, 25],
-      },
+      series: [
+        {
+          name: 'series1',
+          data: [31, 40, 28, 51, 42, 109, 100],
+        },
+        {
+          name: 'series2',
+          data: [11, 32, 45, 32, 34, 52, 41],
+        },
       ],
       options: {
         chart: {
+          height: 150,
           type: 'area',
-          stacked: false,
-          width: 100,
-          height: 120,
-          zoom: {
-            enabled: false
-          },
         },
         dataLabels: {
-          enabled: false
+          enabled: false,
         },
-        markers: {
-          size: 5,
-        },
-        fill: {
-          type: 'gradient',
-          gradient: {
-              shadeIntensity: 1,
-              inverseColors: false,
-              opacityFrom: 0.45,
-              opacityTo: 0.05,
-              stops: [20, 10, 10, 10]
-            },
-        },
-        yaxis: {
-          labels: {
-              style: {
-                  colors: '#8e8da4',
-              },
-              offsetX: 0,
-              // formatter: function(val: any) {
-              //   return (val / 1000000).toFixed(2);
-              // },
-          },
-          axisBorder: {
-              show: false,
-          },
-          axisTicks: {
-              show: false
-          }
+        stroke: {
+          curve: 'smooth',
         },
         xaxis: {
           type: 'datetime',
-          tickAmount: 5,
-          min: new Date("01/01/2022").getTime(),
-          max: new Date("01/20/2022").getTime(),
-          labels: {
-              rotate: -15,
-              rotateAlways: true,
-              formatter: function(val: any, timestamp: any) {
-                return moment(new Date(timestamp)).format("DD MMM YYYY")
-            }
-          }
+          categories: [
+            '2018-09-19T00:00:00.000Z',
+            '2018-09-19T01:30:00.000Z',
+            '2018-09-19T02:30:00.000Z',
+            '2018-09-19T03:30:00.000Z',
+            '2018-09-19T04:30:00.000Z',
+            '2018-09-19T05:30:00.000Z',
+            '2018-09-19T06:30:00.000Z',
+          ],
         },
         tooltip: {
-          shared: true
+          x: {
+            format: 'dd/MM/yy HH:mm',
+          },
         },
-        legend: {
-          position: 'top',
-          horizontalAlign: 'right',
-          offsetX: -10
-        }
       },
-    
-    
     };
   }
 
-
-
   render() {
-    return (     
-
+    return (
       <div id="chart">
         <ReactApexChart options={this.state.options} series={this.state.series} type="area" />
       </div>
