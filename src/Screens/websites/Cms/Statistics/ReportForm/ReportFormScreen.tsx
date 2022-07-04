@@ -47,7 +47,7 @@ const ReportFormScreen = (props: any) => {
     },
   });
 
-  if (!data || loading) return <>Loading</>;
+  if (!data || !data?.importExportReport || loading) return <>Loading</>;
 
   const percentChange = (first_price: string, last_price: string) => {
     const x1 = Number(first_price);

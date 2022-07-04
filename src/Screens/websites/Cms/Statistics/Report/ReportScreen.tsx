@@ -48,39 +48,7 @@ export default function ReportScreen() {
   const [month, setMonth] = useState<any>(undefined);
   const [secondMonth, setSecondMonth] = useState<any>(undefined);
 
-  const { data, loading } = useQuery(QUERY, {
-    onCompleted: data => {
-      if (data) {
-        query?.filterType && setFilterType(filterTypeOptions.filter((x: any) => query.filterType === x?.value)[0]);
-        query?.timeframeType && setTimeframe(filterTimeframe.filter((x: any) => query?.timeframeType === x?.value)[0]);
-        query?.trimesterType &&
-          setTrimesterType(trimesterTypeOptions.filter((x: any) => Number(query?.trimesterType) === x?.value)[0]);
-        query?.semesterType &&
-          setSemesterType(semesterTypeOptions.filter((x: any) => Number(query?.semesterType) === x?.value)[0]);
-        query?.year && setYear(new Date(Number(query?.year), 1, 1));
-        query?.second_year && setSecondYear(new Date(Number(query?.second_year), 1, 1));
-        query?.month && setMonth(new Date(Number(query?.year) ? Number(query?.year) : 0, Number(query?.month), 0));
-        query?.second_month &&
-          setSecondMonth(new Date(Number(query?.year) ? Number(query?.year) : 0, Number(query?.second_month), 0));
-
-        if (query?.countries) {
-          const country = query?.countries?.split(',');
-          let defaultCountry = [];
-
-          for (const y of country) {
-            const item = data.statCountriesList.data.find((x: any) => x.code === y);
-
-            defaultCountry.push({
-              label: item?.country_name,
-              value: item?.code,
-            });
-          }
-
-          setCountries(defaultCountry);
-        }
-      }
-    },
-  });
+  const { data, loading } = useQuery(QUERY);
 
   const filterTypeOptions = [
     {
@@ -161,115 +129,68 @@ export default function ReportScreen() {
   };
 
   const onChangeFilterType = (type: any) => {
-    router.push({
-      pathname: pathname?.replace('[id]', query?.id),
-      query: removeUndefined({
-        ...query,
-        id: undefined,
-        filterType: type?.value ? type?.value : undefined,
-      }),
-    });
+    setFilterType(type);
   };
 
   const onChangeTimeframType = (type: any) => {
-    router.push({
-      pathname: pathname?.replace('[id]', query?.id),
-      query: removeUndefined({
-        filterType: query?.filterType,
-        countries: query?.countries,
-        id: undefined,
-        timeframeType: type?.value ? type?.value : undefined,
-      }),
-    });
+    setTimeframe(type);
   };
 
   const onChangeSemesterType = (type: any) => {
-    router.push({
-      pathname: pathname?.replace('[id]', query?.id),
-      query: removeUndefined({
-        ...query,
-        id: undefined,
-        semesterType: type?.value ? type?.value : undefined,
-      }),
-    });
+    setSemesterType(type);
   };
   const onChangeTrimesterType = (type: any) => {
-    router.push({
-      pathname: pathname?.replace('[id]', query?.id),
-      query: removeUndefined({
-        ...query,
-        id: undefined,
-        trimesterType: type?.value ? type?.value : undefined,
-      }),
-    });
+    setTrimesterType(type);
   };
 
   const onChangeYear = (date: any) => {
-    router.push({
-      pathname: pathname?.replace('[id]', query?.id),
-      query: removeUndefined({
-        ...query,
-        id: undefined,
-        year: date ? moment(date).format('YYYY') : undefined,
-      }),
-    });
+    setYear(date);
   };
 
   const onChangeSecondYear = (date: any) => {
-    router.push({
-      pathname: pathname?.replace('[id]', query?.id),
-      query: removeUndefined({
-        ...query,
-        id: undefined,
-        second_year: date ? moment(date).format('YYYY') : undefined,
-      }),
-    });
+    setSecondYear(date);
   };
 
   const onChangeMonth = (date: any) => {
-    router.push({
-      pathname: pathname?.replace('[id]', query?.id),
-      query: removeUndefined({
-        ...query,
-        id: undefined,
-        month: date ? moment(date).format('MM') : undefined,
-      }),
-    });
+    setMonth(date);
   };
 
   const onChangeSecondMonth = (date: any) => {
-    router.push({
-      pathname: pathname?.replace('[id]', query?.id),
-      query: removeUndefined({
-        ...query,
-        id: undefined,
-        second_month: date ? moment(date).format('MM') : undefined,
-      }),
-    });
+    setSecondMonth(date);
   };
 
   const onChangeCountries = (data: any) => {
-    const input = data.map((x: any) => {
-      return x.value;
-    });
+    setCountries(data);
+  };
+
+  const onHandleClearFilter = (e: any) => {
+    e.preventDefault();
 
     router.push({
       pathname: pathname?.replace('[id]', query?.id),
       query: removeUndefined({
-        ...query,
         id: undefined,
-        countries: input?.join(`\,`),
       }),
     });
   };
 
   const onHandleReport = (e: any) => {
+    let filterCountries = countries?.map((x: any) => {
+      return x?.value;
+    });
+
     e.preventDefault();
     router.push({
       pathname: (pathname + '/form')?.replace('[id]', query?.id),
       query: removeUndefined({
-        ...query,
-        id: undefined,
+        year: year ? moment(year).format('YYYY') : undefined,
+        second_year: secondYear ? moment(secondYear).format('YYYY') : undefined,
+        month: month ? moment(month).format('MM') : undefined,
+        second_month: secondMonth ? moment(secondMonth).format('MM') : undefined,
+        timeframeType: timeframe?.value ? timeframe?.value : undefined,
+        trimesterType: trimesterType?.value ? trimesterType?.value : undefined,
+        semesterType: semesterType?.value ? semesterType?.value : undefined,
+        countries: filterCountries?.length > 0 ? filterCountries?.join(',') : undefined,
       }),
     });
   };
@@ -291,7 +212,6 @@ export default function ReportScreen() {
                         <Select
                           onChange={onChangeCountries}
                           isMulti
-                          name="colors"
                           options={countriesOptions}
                           className="basic-multi-select"
                           value={countries}
@@ -310,7 +230,8 @@ export default function ReportScreen() {
                         <label>Filter by Type</label>
                         <Select
                           options={filterTypeOptions}
-                          placeholder="Filter Type"
+                          isClearable={true}
+                          // placeholder="Filter Type"
                           onChange={onChangeFilterType}
                           value={filterType}
                         />
@@ -320,7 +241,8 @@ export default function ReportScreen() {
                         <label>Filter by Timeframe</label>
                         <Select
                           options={filterTimeframe}
-                          placeholder="Filter Timeframe"
+                          isClearable={true}
+                          // placeholder="Filter Timeframe"
                           onChange={onChangeTimeframType}
                           value={timeframe}
                         />
@@ -401,8 +323,17 @@ export default function ReportScreen() {
                       )}
                     </Row>
 
+                    <hr style={{ backgroundColor: '#959494', marginBottom: '0px' }} />
+
                     <Row>
-                      <Col md={2} style={{ marginLeft: 'auto', marginTop: '10px' }}>
+                      <Col md={3} style={{ marginLeft: 'auto', marginTop: '10px', display: 'flex' }}>
+                        <Button
+                          className="btn-danger"
+                          style={{ width: '100%', marginRight: '20px' }}
+                          onClick={onHandleClearFilter}
+                        >
+                          Clear Filter
+                        </Button>
                         <Button type="submit" style={{ width: '100%' }}>
                           Report
                         </Button>
