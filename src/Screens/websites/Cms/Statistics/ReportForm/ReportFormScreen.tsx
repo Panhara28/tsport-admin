@@ -9,6 +9,7 @@ import { CardHeader } from 'reactstrap';
 import { Button } from 'react-bootstrap';
 import ReactToPrint from 'react-to-print';
 import Image from 'next/image';
+import { Spinner } from 'reactstrap';
 
 const QUERY = gql`
   query importExportReport($filter: ImportExportFilter) {
@@ -47,7 +48,20 @@ const ReportFormScreen = (props: any) => {
     },
   });
 
-  if (!data || !data?.importExportReport || loading) return <>Loading</>;
+  if (loading) {
+    return (
+      <Layout>
+        <div className="page-content">
+          <div className="d-flex flex-column" style={{ alignItems: 'center', marginTop: '120px' }}>
+            <Spinner style={{ width: '60px', height: '60px', fontSize: '20px' }} />
+            <h5 className="mt-4">សូមរងចាំ! ទិន្នន័យកំពុងដំណើរការ</h5>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
+
+  if (!data || !data?.importExportReport) return <>No data</>;
 
   const percentChange = (first_price: string, last_price: string) => {
     const x1 = Number(first_price);

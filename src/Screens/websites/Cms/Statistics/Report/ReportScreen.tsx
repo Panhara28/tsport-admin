@@ -133,6 +133,14 @@ export default function ReportScreen() {
   };
 
   const onChangeTimeframType = (type: any) => {
+    if (type?.value !== timeframe?.value) {
+      setSecondYear(undefined);
+      setMonth(undefined);
+      setSecondMonth(undefined);
+      setTrimesterType(undefined);
+      setSemesterType(undefined);
+    }
+
     setTimeframe(type);
   };
 
@@ -160,7 +168,12 @@ export default function ReportScreen() {
   };
 
   const onChangeCountries = (data: any) => {
-    setCountries(data);
+    if (data?.find((x: any) => x.value === 'all')) {
+      console.log(data);
+      setCountries(countriesOptions);
+    } else {
+      setCountries(data);
+    }
   };
 
   const onHandleClearFilter = (e: any) => {
@@ -195,6 +208,99 @@ export default function ReportScreen() {
     });
   };
 
+  let renderReport;
+
+  if (countries?.length > 0 && filterType?.value && timeframe?.value && year) {
+    if (timeframe?.value === 'Year' && secondYear) {
+      renderReport = (
+        <>
+          <hr style={{ backgroundColor: '#959494', marginBottom: '0px' }} />
+
+          <Row>
+            <Col md={3} style={{ marginLeft: 'auto', marginTop: '10px', display: 'flex' }}>
+              <Button
+                className="btn-danger"
+                style={{ width: '100%', marginRight: '20px' }}
+                onClick={onHandleClearFilter}
+              >
+                Clear Filter
+              </Button>
+              <Button type="submit" style={{ width: '100%' }}>
+                Report
+              </Button>
+            </Col>
+          </Row>
+        </>
+      );
+    }
+
+    if (timeframe?.value === 'Month' && month & secondMonth) {
+      renderReport = (
+        <>
+          <hr style={{ backgroundColor: '#959494', marginBottom: '0px' }} />
+          <Row>
+            <Col md={3} style={{ marginLeft: 'auto', marginTop: '10px', display: 'flex' }}>
+              <Button
+                className="btn-danger"
+                style={{ width: '100%', marginRight: '20px' }}
+                onClick={onHandleClearFilter}
+              >
+                Clear Filter
+              </Button>
+              <Button type="submit" style={{ width: '100%' }}>
+                Report
+              </Button>
+            </Col>
+          </Row>
+        </>
+      );
+    }
+
+    if (timeframe?.value === 'Trimester' && trimesterType?.value) {
+      renderReport = (
+        <>
+          <hr style={{ backgroundColor: '#959494', marginBottom: '0px' }} />
+          <Row>
+            <Col md={3} style={{ marginLeft: 'auto', marginTop: '10px', display: 'flex' }}>
+              <Button
+                className="btn-danger"
+                style={{ width: '100%', marginRight: '20px' }}
+                onClick={onHandleClearFilter}
+              >
+                Clear Filter
+              </Button>
+              <Button type="submit" style={{ width: '100%' }}>
+                Report
+              </Button>
+            </Col>
+          </Row>
+        </>
+      );
+    }
+
+    if (timeframe?.value === 'Semester' && semesterType?.value) {
+      renderReport = (
+        <>
+          <hr style={{ backgroundColor: '#959494', marginBottom: '0px' }} />
+          <Row>
+            <Col md={3} style={{ marginLeft: 'auto', marginTop: '10px', display: 'flex' }}>
+              <Button
+                className="btn-danger"
+                style={{ width: '100%', marginRight: '20px' }}
+                onClick={onHandleClearFilter}
+              >
+                Clear Filter
+              </Button>
+              <Button type="submit" style={{ width: '100%' }}>
+                Report
+              </Button>
+            </Col>
+          </Row>
+        </>
+      );
+    }
+  }
+
   return (
     <Layout>
       <Form onSubmit={onHandleReport}>
@@ -212,7 +318,7 @@ export default function ReportScreen() {
                         <Select
                           onChange={onChangeCountries}
                           isMulti
-                          options={countriesOptions}
+                          options={[{ label: '★ Select All', value: 'all' }, ...countriesOptions]}
                           className="basic-multi-select"
                           value={countries}
                           classNamePrefix="select"
@@ -323,22 +429,7 @@ export default function ReportScreen() {
                       )}
                     </Row>
 
-                    <hr style={{ backgroundColor: '#959494', marginBottom: '0px' }} />
-
-                    <Row>
-                      <Col md={3} style={{ marginLeft: 'auto', marginTop: '10px', display: 'flex' }}>
-                        <Button
-                          className="btn-danger"
-                          style={{ width: '100%', marginRight: '20px' }}
-                          onClick={onHandleClearFilter}
-                        >
-                          Clear Filter
-                        </Button>
-                        <Button type="submit" style={{ width: '100%' }}>
-                          Report
-                        </Button>
-                      </Col>
-                    </Row>
+                    {renderReport}
                   </CardBody>
                 </Card>
               </Col>
