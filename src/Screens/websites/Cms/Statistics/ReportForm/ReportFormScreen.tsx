@@ -67,7 +67,7 @@ const ReportFormScreen = (props: any) => {
     const x1 = Number(first_price);
     const x2 = Number(last_price);
 
-    if (x1 === 0 && x2 === 0) {
+    if (x2 === 0) {
       return '0';
     }
 
@@ -75,7 +75,7 @@ const ReportFormScreen = (props: any) => {
       return '100';
     }
 
-    const result = ((x1 - x2) / x1) * 100;
+    const result = x1 / x2 - 1;
 
     return result.toFixed(2);
   };
@@ -105,6 +105,10 @@ const ReportFormScreen = (props: any) => {
       str[1] = str[1].replace(/(\d{3})/g, '$1 ');
     }
     return str.join('.');
+  }
+
+  function isNegative(num: number) {
+    return num < 0 ? true : false;
   }
 
   const renderMonth = (month_start: string, month_end: string) => {
@@ -215,23 +219,43 @@ const ReportFormScreen = (props: any) => {
                       <td>{x?.country_name}</td>
                       <td>{x?.data?.year?.imports ? commafy(x?.data?.year?.imports.toFixed(2)) : 0}</td>
                       <td>{x?.data?.year?.exports ? commafy(x?.data?.year?.exports.toFixed(2)) : 0}</td>
-                      <td className={style.balance_value}>
-                        {x?.data?.year?.balances ? commafy(x?.data?.year?.balances.toFixed(2)) : 0}
+                      <td
+                        className={`${style.balance_value} ${
+                          isNegative(Number(x?.data?.year?.balances.toFixed(2))) ? style.negative_value : ''
+                        }`}
+                      >
+                        {x?.data?.year?.balances
+                          ? commafy(
+                              isNegative(Number(x?.data?.year?.balances.toFixed(2)))
+                                ? (Number(x?.data?.year?.balances.toFixed(2)) * -1).toString()
+                                : x?.data?.year?.balances.toFixed(2).toString(),
+                            )
+                          : 0}
                       </td>
                       <td>{x?.data?.year?.volumes ? commafy(x?.data?.year?.volumes.toFixed(2)) : 0}</td>
                       <td>{x?.data?.second_year?.imports ? commafy(x?.data?.second_year?.imports.toFixed(2)) : 0}</td>
                       <td>{x?.data?.second_year?.exports ? commafy(x?.data?.second_year?.exports.toFixed(2)) : 0}</td>
-                      <td className={style.balance_value}>
-                        {x?.data?.second_year?.balances ? commafy(x?.data?.second_year?.balances.toFixed(2)) : 0}
+                      <td
+                        className={`${style.balance_value} ${
+                          isNegative(Number(x?.data?.second_year?.balances?.toFixed(2))) ? style.negative_value : ''
+                        }`}
+                      >
+                        {x?.data?.second_year?.balances
+                          ? commafy(
+                              isNegative(Number(x?.data?.second_year?.balances.toFixed(2)))
+                                ? (Number(x?.data?.second_year?.balances.toFixed(2)) * -1).toString()
+                                : x?.data?.second_year?.balances.toFixed(2).toString(),
+                            )
+                          : 0}
                       </td>
                       <td>{x?.data?.second_year?.volumes ? commafy(x?.data?.second_year?.volumes.toFixed(2)) : 0}</td>
                       <td className={style.import_export_percentage}>
-                        {percentChange(x?.data?.year?.imports, x?.data?.second_year?.imports)}%
+                        {percentChange(x?.data?.second_year?.imports, x?.data?.year?.imports)}%
                       </td>
                       <td className={style.import_export_percentage}>
-                        {percentChange(x?.data?.year?.exports, x?.data?.second_year?.exports)}%
+                        {percentChange(x?.data?.second_year?.exports, x?.data?.year?.exports)}%
                       </td>
-                      <td>{percentChange(x?.data?.year?.volumes, x?.data?.second_year?.volumes)}%</td>
+                      <td>{percentChange(x?.data?.second_year?.volumes, x?.data?.year?.volumes)}%</td>
                     </tr>
                   );
                 })}
@@ -312,32 +336,32 @@ const ReportFormScreen = (props: any) => {
                   <td>
                     {percentChange(
                       data?.importExportReport?.reduce((prev: any, cur: any) => {
-                        return cur?.data?.year?.imports + prev;
+                        return cur?.data?.second_year?.imports + prev;
                       }, 0),
                       data?.importExportReport?.reduce((prev: any, cur: any) => {
-                        return cur?.data?.second_year?.imports + prev;
+                        return cur?.data?.year?.imports + prev;
                       }, 0),
                     )}
                     %
                   </td>
                   <td>
                     {percentChange(
-                      data?.importExportReport?.reduce((prev: any, cur: any) => {
-                        return cur?.data?.year?.exports + prev;
-                      }, 0),
                       data?.importExportReport?.reduce((prev: any, cur: any) => {
                         return cur?.data?.second_year?.exports + prev;
                       }, 0),
+                      data?.importExportReport?.reduce((prev: any, cur: any) => {
+                        return cur?.data?.year?.exports + prev;
+                      }, 0),
                     )}
                     %
                   </td>
                   <td>
                     {percentChange(
                       data?.importExportReport?.reduce((prev: any, cur: any) => {
-                        return cur?.data?.year?.volumes + prev;
+                        return cur?.data?.second_year?.volumes + prev;
                       }, 0),
                       data?.importExportReport?.reduce((prev: any, cur: any) => {
-                        return cur?.data?.second_year?.volumes + prev;
+                        return cur?.data?.year?.volumes + prev;
                       }, 0),
                     )}
                     %
