@@ -71,11 +71,7 @@ const ReportFormScreen = (props: any) => {
       return '0';
     }
 
-    if (x1 === 0) {
-      return '100';
-    }
-
-    const result = x1 / x2 - 1;
+    const result = (x1 / x2 - 1) * 100;
 
     return result.toFixed(2);
   };
