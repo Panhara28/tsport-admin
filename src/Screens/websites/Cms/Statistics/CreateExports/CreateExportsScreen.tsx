@@ -41,15 +41,25 @@ const RenderProgressBar = ({ size }: any) => {
   }, []);
 
   if (now === 100) {
-    return <ProgressBar variant="success" animated now={now} label={`processing`} />;
+    return (
+      <ProgressBar
+        variant="success"
+        animated
+        now={now}
+        label={`processing`}
+        style={{ height: '15px', fontSize: '14px' }}
+      />
+    );
   }
 
-  return <ProgressBar now={now} label={`${now}%`} />;
+  return <ProgressBar now={now} label={`${now}%`} style={{ height: '15px', fontSize: '14px' }} />;
 };
 
 export function CreateExportsScreen() {
   const { me } = useContext(AuthContext);
   const router = useRouter();
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const [createExports, { loading }] = useMutation(CREATE_EXPORTS, {
     onCompleted: data => {
@@ -64,9 +74,10 @@ export function CreateExportsScreen() {
   const [uploadFile, setUploadFile] = useState<any>(undefined);
   const [isPreview, setIsPreview] = useState<any>(undefined);
   const [isSuccess, setIsSuccess] = useState<any>(undefined);
-  const [now, setNow] = useState(0);
 
   const onHandleInputChange = async (e: any) => {
+    setIsLoading(true);
+
     const res = new Promise(r => {
       ReadFileExcel(e.target.files[0], (callback: any) => {
         r(callback);
@@ -91,6 +102,8 @@ export function CreateExportsScreen() {
 
     setUploadFile(input);
 
+    setIsLoading(false);
+
     createExports({
       variables: {
         input: {
@@ -101,6 +114,10 @@ export function CreateExportsScreen() {
       },
     });
   };
+
+  let renderFetching = (
+    <ProgressBar now={100} animated variant="info" label={`fetching`} style={{ height: '15px', fontSize: '14px' }} />
+  );
 
   return (
     <Layout>
@@ -121,7 +138,9 @@ export function CreateExportsScreen() {
                     onChange={e => onHandleInputChange(e)}
                   />
                   {!isSuccess ? (
-                    loading && uploadFile ? (
+                    isLoading ? (
+                      renderFetching
+                    ) : loading && uploadFile ? (
                       <RenderProgressBar size={uploadFile?.length} />
                     ) : (
                       <Button variant="success" onClick={() => fileInputRef.current.click()}>
