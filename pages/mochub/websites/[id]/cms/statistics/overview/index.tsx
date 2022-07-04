@@ -3,158 +3,207 @@ import { Button, Card, Col, Nav, Row } from 'react-bootstrap';
 import { Container } from 'reactstrap';
 import Image from 'next/image';
 import style from './overview.module.scss';
-import dynamic from 'next/dynamic';
 import { RevenueReports } from '../../../../../../../src/components/ApexCharts/Avenue';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { LineChart } from '../../../../../../../src/components/ApexCharts/LineChart';
+import { AreaChart } from '../../../../../../../src/components/ApexCharts/AreaChart';
+import { BalanceChart } from '../../../../../../../src/components/ApexCharts/ColumnChart';
 
-const ReactApexChart: any = dynamic(() => import('react-apexcharts'), { ssr: false });
 export default function Overview() {
-  const [state, setState] = useState({
-    series: [
-      {
-        name: 'Desktops',
-        data: [5, 10, 15, 9, 17, 13, 16, 25],
-      },
-    ],
-    options: {
-      chart: {
-        height: 350,
-        type: 'line',
-        zoom: {
-          enabled: false,
-        },
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      stroke: {
-        curve: 'straight',
-      },
-      // title: {
-      //   text: 'Product Trends by Month',
-      //   align: 'left',
-      // },
-      grid: {
-        row: {
-          colors: ['#f3f3f3', 'transparent'],
-          opacity: 0.5,
-        },
-      },
-      // xaxis: {
-      //   categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
-      // },
-    },
-  });
+  const [state, setState] = useState({});
 
   return (
     <div className={style.main}>
-      <Container fluid>
         <div className={style.app_content}>
           <Row>
             <Col md={12} xl={12}>
               <Card className={style.card}>
-                <Card.Body>
-                  <Card.Text>Nav</Card.Text>
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
-          <Row>
-            <Col md={12} xl={12}>
-              <Card className={style.card}>
-                <Card.Body>
-                  <Card.Text>Nav</Card.Text>
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
-          <Row>
-            <Col md={6} xl={4}>
-              <Card className={style.card}>
-                <Card.Body>
-                  <h5>Trade Information of Planning Statistics</h5>
-                  <p className={`${style.txt_p} card-text font-small-3`}> You have won gold medal </p>
-                  <h3 className={`${style.txt_price} mb-75 mt-2 pt-50`}>
-                    <a href="#">$99.99k</a>
-                  </h3>
-                  <Button className={style.btn_view}> View Sales </Button>
-                  <img
-                    className={style.image_p1}
-                    src="https://pixinvent.com/demo/vuexy-vuejs-admin-dashboard-template/demo-4/img/badge.0fa134b5.svg"
-                  />
-                </Card.Body>
-              </Card>
-            </Col>
-            <Col md={6} xl={8}>
-              <Card className={style.card}>
-                <Card.Body>
+                <Card.Body className={style.top_nav}>
                   <Card.Text>
-                    <h5>Statistics</h5>
-                    {/* <Row>
-                      <Col sm={6} xl={3}>
-                        <div className="media d-flex">
-                          <div className="media-aside"></div>
-                          <div className="media-body">
-                            <h3 className="font-weight-bolder mb-1">5.67k</h3>
-                          </div>
-                        </div>
-                      </Col>
-                      <Col sm={6} xl={3}></Col>
-                      <Col sm={6} xl={3}></Col>
-                      <Col sm={6} xl={3}></Col>
-                    </Row> */}
-                    <RevenueReports options={state.options} series={state.series} type="line" height={350} />
-                    
+                    <div className="d-flex">
+                      <div>
+                        <FontAwesomeIcon icon={faBars} className={style.menu_nav}/>
+                      </div>
+                      <div>
+                          <Button className={`${style.btn_filter} active`}>Overview</Button>
+                          <Button className={style.btn_filter}>By Country</Button>
+                          <Button className={style.btn_filter}>By Product</Button>
+                          <Button className={style.btn_filter}>By Trimester</Button>
+                          <Button className={style.btn_filter}>By Semester</Button>
+                          <Button className={style.btn_filter}>By Year</Button>
+                      </div>
+                    </div>
                   </Card.Text>
                 </Card.Body>
               </Card>
             </Col>
           </Row>
           <Row>
-            <Col lg={4}>
-              <Row>
-                <Col md={3} lg={6}>
-                  <Card className={style.card}>
-                    <Card.Body>
-                      <Card.Text>
-                        <h5>Orders</h5>
-                        <h3 className="font-weight-bolder mb-1">2.76k</h3>
-                      </Card.Text>
-                    </Card.Body>
-                  </Card>
-                </Col>
-                <Col md={3} lg={6}>
-                  <Card className={style.card}>
-                    <Card.Body>
-                      <Card.Text>
-                        <h5>Profit</h5>
-                        <h3 className="font-weight-bolder mb-1">6,92k</h3>
-                        <ReactApexChart options={state.options} series={state.series} type="line" height={350} />
-                      </Card.Text>
-                    </Card.Body>
-                  </Card>
-                </Col>
-                <Col md={6} lg={12}>
-                  <Card className={style.card}>
-                    <Card.Body>
-                      <Card.Title>Revenue Report</Card.Title>
-                      <Card.Text>
-                        {/* <RevenueReports options={state.options} series={state.series} type="line" height={350} /> */}
-                      </Card.Text>
-                    </Card.Body>
-                  </Card>
-                </Col>
-              </Row>
-            </Col>
-            <Col lg={8}>
+            <Col md={6} xl={6}>
+              <h4 className={style.txt_title}>Export</h4>
               <Card className={style.card}>
                 <Card.Body>
-                  <Card.Title>Card Title</Card.Title>
-                  <Card.Text>Some quick example text to build on the card title and make up the bulk</Card.Text>
+                  <div className="d-flex">
+                    <Card className={style.card_country}>
+                      <Card.Body>
+                        <div>
+                          <img src="/images/cambodia.svg" className={style.flag_img}/>
+                          {/* <Image src="/images/cambodia.svg" width={100} height={100} layout="responsive" className={style.flag_img}/> */}
+                          <h3 className={style.country_name}>Cambodia</h3>
+                          <span className={style.txt_vol}>Vol: <span>30K</span></span>
+                        </div>
+                      </Card.Body>
+                    </Card>      
+                    <Card className={style.card_country}>
+                      <Card.Body>
+                        <Card.Text>
+                        <div>
+                          <img src="/images/Thai.png" className={style.flag_img}/>
+                          {/* <Image src="/images/cambodia.svg" width={100} height={100} layout="responsive" className={style.flag_img}/> */}
+                          <h3 className={style.country_name}>Thailand</h3>
+                          <span className={style.txt_vol}>Vol: <span>30K</span></span>
+                        </div>
+                        </Card.Text>
+                      </Card.Body>
+                    </Card>      
+                    <Card className={style.card_country}>
+                      <Card.Body>
+                        <Card.Text>
+                        <div>
+                          <img src="/images/China.png" className={style.flag_img}/>
+                          {/* <Image src="/images/cambodia.svg" width={100} height={100} layout="responsive" className={style.flag_img}/> */}
+                          <h3 className={style.country_name}>China</h3>
+                          <span className={style.txt_vol}>Vol: <span>30K</span></span>
+                        </div>
+                        </Card.Text>
+                      </Card.Body>
+                    </Card>      
+                  </div>
+                </Card.Body>
+              </Card>
+            </Col>
+            <Col md={6} xl={6}>
+              <h4 className={style.txt_title}>Import</h4>
+              <Card className={style.card}>
+                <Card.Body>
+                <div className="d-flex">
+                    <Card className={style.card_country}>
+                      <Card.Body>
+                        <div>
+                          <img src="/images/cambodia.svg" className={style.flag_img}/>
+                          {/* <Image src="/images/cambodia.svg" width={100} height={100} layout="responsive" className={style.flag_img}/> */}
+                          <h3 className={style.country_name}>Cambodia</h3>
+                          <span className={style.txt_vol}>Vol: <span>30K</span></span>
+                        </div>
+                      </Card.Body>
+                    </Card>      
+                    <Card className={style.card_country}>
+                      <Card.Body>
+                        <Card.Text>
+                        <div>
+                          <img src="/images/Thai.png" className={style.flag_img}/>
+                          {/* <Image src="/images/cambodia.svg" width={100} height={100} layout="responsive" className={style.flag_img}/> */}
+                          <h3 className={style.country_name}>Thailand</h3>
+                          <span className={style.txt_vol}>Vol: <span>30K</span></span>
+                        </div>
+                        </Card.Text>
+                      </Card.Body>
+                    </Card>      
+                    <Card className={style.card_country}>
+                      <Card.Body>
+                        <Card.Text>
+                        <div>
+                          <img src="/images/China.png" className={style.flag_img}/>
+                          {/* <Image src="/images/cambodia.svg" width={100} height={100} layout="responsive" className={style.flag_img}/> */}
+                          <h3 className={style.country_name}>China</h3>
+                          <span className={style.txt_vol}>Vol: <span>30K</span></span>
+                        </div>
+                        </Card.Text>
+                      </Card.Body>
+                    </Card>      
+                  </div>
                 </Card.Body>
               </Card>
             </Col>
           </Row>
+          <Row>
+            <Col md={6} xl={6}>
+              <Row>
+                <Col md={4}>
+                  <Card className={style.card}>
+                    <Card.Body>
+                      <p className={`${style.txt_p} card-text font-small-3`}>Export VPY</p>
+                      <span className={style.txt_country__vol}>Vol: <span>1690M</span></span>
+                      <LineChart options={state.options} series={state.series} type="line"/>
+                    </Card.Body>
+                  </Card>
+                </Col>
+                <Col md={4}>
+                  <Card className={style.card}>
+                    <Card.Body>
+                      <p className={`${style.txt_p} card-text font-small-3`}>Import VPY</p>
+                      <span className={style.txt_country__vol}>Vol: <span>1690M</span></span>
+                      <AreaChart options={state.options} series={state.series} type="area"/>
+                    </Card.Body>
+                  </Card>
+                </Col>
+                <Col md={4}>
+                <Card className={style.card}>
+                    <Card.Body>
+                      <p className={`${style.txt_p} card-text font-small-3`}>Balance VPY</p>
+                      <span className={style.txt_country__vol}>Vol: <span>1690M</span></span>
+                      <BalanceChart options={state.options} series={state.series} type="bar" />
+                    </Card.Body>
+                  </Card>
+                </Col>
+              </Row>
+              <Row>
+                <Col md={4}>
+                  <Card className={style.card}>
+                    <Card.Body>
+                      <p className={`${style.txt_p} card-text font-small-3`}>Export Net Weight</p>
+                      <span className={style.txt_country__vol}>Vol: <span>1690M</span></span>
+                      <LineChart options={state.options} series={state.series} type="line"/>
+                    </Card.Body>
+                  </Card>
+                </Col>
+                <Col md={4}>
+                  <Card className={style.card}>
+                    <Card.Body>
+                      <p className={`${style.txt_p} card-text font-small-3`}>Import Net Weight</p>
+                      <span className={style.txt_country__vol}>Vol: <span>1690M</span></span>
+                      <AreaChart options={state.options} series={state.series} type="area"/>
+                    </Card.Body>
+                  </Card>
+                </Col>
+                <Col md={4}>
+                <Card className={style.card}>
+                    <Card.Body>
+                      <p className={`${style.txt_p} card-text font-small-3`}>Quantity VPY</p>
+                      <span className={style.txt_country__vol}>Vol: <span>1690M</span></span>
+                      <BalanceChart options={state.options} series={state.series} type="bar" />
+                    </Card.Body>
+                  </Card>
+                </Col>
+              </Row>
+
+            </Col>
+            <Col md={6} xl={6}>
+              <Card className={style.card}>
+                <Card.Body>
+                  <Card.Text>
+                    <p className={`${style.txt_p} card-text font-small-3`}>Total Import volumn</p>
+                    <span className={style.txt_country__vol}>By Country</span>
+                    <RevenueReports options={state.options} series={state.series} type="line" height={350} />
+                  </Card.Text>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+
         </div>
+      <Container >
       </Container>
     </div>
   );
