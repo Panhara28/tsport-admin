@@ -1,6 +1,6 @@
 import { ApolloProvider } from '@apollo/client';
 import { PropsWithChildren, useMemo } from 'react';
-import createApolloClient from '../../../libs/client';
+import createApolloClient from '../../../apollo/client';
 import { useToken } from './TokenContext';
 
 export default function ApolloContext(props: PropsWithChildren<{}>) {

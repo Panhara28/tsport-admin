@@ -3,16 +3,14 @@ import { Button, Card, Col, Nav, Row } from 'react-bootstrap';
 import { Container } from 'reactstrap';
 import Image from 'next/image';
 import style from './overview.module.scss';
-import { LineChart } from '../../../../../../../src/components/ApexCharts/LineChart';
-import { AreaChart } from '../../../../../../../src/components/ApexCharts/AreaChart';
-import { BalanceChart } from '../../../../../../../src/components/ApexCharts/ColumnChart';
-import { MapChart } from '../../../../../../../src/components/ApexCharts/MapChart';
 import dynamic from 'next/dynamic';
+import { area, balanceData, lineData } from '../../../../../../../src/libs/data';
+import { MapChart } from '../../../../../../../src/components/ApexCharts/MapChart';
+const ReactApexChart: any = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 const OwlCarousel: any = dynamic(import('react-owl-carousel3'));
 
-
-const options = {
+const options: any = {
   loop: true,
   dots: false,
   nav: false,
@@ -36,7 +34,7 @@ const options = {
   },
 };
 export default function Overview() {
-  const [state, setState] = useState({});
+  const [state, setState]: any = useState({});
 
   return (
     <div className={style.main}>
@@ -47,8 +45,8 @@ export default function Overview() {
               <Card.Body className={style.top_nav}>
                 <Card.Text>
                   <div className="d-flex">
-                    <div>
-                      <img src="/icons/menu.png" className={style.menu_bar} />
+                    <div className={style.menu_bar}>
+                      <Image src="/icons/menu.png" width={27} height={27} alt="menu-icon" layout={'fixed'} />
                     </div>
                     <div>
                       <Button className={`${style.btn_filter} ${style.active}`}>Overview</Button>
@@ -74,7 +72,13 @@ export default function Overview() {
                     <Card className={style.card_country}>
                       <Card.Body>
                         <div>
-                          <img src="/images/cambodia.svg" className={style.flag_img} />
+                          <Image
+                            src="/images/cambodia.svg"
+                            width={50}
+                            height={50}
+                            alt="flag"
+                            className={style.flag_img}
+                          />
                           <h3 className={style.country_name}>Cambodia</h3>
                           <span className={style.txt_vol}>
                             Vol: <span>30K</span>
@@ -86,7 +90,13 @@ export default function Overview() {
                       <Card.Body>
                         <Card.Text>
                           <div>
-                            <img src="/images/Thai.png" className={style.flag_img} />
+                            <Image
+                              src="/images/Thai.png"
+                              width={50}
+                              height={50}
+                              alt="flag"
+                              className={style.flag_img}
+                            />
                             <h3 className={style.country_name}>Thailand</h3>
                             <span className={style.txt_vol}>
                               Vol: <span>30K</span>
@@ -99,7 +109,13 @@ export default function Overview() {
                       <Card.Body>
                         <Card.Text>
                           <div>
-                            <img src="/images/China.png" className={style.flag_img} />
+                            <Image
+                              src="/images/China.png"
+                              width={50}
+                              height={50}
+                              alt="flag"
+                              className={style.flag_img}
+                            />
                             <h3 className={style.country_name}>China</h3>
                             <span className={style.txt_vol}>
                               Vol: <span>30K</span>
@@ -122,7 +138,13 @@ export default function Overview() {
                     <Card className={style.card_country}>
                       <Card.Body>
                         <div>
-                          <img src="/images/cambodia.svg" className={style.flag_img} />
+                          <Image
+                            src="/images/cambodia.svg"
+                            width={50}
+                            height={50}
+                            alt="flag"
+                            className={style.flag_img}
+                          />
                           <h3 className={style.country_name}>Cambodia</h3>
                           <span className={style.txt_vol}>
                             Vol: <span>30K</span>
@@ -134,7 +156,13 @@ export default function Overview() {
                       <Card.Body>
                         <Card.Text>
                           <div>
-                            <img src="/images/Thai.png" className={style.flag_img} />
+                            <Image
+                              src="/images/Thai.png"
+                              width={50}
+                              height={50}
+                              alt="flag"
+                              className={style.flag_img}
+                            />
                             <h3 className={style.country_name}>Thailand</h3>
                             <span className={style.txt_vol}>
                               Vol: <span>30K</span>
@@ -147,7 +175,13 @@ export default function Overview() {
                       <Card.Body>
                         <Card.Text>
                           <div>
-                            <img src="/images/China.png" className={style.flag_img} />
+                            <Image
+                              src="/images/China.png"
+                              width={50}
+                              height={50}
+                              alt="flag"
+                              className={style.flag_img}
+                            />
                             <h3 className={style.country_name}>China</h3>
                             <span className={style.txt_vol}>
                               Vol: <span>30K</span>
@@ -172,7 +206,7 @@ export default function Overview() {
                     <span className={style.txt_country__vol}>
                       Vol: <span>1690M</span>
                     </span>
-                    <LineChart options={state.options} series={state.series} type="line" />
+                    <ReactApexChart options={lineData.options} series={lineData.series} />
                   </Card.Body>
                 </Card>
               </Col>
@@ -183,7 +217,7 @@ export default function Overview() {
                     <span className={style.txt_country__vol}>
                       Vol: <span>1690M</span>
                     </span>
-                    <AreaChart options={state.options} series={state.series} type="area" />
+                    <ReactApexChart options={area.options} series={area.series} />
                   </Card.Body>
                 </Card>
               </Col>
@@ -194,7 +228,7 @@ export default function Overview() {
                     <span className={style.txt_country__vol}>
                       Vol: <span>1690M</span>
                     </span>
-                    <BalanceChart options={state.options} series={state.series} type="bar" />
+                    <ReactApexChart options={balanceData.options} series={balanceData.series} />
                   </Card.Body>
                 </Card>
               </Col>
@@ -203,33 +237,33 @@ export default function Overview() {
               <Col md={4}>
                 <Card className={style.card}>
                   <Card.Body>
-                    <p className={`${style.txt_p} card-text font-small-3`}>Export Net Weight</p>
+                    <p className={`${style.txt_p} card-text font-small-3`}>Export VPY</p>
                     <span className={style.txt_country__vol}>
                       Vol: <span>1690M</span>
                     </span>
-                    <LineChart options={state.options} series={state.series} type="line" />
+                    <ReactApexChart options={lineData.options} series={lineData.series} />
                   </Card.Body>
                 </Card>
               </Col>
               <Col md={4}>
                 <Card className={style.card}>
                   <Card.Body>
-                    <p className={`${style.txt_p} card-text font-small-3`}>Import Net Weight</p>
+                    <p className={`${style.txt_p} card-text font-small-3`}>Import VPY</p>
                     <span className={style.txt_country__vol}>
                       Vol: <span>1690M</span>
                     </span>
-                    <AreaChart options={state.options} series={state.series} type="area" />
+                    <ReactApexChart options={area.options} series={area.series} />
                   </Card.Body>
                 </Card>
               </Col>
               <Col md={4}>
                 <Card className={style.card}>
                   <Card.Body>
-                    <p className={`${style.txt_p} card-text font-small-3`}>Quantity VPY</p>
+                    <p className={`${style.txt_p} card-text font-small-3`}>Balance VPY</p>
                     <span className={style.txt_country__vol}>
                       Vol: <span>1690M</span>
                     </span>
-                    <BalanceChart options={state.options} series={state.series} type="bar" />
+                    <ReactApexChart options={balanceData.options} series={balanceData.series} />
                   </Card.Body>
                 </Card>
               </Col>
@@ -245,7 +279,7 @@ export default function Overview() {
                     <Button className={style.btn_zoom} onClick={() => setZoom(prev => prev + 0.1)}>
                       +
                     </Button>
-                    <Button className={style.btn_zoom} onClick={() => setZoom(prev => prev - 0.1)}s>
+                    <Button className={style.btn_zoom} onClick={() => setZoom(prev => prev - 0.1)}>
                       -
                     </Button>
                   </div>
@@ -261,4 +295,7 @@ export default function Overview() {
       <Container></Container>
     </div>
   );
+}
+function setZoom(arg0: (prev: any) => any): void {
+  throw new Error('Function not implemented.');
 }

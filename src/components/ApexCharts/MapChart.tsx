@@ -24,3 +24,6 @@ export const MapChart = () => (
     </ComposableMap>
   </div>
 );
+function setZoom(arg0: (prev: any) => number) {
+  throw new Error('Function not implemented.');
+}
