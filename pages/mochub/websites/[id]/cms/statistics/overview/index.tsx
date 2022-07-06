@@ -44,6 +44,7 @@ type Props = {
 
 export default function Overview(Props: any) {
   const [state, setState]: any = useState({});
+  const [startDate, setStartDate] = useState(new Date());
 
   return (
     <div className={style.main}>
@@ -88,18 +89,20 @@ export default function Overview(Props: any) {
                 <Row className="mt-2">
                   <Col md={3}>
                     <DatePicker
-                      selected=""
+                      selected={startDate}
                       className="form-control"
                       placeholderText="Start Date"
                       dateFormat="dd/mm/yyyy"
+                      onChange={(date: Date) => setStartDate(date)}
                     />
                   </Col>
                   <Col md={3}>
                     <DatePicker
-                      selected=""
+                      selected={startDate}
                       className="form-control"
                       placeholderText="End Date"
                       dateFormat="dd/mm/yyyy"
+                      onChange={(date: Date) => setStartDate(date)}
                     />
                   </Col>
                 </Row>
