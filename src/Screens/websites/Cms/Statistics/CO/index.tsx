@@ -1,15 +1,15 @@
 import { useRouter } from 'next/router';
 import { Card, Col, Container, Row } from 'react-bootstrap';
 import React from 'react';
-import Layout from '../../../../components/VerticalLayout';
-import { Breadcrumb } from '../../../../components/Common/Breadcrumb';
+import Layout from '../../../../../components/VerticalLayout';
+import { Breadcrumb } from '../../../../../components/Common/Breadcrumb';
 import Image from 'next/image';
 import styles from './statistics.module.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChartBar, faFile, faFileExport, faFileImport, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { CardBody } from 'reactstrap';
 
-export function StatisticsScreen() {
+export function COStatisticsScreen() {
   const router = useRouter();
 
   const onHandleCommercialType = (e: any, type?: string) => {
@@ -22,22 +22,22 @@ export function StatisticsScreen() {
     <Layout>
       <div className="page-content">
         <Container fluid>
-          <Breadcrumb title="Ministry Of Commerce" breadcrumbItem="Statistics" />
+          <Breadcrumb title="Ministry Of Commerce" breadcrumbItem="CO Statistics" />
           <hr />
           <Row>
             <Col md={6} xl={3}>
-              <a href={`/mochub/websites/${router?.query?.id}/cms/statistics/gdce`}>
-                <Card className={styles.statistics_category_card}>
+              <a href={`/mochub/websites/${router?.query?.id}/cms/statistics/co/exports`}>
+                <Card>
                   <CardBody>
                     <div className="float-end mt-2">
-                      <FontAwesomeIcon icon={faFileImport} style={{ fontSize: '36px' }} color="#3867D6" />
+                      <FontAwesomeIcon icon={faFileExport} style={{ fontSize: '36px' }} color="#3867D6" />
                     </div>
                     <div>
                       <h4 className="mb-1 mt-1">
                         <span></span>
                       </h4>
                       <p className="text-muted mb-0" style={{ fontSize: '18px', fontWeight: 600 }}>
-                        General Department Of Customs And Excise
+                        Upload Exports
                       </p>
                     </div>
                     <p className="text-muted mt-3 mb-0">
@@ -51,18 +51,18 @@ export function StatisticsScreen() {
             </Col>
 
             <Col md={6} xl={3}>
-              <a href={`/mochub/websites/${router?.query?.id}/cms/statistics/co`}>
-                <Card className={styles.statistics_category_card}>
+              <a href={`/mochub/websites/${router?.query?.id}/cms/statistics/co/reports`}>
+                <Card>
                   <CardBody>
                     <div className="float-end mt-2">
-                      <FontAwesomeIcon icon={faFileExport} style={{ fontSize: '36px' }} color="#3867D6" />
+                      <FontAwesomeIcon icon={faFile} style={{ fontSize: '36px' }} color="#3867D6" />
                     </div>
                     <div>
                       <h4 className="mb-1 mt-1">
                         <span></span>
                       </h4>
                       <p className="text-muted mb-0" style={{ fontSize: '18px', fontWeight: 600 }}>
-                        Certificates Of Origin
+                        Reports
                       </p>
                     </div>
                     <p className="text-muted mt-3 mb-0">
