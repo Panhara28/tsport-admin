@@ -48,6 +48,11 @@ export default function Overview(Props: any) {
   return (
     <div className={style.main}>
       <div className={style.app_content}>
+        <Row className="mt-2">
+          <Col md={12} lg={12}>
+            <Image src="/logo/moclogo.webp" width={376} height={120} alt="menu-icon" layout={'fixed'} />
+          </Col>
+        </Row>
         <Row>
           <Col md={12} xl={12}>
             <Card className={style.card}>
