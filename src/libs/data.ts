@@ -147,3 +147,9 @@ export const balanceData = {
     },
   },
 };
+
+export const country_selection = [
+  { value: 'Thailand', label: 'Thailand' },
+  { value: 'Cambodia', label: 'Cambodia' },
+  { value: 'Vietnam', label: 'Vietnam' },
+];
