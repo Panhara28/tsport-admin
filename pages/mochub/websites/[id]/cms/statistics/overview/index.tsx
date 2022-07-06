@@ -9,6 +9,7 @@ import { MapChart } from '../../../../../../../src/components/ApexCharts/MapChar
 import Select from 'react-select';
 import 'react-datepicker/dist/react-datepicker.css';
 import DatePicker from 'react-datepicker';
+import { Label } from 'reactstrap';
 const ReactApexChart: any = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 const OwlCarousel: any = dynamic(import('react-owl-carousel3'));
@@ -88,6 +89,7 @@ export default function Overview(Props: any) {
                 </Row>
                 <Row className="mt-2">
                   <Col md={3}>
+                    <Label>Start Date</Label>
                     <DatePicker
                       selected={startDate}
                       className="form-control"
@@ -97,6 +99,7 @@ export default function Overview(Props: any) {
                     />
                   </Col>
                   <Col md={3}>
+                    <Label>End Date</Label>
                     <DatePicker
                       selected={startDate}
                       className="form-control"
