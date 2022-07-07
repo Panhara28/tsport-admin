@@ -63,7 +63,10 @@
       background-color: #283046;
       box-shadow: 0 4px 24px 0 rgb(34 41 47 / 24%);
       border: none;
-      color: #fff;
+      label,
+      span {
+        color: #fff;
+      }
 
       .card_country {
         // @media screen and (max-width: 478px) {
