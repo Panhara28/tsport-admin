@@ -88,15 +88,15 @@ export function CreateExportsScreen() {
     const input = [];
     for (const x of data) {
       input.push({
-        year: x['Year'] + '',
-        month: x['Month'] + '',
-        destination_country: x['Destination Country'] + '',
-        hs_code: x['HS8 Code'] + '',
-        net_weight_kgm: x['Net Weight Kgm'] + '',
-        supplementary_unit: x['Supplementary Unit'] + '',
-        quantity: x['Quantity'] + '',
-        custom_value_khr: x['Customs Value KHR'],
-        custom_value_usd: x['Customs Value USD'],
+        year: x?.year + '',
+        month: x?.month + '',
+        destination_country: x?.destination_country + '',
+        hs_code: x?.hs_code + '',
+        net_weight_kgm: x?.net_weight_kgm + '',
+        supplementary_unit: x?.supplementary_unit + '',
+        quantity: x?.quantity + '',
+        custom_value_khr: x?.custom_value_khr,
+        custom_value_usd: x?.custom_value_usd,
       });
     }
 

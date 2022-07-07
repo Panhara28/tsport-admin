@@ -12,8 +12,8 @@ import AuthContext from '../../../../../../components/Authentication/AuthContext
 import { ReadFileExcel } from '../../../../../../hook/readExcelFile';
 
 export const CREATE_EXPORTS = gql`
-  mutation createExports($input: ExportsInput) {
-    createExports(input: $input)
+  mutation createCOExports($input: COExportsInput) {
+    createCOExports(input: $input)
   }
 `;
 
@@ -86,17 +86,17 @@ export function CreateExportsScreen() {
     const data: any = await res;
 
     const input = [];
+
     for (const x of data) {
       input.push({
-        year: x['Year'] + '',
-        month: x['Month'] + '',
-        destination_country: x['Destination Country'] + '',
-        hs_code: x['HS8 Code'] + '',
-        net_weight_kgm: x['Net Weight Kgm'] + '',
-        supplementary_unit: x['Supplementary Unit'] + '',
-        quantity: x['Quantity'] + '',
-        custom_value_khr: x['Customs Value KHR'],
-        custom_value_usd: x['Customs Value USD'],
+        year: x?.year + '',
+        month: x?.month + '',
+        destination_country: x?.destination_country + '',
+        hs_code: x?.hs_code + '',
+        unit: x?.unit + '',
+        quantity: x?.quantity,
+        fob_value_usd: x?.fob_value_usd,
+        form_type: x?.form_type + '',
       });
     }
 
@@ -148,15 +148,16 @@ export function CreateExportsScreen() {
                       </Button>
                     )
                   ) : (
-                    <Button variant="primary" onClick={() => setIsPreview(true)}>
-                      Preview
-                    </Button>
+                    // <Button variant="primary" onClick={() => setIsPreview(true)}>
+                    //   Preview
+                    // </Button>
+                    undefined
                   )}
                 </CardBody>
               </Card>
             </Col>
 
-            <Modal show={isPreview} onHide={() => setIsPreview(false)} size="xl">
+            {/* <Modal show={isPreview} onHide={() => setIsPreview(false)} size="xl">
               <Modal.Header closeButton>Upload Exports</Modal.Header>
 
               <Modal.Body>
@@ -197,7 +198,7 @@ export function CreateExportsScreen() {
                   </tbody>
                 </Table>
               </Modal.Body>
-            </Modal>
+            </Modal> */}
           </Row>
         </Container>
       </div>
