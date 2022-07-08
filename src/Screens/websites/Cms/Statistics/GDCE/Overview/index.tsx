@@ -11,6 +11,10 @@ import { Label } from 'reactstrap';
 import moment from 'moment';
 import { useQuery, gql } from '@apollo/client';
 import { format_imports_exports } from './functions/format_imports_exports';
+import { barData } from './data';
+import { format_imports_exports_bar } from './functions/format_imports_exports_bar';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChartBar, faChartLine } from '@fortawesome/free-solid-svg-icons';
 
 const QUERY = gql`
   query gdceByCountryReport($filter: GDCEByCountryReportFilters) {
@@ -67,6 +71,7 @@ const ReactApexChart: any = dynamic(() => import('react-apexcharts'), { ssr: fal
 const OwlCarousel: any = dynamic(import('react-owl-carousel3'));
 
 export default function GDCEOverview() {
+  const [chartType, setChartType] = useState(1);
   const [startDate, setStartDate] = useState(new Date(2019, 1, 0));
   const [endDate, setEndDate] = useState(new Date(2022, 1, 0));
   const [countries, setCountries] = useState<any>({
@@ -171,21 +176,51 @@ export default function GDCEOverview() {
             <Card className={style.card}>
               <Card.Body>
                 <p className={`${style.txt_p} card-text`}>Yearly Imports/Exports Volumes</p>
-                <ReactApexChart
-                  options={
-                    format_imports_exports(
-                      data?.gdceByCountryReport?.importsEachYear,
-                      data?.gdceByCountryReport?.exportsEachYear,
-                    ).options
-                  }
-                  series={
-                    format_imports_exports(
-                      data?.gdceByCountryReport?.importsEachYear,
-                      data?.gdceByCountryReport?.exportsEachYear,
-                    ).series
-                  }
-                  type="line"
-                />
+
+                <div className="d-flex mb-4">
+                  <Button onClick={() => setChartType(1)}>
+                    <FontAwesomeIcon icon={faChartLine} />
+                  </Button>
+                  <Button style={{ marginLeft: '10px' }} onClick={() => setChartType(2)}>
+                    <FontAwesomeIcon icon={faChartBar} />
+                  </Button>
+                </div>
+                {chartType === 1 && (
+                  <ReactApexChart
+                    options={
+                      format_imports_exports(
+                        data?.gdceByCountryReport?.importsEachYear,
+                        data?.gdceByCountryReport?.exportsEachYear,
+                      ).options
+                    }
+                    series={
+                      format_imports_exports(
+                        data?.gdceByCountryReport?.importsEachYear,
+                        data?.gdceByCountryReport?.exportsEachYear,
+                      ).series
+                    }
+                    type="line"
+                  />
+                )}
+
+                {chartType === 2 && (
+                  <ReactApexChart
+                    options={
+                      format_imports_exports_bar(
+                        data?.gdceByCountryReport?.importsEachYear,
+                        data?.gdceByCountryReport?.exportsEachYear,
+                      ).options
+                    }
+                    series={
+                      format_imports_exports_bar(
+                        data?.gdceByCountryReport?.importsEachYear,
+                        data?.gdceByCountryReport?.exportsEachYear,
+                      ).series
+                    }
+                    type="bar"
+                    height={450}
+                  />
+                )}
               </Card.Body>
             </Card>
           </Col>

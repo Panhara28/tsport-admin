@@ -1,4 +1,4 @@
-export function format_imports_exports(importsEachYear: any, exportsEachYear: any) {
+export function format_imports_exports(importsEachYear?: any, exportsEachYear?: any) {
   const data: any = {
     series: [],
     options: {
@@ -87,8 +87,6 @@ export function format_imports_exports(importsEachYear: any, exportsEachYear: an
   }
 
   data.series.push(export_data, import_data);
-
-  console.log;
 
   return data;
 }
