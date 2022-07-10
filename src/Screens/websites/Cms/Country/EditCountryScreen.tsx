@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { faAngleLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { gql } from 'apollo-boost';
@@ -13,8 +13,10 @@ import { Breadcrumb } from '../../../../components/Common/Breadcrumb';
 import Layout from '../../../../components/VerticalLayout';
 import { setting } from '../../../../libs/settings';
 import { Form } from 'react-bootstrap';
-import { ProfileUpload } from '../../../../components/ProfileUpload';
 import { useState } from 'react';
+import { SingleUpload } from '../../../../components/SingleUpload';
+import toastr from 'toastr';
+import 'toastr/build/toastr.min.css';
 
 const QUERY = gql`
   query countryDetail($websiteId: Int!, $countryId: Int!) {
@@ -30,14 +32,22 @@ const QUERY = gql`
   }
 `;
 
+const MUTATION = gql`
+  mutation updateCountry($websiteId: Int!, $countryId: Int!, $input: CountryInput) {
+    updateCountry(websiteId: $websiteId, countryId: $countryId, input: $input)
+  }
+`;
+
 export function EditCountryScreen() {
-  let countryNameEnInput: any;
-  let countryNameKhInput: any;
-  let codeInput: any;
-  const [finaleSelected, setFinaleSelected]: any = useState('');
-  const [key, setKey] = useState('media');
-  const [firstFeaturedImage, setFirstFeaturedImage]: any = useState(undefined);
   const [selectedImage, setSelectedImage]: any = useState('');
+
+  const [updateCountry] = useMutation(MUTATION, {
+    onCompleted: data => {
+      if (data) {
+        toastr.success('Country Update Successfully!');
+      }
+    },
+  });
 
   const router = useRouter();
   const { data, loading } = useQuery(QUERY, {
@@ -45,11 +55,37 @@ export function EditCountryScreen() {
       websiteId: Number(router.query.id),
       countryId: Number(router.query.editCountryId),
     },
+    onCompleted: data => {
+      if (data) {
+        setSelectedImage(data?.countryDetail?.country_image);
+      }
+    },
   });
 
   if (loading || !data) return <>Loading...</>;
 
   const onUpdateCountry = () => {};
+
+  const onHandleSubmit = (e: any) => {
+    e.preventDefault();
+
+    const x = e.target;
+
+    const input: any = {};
+
+    input['country_name_en'] = x?.country_name_en?.value;
+    input['country_name_kh'] = x?.country_name_kh?.value;
+    input['code'] = x?.country_code?.value;
+    input['country_image'] = selectedImage ? selectedImage : '';
+
+    updateCountry({
+      variables: {
+        countryId: Number(router.query.editCountryId),
+        websiteId: Number(router.query.id),
+        input,
+      },
+    });
+  };
 
   return (
     <Layout>
@@ -57,84 +93,76 @@ export function EditCountryScreen() {
         <Container fluid>
           <Breadcrumb title={setting.title} breadcrumbItem="Edit category" />
           <hr />
-          <Row>
-            <Col md={9}>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <div></div>
-                <Link href="#">
-                  <a className="btn btn-danger" onClick={() => router.back()}>
-                    <FontAwesomeIcon icon={faAngleLeft} /> Back
-                  </a>
-                </Link>
-              </div>
-              <Card className="mt-3">
-                <CardBody>
-                  <Row>
-                    <Col md={6}>
-                      <Form.Group controlId="formBasicEmail">
-                        <Form.Label>Enter your country name here...</Form.Label>
-                        <input
-                          type="text"
-                          placeholder="Enter your category here..."
-                          name="title"
-                          className={`form-control`}
-                          defaultValue={data ? data.countryDetail.countryName.en : ''}
-                          ref={node => (countryNameEnInput = node)}
-                        />
-                      </Form.Group>
-                    </Col>
-                    <Col md={6}>
-                      <Form.Group controlId="formBasicEmail">
-                        <Form.Label>Enter your country name here...</Form.Label>
-                        <input
-                          type="text"
-                          placeholder="Enter your category here..."
-                          name="title"
-                          className={`form-control`}
-                          defaultValue={data ? data.countryDetail.countryName.kh : ''}
-                          ref={node => (countryNameKhInput = node)}
-                        />
-                      </Form.Group>
-                    </Col>
-                    <Col md={6}>
-                      <Form.Group controlId="formBasicEmail">
-                        <Form.Label>Enter your country code here...</Form.Label>
-                        <input
-                          type="text"
-                          placeholder="Enter your category here..."
-                          name="title"
-                          className={`form-control`}
-                          defaultValue={data ? data.countryDetail.code : ''}
-                          ref={node => (codeInput = node)}
-                        />
-                      </Form.Group>
-                    </Col>
-                  </Row>
-                  <Row className="mt-3">
-                    <Col>
-                      <button type="button" className="btn btn-primary" onClick={() => onUpdateCountry()}>
-                        Update
-                      </button>
-                    </Col>
-                  </Row>
-                </CardBody>
-              </Card>
-            </Col>
-            <Col md={3}>
-              <Card>
-                <CardBody>
-                  <ProfileUpload
-                    setImage={setFinaleSelected}
-                    setKey={setKey}
-                    height="100%"
-                    width="100%"
-                    setFirstFeaturedImage={setFirstFeaturedImage}
-                    setSelectImage={setSelectedImage}
-                  />
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
+          <form onSubmit={onHandleSubmit}>
+            <Row>
+              <Col md={9}>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <div></div>
+                  <Link href="#">
+                    <a className="btn btn-danger" onClick={() => router.back()}>
+                      <FontAwesomeIcon icon={faAngleLeft} /> Back
+                    </a>
+                  </Link>
+                </div>
+                <Card className="mt-3">
+                  <CardBody>
+                    <Row style={{ rowGap: 20 }}>
+                      <Col md={6}>
+                        <Form.Group controlId="formBasicEmail">
+                          <Form.Label>Enter your country name here...</Form.Label>
+                          <input
+                            type="text"
+                            placeholder="Enter your category here..."
+                            name="country_name_en"
+                            className={`form-control`}
+                            defaultValue={data ? data.countryDetail.countryName.en : ''}
+                          />
+                        </Form.Group>
+                      </Col>
+                      <Col md={6}>
+                        <Form.Group controlId="formBasicEmail">
+                          <Form.Label>Enter your country name in Khmer here...</Form.Label>
+                          <input
+                            type="text"
+                            placeholder="Enter your category here..."
+                            name="country_name_kh"
+                            className={`form-control`}
+                            defaultValue={data ? data.countryDetail.countryName.kh : ''}
+                          />
+                        </Form.Group>
+                      </Col>
+                      <Col md={6}>
+                        <Form.Group controlId="formBasicEmail">
+                          <Form.Label>Enter your country code here...</Form.Label>
+                          <input
+                            type="text"
+                            placeholder="Enter your category here..."
+                            name="country_code"
+                            className={`form-control`}
+                            defaultValue={data ? data.countryDetail.code : ''}
+                          />
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                    <Row className="mt-3">
+                      <Col>
+                        <button type="submit" className="btn btn-primary">
+                          Update
+                        </button>
+                      </Col>
+                    </Row>
+                  </CardBody>
+                </Card>
+              </Col>
+              <Col md={3}>
+                <Card>
+                  <CardBody>
+                    <SingleUpload setImage={setSelectedImage} image={selectedImage} height="100%" width="100%" />
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+          </form>
         </Container>
       </div>
     </Layout>
