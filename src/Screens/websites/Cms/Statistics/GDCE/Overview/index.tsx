@@ -15,6 +15,9 @@ import { barData } from './data';
 import { format_imports_exports_bar } from './functions/format_imports_exports_bar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChartBar, faChartLine } from '@fortawesome/free-solid-svg-icons';
+import GDCELoadingScreen from '../GDCELoadingScreen';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 const QUERY = gql`
   query gdceByCountryReport($filter: GDCEByCountryReportFilters) {
@@ -72,12 +75,15 @@ const OwlCarousel: any = dynamic(import('react-owl-carousel3'));
 
 export default function GDCEOverview() {
   const [chartType, setChartType] = useState(1);
+  const [filterData, setFilterData] = useState(3);
   const [startDate, setStartDate] = useState(new Date(2019, 1, 0));
   const [endDate, setEndDate] = useState(new Date(2022, 1, 0));
   const [countries, setCountries] = useState<any>({
     label: 'China',
     value: 'CN',
   });
+
+  const router = useRouter();
 
   const { data, loading } = useQuery(QUERY, {
     variables: {
@@ -89,7 +95,7 @@ export default function GDCEOverview() {
     },
   });
 
-  if (!data || loading) return <>Loading...</>;
+  if (!data || loading) return <GDCELoadingScreen />;
 
   const countriesOptions = data.statCountriesList.data.map((x: any) => {
     return {
@@ -116,8 +122,16 @@ export default function GDCEOverview() {
                       <Image src="/icons/menu.png" width={27} height={27} alt="menu-icon" layout={'fixed'} />
                     </div>
                     <div>
-                      <Button className={`${style.btn_filter} ${style.active}`}>Overview</Button>
-                      <Button className={style.btn_filter}>By Country</Button>
+                      <Button className={`${style.btn_filter} `}>
+                        <Link href={`/mochub/websites/${router?.query?.id}/cms/statistics/gdce/overview`}>
+                          <a>Overview</a>
+                        </Link>
+                      </Button>
+                      <Button className={`${style.btn_filter} ${style.active}`}>
+                        <Link href={`/mochub/websites/${router?.query?.id}/cms/statistics/gdce/overview/country`}>
+                          <a>By Country</a>
+                        </Link>
+                      </Button>
                       <Button className={style.btn_filter}>By Product</Button>
                       <Button className={style.btn_filter}>By Trimester</Button>
                       <Button className={style.btn_filter}>By Semester</Button>
@@ -172,17 +186,44 @@ export default function GDCEOverview() {
           </Col>
         </Row>
         <Row>
-          <Col md={6} xl={6}>
+          <Col md={7} xl={7}>
             <Card className={style.card}>
               <Card.Body>
                 <p className={`${style.txt_p} card-text`}>Yearly Imports/Exports Volumes</p>
 
                 <div className="d-flex mb-4">
-                  <Button onClick={() => setChartType(1)}>
+                  <Button
+                    className={`${style.chart_type_btn} ${chartType === 1 ? style.chart_type_btn_active : ''}`}
+                    onClick={() => setChartType(1)}
+                  >
                     <FontAwesomeIcon icon={faChartLine} />
                   </Button>
-                  <Button style={{ marginLeft: '10px' }} onClick={() => setChartType(2)}>
+                  <Button
+                    className={`${style.chart_type_btn} ${chartType === 2 ? style.chart_type_btn_active : ''}`}
+                    style={{ marginLeft: '10px' }}
+                    onClick={() => setChartType(2)}
+                  >
                     <FontAwesomeIcon icon={faChartBar} />
+                  </Button>
+                </div>
+
+                <div className="d-flex mb-4" style={{ justifyContent: 'flex-end' }}>
+                  <Button className={`${style.chart_type_btn} `} onClick={() => setFilterData(0)}>
+                    All
+                  </Button>
+                  <Button
+                    className={`${style.chart_type_btn} `}
+                    onClick={() => setFilterData(2)}
+                    style={{ marginLeft: '10px' }}
+                  >
+                    Imports
+                  </Button>
+                  <Button
+                    className={`${style.chart_type_btn} `}
+                    style={{ marginLeft: '10px' }}
+                    onClick={() => setFilterData(1)}
+                  >
+                    Exports
                   </Button>
                 </div>
                 {chartType === 1 && (
@@ -191,12 +232,14 @@ export default function GDCEOverview() {
                       format_imports_exports(
                         data?.gdceByCountryReport?.importsEachYear,
                         data?.gdceByCountryReport?.exportsEachYear,
+                        filterData,
                       ).options
                     }
                     series={
                       format_imports_exports(
                         data?.gdceByCountryReport?.importsEachYear,
                         data?.gdceByCountryReport?.exportsEachYear,
+                        filterData,
                       ).series
                     }
                     type="line"
@@ -209,12 +252,14 @@ export default function GDCEOverview() {
                       format_imports_exports_bar(
                         data?.gdceByCountryReport?.importsEachYear,
                         data?.gdceByCountryReport?.exportsEachYear,
+                        filterData,
                       ).options
                     }
                     series={
                       format_imports_exports_bar(
                         data?.gdceByCountryReport?.importsEachYear,
                         data?.gdceByCountryReport?.exportsEachYear,
+                        filterData,
                       ).series
                     }
                     type="bar"
@@ -224,58 +269,33 @@ export default function GDCEOverview() {
               </Card.Body>
             </Card>
           </Col>
-          <Col md={6} xl={6}>
+          <Col md={5} xl={5}>
             <Row className="mt-2">
-              <Col md={6}>
-                <p className={`${style.txt_p} card-text`}>Export</p>
+              <Col md={filterData === 1 ? 12 : filterData === 2 ? 0 : 6}>
+                <p className={`${style.txt_p} card-text`} style={{ display: filterData === 2 ? 'none' : undefined }}>
+                  Export
+                </p>
               </Col>
 
-              <Col md={6}>
-                <p className={`${style.txt_p} card-text`}>Import</p>
+              <Col md={filterData === 1 ? 0 : filterData === 2 ? 12 : 6}>
+                <p className={`${style.txt_p} card-text`} style={{ display: filterData === 1 ? 'none' : undefined }}>
+                  Import
+                </p>
               </Col>
             </Row>
             <Row>
-              <Col md={6}>
+              <Col
+                md={filterData === 1 ? 12 : filterData === 2 ? 0 : 6}
+                style={{ display: filterData === 2 ? 'none' : undefined }}
+              >
                 <Card className={style.card}>
                   <Card.Body>
-                    <p className={`${style.txt_p} card-text`}>Volume:</p>
-                    <span className={style.txt_country__vol}>${data?.gdceByCountryReport?.exports_total}</span>
+                    <p className={`${style.txt_p} card-text`}>Total Value:</p>
+                    <span className={style.txt_country__vol}>{data?.gdceByCountryReport?.exports_total}$</span>
                     {/* <ReactApexChart options={area.options} series={area.series} /> */}
                   </Card.Body>
                 </Card>
-              </Col>
-              <Col md={6}>
-                <Card className={style.card}>
-                  <Card.Body>
-                    <p className={`${style.txt_p} card-text`}>Volume:</p>
-                    <span className={style.txt_country__vol}>${data?.gdceByCountryReport?.imports_total}</span>
-                    {/* <ReactApexChart options={balanceData.options} series={balanceData.series} /> */}
-                  </Card.Body>
-                </Card>
-              </Col>
-            </Row>
-            <Row>
-              <Col md={6}>
-                <Card className={style.card}>
-                  <Card.Body>
-                    <p className={`${style.txt_p} card-text`}>Quantity:</p>
-                    <span className={style.txt_country__vol}>{data?.gdceByCountryReport?.exports_total_qty}</span>
-                    {/* <ReactApexChart options={area.options} series={area.series} /> */}
-                  </Card.Body>
-                </Card>
-              </Col>
-              <Col md={6}>
-                <Card className={style.card}>
-                  <Card.Body>
-                    <p className={`${style.txt_p} card-text`}>Quantity:</p>
-                    <span className={style.txt_country__vol}>{data?.gdceByCountryReport?.imports_total_qty}</span>
-                    {/* <ReactApexChart options={balanceData.options} series={balanceData.series} /> */}
-                  </Card.Body>
-                </Card>
-              </Col>
-            </Row>
-            <Row>
-              <Col md={6}>
+
                 <Card className={style.card}>
                   <Card.Body>
                     <p className={`${style.txt_p} card-text`}>Total Products:</p>
@@ -284,12 +304,53 @@ export default function GDCEOverview() {
                   </Card.Body>
                 </Card>
               </Col>
-              <Col md={6}>
+              <Col
+                md={filterData === 1 ? 0 : filterData === 2 ? 12 : 6}
+                style={{ display: filterData === 1 ? 'none' : undefined }}
+              >
+                <Card className={style.card}>
+                  <Card.Body>
+                    <p className={`${style.txt_p} card-text`}>Total Value:</p>
+                    <span className={style.txt_country__vol}>{data?.gdceByCountryReport?.imports_total}$</span>
+                    {/* <ReactApexChart options={balanceData.options} series={balanceData.series} /> */}
+                  </Card.Body>
+                </Card>
+
                 <Card className={style.card}>
                   <Card.Body>
                     <p className={`${style.txt_p} card-text`}>Total Products:</p>
                     <span className={style.txt_country__vol}>{data?.gdceByCountryReport?.importsList?.length}</span>
                     {/* <ReactApexChart options={balanceData.options} series={balanceData.series} /> */}
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+
+            <Row>
+              <hr className="mt-3 mb-3" style={{ backgroundColor: '#fefefe', height: '3px' }} />
+            </Row>
+
+            <Row>
+              <Col md={6}>
+                <p className={`${style.txt_p} card-text`}>Overall</p>
+              </Col>
+            </Row>
+
+            <Row>
+              <Col md={6}>
+                <Card className={style.card}>
+                  <Card.Body>
+                    <p className={`${style.txt_p} card-text`}>Balances:</p>
+                    <span className={style.txt_country__vol}>{data?.gdceByCountryReport?.balance_total}$</span>
+                  </Card.Body>
+                </Card>
+              </Col>
+
+              <Col md={6}>
+                <Card className={style.card}>
+                  <Card.Body>
+                    <p className={`${style.txt_p} card-text`}>Volumes:</p>
+                    <span className={style.txt_country__vol}>{data?.gdceByCountryReport?.volume_total}$</span>
                   </Card.Body>
                 </Card>
               </Col>

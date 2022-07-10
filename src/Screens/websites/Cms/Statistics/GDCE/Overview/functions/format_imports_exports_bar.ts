@@ -1,4 +1,4 @@
-export function format_imports_exports_bar(importsEachYear?: any, exportsEachYear?: any) {
+export function format_imports_exports_bar(importsEachYear?: any, exportsEachYear?: any, filterData?: number) {
   const data: any = {
     series: [],
     options: {
@@ -13,7 +13,7 @@ export function format_imports_exports_bar(importsEachYear?: any, exportsEachYea
           endingShape: 'rounded',
         },
       },
-      colors: ['#FAB117', '#008FFB'],
+      colors: [],
       dataLabels: {
         enabled: false,
       },
@@ -45,27 +45,63 @@ export function format_imports_exports_bar(importsEachYear?: any, exportsEachYea
     },
   };
 
-  let export_data: any = {
-    name: 'exports',
-    data: [],
-  };
+  if (filterData === 1) {
+    let export_data: any = {
+      name: 'exports',
+      data: [],
+    };
 
-  let import_data: any = {
-    name: 'imports',
-    data: [],
-  };
+    for (const x of exportsEachYear) {
+      export_data.data.push(x.value);
 
-  for (const x of exportsEachYear) {
-    export_data.data.push(x.value);
+      data.options.xaxis.categories.push(x.year);
+    }
 
-    data.options.xaxis.categories.push(x.year);
+    data.options.colors = ['#FAB117'];
+
+    data.series = [export_data];
+
+    return data;
+  } else if (filterData === 2) {
+    let import_data: any = {
+      name: 'imports',
+      data: [],
+    };
+
+    for (const y of importsEachYear) {
+      import_data.data.push(y.value);
+    }
+
+    data.options.colors = ['#008FFB'];
+
+    data.series = [import_data];
+
+    return data;
+  } else {
+    let export_data: any = {
+      name: 'exports',
+      data: [],
+    };
+
+    let import_data: any = {
+      name: 'imports',
+      data: [],
+    };
+
+    for (const x of exportsEachYear) {
+      export_data.data.push(x.value);
+
+      data.options.xaxis.categories.push(x.year);
+    }
+
+    for (const y of importsEachYear) {
+      import_data.data.push(y.value);
+    }
+
+    data.options.colors = ['#FAB117', '#008FFB'];
+
+    data.series.push(export_data, import_data);
+
+    return data;
   }
-
-  for (const y of importsEachYear) {
-    import_data.data.push(y.value);
-  }
-
-  data.series.push(export_data, import_data);
-
-  return data;
 }
