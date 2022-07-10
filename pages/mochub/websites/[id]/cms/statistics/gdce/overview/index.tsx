@@ -8,6 +8,27 @@ import { area, balanceData, lineData } from '../../../../../../../../src/libs/da
 import { MapChart } from '../../../../../../../../src/components/ApexCharts/MapChart';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useQuery, gql } from '@apollo/client';
+import GDCELoadingScreen from '../../../../../../../../src/Screens/websites/Cms/Statistics/GDCE/GDCELoadingScreen';
+
+const QUERY = gql`
+  query importExportTopTenCountryVolume {
+    importExportTopTenCountryVolume {
+      data {
+        imports {
+          country
+          country_name
+          volume
+        }
+        exports {
+          country
+          country_name
+          volume
+        }
+      }
+    }
+  }
+`;
 
 const ReactApexChart: any = dynamic(() => import('react-apexcharts'), { ssr: false });
 
@@ -39,6 +60,32 @@ const options: any = {
 export default function Overview() {
   const [state, setState]: any = useState({});
   const router = useRouter();
+
+  const { data, loading } = useQuery(QUERY);
+
+  if (!data || loading) return <GDCELoadingScreen />;
+
+  function valueFormat(num: any) {
+    num = num.toString().replace(/[^0-9.]/g, '');
+    if (num < 1000) {
+      return num;
+    }
+    let si = [
+      { v: 1e3, s: 'K' },
+      { v: 1e6, s: 'M' },
+      { v: 1e9, s: 'B' },
+      { v: 1e12, s: 'T' },
+      { v: 1e15, s: 'P' },
+      { v: 1e18, s: 'E' },
+    ];
+    let index;
+    for (index = si.length - 1; index > 0; index--) {
+      if (num >= si[index].v) {
+        break;
+      }
+    }
+    return (num / si[index].v).toFixed(2).replace(/\.0+$|(\.[0-9]*[1-9])0+$/, '$1') + si[index].s;
+  }
 
   return (
     <div className={style.main}>
@@ -86,61 +133,23 @@ export default function Overview() {
               <Card.Body>
                 <div className="d-flex">
                   <OwlCarousel className="owl-carousel owl-theme" {...options}>
-                    <Card className={style.card_country}>
-                      <Card.Body>
-                        <div>
-                          <Image
-                            src="/images/cambodia.svg"
-                            width={50}
-                            height={50}
-                            alt="flag"
-                            className={style.flag_img}
-                          />
-                          <h3 className={style.country_name}>Cambodia</h3>
-                          <span className={style.txt_vol}>
-                            Vol: <span>30K</span>
-                          </span>
-                        </div>
-                      </Card.Body>
-                    </Card>
-                    <Card className={style.card_country}>
-                      <Card.Body>
-                        <Card.Text>
-                          <div>
-                            <Image
-                              src="/images/Thai.png"
-                              width={50}
-                              height={50}
-                              alt="flag"
-                              className={style.flag_img}
-                            />
-                            <h3 className={style.country_name}>Thailand</h3>
-                            <span className={style.txt_vol}>
-                              Vol: <span>30K</span>
-                            </span>
-                          </div>
-                        </Card.Text>
-                      </Card.Body>
-                    </Card>
-                    <Card className={style.card_country}>
-                      <Card.Body>
-                        <Card.Text>
-                          <div>
-                            <Image
-                              src="/images/China.png"
-                              width={50}
-                              height={50}
-                              alt="flag"
-                              className={style.flag_img}
-                            />
-                            <h3 className={style.country_name}>China</h3>
-                            <span className={style.txt_vol}>
-                              Vol: <span>30K</span>
-                            </span>
-                          </div>
-                        </Card.Text>
-                      </Card.Body>
-                    </Card>
+                    {data?.importExportTopTenCountryVolume?.data?.exports?.map((item: any, idx: number) => {
+                      return (
+                        <Card className={style.card_country} key={item?.country}>
+                          <Card.Body>
+                            <div>
+                              <p className={style.txt_vol}>
+                                Rank: <span>{idx + 1}</span>
+                              </p>
+                              <h3 className={style.country_name}>{item?.country_name}</h3>
+                              <p className={style.txt_vol}>
+                                Total: <span>{valueFormat(Number(item?.volume))}</span>
+                              </p>
+                            </div>
+                          </Card.Body>
+                        </Card>
+                      );
+                    })}
                   </OwlCarousel>
                 </div>
               </Card.Body>
@@ -152,61 +161,23 @@ export default function Overview() {
               <Card.Body>
                 <div className="d-flex">
                   <OwlCarousel className="owl-carousel owl-theme" {...options}>
-                    <Card className={style.card_country}>
-                      <Card.Body>
-                        <div>
-                          <Image
-                            src="/images/cambodia.svg"
-                            width={50}
-                            height={50}
-                            alt="flag"
-                            className={style.flag_img}
-                          />
-                          <h3 className={style.country_name}>Cambodia</h3>
-                          <span className={style.txt_vol}>
-                            Vol: <span>30K</span>
-                          </span>
-                        </div>
-                      </Card.Body>
-                    </Card>
-                    <Card className={style.card_country}>
-                      <Card.Body>
-                        <Card.Text>
-                          <div>
-                            <Image
-                              src="/images/Thai.png"
-                              width={50}
-                              height={50}
-                              alt="flag"
-                              className={style.flag_img}
-                            />
-                            <h3 className={style.country_name}>Thailand</h3>
-                            <span className={style.txt_vol}>
-                              Vol: <span>30K</span>
-                            </span>
-                          </div>
-                        </Card.Text>
-                      </Card.Body>
-                    </Card>
-                    <Card className={style.card_country}>
-                      <Card.Body>
-                        <Card.Text>
-                          <div>
-                            <Image
-                              src="/images/China.png"
-                              width={50}
-                              height={50}
-                              alt="flag"
-                              className={style.flag_img}
-                            />
-                            <h3 className={style.country_name}>China</h3>
-                            <span className={style.txt_vol}>
-                              Vol: <span>30K</span>
-                            </span>
-                          </div>
-                        </Card.Text>
-                      </Card.Body>
-                    </Card>
+                    {data?.importExportTopTenCountryVolume?.data?.imports?.map((item: any, idx: number) => {
+                      return (
+                        <Card className={style.card_country} key={item?.country}>
+                          <Card.Body>
+                            <div>
+                              <p className={`${style.country_rank}`}>
+                                Rank: <span>{idx + 1}</span>
+                              </p>
+                              <h3 className={style.country_name}>{item?.country_name}</h3>
+                              <p className={style.txt_vol}>
+                                Total: <span>{valueFormat(Number(item?.volume))}</span>
+                              </p>
+                            </div>
+                          </Card.Body>
+                        </Card>
+                      );
+                    })}
                   </OwlCarousel>
                 </div>
               </Card.Body>

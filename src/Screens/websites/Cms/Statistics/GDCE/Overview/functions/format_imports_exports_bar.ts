@@ -1,4 +1,15 @@
 export function format_imports_exports_bar(importsEachYear?: any, exportsEachYear?: any, filterData?: number) {
+  function commafy(num: string) {
+    var str = num.split('.');
+    if (str[0].length >= 5) {
+      str[0] = str[0].replace(/(\d)(?=(\d{3})+$)/g, '$1,');
+    }
+    if (str[1] && str[1].length >= 5) {
+      str[1] = str[1].replace(/(\d{3})/g, '$1 ');
+    }
+    return str.join('.');
+  }
+
   const data: any = {
     series: [],
     options: {
@@ -17,6 +28,9 @@ export function format_imports_exports_bar(importsEachYear?: any, exportsEachYea
       dataLabels: {
         enabled: false,
       },
+      legend: {
+        show: false,
+      },
       stroke: {
         show: true,
         width: 2,
@@ -25,18 +39,14 @@ export function format_imports_exports_bar(importsEachYear?: any, exportsEachYea
       xaxis: {
         categories: [],
       },
-      yaxis: {
-        title: {
-          text: '$ (thousands)',
-        },
-      },
+      yaxis: {},
       fill: {
         opacity: 1,
       },
       tooltip: {
         y: {
           formatter: function(val: any) {
-            return '$ ' + val + ' thousands';
+            return '$ ' + commafy(val.toString());
           },
         },
         enabled: true,

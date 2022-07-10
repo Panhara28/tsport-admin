@@ -76,8 +76,8 @@
         // @media screen and (max-width: 478px) {
         // }
         position: relative;
-        max-width: 100%;
-        width: 20em;
+        width: 100%;
+        // width: 20em;
         height: 10em;
         margin: 0.5em 1.3em;
         color: #000;
@@ -99,13 +99,17 @@
         }
 
         .country_name {
-          margin-top: -2em;
-          font-size: 1.3em;
-          padding-left: 3.5em;
+          font-size: 1.4em;
           color: #000;
-          line-height: 2.5;
           font-weight: 700;
         }
+
+        .country_rank {
+          font-size: 1.2em;
+          font-weight: 700;
+          margin-bottom: 14px;
+        }
+
         @media screen and (max-width: 767px) {
           .country_name {
             font-size: 0.5em;
@@ -113,7 +117,7 @@
         }
 
         .txt_vol {
-          font-size: 1.5em;
+          font-size: 1.3em;
           font-weight: 700;
         }
       }

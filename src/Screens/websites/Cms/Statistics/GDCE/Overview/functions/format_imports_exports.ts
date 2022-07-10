@@ -1,4 +1,15 @@
 export function format_imports_exports(importsEachYear?: any, exportsEachYear?: any, filterData?: number) {
+  function commafy(num: string) {
+    var str = num.split('.');
+    if (str[0].length >= 5) {
+      str[0] = str[0].replace(/(\d)(?=(\d{3})+$)/g, '$1,');
+    }
+    if (str[1] && str[1].length >= 5) {
+      str[1] = str[1].replace(/(\d{3})/g, '$1 ');
+    }
+    return str.join('.');
+  }
+
   const data: any = {
     series: [],
     options: {
@@ -19,11 +30,16 @@ export function format_imports_exports(importsEachYear?: any, exportsEachYear?: 
       },
       colors: [],
       tooltip: {
+        y: {
+          formatter: function(val: any) {
+            return '$ ' + commafy(val.toString());
+          },
+        },
         enabled: true,
         theme: 'dark',
       },
       dataLabels: {
-        enabled: true,
+        enabled: false,
         style: {
           colors: ['black', 'black'],
         },
@@ -42,9 +58,9 @@ export function format_imports_exports(importsEachYear?: any, exportsEachYear?: 
           opacity: 0.5,
         },
       },
-      markers: {
-        size: 1,
-      },
+      // markers: {
+      //   size: 1,
+      // },
       xaxis: {
         categories: [],
         title: {
@@ -55,13 +71,6 @@ export function format_imports_exports(importsEachYear?: any, exportsEachYear?: 
         title: {
           text: 'Value USD',
         },
-      },
-      legend: {
-        position: 'top',
-        horizontalAlign: 'right',
-        floating: true,
-        offsetY: -25,
-        offsetX: -5,
       },
     },
   };
