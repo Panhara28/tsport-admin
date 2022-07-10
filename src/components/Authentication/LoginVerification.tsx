@@ -5,6 +5,7 @@ import AuthContext from './AuthContext';
 import { LoginScreen } from './LoginScreen';
 import Notiflix from 'notiflix';
 import { TokenContext } from './TokenContext';
+import GDCELoadingScreen from '../../Screens/websites/Cms/Statistics/GDCE/GDCELoadingScreen';
 
 const ME = gql`
   query adminMe($websiteId: Int, $clientToken: String) {
@@ -55,7 +56,7 @@ export default function LoginVerification(props: PropsWithChildren<{}>) {
     },
   });
 
-  if (loading || !data) return <div>Loading...</div>;
+  if (loading || !data) return <GDCELoadingScreen />;
 
   if (data === undefined || data.adminMe === null) {
     return <LoginScreen />;

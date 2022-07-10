@@ -97,6 +97,17 @@ export default function GDCEOverview() {
 
   if (!data || loading) return <GDCELoadingScreen />;
 
+  function commafy(num: string) {
+    var str = num.split('.');
+    if (str[0].length >= 5) {
+      str[0] = str[0].replace(/(\d)(?=(\d{3})+$)/g, '$1,');
+    }
+    if (str[1] && str[1].length >= 5) {
+      str[1] = str[1].replace(/(\d{3})/g, '$1 ');
+    }
+    return str.join('.');
+  }
+
   const countriesOptions = data.statCountriesList.data.map((x: any) => {
     return {
       label: x?.country_name,
@@ -270,6 +281,46 @@ export default function GDCEOverview() {
             </Card>
           </Col>
           <Col md={5} xl={5}>
+            <Row>
+              <Col md={6}>
+                <p className={`${style.txt_p} card-text`}>Overall</p>
+              </Col>
+            </Row>
+
+            <Row>
+              <Col md={6}>
+                <Card className={style.card}>
+                  <Card.Body>
+                    <p className={`${style.txt_p} card-text`}>Balances:</p>
+                    <span className={style.txt_country__vol}>
+                      {Number(data?.gdceByCountryReport?.balance_total) < 0
+                        ? commafy((data?.gdceByCountryReport?.balance_total * -1).toString())
+                        : commafy(data?.gdceByCountryReport?.balance_total?.toString())}
+                      $
+                    </span>
+                  </Card.Body>
+                </Card>
+              </Col>
+
+              <Col md={6}>
+                <Card className={style.card}>
+                  <Card.Body>
+                    <p className={`${style.txt_p} card-text`}>Volumes:</p>
+                    <span className={style.txt_country__vol}>
+                      {Number(data?.gdceByCountryReport?.volume_total) < 0
+                        ? commafy((data?.gdceByCountryReport?.volume_total * -1).toString())
+                        : commafy(data?.gdceByCountryReport?.volume_total?.toString())}
+                      $
+                    </span>
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+
+            <Row>
+              <hr className="mt-3 mb-3" style={{ backgroundColor: '#fefefe', height: '3px', margin: '0px 15px' }} />
+            </Row>
+
             <Row className="mt-2">
               <Col md={filterData === 1 ? 12 : filterData === 2 ? 0 : 6}>
                 <p className={`${style.txt_p} card-text`} style={{ display: filterData === 2 ? 'none' : undefined }}>
@@ -291,7 +342,9 @@ export default function GDCEOverview() {
                 <Card className={style.card}>
                   <Card.Body>
                     <p className={`${style.txt_p} card-text`}>Total Value:</p>
-                    <span className={style.txt_country__vol}>{data?.gdceByCountryReport?.exports_total}$</span>
+                    <span className={style.txt_country__vol}>
+                      {commafy(data?.gdceByCountryReport?.exports_total?.toString())}$
+                    </span>
                     {/* <ReactApexChart options={area.options} series={area.series} /> */}
                   </Card.Body>
                 </Card>
@@ -311,7 +364,9 @@ export default function GDCEOverview() {
                 <Card className={style.card}>
                   <Card.Body>
                     <p className={`${style.txt_p} card-text`}>Total Value:</p>
-                    <span className={style.txt_country__vol}>{data?.gdceByCountryReport?.imports_total}$</span>
+                    <span className={style.txt_country__vol}>
+                      {commafy(data?.gdceByCountryReport?.imports_total?.toString())}$
+                    </span>
                     {/* <ReactApexChart options={balanceData.options} series={balanceData.series} /> */}
                   </Card.Body>
                 </Card>
@@ -321,36 +376,6 @@ export default function GDCEOverview() {
                     <p className={`${style.txt_p} card-text`}>Total Products:</p>
                     <span className={style.txt_country__vol}>{data?.gdceByCountryReport?.importsList?.length}</span>
                     {/* <ReactApexChart options={balanceData.options} series={balanceData.series} /> */}
-                  </Card.Body>
-                </Card>
-              </Col>
-            </Row>
-
-            <Row>
-              <hr className="mt-3 mb-3" style={{ backgroundColor: '#fefefe', height: '3px' }} />
-            </Row>
-
-            <Row>
-              <Col md={6}>
-                <p className={`${style.txt_p} card-text`}>Overall</p>
-              </Col>
-            </Row>
-
-            <Row>
-              <Col md={6}>
-                <Card className={style.card}>
-                  <Card.Body>
-                    <p className={`${style.txt_p} card-text`}>Balances:</p>
-                    <span className={style.txt_country__vol}>{data?.gdceByCountryReport?.balance_total}$</span>
-                  </Card.Body>
-                </Card>
-              </Col>
-
-              <Col md={6}>
-                <Card className={style.card}>
-                  <Card.Body>
-                    <p className={`${style.txt_p} card-text`}>Volumes:</p>
-                    <span className={style.txt_country__vol}>{data?.gdceByCountryReport?.volume_total}$</span>
                   </Card.Body>
                 </Card>
               </Col>
