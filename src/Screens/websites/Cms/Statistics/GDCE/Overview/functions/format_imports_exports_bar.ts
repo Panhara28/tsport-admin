@@ -79,6 +79,8 @@ export function format_imports_exports_bar(importsEachYear?: any, exportsEachYea
     };
 
     for (const y of importsEachYear) {
+      data.options.xaxis.categories.push(y.year);
+
       import_data.data.push(y.value);
     }
 
