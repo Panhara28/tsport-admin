@@ -99,6 +99,8 @@ export function format_imports_exports(importsEachYear?: any, exportsEachYear?: 
     };
 
     for (const y of importsEachYear) {
+      data.options.xaxis.categories.push(y.year);
+
       import_data.data.push(y.value);
     }
 
