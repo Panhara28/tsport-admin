@@ -1,6 +1,6 @@
 export function format_imports_exports_bar(importsEachYear?: any, exportsEachYear?: any, filterData?: number) {
   function commafy(num: string) {
-    var str = num.split('.');
+    let str = num.split('.');
     if (str[0].length >= 5) {
       str[0] = str[0].replace(/(\d)(?=(\d{3})+$)/g, '$1,');
     }

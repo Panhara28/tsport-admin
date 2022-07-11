@@ -8,6 +8,7 @@ const nextConfig = {
       's2.moc.gov.kh',
       's1.moc.gov.kh',
       'uat-space.uat.moc.gov.kh',
+      '21accec-space.moc.gov.kh',
     ],
   },
 };
