@@ -161,7 +161,8 @@ export default function GDCEOverview() {
             <Card className={style.card}>
               <Card.Body>
                 <Row>
-                  <Col md={3}>
+                  <Col md={4}>
+                    <Label>Select Country</Label>
                     <Select
                       options={countriesOptions}
                       placeholder="Select Country"
@@ -169,9 +170,7 @@ export default function GDCEOverview() {
                       onChange={data => setCountries(data)}
                     />
                   </Col>
-                </Row>
-                <Row className="mt-2">
-                  <Col md={3}>
+                  <Col md={4}>
                     <Label>Start Date</Label>
                     <DatePicker
                       selected={startDate}
@@ -182,7 +181,7 @@ export default function GDCEOverview() {
                       dateFormat="yyyy"
                     />
                   </Col>
-                  <Col md={3}>
+                  <Col md={4}>
                     <Label>End Date</Label>
                     <DatePicker
                       selected={endDate}
@@ -312,10 +311,10 @@ export default function GDCEOverview() {
                       <div>
                         <p className={`${style.txt_p} card-text`}>Balances</p>
                         <span className={style.txt_country__vol}>
+                          $
                           {Number(data?.gdceByCountryReport?.balance_total) < 0
                             ? commafy((data?.gdceByCountryReport?.balance_total * -1).toString())
                             : commafy(data?.gdceByCountryReport?.balance_total?.toString())}
-                          $
                         </span>
                       </div>
                     </div>
@@ -350,10 +349,10 @@ export default function GDCEOverview() {
                       Volumes
                     </p>
                     <span className={style.txt_country__vol}>
+                      $
                       {Number(data?.gdceByCountryReport?.volume_total) < 0
                         ? commafy((data?.gdceByCountryReport?.volume_total * -1).toString())
                         : commafy(data?.gdceByCountryReport?.volume_total?.toString())}
-                      $
                     </span>
                   </Card.Body>
                 </Card>
@@ -408,7 +407,7 @@ export default function GDCEOverview() {
                       Total Value
                     </p>
                     <span className={style.txt_country__vol}>
-                      {commafy(data?.gdceByCountryReport?.exports_total?.toString())}$
+                      ${commafy(data?.gdceByCountryReport?.exports_total?.toString())}
                     </span>
                     {/* <ReactApexChart options={area.options} series={area.series} /> */}
                   </Card.Body>
@@ -474,7 +473,7 @@ export default function GDCEOverview() {
                       Total Value
                     </p>
                     <span className={style.txt_country__vol}>
-                      {commafy(data?.gdceByCountryReport?.imports_total?.toString())}$
+                      ${commafy(data?.gdceByCountryReport?.imports_total?.toString())}
                     </span>
                     {/* <ReactApexChart options={balanceData.options} series={balanceData.series} /> */}
                   </Card.Body>
@@ -497,7 +496,6 @@ export default function GDCEOverview() {
                         className={style.flag_image}
                       />
                     </div>
-                    <div></div>
                     <p
                       className={`${style.txt_p} ca
                     <div>
