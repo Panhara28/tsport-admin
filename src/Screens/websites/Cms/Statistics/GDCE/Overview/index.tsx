@@ -98,7 +98,7 @@ export default function GDCEOverview() {
   if (!data || loading) return <GDCELoadingScreen />;
 
   function commafy(num: string) {
-    var str = num.split('.');
+    let str = num.split('.');
     if (str[0].length >= 5) {
       str[0] = str[0].replace(/(\d)(?=(\d{3})+$)/g, '$1,');
     }

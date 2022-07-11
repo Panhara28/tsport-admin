@@ -147,6 +147,7 @@ export default function Overview() {
                                 alt="menu-icon"
                                 layout={'fixed'}
                                 className={style.flag_image}
+                                priority={true}
                               />
                             </div>
                             <p className={style.txt_vol}>
@@ -184,6 +185,7 @@ export default function Overview() {
                                   alt="menu-icon"
                                   layout={'fixed'}
                                   className={style.flag_image}
+                                  priority={true}
                                 />
                               </div>
                               <p className={`${style.country_rank}`}>
