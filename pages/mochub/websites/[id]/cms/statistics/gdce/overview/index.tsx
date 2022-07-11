@@ -141,7 +141,7 @@ export default function Overview() {
                           <Card.Body>
                             <div className={style.flag_content}>
                               <Image
-                                src="/images/cambodia.png"
+                                src={item?.country_image ? item.country_image : '/images/flag-holder.png'}
                                 width={50}
                                 height={50}
                                 alt="menu-icon"
@@ -176,6 +176,16 @@ export default function Overview() {
                         <Card className={style.card_country} key={item?.country}>
                           <Card.Body>
                             <div>
+                              <div className={style.flag_content}>
+                                <Image
+                                  src={item?.country_image ? item.country_image : '/images/flag-holder.png'}
+                                  width={50}
+                                  height={50}
+                                  alt="menu-icon"
+                                  layout={'fixed'}
+                                  className={style.flag_image}
+                                />
+                              </div>
                               <p className={`${style.country_rank}`}>
                                 Rank: <span>{idx + 1}</span>
                               </p>
