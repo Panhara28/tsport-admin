@@ -86,12 +86,15 @@
       background-color: #283046;
       box-shadow: 0 4px 24px 0 rgb(34 41 47 / 24%);
       border: none;
+      justify-content: center;
       label,
       span {
         color: #fff;
       }
 
-      justify-content: center;
+      .card_content {
+        margin: 1em;
+      }
       .flag_content {
         .flag_image {
           max-width: 100%;
@@ -148,9 +151,11 @@
       }
 
       .txt_country__vol {
+        width: 100%;
         font-size: 2em;
-        line-height: 0;
+        line-height: 1.2;
         font-weight: 700;
+        overflow: hidden;
       }
       .map_chart {
         margin-top: 1.5em;
