@@ -19,11 +19,13 @@ const QUERY = gql`
           country
           country_name
           volume
+          country_image
         }
         exports {
           country
           country_name
           volume
+          country_image
         }
       }
     }
