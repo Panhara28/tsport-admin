@@ -44,7 +44,7 @@ export const CountryListScreen = () => {
       websiteId: Number(router.query.id),
       pagination: {
         page: 1,
-        size: 10,
+        size: 300,
       },
     },
   });

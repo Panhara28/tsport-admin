@@ -56,6 +56,8 @@ const QUERY = gql`
         hs_code
         quantity
       }
+      country_name
+      country_image
     }
 
     statCountriesList {
@@ -98,7 +100,7 @@ export default function GDCEOverview() {
   if (!data || loading) return <GDCELoadingScreen />;
 
   function commafy(num: string) {
-    var str = num.split('.');
+    let str = num.split('.');
     if (str[0].length >= 5) {
       str[0] = str[0].replace(/(\d)(?=(\d{3})+$)/g, '$1,');
     }
@@ -291,13 +293,32 @@ export default function GDCEOverview() {
               <Col md={6}>
                 <Card className={style.card}>
                   <Card.Body>
-                    <p className={`${style.txt_p} card-text`}>Balances:</p>
-                    <span className={style.txt_country__vol}>
-                      {Number(data?.gdceByCountryReport?.balance_total) < 0
-                        ? commafy((data?.gdceByCountryReport?.balance_total * -1).toString())
-                        : commafy(data?.gdceByCountryReport?.balance_total?.toString())}
-                      $
-                    </span>
+                    <div>
+                      <div className={style.flag_content}>
+                        <Image
+                          src={
+                            data?.gdceByCountryReport?.country_image
+                              ? data?.gdceByCountryReport?.country_image
+                              : '/images/flag-holder.png'
+                          }
+                          width={65}
+                          height={65}
+                          alt="menu-icon"
+                          layout={'fixed'}
+                          priority={true}
+                          className={style.flag_image}
+                        />
+                      </div>
+                      <div>
+                        <p className={`${style.txt_p} card-text`}>Balances</p>
+                        <span className={style.txt_country__vol}>
+                          {Number(data?.gdceByCountryReport?.balance_total) < 0
+                            ? commafy((data?.gdceByCountryReport?.balance_total * -1).toString())
+                            : commafy(data?.gdceByCountryReport?.balance_total?.toString())}
+                          $
+                        </span>
+                      </div>
+                    </div>
                   </Card.Body>
                 </Card>
               </Col>
@@ -305,7 +326,29 @@ export default function GDCEOverview() {
               <Col md={6}>
                 <Card className={style.card}>
                   <Card.Body>
-                    <p className={`${style.txt_p} card-text`}>Volumes:</p>
+                    <div className={style.flag_content}>
+                      <Image
+                        src={
+                          data?.gdceByCountryReport?.country_image
+                            ? data?.gdceByCountryReport?.country_image
+                            : '/images/flag-holder.png'
+                        }
+                        width={65}
+                        height={65}
+                        alt="menu-icon"
+                        layout={'fixed'}
+                        priority={true}
+                        className={style.flag_image}
+                      />
+                    </div>
+                    <div></div>
+                    <p
+                      className={`${style.txt_p} ca
+                    <div>
+                    </div>rd-text`}
+                    >
+                      Volumes
+                    </p>
                     <span className={style.txt_country__vol}>
                       {Number(data?.gdceByCountryReport?.volume_total) < 0
                         ? commafy((data?.gdceByCountryReport?.volume_total * -1).toString())
@@ -341,7 +384,29 @@ export default function GDCEOverview() {
               >
                 <Card className={style.card}>
                   <Card.Body>
-                    <p className={`${style.txt_p} card-text`}>Total Value:</p>
+                    <div className={style.flag_content}>
+                      <Image
+                        src={
+                          data?.gdceByCountryReport?.country_image
+                            ? data?.gdceByCountryReport?.country_image
+                            : '/images/flag-holder.png'
+                        }
+                        width={65}
+                        height={65}
+                        alt="menu-icon"
+                        layout={'fixed'}
+                        priority={true}
+                        className={style.flag_image}
+                      />
+                    </div>
+                    <div></div>
+                    <p
+                      className={`${style.txt_p} ca
+                    <div>
+                    </div>rd-text`}
+                    >
+                      Total Value
+                    </p>
                     <span className={style.txt_country__vol}>
                       {commafy(data?.gdceByCountryReport?.exports_total?.toString())}$
                     </span>
@@ -351,7 +416,29 @@ export default function GDCEOverview() {
 
                 <Card className={style.card}>
                   <Card.Body>
-                    <p className={`${style.txt_p} card-text`}>Total Products:</p>
+                    <div className={style.flag_content}>
+                      <Image
+                        src={
+                          data?.gdceByCountryReport?.country_image
+                            ? data?.gdceByCountryReport?.country_image
+                            : '/images/flag-holder.png'
+                        }
+                        width={65}
+                        height={65}
+                        alt="menu-icon"
+                        layout={'fixed'}
+                        priority={true}
+                        className={style.flag_image}
+                      />
+                    </div>
+                    <div></div>
+                    <p
+                      className={`${style.txt_p} ca
+                    <div>
+                    </div>rd-text`}
+                    >
+                      Total Products
+                    </p>
                     <span className={style.txt_country__vol}>{data?.gdceByCountryReport?.exportsList?.length}</span>
                     {/* <ReactApexChart options={area.options} series={area.series} /> */}
                   </Card.Body>
@@ -363,7 +450,29 @@ export default function GDCEOverview() {
               >
                 <Card className={style.card}>
                   <Card.Body>
-                    <p className={`${style.txt_p} card-text`}>Total Value:</p>
+                    <div className={style.flag_content}>
+                      <Image
+                        src={
+                          data?.gdceByCountryReport?.country_image
+                            ? data?.gdceByCountryReport?.country_image
+                            : '/images/flag-holder.png'
+                        }
+                        width={65}
+                        height={65}
+                        alt="menu-icon"
+                        layout={'fixed'}
+                        priority={true}
+                        className={style.flag_image}
+                      />
+                    </div>
+                    <div></div>
+                    <p
+                      className={`${style.txt_p} ca
+                    <div>
+                    </div>rd-text`}
+                    >
+                      Total Value
+                    </p>
                     <span className={style.txt_country__vol}>
                       {commafy(data?.gdceByCountryReport?.imports_total?.toString())}$
                     </span>
@@ -373,7 +482,29 @@ export default function GDCEOverview() {
 
                 <Card className={style.card}>
                   <Card.Body>
-                    <p className={`${style.txt_p} card-text`}>Total Products:</p>
+                    <div className={style.flag_content}>
+                      <Image
+                        src={
+                          data?.gdceByCountryReport?.country_image
+                            ? data?.gdceByCountryReport?.country_image
+                            : '/images/flag-holder.png'
+                        }
+                        width={65}
+                        height={65}
+                        alt="menu-icon"
+                        layout={'fixed'}
+                        priority={true}
+                        className={style.flag_image}
+                      />
+                    </div>
+                    <div></div>
+                    <p
+                      className={`${style.txt_p} ca
+                    <div>
+                    </div>rd-text`}
+                    >
+                      Total Products
+                    </p>
                     <span className={style.txt_country__vol}>{data?.gdceByCountryReport?.importsList?.length}</span>
                     {/* <ReactApexChart options={balanceData.options} series={balanceData.series} /> */}
                   </Card.Body>
