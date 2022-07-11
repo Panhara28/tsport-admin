@@ -49,6 +49,7 @@
         }
         &.active {
           background-color: #030201;
+          color: #fff;
           a {
             color: #fff;
           }
@@ -56,6 +57,7 @@
         }
         &:hover {
           background-color: #000;
+          color: #fff;
           a {
             color: #fff;
           }
@@ -87,15 +89,13 @@
           box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
         }
 
-        .flag_img {
-          position: absolute !important;
+        .flag_image {
+          position: absolute;
+          max-width: 100%;
+          right: 0;
           // top: 1em !important;
           // left: 1em !important;
-          max-width: 100% !important;
-          width: 4em !important;
-          height: 4em !important;
           border-radius: 50%;
-          float: left;
         }
 
         .country_name {

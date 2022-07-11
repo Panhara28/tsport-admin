@@ -141,6 +141,15 @@ export default function Overview() {
                               <p className={style.txt_vol}>
                                 Rank: <span>{idx + 1}</span>
                               </p>
+                              <div className={style.flag_image}>
+                                <Image
+                                  src="/images/cambodia.png"
+                                  width={376}
+                                  height={120}
+                                  alt="menu-icon"
+                                  layout={'responsive'}
+                                />
+                              </div>
                               <h3 className={style.country_name}>{item?.country_name}</h3>
                               <p className={style.txt_vol}>
                                 Total: <span>{valueFormat(Number(item?.volume))}</span>
