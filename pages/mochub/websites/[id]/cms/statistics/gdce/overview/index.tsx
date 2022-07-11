@@ -139,15 +139,23 @@ export default function Overview() {
                       return (
                         <Card className={style.card_country} key={item?.country}>
                           <Card.Body>
-                            <div>
-                              <p className={style.txt_vol}>
-                                Rank: <span>{idx + 1}</span>
-                              </p>
-                              <h3 className={style.country_name}>{item?.country_name}</h3>
-                              <p className={style.txt_vol}>
-                                Total: <span>{valueFormat(Number(item?.volume))}</span>
-                              </p>
+                            <div className={style.flag_content}>
+                              <Image
+                                src={item?.country_image ? item.country_image : '/images/flag-holder.png'}
+                                width={50}
+                                height={50}
+                                alt="menu-icon"
+                                layout={'fixed'}
+                                className={style.flag_image}
+                              />
                             </div>
+                            <p className={style.txt_vol}>
+                              Rank: <span>{idx + 1}</span>
+                            </p>
+                            <h3 className={style.country_name}>{item?.country_name}</h3>
+                            <p className={style.txt_vol}>
+                              Total: <span>{valueFormat(Number(item?.volume))}</span>
+                            </p>
                           </Card.Body>
                         </Card>
                       );
@@ -168,6 +176,16 @@ export default function Overview() {
                         <Card className={style.card_country} key={item?.country}>
                           <Card.Body>
                             <div>
+                              <div className={style.flag_content}>
+                                <Image
+                                  src={item?.country_image ? item.country_image : '/images/flag-holder.png'}
+                                  width={50}
+                                  height={50}
+                                  alt="menu-icon"
+                                  layout={'fixed'}
+                                  className={style.flag_image}
+                                />
+                              </div>
                               <p className={`${style.country_rank}`}>
                                 Rank: <span>{idx + 1}</span>
                               </p>

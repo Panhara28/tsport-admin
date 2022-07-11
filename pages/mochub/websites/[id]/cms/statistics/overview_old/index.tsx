@@ -33,6 +33,112 @@ const options: any = {
     },
   },
 };
+
+const automationServices = [
+  {
+    title: "Cambodia",
+    link: "https://www.businessregistration.moc.gov.kh",
+    image: "cambodia.png",
+    vol: "300k",
+  },
+  {
+    title: "Thailand",
+    link: "https://www.businessregistration.moc.gov.kh",
+    image: "Thai.png",
+    vol: "300k",
+  },
+  {
+    title: "China",
+    link: "https://www.businessregistration.moc.gov.kh",
+    image: "china.png",
+    vol: "300k",
+  },
+  {
+    title: "Laos",
+    link: "https://www.businessregistration.moc.gov.kh",
+    image: "laos.png",
+    vol: "600k",
+  },
+  {
+    title: "United State",
+    link: "https://www.businessregistration.moc.gov.kh",
+    image: "united-states.png",
+    vol: "30M",
+  },
+  {
+    title: "Brunei",
+    link: "https://www.businessregistration.moc.gov.kh",
+    image: "brunei-darussalam.png",
+    vol: "254k",
+  },
+  {
+    title: "Cambodia",
+    link: "https://www.businessregistration.moc.gov.kh",
+    image: "cambodia.png",
+    vol: "300k",
+  },
+  {
+    title: "Thailand",
+    link: "https://www.businessregistration.moc.gov.kh",
+    image: "Thai.png",
+    vol: "300k",
+  },
+  {
+    title: "China",
+    link: "https://www.businessregistration.moc.gov.kh",
+    image: "china.png",
+    vol: "300k",
+  },
+  {
+    title: "Laos",
+    link: "https://www.businessregistration.moc.gov.kh",
+    image: "laos.png",
+    vol: "600k",
+  },
+  {
+    title: "United State",
+    link: "https://www.businessregistration.moc.gov.kh",
+    image: "united-states.png",
+    vol: "30M",
+  },
+  {
+    title: "Brunei",
+    link: "https://www.businessregistration.moc.gov.kh",
+    image: "brunei-darussalam.png",
+    vol: "254k",
+  },
+];
+
+type Props = {
+  title?: string;
+  link?: string;
+  image?: string;
+  vol?: string;
+};
+
+function AutomationItem({ title, image, link, vol }: Props) {
+  return (
+    <a rel="noreferrer" href={link} target="_blank">
+      <Card className={style.card_country}>
+        <Card.Body>
+          <div>
+            <Image
+              src={`/images/${image}`}
+              width={50}
+              height={50}
+              alt="flag"
+            />
+            <h3 className={style.country_name}>{title}</h3>
+            <span className={style.txt_vol}>
+              Vol: <span>{vol}</span>
+            </span>
+          </div>
+        </Card.Body>
+      </Card>
+    </a>
+  );
+}
+
 export default function Overview() {
   const [state, setState]: any = useState({});
 
@@ -63,139 +169,53 @@ export default function Overview() {
           </Col>
         </Row>
         <Row>
-          <Col md={6} xl={6}>
+          <Col md={6} xl={6}> 
             <h4 className={style.txt_title}>Export</h4>
             <Card className={style.card}>
               <Card.Body>
                 <div className="d-flex">
                   <OwlCarousel className="owl-carousel owl-theme" {...options}>
-                    <Card className={style.card_country}>
-                      <Card.Body>
-                        <div>
-                          <Image
-                            src="/images/cambodia.svg"
-                            width={50}
-                            height={50}
-                            alt="flag"
-                            className={style.flag_img}
-                          />
-                          <h3 className={style.country_name}>Cambodia</h3>
-                          <span className={style.txt_vol}>
-                            Vol: <span>30K</span>
-                          </span>
-                        </div>
-                      </Card.Body>
-                    </Card>
-                    <Card className={style.card_country}>
-                      <Card.Body>
-                        <Card.Text>
-                          <div>
-                            <Image
-                              src="/images/Thai.png"
-                              width={50}
-                              height={50}
-                              alt="flag"
-                              className={style.flag_img}
-                            />
-                            <h3 className={style.country_name}>Thailand</h3>
-                            <span className={style.txt_vol}>
-                              Vol: <span>30K</span>
-                            </span>
-                          </div>
-                        </Card.Text>
-                      </Card.Body>
-                    </Card>
-                    <Card className={style.card_country}>
-                      <Card.Body>
-                        <Card.Text>
-                          <div>
-                            <Image
-                              src="/images/China.png"
-                              width={50}
-                              height={50}
-                              alt="flag"
-                              className={style.flag_img}
-                            />
-                            <h3 className={style.country_name}>China</h3>
-                            <span className={style.txt_vol}>
-                              Vol: <span>30K</span>
-                            </span>
-                          </div>
-                        </Card.Text>
-                      </Card.Body>
-                    </Card>
+                  {automationServices.map((item: any, key: number) => {
+                    return (
+                      <AutomationItem
+                        key={key}
+                        title={item.title}
+                        link={item.link}
+                        image={item.image}
+                        vol={item.vol}
+                      />
+                    );
+                  })}
                   </OwlCarousel>
                 </div>
               </Card.Body>
             </Card>
           </Col>
-          <Col md={6} xl={6}>
-            <h4 className={style.txt_title}>Import</h4>
+          
+          <Col md={6} xl={6}> 
+            <h4 className={style.txt_title}>Export</h4>
             <Card className={style.card}>
               <Card.Body>
                 <div className="d-flex">
                   <OwlCarousel className="owl-carousel owl-theme" {...options}>
-                    <Card className={style.card_country}>
-                      <Card.Body>
-                        <div>
-                          <Image
-                            src="/images/cambodia.svg"
-                            width={50}
-                            height={50}
-                            alt="flag"
-                            className={style.flag_img}
-                          />
-                          <h3 className={style.country_name}>Cambodia</h3>
-                          <span className={style.txt_vol}>
-                            Vol: <span>30K</span>
-                          </span>
-                        </div>
-                      </Card.Body>
-                    </Card>
-                    <Card className={style.card_country}>
-                      <Card.Body>
-                        <Card.Text>
-                          <div>
-                            <Image
-                              src="/images/Thai.png"
-                              width={50}
-                              height={50}
-                              alt="flag"
-                              className={style.flag_img}
-                            />
-                            <h3 className={style.country_name}>Thailand</h3>
-                            <span className={style.txt_vol}>
-                              Vol: <span>30K</span>
-                            </span>
-                          </div>
-                        </Card.Text>
-                      </Card.Body>
-                    </Card>
-                    <Card className={style.card_country}>
-                      <Card.Body>
-                        <Card.Text>
-                          <div>
-                            <Image
-                              src="/images/China.png"
-                              width={50}
-                              height={50}
-                              alt="flag"
-                              className={style.flag_img}
-                            />
-                            <h3 className={style.country_name}>China</h3>
-                            <span className={style.txt_vol}>
-                              Vol: <span>30K</span>
-                            </span>
-                          </div>
-                        </Card.Text>
-                      </Card.Body>
-                    </Card>
+                  {automationServices.map((item: any, key: number) => {
+                    return (
+                      <AutomationItem
+                        key={key}
+                        title={item.title}
+                        link={item.link}
+                        image={item.image}
+                        vol={item.vol}
+                      />
+                    );
+                  })}
                   </OwlCarousel>
                 </div>
               </Card.Body>
             </Card>
-          </Col>
+          </Col>          
         </Row>
+
         <Row>
           <Col md={6} xl={6}>
             <Row>
@@ -292,7 +312,6 @@ export default function Overview() {
           </Col>
         </Row>
       </div>
-      <Container></Container>
     </div>
   );
 }
