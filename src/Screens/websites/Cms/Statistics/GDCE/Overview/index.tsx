@@ -56,6 +56,8 @@ const QUERY = gql`
         hs_code
         quantity
       }
+      country_name
+      country_image
     }
 
     statCountriesList {
@@ -291,6 +293,23 @@ export default function GDCEOverview() {
               <Col md={6}>
                 <Card className={style.card}>
                   <Card.Body>
+                    <div>
+                      <div className={style.flag_content}>
+                        <Image
+                          src={
+                            data?.gdceByCountryReport?.country_image
+                              ? data?.gdceByCountryReport?.country_image
+                              : '/images/flag-holder.png'
+                          }
+                          width={65}
+                          height={65}
+                          alt="menu-icon"
+                          layout={'fixed'}
+                          priority={true}
+                          className={style.flag_image}
+                        />
+                      </div>
+                    </div>
                     <p className={`${style.txt_p} card-text`}>Balances:</p>
                     <span className={style.txt_country__vol}>
                       {Number(data?.gdceByCountryReport?.balance_total) < 0
@@ -305,6 +324,21 @@ export default function GDCEOverview() {
               <Col md={6}>
                 <Card className={style.card}>
                   <Card.Body>
+                    <div className={style.flag_content}>
+                      <Image
+                        src={
+                          data?.gdceByCountryReport?.country_image
+                            ? data?.gdceByCountryReport?.country_image
+                            : '/images/flag-holder.png'
+                        }
+                        width={65}
+                        height={65}
+                        alt="menu-icon"
+                        layout={'fixed'}
+                        priority={true}
+                        className={style.flag_image}
+                      />
+                    </div>
                     <p className={`${style.txt_p} card-text`}>Volumes:</p>
                     <span className={style.txt_country__vol}>
                       {Number(data?.gdceByCountryReport?.volume_total) < 0
@@ -341,6 +375,21 @@ export default function GDCEOverview() {
               >
                 <Card className={style.card}>
                   <Card.Body>
+                    <div className={style.flag_content}>
+                      <Image
+                        src={
+                          data?.gdceByCountryReport?.country_image
+                            ? data?.gdceByCountryReport?.country_image
+                            : '/images/flag-holder.png'
+                        }
+                        width={65}
+                        height={65}
+                        alt="menu-icon"
+                        layout={'fixed'}
+                        priority={true}
+                        className={style.flag_image}
+                      />
+                    </div>
                     <p className={`${style.txt_p} card-text`}>Total Value:</p>
                     <span className={style.txt_country__vol}>
                       {commafy(data?.gdceByCountryReport?.exports_total?.toString())}$
@@ -351,6 +400,21 @@ export default function GDCEOverview() {
 
                 <Card className={style.card}>
                   <Card.Body>
+                    <div className={style.flag_content}>
+                      <Image
+                        src={
+                          data?.gdceByCountryReport?.country_image
+                            ? data?.gdceByCountryReport?.country_image
+                            : '/images/flag-holder.png'
+                        }
+                        width={65}
+                        height={65}
+                        alt="menu-icon"
+                        layout={'fixed'}
+                        priority={true}
+                        className={style.flag_image}
+                      />
+                    </div>
                     <p className={`${style.txt_p} card-text`}>Total Products:</p>
                     <span className={style.txt_country__vol}>{data?.gdceByCountryReport?.exportsList?.length}</span>
                     {/* <ReactApexChart options={area.options} series={area.series} /> */}
@@ -363,6 +427,21 @@ export default function GDCEOverview() {
               >
                 <Card className={style.card}>
                   <Card.Body>
+                    <div className={style.flag_content}>
+                      <Image
+                        src={
+                          data?.gdceByCountryReport?.country_image
+                            ? data?.gdceByCountryReport?.country_image
+                            : '/images/flag-holder.png'
+                        }
+                        width={65}
+                        height={65}
+                        alt="menu-icon"
+                        layout={'fixed'}
+                        priority={true}
+                        className={style.flag_image}
+                      />
+                    </div>
                     <p className={`${style.txt_p} card-text`}>Total Value:</p>
                     <span className={style.txt_country__vol}>
                       {commafy(data?.gdceByCountryReport?.imports_total?.toString())}$
@@ -373,6 +452,21 @@ export default function GDCEOverview() {
 
                 <Card className={style.card}>
                   <Card.Body>
+                    <div className={style.flag_content}>
+                      <Image
+                        src={
+                          data?.gdceByCountryReport?.country_image
+                            ? data?.gdceByCountryReport?.country_image
+                            : '/images/flag-holder.png'
+                        }
+                        width={65}
+                        height={65}
+                        alt="menu-icon"
+                        layout={'fixed'}
+                        priority={true}
+                        className={style.flag_image}
+                      />
+                    </div>
                     <p className={`${style.txt_p} card-text`}>Total Products:</p>
                     <span className={style.txt_country__vol}>{data?.gdceByCountryReport?.importsList?.length}</span>
                     {/* <ReactApexChart options={balanceData.options} series={balanceData.series} /> */}
