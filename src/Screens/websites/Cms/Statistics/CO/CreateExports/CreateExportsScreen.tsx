@@ -10,10 +10,18 @@ import { Breadcrumb } from '../../../../../../components/Common/Breadcrumb';
 import { Card, CardBody, CardTitle, Label } from 'reactstrap';
 import AuthContext from '../../../../../../components/Authentication/AuthContext';
 import { ReadFileExcel } from '../../../../../../hook/readExcelFile';
+import toastr from 'toastr';
+import 'toastr/build/toastr.min.css';
 
 export const CREATE_EXPORTS = gql`
   mutation createCOExports($input: COExportsInput) {
     createCOExports(input: $input)
+  }
+`;
+
+export const DELETE_EXPORTS = gql`
+  mutation deleteCOExports($coExportId: Int!) {
+    deleteCOExports(coExportId: $coExportId)
   }
 `;
 
@@ -61,10 +69,27 @@ export function CreateExportsScreen() {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  const [deleteExports] = useMutation(DELETE_EXPORTS);
+
   const [createExports, { loading }] = useMutation(CREATE_EXPORTS, {
     onCompleted: data => {
       if (data) {
         setIsSuccess(true);
+      }
+    },
+    onError: err => {
+      if (err?.message) {
+        const error = JSON?.parse(err?.message);
+
+        toastr.error(error?.message);
+
+        setUploadFile(undefined);
+
+        deleteExports({
+          variables: {
+            coExportId: Number(error?.coExportId),
+          },
+        });
       }
     },
   });
