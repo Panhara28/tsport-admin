@@ -10,10 +10,18 @@ import { Breadcrumb } from '../../../../../../components/Common/Breadcrumb';
 import { Card, CardBody, CardTitle, Label } from 'reactstrap';
 import AuthContext from '../../../../../../components/Authentication/AuthContext';
 import { ReadFileExcel } from '../../../../../../hook/readExcelFile';
+import toastr from 'toastr';
+import 'toastr/build/toastr.min.css';
 
 export const CREATE_IMPORTS = gql`
   mutation createImports($input: ImportsInput) {
     createImports(input: $input)
+  }
+`;
+
+export const DELETE_IMPORTS = gql`
+  mutation deleteImports($importId: Int!) {
+    deleteImports(importId: $importId)
   }
 `;
 
@@ -61,10 +69,27 @@ export function CreateImportsScreen() {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  const [deleteImports] = useMutation(DELETE_IMPORTS);
+
   const [createImports, { loading }] = useMutation(CREATE_IMPORTS, {
     onCompleted: data => {
       if (data) {
         setIsSuccess(true);
+      }
+    },
+    onError: err => {
+      if (err?.message) {
+        const error = JSON?.parse(err?.message);
+
+        toastr.error(error?.message);
+
+        setUploadFile(undefined);
+
+        deleteImports({
+          variables: {
+            importId: Number(error?.importId),
+          },
+        });
       }
     },
   });
