@@ -12,22 +12,6 @@ const ME = gql`
       id
       fullname
       profilePicture
-      contact_city_or_province
-      contact_district
-      contact_commune
-      contact_village
-      email
-      phoneNumber
-      plugins {
-        name
-        slug
-        access {
-          read
-          create
-          edit
-          remove
-        }
-      }
       roleName
       roleId
     }

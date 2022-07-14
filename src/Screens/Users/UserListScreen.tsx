@@ -80,7 +80,7 @@ export function UserListScreen() {
                             <td>{item.id}</td>
                             <td>{item.fullname}</td>
                             <td>
-                              <Link href="#">
+                              <Link href={`/hr/users/${item.id}/edit`}>
                                 <a style={{ marginLeft: 10 }}>Edit</a>
                               </Link>
                               <Link href="#">
