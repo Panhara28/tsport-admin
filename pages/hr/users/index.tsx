@@ -1,5 +1,5 @@
-import { SettingScreen } from '../../../src/Screens/Settings/SettingScreen';
+import { UserListScreen } from '../../../src/Screens/Users/UserListScreen';
 
-export default function SettingPage() {
-  return <></>;
+export default function UserListPage() {
+  return <UserListScreen />;
 }
