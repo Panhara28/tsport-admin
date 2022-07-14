@@ -1,63 +1,20 @@
-import { gql, useQuery } from "@apollo/client";
 import type { NextPage } from "next";
-import { Container, Row } from "reactstrap";
+import { Container } from "reactstrap";
 import { Breadcrumb } from "../src/components/Common/Breadcrumb";
 import Layout from "../src/components/VerticalLayout";
-import Notiflix from "notiflix";
-import { useRouter } from "next/router";
-import Link from "next/link";
-import { Card } from "../src/components/Card";
 import { setting } from "../src/libs/settings";
 
-const QUERY = gql`
-  query applicationByUserList {
-    applicationByUserList {
-      data {
-        id
-        name
-      }
-    }
-  }
-`;
 
 const Home: NextPage = () => {
-  const router = useRouter();
-  const { data, loading } = useQuery(QUERY, {
-    onError: () => {
-      router.push("/");
-      Notiflix.Notify.failure(
-        "Please contact your site administrator to grant access for you!"
-      );
-    },
-  });
-  if (loading) return <div>Loading...</div>;
-
   return (
     <Layout>
       <div className="page-content">
         <Container fluid>
           <Breadcrumb
             title={setting.title}
-            breadcrumbItem="Your websites"
+            breadcrumbItem="Dashboard"
           />
           <hr />
-
-          <Row>
-            {data?.applicationByUserList?.data?.map((item: any) => {
-              return (
-                <>
-                  <Link href={`/mochub/websites/${item.id}`}>
-                    <a
-                      className="col-md-3"
-                      style={{ textDecoration: "none", color: "#000" }}
-                    >
-                      <Card name={item.name} fullname="Chhouk Tit Panhara" />
-                    </a>
-                  </Link>
-                </>
-              );
-            })}
-          </Row>
         </Container>
       </div>
     </Layout>

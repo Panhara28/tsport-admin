@@ -1,4 +1,4 @@
-import { faCogs, faGlobeAsia, faImages } from '@fortawesome/free-solid-svg-icons';
+import { faCog, faCogs, faGlobeAsia, faHome, faImages, faInfo, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -6,45 +6,59 @@ import React, { useContext } from 'react';
 import { ProSidebar, Menu, MenuItem, SubMenu, SidebarHeader, SidebarFooter, SidebarContent } from 'react-pro-sidebar';
 import AuthContext from '../Authentication/AuthContext';
 
-export const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }: any) => {
+export const Aside = ({ collapsed, rtl, toggled, handleToggleSidebar }: any) => {
   const router = useRouter();
   const { me } = useContext(AuthContext);
 
-  let renderSideBarNavigation: JSX.Element;
   let checkUserHavePermissionForSiteBar;
 
   if (me.roleName == 'Site Administrator') {
     checkUserHavePermissionForSiteBar = (
       <>
-        <Menu iconShape="circle">
-          <Link href={`/mochub/websites/${router.query.id}/settings`}>
-            <a>
-              <MenuItem icon={<FontAwesomeIcon icon={faCogs} />}>Settings</MenuItem>
-            </a>
-          </Link>
-        </Menu>
-      </>
-    );
-  }
-
-  if (router.query.id) {
-    renderSideBarNavigation = (
-      <>
         <Menu subMenuBullets={true} iconShape="circle">
-          <SubMenu title="Media" icon={<FontAwesomeIcon icon={faImages} />}>
-            <Link href={`/mochub/websites/${router.query.id}/cms/media/create`}>
+          <SubMenu title="Departments" icon={<FontAwesomeIcon icon={faHome} />}>
+            <Link href={``}>
               <a>
-                <MenuItem>Add media</MenuItem>
-              </a>
-            </Link>
-            <Link href={`/mochub/websites/${router.query.id}/cms/media`}>
-              <a>
-                <MenuItem>Library</MenuItem>
+                <MenuItem>All</MenuItem>
               </a>
             </Link>
           </SubMenu>
         </Menu>
-        {checkUserHavePermissionForSiteBar}
+        <Menu subMenuBullets={true} iconShape="circle">
+          <SubMenu title="Officer management" icon={<FontAwesomeIcon icon={faUsers} />}>
+            <Link href={``}>
+              <a>
+                <MenuItem>Add Officer</MenuItem>
+              </a>
+            </Link>
+            <Link href={``}>
+              <a>
+                <MenuItem>Officer List</MenuItem>
+              </a>
+            </Link>
+          </SubMenu>
+        </Menu>
+        <Menu iconShape="circle">
+          <Link href="/">
+            <a>
+              <MenuItem icon={<FontAwesomeIcon icon={faInfo} />}>Report</MenuItem>
+            </a>
+          </Link>
+        </Menu>
+        <Menu subMenuBullets={true} iconShape="circle">
+          <SubMenu title="Settings" icon={<FontAwesomeIcon icon={faCog} />}>
+            <Link href={``}>
+              <a>
+                <MenuItem>Add user</MenuItem>
+              </a>
+            </Link>
+            <Link href={``}>
+              <a>
+                <MenuItem>User list</MenuItem>
+              </a>
+            </Link>
+          </SubMenu>
+        </Menu>
       </>
     );
   }
@@ -79,15 +93,11 @@ export const Aside = ({ image, collapsed, rtl, toggled, handleToggleSidebar }: a
         <Menu iconShape="circle">
           <Link href="/">
             <a>
-              <MenuItem icon={<FontAwesomeIcon icon={faGlobeAsia} />}>Your websites</MenuItem>
+              <MenuItem icon={<FontAwesomeIcon icon={faGlobeAsia} />}>Dashboard</MenuItem>
             </a>
           </Link>
         </Menu>
-        {me.plugins
-          .filter((x: any) => x.name === 'Media')
-          .map((item: any) => {
-            return <>{renderSideBarNavigation}</>;
-          })}
+        {checkUserHavePermissionForSiteBar}
       </SidebarContent>
       <SidebarFooter>
         <div
