@@ -2,47 +2,43 @@ import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import React, { ReactNode } from 'react';
-import { useRouter } from 'next/router';
 
 type Props = {
   total: number;
   size: number;
   currentPage: number;
-  limit?: 10;
+  limit: number;
   variableName?: string;
-  isMedia?: boolean;
 };
 
-export function CustomPagination(props: Props) {
-  const variableName: any = props.variableName ? props.variableName : 'page';
-  let start: any;
+export function CustomPagination({ currentPage, size, total, limit = 10, variableName }: Props) {
+  const variableN = variableName ? variableName : 'page';
+  let start;
   let pages: ReactNode[] = [];
-  const router = useRouter();
 
-  const search = new URLSearchParams(process?.browser ? window?.location?.search : []);
-  search.delete(variableName);
+  const search = new URLSearchParams(process.browser ? window.location.search : '');
 
-  const current_url: string = router.asPath.split('?')[0];
-  const base: string = current_url + '?' + (search.toString() !== '' ? search.toString() + '&' : '');
+  search.delete(variableN);
+  const base: string = '?' + (search.toString() !== '' ? search.toString() + '&' : '');
 
-  let pagesPage = Math.ceil(props.total / props.limit!);
+  let pagesPage = Math.ceil(total / limit);
 
   let middle = pagesPage < 5 ? pagesPage : 5;
 
   start = 1;
 
-  if (props.currentPage > 3) {
-    start = props.currentPage - 2;
+  if (currentPage > 3) {
+    start = currentPage - 2;
 
-    if (props.currentPage + 2 > pagesPage) {
-      middle = 5 - (props.currentPage + 2 - pagesPage);
+    if (currentPage + 2 > pagesPage) {
+      middle = 5 - (currentPage + 2 - pagesPage);
     }
   }
 
   //Construct Previous Page
   pages.push(
-    <li key="_previous" className={'paginate_button page-item ' + (props.currentPage === 1 ? 'disabled' : '')}>
-      <Link href={base + variableName + '=' + (props.currentPage - 1)}>
+    <li key="_previous" className={'paginate_button page-item ' + (currentPage === 1 ? 'disabled' : '')}>
+      <Link href={base + variableName + '=' + (currentPage - 1)}>
         <a className={`page-link`}>
           <FontAwesomeIcon icon={faAngleLeft} style={{ fontSize: 15 }} />
         </a>
@@ -50,7 +46,7 @@ export function CustomPagination(props: Props) {
     </li>,
   );
 
-  if (props.currentPage > 5) {
+  if (currentPage > 5) {
     pages.push(
       <li key="_first-dot" className={'paginate_button page-item disabled d-none d-sm-block'}>
         <Link href="#">
@@ -67,11 +63,11 @@ export function CustomPagination(props: Props) {
         key={i + start}
         className={
           'paginate_button page-item ' +
-          (props.currentPage === i + start ? '' : 'd-none d-sm-block') +
-          (i + start === props.currentPage ? 'disabled' : '')
+          (currentPage === i + start ? '' : 'd-none d-sm-block') +
+          (i + start === currentPage ? 'disabled' : '')
         }
       >
-        <Link href={base + variableName + '=' + (i + start) + `${props.isMedia ? '&type=media' : ''}`}>
+        <Link href={base + variableName + '=' + (i + start)}>
           <a className={`page-link`}>{i + start}</a>
         </Link>
       </li>,
@@ -79,11 +75,8 @@ export function CustomPagination(props: Props) {
   }
 
   pages.push(
-    <li
-      key="next"
-      className={'paginate_button page-item ' + (props.currentPage * props.limit! >= props.total ? 'disabled' : '')}
-    >
-      <Link href={base + variableName + '=' + (props.currentPage + 1)}>
+    <li key="next" className={'paginate_button page-item ' + (currentPage * limit >= total ? 'disabled' : '')}>
+      <Link href={base + variableName + '=' + (currentPage + 1)}>
         <a className="page-link">
           <FontAwesomeIcon icon={faAngleRight} style={{ fontSize: 15 }} />
         </a>
@@ -95,7 +88,8 @@ export function CustomPagination(props: Props) {
     <div className="row mb-5">
       <div className="col-12">
         <div className="text-center">
-          Showing {props.size} to of {props.total} entries
+          showing {limit ? (currentPage - 1) * limit + 1 : (currentPage - 1) * 10 + 1} to{' '}
+          {(currentPage - 1) * limit + size} of {total} entries
         </div>
       </div>
 
