@@ -99,9 +99,9 @@ export function UserListScreen() {
                   </Table>
                 </CardBody>
                 <CustomPagination
-                  total={data?.adminUserList.pagination.total}
-                  currentPage={data?.adminUserList.pagination.current}
-                  size={data?.adminUserList.pagination.size}
+                  total={data?.adminUserList?.pagination?.total}
+                  currentPage={data?.adminUserList?.pagination?.current}
+                  size={data?.adminUserList?.pagination?.size}
                   limit={10}
                 />
               </Card>
