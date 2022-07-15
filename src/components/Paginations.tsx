@@ -11,7 +11,7 @@ type Props = {
   variableName?: string;
 };
 
-export function CustomPagination({ currentPage, size, total, limit = 10, variableName }: Props) {
+export function CustomPagination({ currentPage, size, total, limit, variableName }: Props) {
   const variableN = variableName ? variableName : 'page';
   let start;
   let pages: ReactNode[] = [];
@@ -83,6 +83,10 @@ export function CustomPagination({ currentPage, size, total, limit = 10, variabl
       </Link>
     </li>,
   );
+
+  console.log(currentPage);
+
+  console.log(limit ? (currentPage - 1) * limit + 1 : (currentPage - 1) * 10 + 1);
 
   return (
     <div className="row mb-5">

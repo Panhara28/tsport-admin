@@ -58,7 +58,7 @@ export function SingleUpload({ setImage, image, width, height }: Props) {
             backgroundColor: 'unset',
             flexDirection: 'row',
             position: 'absolute',
-            top: 20,
+            top: 45,
             right: 20,
             zIndex: 999,
           }}
@@ -70,7 +70,7 @@ export function SingleUpload({ setImage, image, width, height }: Props) {
         </div>
         <div>
           {image ? (
-            <Image src={parseImageUrl(image, '500x500')} alt="" layout="responsive" width={130} height={130} />
+            <Image src={parseImageUrl(image, '800x570')} alt="" layout="responsive" width={150} height={150} />
           ) : (
             undefined
           )}
@@ -83,8 +83,8 @@ export function SingleUpload({ setImage, image, width, height }: Props) {
     <>
       <div
         style={{
-          width: `${width}`,
-          height: `${height}`,
+          width: `${width}px`,
+          height: `${height}px`,
           borderStyle: 'dotted',
           borderWidth: 1,
           borderRadius: 5,

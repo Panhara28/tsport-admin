@@ -3,6 +3,7 @@ import { ApolloError } from '@apollo/client';
 import { useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import { Alert } from 'react-bootstrap';
 
 interface Props {
   error?: ApolloError;
@@ -44,11 +45,16 @@ export default function MutationStatus(props: Props) {
     }
 
     if (props.error) {
+      const errorMessages = props.error.message.split(',');
       return (
-        <div className={`${styles.containermid} ${styles.error}`}>
-          <i className="fas fa-exclamation-triangle"></i>
-          <span>Error: {props.error.message}</span>
-        </div>
+        <Alert variant="danger" onClose={() => setShow(false)} dismissible>
+          <Alert.Heading>Oh snap! You got an error!</Alert.Heading>
+          <ul>
+            {errorMessages.map(item => {
+              return <li>{item}</li>;
+            })}
+          </ul>
+        </Alert>
       );
     }
   }

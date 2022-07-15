@@ -34,7 +34,6 @@ const QUERY = gql`
 
 export function UserListScreen() {
   const router = useRouter();
-  console.log();
 
   const { data, loading } = useQuery(QUERY, {
     variables: {
@@ -44,6 +43,7 @@ export function UserListScreen() {
       },
     },
   });
+
   if (loading || !data) return <div>Loading...</div>;
 
   return (
@@ -106,9 +106,9 @@ export function UserListScreen() {
                   </Table>
                 </CardBody>
                 <CustomPagination
-                  total={data?.adminUserList.pagination.total}
-                  currentPage={data?.adminUserList.pagination.current}
-                  size={data?.adminUserList.pagination.size}
+                  total={data?.adminUserList?.pagination?.total}
+                  currentPage={data?.adminUserList?.pagination?.current}
+                  size={data?.adminUserList?.pagination?.size}
                   limit={10}
                 />
               </Card>
