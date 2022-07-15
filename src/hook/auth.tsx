@@ -5,34 +5,6 @@ import createApolloClient from '../../apollo/client';
 import Swal from 'sweetalert2';
 import { setting } from '../libs/settings';
 
-const ME = gql`
-  query adminMe($websiteId: Int) {
-    adminMe(websiteId: $websiteId) {
-      id
-      fullname
-      profilePicture
-      contact_city_or_province
-      contact_district
-      contact_commune
-      contact_village
-      email
-      phoneNumber
-      plugins {
-        name
-        slug
-        access {
-          read
-          create
-          edit
-          remove
-        }
-      }
-      roleName
-      roleId
-    }
-  }
-`;
-
 const authContext = createContext<{ isSignedIn?: any; signOut?: any; signIn?: any; createApolloClient?: any }>({});
 
 export function AuthProvider({ children }: any) {
@@ -54,14 +26,6 @@ export const useAuth = () => {
 function useProvideAuth(token?: string) {
   const [authToken, setAuthToken] = useState<any>(token);
 
-  const getAuthHeaders = () => {
-    if (!authToken) return null;
-
-    return {
-      authorization: `Bearer ${authToken}`,
-    };
-  };
-
   const signOut = () => {
     setAuthToken(null);
   };
@@ -77,7 +41,7 @@ function useProvideAuth(token?: string) {
       }
     `;
 
-    const result = await client
+    const result: any = await client
       .mutate({
         mutation: LOGIN_MUTATION,
         variables: {

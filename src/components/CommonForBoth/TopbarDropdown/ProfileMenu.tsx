@@ -21,6 +21,7 @@ export const ProfileMenu = () => {
   const [signOut] = useMutation(MUTATION, {
     onCompleted: data => {
       if (data.signOut) {
+        localStorage.removeItem('token');
         window.location.reload();
       }
     },
@@ -34,8 +35,6 @@ export const ProfileMenu = () => {
         token,
       },
     });
-
-    localStorage.removeItem('token');
   };
   // Declare a new state variable, which we'll call "menu"
   const [menu, setMenu] = useState(false);

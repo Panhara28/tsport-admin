@@ -7,8 +7,8 @@ import Notiflix from 'notiflix';
 import { TokenContext } from './TokenContext';
 
 const ME = gql`
-  query adminMe($websiteId: Int, $clientToken: String) {
-    adminMe(websiteId: $websiteId, clientToken: $clientToken) {
+  query adminMe($clientToken: String) {
+    adminMe(clientToken: $clientToken) {
       id
       fullname
       profilePicture
@@ -24,7 +24,6 @@ export default function LoginVerification(props: PropsWithChildren<{}>) {
 
   const { data, loading } = useQuery(ME, {
     variables: {
-      websiteId: Number(router.query.id),
       clientToken: token,
     },
     fetchPolicy: 'no-cache',

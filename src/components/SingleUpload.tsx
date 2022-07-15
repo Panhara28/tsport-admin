@@ -32,7 +32,6 @@ export function SingleUpload({ setImage, image, width, height }: Props) {
 
   const [uploadMutation] = useMutation(UPLOAD, {
     onCompleted: (data: any) => {
-      console.log(data.singleUpload.url);
       setPic(data.singleUpload.url);
       setImage(data.singleUpload.url);
     },

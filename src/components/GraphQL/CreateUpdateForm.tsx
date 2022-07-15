@@ -74,9 +74,9 @@ export function CreateUpdateForm<T, K>(props: {
     onCompleted: id ? onUpdatedCompleted : onCreatedCompleted,
   });
 
-  const updateFunc = (input: T): void => {
+  const updateFunc = (input: any): void => {
     if (id) {
-      mutate({ variables: { id, input }, refetchQueries: [props.refectQuery?.toString() || ''] })
+      mutate({ variables: { id, input: input?.input }, refetchQueries: [props.refectQuery?.toString() || ''] })
         .then()
         .catch(console.error);
     } else {

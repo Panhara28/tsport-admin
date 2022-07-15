@@ -11,6 +11,7 @@ import { Table } from 'reactstrap';
 import { CardBody } from 'reactstrap';
 import { Container } from 'reactstrap';
 import { Breadcrumb } from '../../components/Common/Breadcrumb';
+import Button from '../../components/Form/Button';
 import { CustomPagination } from '../../components/Paginations';
 import Layout from '../../components/VerticalLayout';
 import { setting } from '../../libs/settings';
@@ -80,14 +81,20 @@ export function UserListScreen() {
                             <td>{item.id}</td>
                             <td>{item.fullname}</td>
                             <td>
-                              <Link href={`/hr/users/${item.id}/edit`}>
-                                <a style={{ marginLeft: 10 }}>Edit</a>
+                              <Link href={`/hr/users/${item?.id}/edit`}>
+                                <a style={{ marginLeft: 10 }} className="btn btn-primary">
+                                  Edit
+                                </a>
+                              </Link>
+                              <Link href={`/hr/users/${item?.id}/role`}>
+                                <a style={{ marginLeft: 10 }} className="btn btn-info">
+                                  Assign Role
+                                </a>
                               </Link>
                               <Link href="#">
-                                <a style={{ marginLeft: 10 }}>Assign Role</a>
-                              </Link>
-                              <Link href="#">
-                                <a style={{ marginLeft: 10 }}>Remove</a>
+                                <a style={{ marginLeft: 10 }} className="btn btn-danger">
+                                  Remove
+                                </a>
                               </Link>
                             </td>
                           </tr>

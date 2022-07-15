@@ -165,7 +165,7 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
 };
 
 type Props = {
-  userEditId: number;
+  userEditId?: number;
 };
 
 export function CreateUserScreen({ userEditId }: Props) {
