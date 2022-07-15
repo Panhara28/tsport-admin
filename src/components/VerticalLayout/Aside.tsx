@@ -47,7 +47,7 @@ export const Aside = ({ collapsed, rtl, toggled, handleToggleSidebar }: any) => 
         </Menu>
         <Menu subMenuBullets={true} iconShape="circle">
           <SubMenu title="Settings" icon={<FontAwesomeIcon icon={faCog} />}>
-            <Link href={``}>
+            <Link href={`/hr/users/create`}>
               <a>
                 <MenuItem>Add user</MenuItem>
               </a>

@@ -54,8 +54,6 @@ export function CreateUpdateForm<T, K>(props: {
 
   const onUpdatedCompleted = (data: any): void => {
     if (data?.adminUpdateUser) {
-      toastr.success('Record has already update');
-
       // history.push(props.updateReturned);
     }
   };
@@ -78,11 +76,15 @@ export function CreateUpdateForm<T, K>(props: {
     if (id) {
       mutate({ variables: { id, input }, refetchQueries: [props.refectQuery?.toString() || ''] })
         .then()
-        .catch(console.error);
+        .catch(error => {
+          console.log('error', error);
+        });
     } else {
       mutate({ variables: { input } })
         .then()
-        .catch(console.error);
+        .catch(error => {
+          console.log('error', error.message);
+        });
     }
   };
 

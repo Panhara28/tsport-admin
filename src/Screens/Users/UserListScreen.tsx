@@ -33,7 +33,6 @@ const QUERY = gql`
 
 export function UserListScreen() {
   const router = useRouter();
-  console.log();
 
   const { data, loading } = useQuery(QUERY, {
     variables: {
@@ -43,6 +42,7 @@ export function UserListScreen() {
       },
     },
   });
+
   if (loading || !data) return <div>Loading...</div>;
 
   return (

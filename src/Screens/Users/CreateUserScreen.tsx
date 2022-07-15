@@ -5,11 +5,13 @@ import { Form } from 'react-bootstrap';
 import { Col } from 'reactstrap';
 import { Row } from 'reactstrap';
 import { Card } from 'reactstrap';
+import { Label } from 'reactstrap';
 import { CardBody } from 'reactstrap';
 import { Container } from 'reactstrap';
 import { Breadcrumb } from '../../components/Common/Breadcrumb';
 import XForm from '../../components/Form/XForm';
 import { CreateUpdateForm } from '../../components/GraphQL/CreateUpdateForm';
+import { SingleUpload } from '../../components/SingleUpload';
 import Layout from '../../components/VerticalLayout';
 import { setting } from '../../libs/settings';
 
@@ -31,6 +33,9 @@ const QUERY = gql`
       id
       fullname
       username
+      email
+      profile_picture
+      phoneNumber
     }
   }
 `;
@@ -39,6 +44,10 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
   const [fullname, setFullName] = useState(defaultValues?.fullname || '');
   const [username, setUsername] = useState(defaultValues?.username || '');
   const [password, setPassword] = useState(defaultValues?.password || '');
+  const [email, setEmail] = useState(defaultValues?.email || '');
+  const [phoneNumber, setPhoneNumber] = useState(defaultValues?.phoneNumber || '');
+  const [image, setImage] = useState(defaultValues?.image || '');
+
   const onHandleSubmit = (e: any) => {
     e.preventDefault();
 
@@ -46,24 +55,51 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
       username: username,
       password: password,
       fullname: fullname,
+      email: email,
+      phoneNumber: phoneNumber,
+      profile_picture: image,
     };
 
     update({
       ...input,
     });
+
+    setFullName('');
+    setUsername('');
+    setPassword('');
+    setEmail('');
+    setPhoneNumber('');
+    setImage('');
   };
 
   return (
     <Form onSubmit={onHandleSubmit}>
       <Row>
+        <Col md={3} className="mb-3">
+          <Label>Profile Picture</Label>
+          <SingleUpload image={image} setImage={setImage} width="150" height="150" />
+        </Col>
+      </Row>
+      <Row>
         <h4>Information</h4>
         <hr />
-        <Col md={12}>
+        <Col md={6}>
           <XForm.Text
             label="Fullname"
             value={fullname}
             name="fullname"
             onChange={e => setFullName(e.currentTarget.value)}
+          />
+        </Col>
+        <Col md={6}>
+          <XForm.Text label="Email" value={email} name="email" onChange={e => setEmail(e.currentTarget.value)} />
+        </Col>
+        <Col md={12}>
+          <XForm.Text
+            label="Phone number"
+            value={phoneNumber}
+            name="phoneNumber"
+            onChange={e => setPhoneNumber(e.currentTarget.value)}
           />
         </Col>
       </Row>
@@ -83,6 +119,7 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
             label="Password"
             value={password}
             name="password"
+            type="password"
             onChange={e => setPassword(e.currentTarget.value)}
           />
         </Col>
@@ -101,29 +138,37 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
 
 const FormBodyEdit = ({ update, defaultValues }: any) => {
   const [fullname, setFullName] = useState(defaultValues?.fullname || '');
-  const [username, setUsername] = useState(defaultValues?.username || '');
-  const [password, setPassword] = useState(defaultValues?.password || '');
+  const [email, setEmail] = useState(defaultValues?.email || '');
+  const [phoneNumber, setPhoneNumber] = useState(defaultValues?.phoneNumber || '');
+  const [image, setImage] = useState(defaultValues?.profile_picture || '');
+
   const onHandleSubmit = (e: any) => {
     e.preventDefault();
 
     const x: any = e.target;
 
     const input = {
-      username: username,
-      password: password,
       fullname: fullname,
+      email: email,
+      phoneNumber: phoneNumber,
     };
 
     update({
-      input,
+      ...input,
     });
   };
   return (
     <Form onSubmit={onHandleSubmit}>
       <Row>
+        <Col md={3} className="mb-3">
+          <Label>Profile Picture</Label>
+          <SingleUpload image={image} setImage={setImage} width="150" height="150" />
+        </Col>
+      </Row>
+      <Row>
         <h4>Information</h4>
         <hr />
-        <Col md={12}>
+        <Col md={6}>
           <XForm.Text
             label="Fullname"
             value={fullname}
@@ -131,24 +176,15 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
             onChange={e => setFullName(e.currentTarget.value)}
           />
         </Col>
-      </Row>
-      <Row>
-        <h4>Sercurity</h4>
-        <hr />
         <Col md={6}>
-          <XForm.Text
-            label="Username"
-            value={username}
-            name="username"
-            onChange={e => setUsername(e.currentTarget.value)}
-          />
+          <XForm.Text label="Email" value={email} name="email" onChange={e => setEmail(e.currentTarget.value)} />
         </Col>
-        <Col md={6}>
+        <Col md={12}>
           <XForm.Text
-            label="Password"
-            value={password}
-            name="password"
-            onChange={e => setPassword(e.currentTarget.value)}
+            label="Phone number"
+            value={phoneNumber}
+            name="phoneNumber"
+            onChange={e => setPhoneNumber(e.currentTarget.value)}
           />
         </Col>
       </Row>
@@ -186,7 +222,6 @@ export function CreateUserScreen({ userEditId }: Props) {
                     create={CREATE_MUTATION}
                     query={QUERY}
                     id={Number(userEditId)}
-                    createReturned={`/hr/users/`}
                     refectQuery="adminUserList"
                   />
                 </CardBody>
