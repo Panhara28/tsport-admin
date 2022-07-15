@@ -34,10 +34,12 @@ const QUERY = gql`
 
 export function UserListScreen() {
   const router = useRouter();
+  console.log();
+
   const { data, loading } = useQuery(QUERY, {
     variables: {
       pagination: {
-        page: 1,
+        page: router.query.page ? Number(router.query.page) : 1,
         size: 10,
       },
     },
@@ -107,7 +109,7 @@ export function UserListScreen() {
                   total={data?.adminUserList.pagination.total}
                   currentPage={data?.adminUserList.pagination.current}
                   size={data?.adminUserList.pagination.size}
-                  isMedia={false}
+                  limit={10}
                 />
               </Card>
             </Col>
