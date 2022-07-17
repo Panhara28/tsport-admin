@@ -26,12 +26,12 @@ export const Aside = ({ collapsed, rtl, toggled, handleToggleSidebar }: any) => 
         </Menu>
         <Menu subMenuBullets={true} iconShape="circle">
           <SubMenu title="Officer management" icon={<FontAwesomeIcon icon={faUsers} />}>
-            <Link href={``}>
+            <Link href={`/hr/officers/create`}>
               <a>
                 <MenuItem>Add Officer</MenuItem>
               </a>
             </Link>
-            <Link href={``}>
+            <Link href={`/hr/officers`}>
               <a>
                 <MenuItem>Officer List</MenuItem>
               </a>

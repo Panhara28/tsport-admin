@@ -104,7 +104,7 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
         </Col>
       </Row>
       <Row>
-        <h4>Sercurity</h4>
+        <h4>Security</h4>
         <hr />
         <Col md={6}>
           <XForm.Text
