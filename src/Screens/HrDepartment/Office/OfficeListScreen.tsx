@@ -10,33 +10,23 @@ import { Card } from 'reactstrap';
 import { Table } from 'reactstrap';
 import { CardBody } from 'reactstrap';
 import { Container } from 'reactstrap';
-import { Breadcrumb } from '../../components/Common/Breadcrumb';
-import Button from '../../components/Form/Button';
-import { CustomPagination } from '../../components/Paginations';
-import Layout from '../../components/VerticalLayout';
-import { setting } from '../../libs/settings';
+import { Breadcrumb } from '../../../components/Common/Breadcrumb';
+import { CustomPagination } from '../../../components/Paginations';
+import Layout from '../../../components/VerticalLayout';
+import { setting } from '../../../libs/settings';
 
 const QUERY = gql`
-  query hrEmployeeList($pagination: PaginationInput) {
-    hrEmployeeList(pagination: $pagination) {
-      data {
-        id
-        fullname
-      }
-      pagination {
-        current
-        size
-        total
-      }
-    }
+  query hrDepartmentList($branch_level: Int) {
+    hrDepartmentList(branch_level: $branch_level)
   }
 `;
 
-export function HrEmployeeListScreen() {
+export function OfficeListScreen() {
   const router = useRouter();
 
   const { data, loading } = useQuery(QUERY, {
     variables: {
+      branch_level: 2,
       pagination: {
         page: router.query.page ? Number(router.query.page) : 1,
         size: 10,
@@ -50,12 +40,12 @@ export function HrEmployeeListScreen() {
     <Layout>
       <div className="page-content">
         <Container fluid>
-          <Breadcrumb breadcrumbItem="Officers list" title={setting.title} />
+          <Breadcrumb breadcrumbItem="Office list" title={setting.title} />
           <hr />
           <Row>
             <Col md={9}>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Link href={`/hr/officers/create`}>
+                <Link href={`/hr/offices/create`}>
                   <a className="btn btn-primary mb-3">
                     <FontAwesomeIcon icon={faPlus} /> Add new
                   </a>
@@ -72,32 +62,22 @@ export function HrEmployeeListScreen() {
                     <thead>
                       <tr>
                         <th>ID</th>
-                        <th>Fullname</th>
+                        <th>Name</th>
                         <th>Actions</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {data.hrEmployeeList.data.map((item: any) => {
+                      {data.hrDepartmentList.map((item: any) => {
                         return (
                           <tr key={item.id}>
-                            <td>{item?.id}</td>
-                            <td>{item?.fullname}</td>
+                            <td>{item.id}</td>
+                            <td>{item.name}</td>
                             <td>
-                              <Link href={`/hr/officers/${item?.id}/edit`}>
+                              <Link href={`/hr/offices/${item?.id}/edit`}>
                                 <a style={{ marginLeft: 10 }} className="btn btn-primary">
                                   Edit
                                 </a>
                               </Link>
-                              {/* <Link href={`/hr/users/${item?.id}/role`}>
-                                <a style={{ marginLeft: 10 }} className="btn btn-info">
-                                  Assign Role
-                                </a>
-                              </Link>
-                              <Link href="#">
-                                <a style={{ marginLeft: 10 }} className="btn btn-danger">
-                                  Remove
-                                </a>
-                              </Link> */}
                             </td>
                           </tr>
                         );
@@ -105,12 +85,12 @@ export function HrEmployeeListScreen() {
                     </tbody>
                   </Table>
                 </CardBody>
-                <CustomPagination
+                {/* <CustomPagination
                   total={data?.adminUserList?.pagination?.total}
                   currentPage={data?.adminUserList?.pagination?.current}
                   size={data?.adminUserList?.pagination?.size}
                   limit={10}
-                />
+                /> */}
               </Card>
             </Col>
             <Col md={3}>

@@ -16,8 +16,41 @@ export const Aside = ({ collapsed, rtl, toggled, handleToggleSidebar }: any) => 
     checkUserHavePermissionForSiteBar = (
       <>
         <Menu subMenuBullets={true} iconShape="circle">
+          <SubMenu title="General Departments" icon={<FontAwesomeIcon icon={faHome} />}>
+            <Link href={`/hr/general-departments/create`}>
+              <a>
+                <MenuItem>Create General Department</MenuItem>
+              </a>
+            </Link>
+            <Link href={`/hr/general-departments`}>
+              <a>
+                <MenuItem>All</MenuItem>
+              </a>
+            </Link>
+          </SubMenu>
+        </Menu>
+        <Menu subMenuBullets={true} iconShape="circle">
           <SubMenu title="Departments" icon={<FontAwesomeIcon icon={faHome} />}>
-            <Link href={``}>
+            <Link href={`/hr/departments/create`}>
+              <a>
+                <MenuItem>Create Department</MenuItem>
+              </a>
+            </Link>
+            <Link href={`/hr/departments`}>
+              <a>
+                <MenuItem>All</MenuItem>
+              </a>
+            </Link>
+          </SubMenu>
+        </Menu>
+        <Menu subMenuBullets={true} iconShape="circle">
+          <SubMenu title="Offices" icon={<FontAwesomeIcon icon={faHome} />}>
+            <Link href={`/hr/offices/create`}>
+              <a>
+                <MenuItem>Create Office</MenuItem>
+              </a>
+            </Link>
+            <Link href={`/hr/offices`}>
               <a>
                 <MenuItem>All</MenuItem>
               </a>

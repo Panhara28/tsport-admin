@@ -487,11 +487,11 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
       education_level: educationLevel,
       passport_id: passportId,
       national_id: nationalId,
-      position_level: positionLevel,
+      position_level: Number(positionLevel),
       position_description: positionDescription,
       unit: unit,
-      department_id: departmentId,
-      general_department_id: generalDepartmentId,
+      department_id: Number(departmentId),
+      general_department_id: Number(generalDepartmentId),
       contact_city_or_province: contactCityOrProvince,
       province: province,
       homeNo: homeNo,
@@ -501,11 +501,11 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
       contact_village: contactVillage,
       contactCommune: contactCommune,
       officer_id: officerId,
-      office_id: officeId,
+      office_id: Number(officeId),
     };
 
     update({
-      ...input,
+      input: input,
     });
   };
   return (
@@ -762,12 +762,11 @@ type Props = {
 export function CreateHrEmployeeScreen({ userEditId }: Props) {
   const router = useRouter();
 
-  console.log(userEditId);
   return (
     <Layout>
       <div className="page-content">
         <Container fluid>
-          <Breadcrumb breadcrumbItem="Create Hr Employee" title={setting.title} />
+          <Breadcrumb breadcrumbItem="HR Employee Mutation" title={setting.title} />
           <hr />
           <Row>
             <Col md={9}>
@@ -779,7 +778,7 @@ export function CreateHrEmployeeScreen({ userEditId }: Props) {
                     create={CREATE_MUTATION}
                     query={QUERY}
                     id={Number(userEditId)}
-                    refectQuery="hrEmployee"
+                    refectQuery="hrDepartment"
                   />
                 </CardBody>
               </Card>

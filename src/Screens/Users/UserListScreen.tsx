@@ -79,7 +79,7 @@ export function UserListScreen() {
                     <tbody>
                       {data.adminUserList.data.map((item: any) => {
                         return (
-                          <tr>
+                          <tr key={item.id}>
                             <td>{item.id}</td>
                             <td>{item.fullname}</td>
                             <td>
