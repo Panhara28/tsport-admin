@@ -18,12 +18,12 @@ export default function MutationStatus(props: Props) {
   const [hasShowBefore, setHasShowBefore] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (!ref.current || ref.current.getBoundingClientRect().y < 0) {
-      setShow(true);
-      setHasShowBefore(true);
-    }
-  }, [props]);
+  // useEffect(() => {
+  //   if (!ref.current || ref.current.getBoundingClientRect().y < 0) {
+  //     setShow(true);
+  //     setHasShowBefore(true);
+  //   }
+  // }, [props]);
 
   if (show) {
     if (props.data) {

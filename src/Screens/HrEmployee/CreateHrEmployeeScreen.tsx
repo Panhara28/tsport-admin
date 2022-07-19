@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql, useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { Form } from 'react-bootstrap';
@@ -13,7 +13,12 @@ import XForm from '../../components/Form/XForm';
 import { CreateUpdateForm } from '../../components/GraphQL/CreateUpdateForm';
 import { SingleUpload } from '../../components/SingleUpload';
 import Layout from '../../components/VerticalLayout';
+import { getCommune, getDistrict, getProvince, getVillage } from '../../hook/provinces';
 import { setting } from '../../libs/settings';
+import CreatableSelect from 'react-select/creatable';
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const CREATE_MUTATION = gql`
   mutation createHrEmployee($input: HrEmployeeInput) {
@@ -65,6 +70,84 @@ const QUERY = gql`
   }
 `;
 
+const HR_DEPARTMENT = gql`
+  query hrDepartmentList($branch_level: Int) {
+    hrDepartmentList(branch_level: $branch_level)
+  }
+`;
+
+const GeneralDepartmentSelect = ({ generalDepartmentId, setGeneralDepartmentId }: any) => {
+  const { data, loading } = useQuery(HR_DEPARTMENT, {
+    variables: {
+      branch_level: 0,
+    },
+  });
+
+  if (!data || loading) return <></>;
+
+  return (
+    <XForm.Select
+      label="Select General Department"
+      value={generalDepartmentId}
+      items={data?.hrDepartmentList?.map((x: any) => {
+        return {
+          text: x?.name,
+          value: x?.id,
+        };
+      })}
+      onChange={(e: any) => setGeneralDepartmentId(e.target.value)}
+    />
+  );
+};
+
+const DepartmentSelect = ({ departmentId, setDepartmentId }: any) => {
+  const { data, loading } = useQuery(HR_DEPARTMENT, {
+    variables: {
+      branch_level: 1,
+    },
+  });
+
+  if (!data || loading) return <></>;
+
+  return (
+    <XForm.Select
+      label="Select Department"
+      value={departmentId}
+      onChange={(e: any) => setDepartmentId(e.target.value)}
+      items={data?.hrDepartmentList?.map((x: any) => {
+        return {
+          text: x?.name,
+          value: x?.id,
+        };
+      })}
+    />
+  );
+};
+
+const OfficeSelect = ({ officeId, setOfficeId }: any) => {
+  const { data, loading } = useQuery(HR_DEPARTMENT, {
+    variables: {
+      branch_level: 2,
+    },
+  });
+
+  if (!data || loading) return <></>;
+
+  return (
+    <XForm.Select
+      label="Select Office"
+      value={officeId}
+      onChange={(e: any) => setOfficeId(e.target.value)}
+      items={data?.hrDepartmentList?.map((x: any) => {
+        return {
+          text: x?.name,
+          value: x?.id,
+        };
+      })}
+    />
+  );
+};
+
 const FormBodyCreate = ({ update, defaultValues }: any) => {
   const [fullname, setFullName] = useState(defaultValues?.fullname || '');
   const [fullnameEn, setFullNameEn] = useState(defaultValues?.fullname_en || '');
@@ -72,10 +155,10 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
   const [password, setPassword] = useState(defaultValues?.password || '');
   const [email, setEmail] = useState(defaultValues?.email || '');
   const [phoneNumber, setPhoneNumber] = useState(defaultValues?.phoneNumber || '');
-  const [image, setImage] = useState(defaultValues?.image || '');
+  const [image, setImage] = useState(defaultValues?.profile || '');
   const [gender, setGender] = useState(defaultValues?.gender || '');
   const [nationality, setNationality] = useState(defaultValues?.nationality || '');
-  const [dob, setDob] = useState(defaultValues?.dob || '');
+  const [dob, setDob] = useState<any>(defaultValues?.dob ? new Date(defaultValues?.dob) : new Date());
   const [district, setDistrict] = useState(defaultValues?.district || '');
   const [commune, setCommune] = useState(defaultValues?.commune || '');
   const [educationLevel, setEducationLevel] = useState(defaultValues?.education_level || '');
@@ -110,9 +193,9 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
       fullname_en: fullnameEn,
       gender: gender,
       nationality: nationality,
-      // dob: dob,
-      district: district,
-      commune: commune,
+      dob: dob ? moment(dob).format('YYYY-MM-DD') : '',
+      district: district?.label,
+      commune: commune?.label,
       education_level: educationLevel,
       passport_id: passportId,
       national_id: nationalId,
@@ -121,14 +204,14 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
       unit: unit,
       department_id: Number(departmentId),
       general_department_id: Number(generalDepartmentId),
-      contact_city_or_province: contactCityOrProvince,
-      province: province,
+      province: province?.label,
       homeNo: homeNo,
       streetNo: streetNo,
-      village_or_group: villageOrGroup,
-      contact_district: contactDistrict,
-      contact_village: contactVillage,
-      contact_commune: contactCommune,
+      contact_city_or_province: contactCityOrProvince?.label,
+      village_or_group: villageOrGroup?.label,
+      contact_district: contactDistrict?.label,
+      contact_village: contactVillage?.label,
+      contact_commune: contactCommune?.label,
       officer_id: officerId,
       office_id: Number(officeId),
     };
@@ -232,6 +315,18 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
         </Col>
 
         <Col md={6}>
+          <Form.Label>Date of Birth</Form.Label>
+          <DatePicker
+            selected={dob}
+            onChange={(date: Date) => {
+              setDob(date);
+            }}
+            className="form-control"
+            dateFormat="dd/MM/yyyy"
+          />
+        </Col>
+
+        <Col md={6}>
           <XForm.Text
             label="Officer Id"
             value={officerId}
@@ -241,40 +336,64 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
         </Col>
 
         <Col md={6}>
-          <XForm.Text
-            label="Province"
-            value={province}
-            name="province"
-            onChange={e => setProvince(e.currentTarget.value)}
-          />
+          <Form.Group>
+            <Form.Label>Province</Form.Label>
+            <CreatableSelect
+              options={getProvince()}
+              onChange={(e: any) => setProvince(e)}
+              value={province}
+              name="province"
+            />
+          </Form.Group>
         </Col>
 
-        <Col md={6}>
-          <XForm.Text
-            label="District"
-            value={district}
-            name="district"
-            onChange={e => setDistrict(e.currentTarget.value)}
-          />
-        </Col>
+        {province ? (
+          <Col md={6}>
+            <Form.Group>
+              <Form.Label>District</Form.Label>
+              <CreatableSelect
+                options={getDistrict(province.value)}
+                onChange={(e: any) => setDistrict(e)}
+                value={district}
+                name="district"
+              />
+            </Form.Group>
+          </Col>
+        ) : (
+          undefined
+        )}
 
-        <Col md={6}>
-          <XForm.Text
-            label="Commune"
-            value={commune}
-            name="commune"
-            onChange={e => setCommune(e.currentTarget.value)}
-          />
-        </Col>
+        {district ? (
+          <Col md={6} className="mt-2">
+            <Form.Group>
+              <Form.Label>Commune</Form.Label>
+              <CreatableSelect
+                options={getCommune(district.value)}
+                onChange={(e: any) => setCommune(e)}
+                value={commune}
+                name="commune"
+              />
+            </Form.Group>
+          </Col>
+        ) : (
+          undefined
+        )}
 
-        <Col md={6}>
-          <XForm.Text
-            label="Village or Group"
-            value={villageOrGroup}
-            name="villageOrGroup"
-            onChange={e => setVillageOrGroup(e.currentTarget.value)}
-          />
-        </Col>
+        {commune ? (
+          <Col md={6} className="mt-2">
+            <Form.Group>
+              <Form.Label>Village</Form.Label>
+              <CreatableSelect
+                options={getVillage(commune.value)}
+                onChange={(e: any) => setVillageOrGroup(e)}
+                value={villageOrGroup}
+                name="village"
+              />
+            </Form.Group>
+          </Col>
+        ) : (
+          undefined
+        )}
 
         <Col md={6}>
           <XForm.Text
@@ -335,29 +454,17 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
         </Col>
 
         <Col md={6}>
-          <XForm.Text
-            label="General Department"
-            value={generalDepartmentId}
-            name="generalDepartmentId"
-            onChange={e => setGeneralDepartmentId(e.currentTarget.value)}
+          <GeneralDepartmentSelect
+            generalDepartmentId={generalDepartmentId}
+            setGeneralDepartmentId={setGeneralDepartmentId}
           />
         </Col>
         <Col md={6}>
-          <XForm.Text
-            label="Department"
-            value={departmentId}
-            name="departmentId"
-            onChange={e => setDepartmentId(e.currentTarget.value)}
-          />
+          <DepartmentSelect departmentId={departmentId} setDepartmentId={setDepartmentId} />
         </Col>
 
         <Col md={6}>
-          <XForm.Text
-            label="Office"
-            value={officeId}
-            name="officeId"
-            onChange={e => setOfficeId(e.currentTarget.value)}
-          />
+          <OfficeSelect officeId={officeId} setOfficeId={setOfficeId} />
         </Col>
       </Row>
       <Row>
@@ -365,39 +472,64 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
         <hr />
 
         <Col md={6}>
-          <XForm.Text
-            label="Contact City or Province"
-            value={contactCityOrProvince}
-            name="contactCityOrProvince"
-            onChange={e => setContactCityOrProvince(e.currentTarget.value)}
-          />
+          <Form.Group>
+            <Form.Label>Contact City or Province</Form.Label>
+            <CreatableSelect
+              options={getProvince()}
+              onChange={(e: any) => setContactCityOrProvince(e)}
+              value={contactCityOrProvince}
+              name="contactCityOrProvince"
+            />
+          </Form.Group>
         </Col>
 
-        <Col md={6}>
-          <XForm.Text
-            label="Contact District"
-            value={contactDistrict}
-            name="contactDistrict"
-            onChange={e => setContactDistrict(e.currentTarget.value)}
-          />
-        </Col>
-        <Col md={6}>
-          <XForm.Text
-            label="Contact Village"
-            value={contactVillage}
-            name="contactVillage"
-            onChange={e => setContactVillage(e.currentTarget.value)}
-          />
-        </Col>
+        {contactCityOrProvince ? (
+          <Col md={6}>
+            <Form.Group>
+              <Form.Label>Contact District</Form.Label>
+              <CreatableSelect
+                options={getDistrict(contactCityOrProvince.value)}
+                onChange={(e: any) => setContactDistrict(e)}
+                value={contactDistrict}
+                name="contactDistrict"
+              />
+            </Form.Group>
+          </Col>
+        ) : (
+          undefined
+        )}
 
-        <Col md={6}>
-          <XForm.Text
-            label="Contact Commune"
-            value={contactCommune}
-            name="contactCommune"
-            onChange={e => setContactCommune(e.currentTarget.value)}
-          />
-        </Col>
+        {contactDistrict ? (
+          <Col md={6} className="mt-2">
+            <Form.Group>
+              <Form.Label>Contact Commune</Form.Label>
+              <CreatableSelect
+                options={getCommune(contactDistrict.value)}
+                onChange={(e: any) => setContactCommune(e)}
+                value={contactCommune}
+                name="contactCommune"
+              />
+            </Form.Group>
+          </Col>
+        ) : (
+          undefined
+        )}
+
+        {contactCommune ? (
+          <Col md={6} className="mt-2">
+            <Form.Group>
+              <Form.Label>Contact Village</Form.Label>
+              <CreatableSelect
+                options={getVillage(contactCommune.value)}
+                onChange={(e: any) => setContactVillage(e)}
+                value={contactVillage}
+                name="contactVillage"
+              />
+            </Form.Group>
+          </Col>
+        ) : (
+          undefined
+        )}
 
         <Col md={6}>
           <XForm.Text label="Home No" value={homeNo} name="homeNo" onChange={e => setHomeNo(e.currentTarget.value)} />
@@ -443,12 +575,12 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
   const [fullnameEn, setFullNameEn] = useState(defaultValues?.fullname_en || '');
   const [email, setEmail] = useState(defaultValues?.email || '');
   const [phoneNumber, setPhoneNumber] = useState(defaultValues?.phoneNumber || '');
-  const [image, setImage] = useState(defaultValues?.profile_picture || '');
+  const [image, setImage] = useState(defaultValues?.profile || '');
   const [gender, setGender] = useState(defaultValues?.gender || '');
   const [nationality, setNationality] = useState(defaultValues?.nationality || '');
-  const [dob, setDob] = useState(defaultValues?.dob || '');
-  const [district, setDistrict] = useState(defaultValues?.district || '');
-  const [commune, setCommune] = useState(defaultValues?.commune || '');
+  const [dob, setDob] = useState<any>(defaultValues?.dob ? new Date(defaultValues?.dob) : new Date());
+  const [district, setDistrict] = useState({ label: defaultValues?.district, value: '' } || '');
+  const [commune, setCommune] = useState({ label: defaultValues?.commune, value: '' } || '');
   const [educationLevel, setEducationLevel] = useState(defaultValues?.education_level || '');
   const [passportId, setPassportId] = useState(defaultValues?.passport_id || '');
   const [nationalId, setNationalId] = useState(defaultValues?.national_id || '');
@@ -457,14 +589,16 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
   const [unit, setUnit] = useState(defaultValues?.unit || '');
   const [departmentId, setDepartmentId] = useState(defaultValues?.department_id || '');
   const [generalDepartmentId, setGeneralDepartmentId] = useState(defaultValues?.general_department_id || '');
-  const [contactCityOrProvince, setContactCityOrProvince] = useState(defaultValues?.contact_city_or_province || '');
-  const [province, setProvince] = useState(defaultValues?.province || '');
+  const [contactCityOrProvince, setContactCityOrProvince] = useState(
+    { label: defaultValues?.contact_city_or_province, value: '' } || '',
+  );
+  const [province, setProvince] = useState({ label: defaultValues?.province, value: '' } || '');
   const [homeNo, setHomeNo] = useState(defaultValues?.homeNo || '');
   const [streetNo, setStreetNo] = useState(defaultValues?.streetNo || '');
-  const [villageOrGroup, setVillageOrGroup] = useState(defaultValues?.village_or_group || '');
-  const [contactDistrict, setContactDistrict] = useState(defaultValues?.contact_district || '');
-  const [contactVillage, setContactVillage] = useState(defaultValues?.contact_village || '');
-  const [contactCommune, setContactCommune] = useState(defaultValues?.contact_commune || '');
+  const [villageOrGroup, setVillageOrGroup] = useState({ label: defaultValues?.village_or_group, value: '' } || '');
+  const [contactDistrict, setContactDistrict] = useState({ label: defaultValues?.contact_district, value: '' } || '');
+  const [contactVillage, setContactVillage] = useState({ label: defaultValues?.contact_village, value: '' } || '');
+  const [contactCommune, setContactCommune] = useState({ label: defaultValues?.contact_commune, value: '' } || '');
   const [officerId, setOfficerId] = useState(defaultValues?.officer_id || '');
   const [officeId, setOfficeId] = useState(defaultValues?.office_id || '');
 
@@ -481,9 +615,9 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
       fullname_en: fullnameEn,
       gender: gender,
       nationality: nationality,
-      dob: dob,
-      district: district,
-      commune: commune,
+      dob: dob ? moment(dob).format('YYYY-MM-DD') : '',
+      district: district?.label,
+      commune: commune?.label,
       education_level: educationLevel,
       passport_id: passportId,
       national_id: nationalId,
@@ -492,14 +626,14 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
       unit: unit,
       department_id: Number(departmentId),
       general_department_id: Number(generalDepartmentId),
-      contact_city_or_province: contactCityOrProvince,
-      province: province,
+      province: province?.label,
       homeNo: homeNo,
       streetNo: streetNo,
-      village_or_group: villageOrGroup,
-      contact_district: contactDistrict,
-      contact_village: contactVillage,
-      contactCommune: contactCommune,
+      contact_city_or_province: contactCityOrProvince?.label,
+      village_or_group: villageOrGroup?.label,
+      contact_district: contactDistrict?.label,
+      contact_village: contactVillage?.label,
+      contact_commune: contactCommune?.label,
       officer_id: officerId,
       office_id: Number(officeId),
     };
@@ -550,6 +684,18 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
         </Col>
 
         <Col md={6}>
+          <Form.Label>Date of Birth</Form.Label>
+          <DatePicker
+            selected={dob}
+            onChange={(date: Date) => {
+              setDob(date);
+            }}
+            className="form-control"
+            dateFormat="dd/MM/yyyy"
+          />
+        </Col>
+
+        <Col md={6}>
           <XForm.Text
             label="Officer Id"
             value={officerId}
@@ -559,40 +705,64 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
         </Col>
 
         <Col md={6}>
-          <XForm.Text
-            label="Province"
-            value={province}
-            name="province"
-            onChange={e => setProvince(e.currentTarget.value)}
-          />
+          <Form.Group>
+            <Form.Label>Province</Form.Label>
+            <CreatableSelect
+              options={getProvince()}
+              onChange={(e: any) => setProvince(e)}
+              value={province}
+              name="province"
+            />
+          </Form.Group>
         </Col>
 
-        <Col md={6}>
-          <XForm.Text
-            label="District"
-            value={district}
-            name="district"
-            onChange={e => setDistrict(e.currentTarget.value)}
-          />
-        </Col>
+        {province ? (
+          <Col md={6}>
+            <Form.Group>
+              <Form.Label>District</Form.Label>
+              <CreatableSelect
+                options={getDistrict(province.value)}
+                onChange={(e: any) => setDistrict(e)}
+                value={district}
+                name="district"
+              />
+            </Form.Group>
+          </Col>
+        ) : (
+          undefined
+        )}
 
-        <Col md={6}>
-          <XForm.Text
-            label="Commune"
-            value={commune}
-            name="commune"
-            onChange={e => setCommune(e.currentTarget.value)}
-          />
-        </Col>
+        {district ? (
+          <Col md={6} className="mt-2">
+            <Form.Group>
+              <Form.Label>Commune</Form.Label>
+              <CreatableSelect
+                options={getCommune(district.value)}
+                onChange={(e: any) => setCommune(e)}
+                value={commune}
+                name="commune"
+              />
+            </Form.Group>
+          </Col>
+        ) : (
+          undefined
+        )}
 
-        <Col md={6}>
-          <XForm.Text
-            label="Village or Group"
-            value={villageOrGroup}
-            name="villageOrGroup"
-            onChange={e => setVillageOrGroup(e.currentTarget.value)}
-          />
-        </Col>
+        {commune ? (
+          <Col md={6} className="mt-2">
+            <Form.Group>
+              <Form.Label>Village</Form.Label>
+              <CreatableSelect
+                options={getVillage(commune.value)}
+                onChange={(e: any) => setVillageOrGroup(e)}
+                value={villageOrGroup}
+                name="village"
+              />
+            </Form.Group>
+          </Col>
+        ) : (
+          undefined
+        )}
 
         <Col md={6}>
           <XForm.Text
@@ -653,29 +823,17 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
         </Col>
 
         <Col md={6}>
-          <XForm.Text
-            label="General Department"
-            value={generalDepartmentId}
-            name="generalDepartmentId"
-            onChange={e => setGeneralDepartmentId(e.currentTarget.value)}
+          <GeneralDepartmentSelect
+            generalDepartmentId={generalDepartmentId}
+            setGeneralDepartmentId={setGeneralDepartmentId}
           />
         </Col>
         <Col md={6}>
-          <XForm.Text
-            label="Department"
-            value={departmentId}
-            name="departmentId"
-            onChange={e => setDepartmentId(e.currentTarget.value)}
-          />
+          <DepartmentSelect departmentId={departmentId} setDepartmentId={setDepartmentId} />
         </Col>
 
         <Col md={6}>
-          <XForm.Text
-            label="Office"
-            value={officeId}
-            name="officeId"
-            onChange={e => setOfficeId(e.currentTarget.value)}
-          />
+          <OfficeSelect officeId={officeId} setOfficeId={setOfficeId} />
         </Col>
       </Row>
       <Row>
@@ -683,39 +841,64 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
         <hr />
 
         <Col md={6}>
-          <XForm.Text
-            label="Contact City or Province"
-            value={contactCityOrProvince}
-            name="contactCityOrProvince"
-            onChange={e => setContactCityOrProvince(e.currentTarget.value)}
-          />
+          <Form.Group>
+            <Form.Label>Contact City or Province</Form.Label>
+            <CreatableSelect
+              options={getProvince()}
+              onChange={(e: any) => setContactCityOrProvince(e)}
+              value={contactCityOrProvince}
+              name="contactCityOrProvince"
+            />
+          </Form.Group>
         </Col>
 
-        <Col md={6}>
-          <XForm.Text
-            label="Contact District"
-            value={contactDistrict}
-            name="contactDistrict"
-            onChange={e => setContactDistrict(e.currentTarget.value)}
-          />
-        </Col>
-        <Col md={6}>
-          <XForm.Text
-            label="Contact Village"
-            value={contactVillage}
-            name="contactVillage"
-            onChange={e => setContactVillage(e.currentTarget.value)}
-          />
-        </Col>
+        {contactCityOrProvince ? (
+          <Col md={6}>
+            <Form.Group>
+              <Form.Label>Contact District</Form.Label>
+              <CreatableSelect
+                options={getDistrict(contactCityOrProvince.value)}
+                onChange={(e: any) => setContactDistrict(e)}
+                value={contactDistrict}
+                name="contactDistrict"
+              />
+            </Form.Group>
+          </Col>
+        ) : (
+          undefined
+        )}
 
-        <Col md={6}>
-          <XForm.Text
-            label="Contact Commune"
-            value={contactCommune}
-            name="contactCommune"
-            onChange={e => setContactCommune(e.currentTarget.value)}
-          />
-        </Col>
+        {contactDistrict ? (
+          <Col md={6} className="mt-2">
+            <Form.Group>
+              <Form.Label>Contact Commune</Form.Label>
+              <CreatableSelect
+                options={getCommune(contactDistrict.value)}
+                onChange={(e: any) => setContactCommune(e)}
+                value={contactCommune}
+                name="contactCommune"
+              />
+            </Form.Group>
+          </Col>
+        ) : (
+          undefined
+        )}
+
+        {contactCommune ? (
+          <Col md={6} className="mt-2">
+            <Form.Group>
+              <Form.Label>Contact Village</Form.Label>
+              <CreatableSelect
+                options={getVillage(contactCommune.value)}
+                onChange={(e: any) => setContactVillage(e)}
+                value={contactVillage}
+                name="contactVillage"
+              />
+            </Form.Group>
+          </Col>
+        ) : (
+          undefined
+        )}
 
         <Col md={6}>
           <XForm.Text label="Home No" value={homeNo} name="homeNo" onChange={e => setHomeNo(e.currentTarget.value)} />
@@ -766,7 +949,7 @@ export function CreateHrEmployeeScreen({ userEditId }: Props) {
     <Layout>
       <div className="page-content">
         <Container fluid>
-          <Breadcrumb breadcrumbItem="HR Employee Mutation" title={setting.title} />
+          <Breadcrumb breadcrumbItem={`Officer ${userEditId ? 'Edit' : 'Create'}`} title={setting.title} />
           <hr />
           <Row>
             <Col md={9}>
@@ -778,7 +961,7 @@ export function CreateHrEmployeeScreen({ userEditId }: Props) {
                     create={CREATE_MUTATION}
                     query={QUERY}
                     id={Number(userEditId)}
-                    refectQuery="hrDepartment"
+                    refectQuery="adminUserList"
                   />
                 </CardBody>
               </Card>
