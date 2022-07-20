@@ -1,23 +1,10 @@
 import type { NextPage } from "next";
-import { Container } from "reactstrap";
-import { Breadcrumb } from "../src/components/Common/Breadcrumb";
-import Layout from "../src/components/VerticalLayout";
-import { setting } from "../src/libs/settings";
+import DashboardScreen from "../src/Screens/Dashboard/DashboardScreen";
 
 
 const Home: NextPage = () => {
   return (
-    <Layout>
-      <div className="page-content">
-        <Container fluid>
-          <Breadcrumb
-            title={setting.title}
-            breadcrumbItem="Dashboard"
-          />
-          <hr />
-        </Container>
-      </div>
-    </Layout>
+    <DashboardScreen />
   );
 };
 

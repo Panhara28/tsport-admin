@@ -1,4 +1,15 @@
-import { faCog, faCogs, faGlobeAsia, faHome, faImages, faInfo, faUsers } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCog,
+  faCogs,
+  faGlobeAsia,
+  faHome,
+  faHouseUser,
+  faImages,
+  faInfo,
+  faLandmark,
+  faNetworkWired,
+  faUsers,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -16,7 +27,7 @@ export const Aside = ({ collapsed, rtl, toggled, handleToggleSidebar }: any) => 
     checkUserHavePermissionForSiteBar = (
       <>
         <Menu subMenuBullets={true} iconShape="circle">
-          <SubMenu title="General Departments" icon={<FontAwesomeIcon icon={faHome} />}>
+          <SubMenu title="General Departments" icon={<FontAwesomeIcon icon={faLandmark} />}>
             <Link href={`/hr/general-departments/create`}>
               <a>
                 <MenuItem>Create General Department</MenuItem>
@@ -30,7 +41,7 @@ export const Aside = ({ collapsed, rtl, toggled, handleToggleSidebar }: any) => 
           </SubMenu>
         </Menu>
         <Menu subMenuBullets={true} iconShape="circle">
-          <SubMenu title="Departments" icon={<FontAwesomeIcon icon={faHome} />}>
+          <SubMenu title="Departments" icon={<FontAwesomeIcon icon={faHouseUser} />}>
             <Link href={`/hr/departments/create`}>
               <a>
                 <MenuItem>Create Department</MenuItem>
@@ -44,7 +55,7 @@ export const Aside = ({ collapsed, rtl, toggled, handleToggleSidebar }: any) => 
           </SubMenu>
         </Menu>
         <Menu subMenuBullets={true} iconShape="circle">
-          <SubMenu title="Offices" icon={<FontAwesomeIcon icon={faHome} />}>
+          <SubMenu title="Offices" icon={<FontAwesomeIcon icon={faNetworkWired} />}>
             <Link href={`/hr/offices/create`}>
               <a>
                 <MenuItem>Create Office</MenuItem>
@@ -72,7 +83,7 @@ export const Aside = ({ collapsed, rtl, toggled, handleToggleSidebar }: any) => 
           </SubMenu>
         </Menu>
         <Menu iconShape="circle">
-          <Link href="/">
+          <Link href="/hr/reports/search">
             <a>
               <MenuItem icon={<FontAwesomeIcon icon={faInfo} />}>Report</MenuItem>
             </a>

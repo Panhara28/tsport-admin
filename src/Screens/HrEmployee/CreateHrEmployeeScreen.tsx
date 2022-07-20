@@ -72,8 +72,8 @@ const QUERY = gql`
 `;
 
 const HR_DEPARTMENT = gql`
-  query hrDepartmentList($branch_level: Int) {
-    hrDepartmentList(branch_level: $branch_level)
+  query hrDepartmentList($branch_level: Int, $parent_id: Int) {
+    hrDepartmentList(branch_level: $branch_level, parent_id: $parent_id)
   }
 `;
 
@@ -90,21 +90,28 @@ const GeneralDepartmentSelect = ({ generalDepartmentId, setGeneralDepartmentId }
     <XForm.Select
       label="Select General Department"
       value={generalDepartmentId}
-      items={data?.hrDepartmentList?.map((x: any) => {
-        return {
-          text: x?.name,
-          value: x?.id,
-        };
-      })}
+      items={[
+        {
+          text: 'Choose one of the following',
+          value: undefined,
+        },
+        ...data?.hrDepartmentList?.map((x: any) => {
+          return {
+            text: x?.name,
+            value: x?.id,
+          };
+        }),
+      ]}
       onChange={(e: any) => setGeneralDepartmentId(e.target.value)}
     />
   );
 };
 
-const DepartmentSelect = ({ departmentId, setDepartmentId }: any) => {
+const DepartmentSelect = ({ generalDepartmentId, departmentId, setDepartmentId }: any) => {
   const { data, loading } = useQuery(HR_DEPARTMENT, {
     variables: {
       branch_level: 1,
+      parent_id: Number(generalDepartmentId),
     },
   });
 
@@ -114,21 +121,28 @@ const DepartmentSelect = ({ departmentId, setDepartmentId }: any) => {
     <XForm.Select
       label="Select Department"
       value={departmentId}
-      onChange={(e: any) => setDepartmentId(e.target.value)}
-      items={data?.hrDepartmentList?.map((x: any) => {
-        return {
-          text: x?.name,
-          value: x?.id,
-        };
-      })}
+      onChange={(e: any) => setDepartmentId(e?.target?.value)}
+      items={[
+        {
+          text: 'Choose one of the following',
+          value: undefined,
+        },
+        ...data?.hrDepartmentList?.map((x: any) => {
+          return {
+            text: x?.name,
+            value: x?.id,
+          };
+        }),
+      ]}
     />
   );
 };
 
-const OfficeSelect = ({ officeId, setOfficeId }: any) => {
+const OfficeSelect = ({ departmentId, officeId, setOfficeId }: any) => {
   const { data, loading } = useQuery(HR_DEPARTMENT, {
     variables: {
       branch_level: 2,
+      parent_id: Number(departmentId),
     },
   });
 
@@ -139,12 +153,18 @@ const OfficeSelect = ({ officeId, setOfficeId }: any) => {
       label="Select Office"
       value={officeId}
       onChange={(e: any) => setOfficeId(e.target.value)}
-      items={data?.hrDepartmentList?.map((x: any) => {
-        return {
-          text: x?.name,
-          value: x?.id,
-        };
-      })}
+      items={[
+        {
+          text: 'Choose one of the following',
+          value: undefined,
+        },
+        ...data?.hrDepartmentList?.map((x: any) => {
+          return {
+            text: x?.name,
+            value: x?.id,
+          };
+        }),
+      ]}
     />
   );
 };
@@ -413,7 +433,7 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
         <Col md={6}>
           <XForm.Text
             label="Nationality"
-            value={unit}
+            value={nationality}
             name="nationality"
             onChange={e => setNationality(e.currentTarget.value)}
           />
@@ -462,11 +482,15 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
           />
         </Col>
         <Col md={6}>
-          <DepartmentSelect departmentId={departmentId} setDepartmentId={setDepartmentId} />
+          <DepartmentSelect
+            departmentId={departmentId}
+            setDepartmentId={setDepartmentId}
+            generalDepartmentId={generalDepartmentId}
+          />
         </Col>
 
         <Col md={6}>
-          <OfficeSelect officeId={officeId} setOfficeId={setOfficeId} />
+          <OfficeSelect officeId={officeId} setOfficeId={setOfficeId} departmentId={departmentId} />
         </Col>
       </Row>
       <Row>
@@ -785,7 +809,7 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
         <Col md={6}>
           <XForm.Text
             label="Nationality"
-            value={unit}
+            value={nationality}
             name="nationality"
             onChange={e => setNationality(e.currentTarget.value)}
           />
@@ -834,11 +858,15 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
           />
         </Col>
         <Col md={6}>
-          <DepartmentSelect departmentId={departmentId} setDepartmentId={setDepartmentId} />
+          <DepartmentSelect
+            departmentId={departmentId}
+            setDepartmentId={setDepartmentId}
+            generalDepartmentId={generalDepartmentId}
+          />
         </Col>
 
         <Col md={6}>
-          <OfficeSelect officeId={officeId} setOfficeId={setOfficeId} />
+          <OfficeSelect officeId={officeId} setOfficeId={setOfficeId} departmentId={departmentId} />
         </Col>
       </Row>
       <Row>

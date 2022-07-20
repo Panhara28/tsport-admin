@@ -84,10 +84,6 @@ export function CustomPagination({ currentPage, size, total, limit, variableName
     </li>,
   );
 
-  console.log(currentPage);
-
-  console.log(limit ? (currentPage - 1) * limit + 1 : (currentPage - 1) * 10 + 1);
-
   return (
     <div className="row mb-5">
       <div className="col-12">
