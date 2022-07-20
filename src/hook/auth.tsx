@@ -52,7 +52,7 @@ function useProvideAuth(token?: string) {
         },
       })
       .catch(err => {
-        const error = JSON.parse(err.message);
+        const error = JSON.parse(err?.message);
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
