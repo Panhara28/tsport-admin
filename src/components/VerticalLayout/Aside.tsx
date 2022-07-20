@@ -82,29 +82,12 @@ export const Aside = ({ collapsed, rtl, toggled, handleToggleSidebar }: any) => 
             </Link>
           </SubMenu>
         </Menu>
-        <Menu subMenuBullets={true} iconShape="circle">
-          <SubMenu title="Report" icon={<FontAwesomeIcon icon={faInfo} />}>
-            <Link href={`#`}>
-              <a title="Search by general department">
-                <MenuItem>Search by general department</MenuItem>
-              </a>
-            </Link>
-            <Link href={`#`}>
-              <a title="Search by department">
-                <MenuItem>Search by department</MenuItem>
-              </a>
-            </Link>
-            <Link href={`#`}>
-              <a title="Search by office">
-                <MenuItem>Search by office</MenuItem>
-              </a>
-            </Link>
-            <Link href={`Search by name`}>
-              <a>
-                <MenuItem>Search by name</MenuItem>
-              </a>
-            </Link>
-          </SubMenu>
+        <Menu iconShape="circle">
+          <Link href="/hr/reports/search">
+            <a>
+              <MenuItem icon={<FontAwesomeIcon icon={faInfo} />}>Report</MenuItem>
+            </a>
+          </Link>
         </Menu>
         <Menu subMenuBullets={true} iconShape="circle">
           <SubMenu title="Settings" icon={<FontAwesomeIcon icon={faCog} />}>
