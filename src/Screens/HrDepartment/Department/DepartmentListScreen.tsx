@@ -78,6 +78,11 @@ export function DepartmentListScreen() {
                                   Edit
                                 </a>
                               </Link>
+                              <Link href="#">
+                                <a className="btn btn-danger " style={{ marginLeft: 10 }} onClick={() => router.back()}>
+                                  Cancel
+                                </a>
+                              </Link>
                             </td>
                           </tr>
                         );

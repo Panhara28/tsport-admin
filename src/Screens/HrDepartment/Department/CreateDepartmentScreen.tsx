@@ -1,5 +1,6 @@
 import { gql, useQuery } from '@apollo/client';
-import { useRouter } from 'next/router';
+import Link from 'next/link';
+import router, { useRouter } from 'next/router';
 import { useState } from 'react';
 import { Form } from 'react-bootstrap';
 import { Col } from 'reactstrap';
@@ -94,7 +95,7 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
         <h4>Information</h4>
         <hr />
         <Col md={6}>
-          <XForm.Text label="Department Name" value={name} name="name" onChange={e => setName(e.currentTarget.value)} />
+          <XForm.Text label="Department" value={name} name="name" onChange={e => setName(e.currentTarget.value)} />
         </Col>
         <Col md={6}>
           <GeneralDepartmentSelect generalDepartment={generalDepartment} setGeneralDepartment={setGeneralDepartment} />
@@ -105,7 +106,14 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
         <Col></Col>
         <Col md={6}>
           <XForm.Footer>
-            <XForm.Button type="submit">Save</XForm.Button>
+            <XForm.Button type="submit" style={{ padding: '1.3em' }}>
+              Save
+            </XForm.Button>
+            <Link href="#">
+              <a className="btn btn-danger " style={{ marginLeft: 10 }} onClick={() => router.back()}>
+                Cancel
+              </a>
+            </Link>
           </XForm.Footer>
         </Col>
       </Row>
@@ -137,7 +145,7 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
         <h4>Information</h4>
         <hr />
         <Col md={6}>
-          <XForm.Text label="Department Name" value={name} name="name" onChange={e => setName(e.currentTarget.value)} />
+          <XForm.Text label="Department" value={name} name="name" onChange={e => setName(e.currentTarget.value)} />
         </Col>
         <Col md={6}>
           <GeneralDepartmentSelect generalDepartment={generalDepartment} setGeneralDepartment={setGeneralDepartment} />
@@ -148,7 +156,14 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
         <Col></Col>
         <Col md={6}>
           <XForm.Footer>
-            <XForm.Button type="submit">Save</XForm.Button>
+            <XForm.Button type="submit" style={{ padding: '1.3em' }}s>
+              Save
+            </XForm.Button>
+            <Link href="#">
+              <a className="btn btn-danger " style={{ marginLeft: 10 }} onClick={() => router.back()}>
+                Cancel
+              </a>
+            </Link>
           </XForm.Footer>
         </Col>
       </Row>
@@ -166,7 +181,7 @@ export function CreateDepartmentScreen({ userEditId }: Props) {
     <Layout>
       <div className="page-content">
         <Container fluid>
-          <Breadcrumb breadcrumbItem="Department Mutation" title={setting.title} />
+          <Breadcrumb breadcrumbItem="Department" title={setting.title} />
           <hr />
           <Row>
             <Col md={9}>
