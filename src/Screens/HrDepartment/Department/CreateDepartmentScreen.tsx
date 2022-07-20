@@ -156,7 +156,7 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
         <Col></Col>
         <Col md={6}>
           <XForm.Footer>
-            <XForm.Button type="submit" style={{ padding: '1.3em' }}s>
+            <XForm.Button type="submit" style={{ padding: '1.3em' }}>
               Save
             </XForm.Button>
             <Link href="#">
