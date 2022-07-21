@@ -19,6 +19,7 @@ import CreatableSelect from 'react-select/creatable';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
+import classes from './office.module.scss';
 
 const CREATE_MUTATION = gql`
   mutation createHrEmployee($input: HrEmployeeInput) {
@@ -335,13 +336,13 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
         </Col>
 
         <Col md={6}>
-          <Form.Label>Date of Birth</Form.Label>
+          <Form.Label className={classes.label_txt}>Date of Birth</Form.Label>
           <DatePicker
             selected={dob}
             onChange={(date: Date) => {
               setDob(date);
             }}
-            className="form-control"
+            className={`form-control ${classes.select_input}`}
             dateFormat="dd/MM/yyyy"
           />
         </Col>
@@ -357,10 +358,11 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
 
         <Col md={6}>
           <Form.Group>
-            <Form.Label>Province</Form.Label>
+            <Form.Label className={classes.label_txt}>Province</Form.Label>
             <CreatableSelect
               options={getProvince()}
               onChange={(e: any) => setProvince(e)}
+              className={classes.select_input}
               value={province}
               name="province"
             />
@@ -370,7 +372,7 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
         {province ? (
           <Col md={6}>
             <Form.Group>
-              <Form.Label>District</Form.Label>
+              <Form.Label className={classes.label_txt}>District</Form.Label>
               <CreatableSelect
                 options={getDistrict(province.value)}
                 onChange={(e: any) => setDistrict(e)}
@@ -384,9 +386,9 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
         )}
 
         {district ? (
-          <Col md={6} className="mt-2">
+          <Col md={6}>
             <Form.Group>
-              <Form.Label>Commune</Form.Label>
+              <Form.Label className={classes.label_txt}>Commune</Form.Label>
               <CreatableSelect
                 options={getCommune(district.value)}
                 onChange={(e: any) => setCommune(e)}
@@ -402,7 +404,7 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
         {commune ? (
           <Col md={6} className="mt-2">
             <Form.Group>
-              <Form.Label>Village</Form.Label>
+              <Form.Label className={classes.label_txt}>Village</Form.Label>
               <CreatableSelect
                 options={getVillage(commune.value)}
                 onChange={(e: any) => setVillageOrGroup(e)}
@@ -415,7 +417,7 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
           undefined
         )}
 
-        <Col md={6}>
+        <Col md={6} className="mt-2">
           <XForm.Text
             label="Education Level"
             value={educationLevel}
@@ -497,11 +499,12 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
 
         <Col md={6}>
           <Form.Group>
-            <Form.Label>Contact City or Province</Form.Label>
+            <Form.Label className={classes.label_txt}>Contact City or Province</Form.Label>
             <CreatableSelect
               options={getProvince()}
               onChange={(e: any) => setContactCityOrProvince(e)}
               value={contactCityOrProvince}
+              className={classes.select_input}
               name="contactCityOrProvince"
             />
           </Form.Group>
@@ -510,7 +513,7 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
         {contactCityOrProvince ? (
           <Col md={6}>
             <Form.Group>
-              <Form.Label>Contact District</Form.Label>
+              <Form.Label className={classes.label_txt}>Contact District</Form.Label>
               <CreatableSelect
                 options={getDistrict(contactCityOrProvince.value)}
                 onChange={(e: any) => setContactDistrict(e)}
@@ -526,7 +529,7 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
         {contactDistrict ? (
           <Col md={6} className="mt-2">
             <Form.Group>
-              <Form.Label>Contact Commune</Form.Label>
+              <Form.Label className={classes.label_txt}>Contact Commune</Form.Label>
               <CreatableSelect
                 options={getCommune(contactDistrict.value)}
                 onChange={(e: any) => setContactCommune(e)}
@@ -542,7 +545,7 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
         {contactCommune ? (
           <Col md={6} className="mt-2">
             <Form.Group>
-              <Form.Label>Contact Village</Form.Label>
+              <Form.Label className={classes.label_txt}>Contact Village</Form.Label>
               <CreatableSelect
                 options={getVillage(contactCommune.value)}
                 onChange={(e: any) => setContactVillage(e)}
@@ -555,11 +558,11 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
           undefined
         )}
 
-        <Col md={6}>
+        <Col md={6} className="mt-2">
           <XForm.Text label="Home No" value={homeNo} name="homeNo" onChange={e => setHomeNo(e.currentTarget.value)} />
         </Col>
 
-        <Col md={6}>
+        <Col md={6} className="mt-2">
           <XForm.Text
             label="Street No"
             value={streetNo}
@@ -708,13 +711,13 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
         </Col>
 
         <Col md={6}>
-          <Form.Label>Date of Birth</Form.Label>
+          <Form.Label className={classes.label_txt}>Date of Birth</Form.Label>
           <DatePicker
             selected={dob}
             onChange={(date: Date) => {
               setDob(date);
             }}
-            className="form-control"
+            className={`form-control ${classes.select_input}`}
             dateFormat="dd/MM/yyyy"
           />
         </Col>
@@ -730,7 +733,7 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
 
         <Col md={6}>
           <Form.Group>
-            <Form.Label>Province</Form.Label>
+            <Form.Label className={classes.label_txt}>Province</Form.Label>
             <CreatableSelect
               options={getProvince()}
               onChange={(e: any) => setProvince(e)}
@@ -743,10 +746,11 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
         {province ? (
           <Col md={6}>
             <Form.Group>
-              <Form.Label>District</Form.Label>
+              <Form.Label className={classes.label_txt}>District</Form.Label>
               <CreatableSelect
                 options={getDistrict(province.value)}
                 onChange={(e: any) => setDistrict(e)}
+                className={classes.select_input}
                 value={district}
                 name="district"
               />
@@ -757,11 +761,12 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
         )}
 
         {district ? (
-          <Col md={6} className="mt-2">
+          <Col md={6}>
             <Form.Group>
-              <Form.Label>Commune</Form.Label>
+              <Form.Label className={classes.label_txt}>Commune</Form.Label>
               <CreatableSelect
                 options={getCommune(district.value)}
+                className={classes.select_input}
                 onChange={(e: any) => setCommune(e)}
                 value={commune}
                 name="commune"
@@ -775,7 +780,7 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
         {commune ? (
           <Col md={6} className="mt-2">
             <Form.Group>
-              <Form.Label>Village</Form.Label>
+              <Form.Label className={classes.label_txt}>Village</Form.Label>
               <CreatableSelect
                 options={getVillage(commune.value)}
                 onChange={(e: any) => setVillageOrGroup(e)}
@@ -788,7 +793,7 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
           undefined
         )}
 
-        <Col md={6}>
+        <Col md={6} className="mt-2">
           <XForm.Text
             label="Education Level"
             value={educationLevel}
@@ -870,7 +875,7 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
 
         <Col md={6}>
           <Form.Group>
-            <Form.Label>Contact City or Province</Form.Label>
+            <Form.Label className={classes.label_txt}>Contact City or Province</Form.Label>
             <CreatableSelect
               options={getProvince()}
               onChange={(e: any) => setContactCityOrProvince(e)}
@@ -883,7 +888,7 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
         {contactCityOrProvince ? (
           <Col md={6}>
             <Form.Group>
-              <Form.Label>Contact District</Form.Label>
+              <Form.Label className={classes.label_txt}>Contact District</Form.Label>
               <CreatableSelect
                 options={getDistrict(contactCityOrProvince.value)}
                 onChange={(e: any) => setContactDistrict(e)}
@@ -899,7 +904,7 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
         {contactDistrict ? (
           <Col md={6} className="mt-2">
             <Form.Group>
-              <Form.Label>Contact Commune</Form.Label>
+              <Form.Label className={classes.label_txt}>Contact Commune</Form.Label>
               <CreatableSelect
                 options={getCommune(contactDistrict.value)}
                 onChange={(e: any) => setContactCommune(e)}
@@ -915,7 +920,7 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
         {contactCommune ? (
           <Col md={6} className="mt-2">
             <Form.Group>
-              <Form.Label>Contact Village</Form.Label>
+              <Form.Label className={classes.label_txt}>Contact Village</Form.Label>
               <CreatableSelect
                 options={getVillage(contactCommune.value)}
                 onChange={(e: any) => setContactVillage(e)}
@@ -928,11 +933,11 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
           undefined
         )}
 
-        <Col md={6}>
+        <Col md={6} className="mt-2">
           <XForm.Text label="Home No" value={homeNo} name="homeNo" onChange={e => setHomeNo(e.currentTarget.value)} />
         </Col>
 
-        <Col md={6}>
+        <Col md={6} className="mt-2">
           <XForm.Text
             label="Street No"
             value={streetNo}
@@ -977,7 +982,7 @@ export function CreateHrEmployeeScreen({ userEditId }: Props) {
     <Layout>
       <div className="page-content">
         <Container fluid>
-          <Breadcrumb breadcrumbItem={`Officer ${userEditId ? 'Edit' : 'Create'}`} title={setting.title} />
+          <Breadcrumb breadcrumbItem={`${userEditId ? 'Edit' : 'Create'} Officer`} title={setting.title} />
           <hr />
           <Row>
             <Col md={9}>

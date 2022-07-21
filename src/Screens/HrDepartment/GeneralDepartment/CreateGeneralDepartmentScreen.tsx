@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client';
-import { useRouter } from 'next/router';
+import Link from 'next/link';
+import router, { useRouter } from 'next/router';
 import { useState } from 'react';
 import { Form } from 'react-bootstrap';
 import { Col } from 'reactstrap';
@@ -61,7 +62,7 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
         <hr />
         <Col md={6}>
           <XForm.Text
-            label="General Department Name"
+            label="General Department"
             value={name}
             name="name"
             onChange={e => setName(e.currentTarget.value)}
@@ -73,7 +74,14 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
         <Col></Col>
         <Col md={6}>
           <XForm.Footer>
-            <XForm.Button type="submit">Save</XForm.Button>
+            <XForm.Button type="submit" style={{ padding: '1.3em' }}>
+              Save
+            </XForm.Button>
+            <Link href="#">
+              <a className="btn btn-danger " style={{ marginLeft: 10 }} onClick={() => router.back()}>
+                Cancel
+              </a>
+            </Link>
           </XForm.Footer>
         </Col>
       </Row>
@@ -105,7 +113,7 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
         <hr />
         <Col md={6}>
           <XForm.Text
-            label="General Department Name"
+            label="General Department"
             value={name}
             name="name"
             onChange={e => setName(e.currentTarget.value)}
@@ -135,7 +143,7 @@ export function CreateGeneralDepartmentScreen({ userEditId }: Props) {
     <Layout>
       <div className="page-content">
         <Container fluid>
-          <Breadcrumb breadcrumbItem="General Department Mutation" title={setting.title} />
+          <Breadcrumb breadcrumbItem="General Department" title={setting.title} />
           <hr />
           <Row>
             <Col md={9}>
