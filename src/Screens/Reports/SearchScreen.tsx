@@ -233,7 +233,13 @@ function RenderReport({ generalDepartmentId, departmentId, officeId, officerName
             <td>
               {/* {item?.profile} */}
               <div className={classes.profile}>
-                {/* <Image {item?.profile ? item.profile : '/icons/profile.png'} alt="profile" layout="responsive" width={512} height={512} /> */}
+                <Image
+                  src={item?.profile ? item.profile : '/icons/profile.png'}
+                  alt="profile"
+                  layout="responsive"
+                  width={512}
+                  height={512}
+                />
               </div>
             </td>
             <td>{item?.fullname}</td>
