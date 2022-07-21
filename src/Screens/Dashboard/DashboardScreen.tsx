@@ -39,13 +39,13 @@ const DashboardScreen = () => {
             {data?.hrDepartmentUsersCount?.data?.map((item: any) => {
               return (
                 <Col md={3}>
-                  <Card>
+                  <Card style={{ height: 'calc(100% - 1.25rem)' }}>
                     <CardBody>
                       <DashboardCard
                         key={item?.id}
                         title={item?.name}
                         count={item?.count}
-                        link={`/hr/dashboard/${item?.id}`}
+                        link={`/hr/dashboard/general-department/${item?.id}`}
                         icon={faLandmark}
                       />
                     </CardBody>

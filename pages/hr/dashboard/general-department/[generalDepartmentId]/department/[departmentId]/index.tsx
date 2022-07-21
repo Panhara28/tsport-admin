@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import { useRouter } from 'next/router';
-import DepartmentListDashboardScreen from "../../../../../../src/Screens/Dashboard/DepartmentListDashboardScreen";
+import DepartmentListDashboardScreen from "../../../../../../../src/Screens/Dashboard/DepartmentListDashboardScreen";
 
 const DepartmentListDashboardPage: NextPage = () => {
   const router = useRouter();

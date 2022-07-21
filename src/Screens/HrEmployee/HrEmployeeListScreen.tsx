@@ -106,9 +106,9 @@ export function HrEmployeeListScreen() {
                   </Table>
                 </CardBody>
                 <CustomPagination
-                  total={data?.adminUserList?.pagination?.total}
-                  currentPage={data?.adminUserList?.pagination?.current}
-                  size={data?.adminUserList?.pagination?.size}
+                  total={data?.hrEmployeeList?.pagination?.total}
+                  currentPage={data?.hrEmployeeList?.pagination?.current}
+                  size={data?.hrEmployeeList?.pagination?.size}
                   limit={10}
                 />
               </Card>

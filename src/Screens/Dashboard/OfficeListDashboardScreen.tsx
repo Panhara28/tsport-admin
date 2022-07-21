@@ -51,7 +51,7 @@ const OfficeListDashboardScreen = ({ departmentId, generalDepartmentId, officeId
             {data?.hrDepartmentUsersCount?.data?.map((item: any) => {
               return (
                 <Col md={3}>
-                  <Card>
+                  <Card style={{ height: 'calc(100% - 1.25rem)' }}>
                     <CardBody>
                       <DashboardCard key={item?.id} title={item?.name} count={item?.count} />
                     </CardBody>
