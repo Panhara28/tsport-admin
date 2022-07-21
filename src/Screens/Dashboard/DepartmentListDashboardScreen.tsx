@@ -49,13 +49,13 @@ const DepartmentListDashboardScreen = ({ departmentId, generalDepartmentId }: De
             {data?.hrDepartmentUsersCount?.data?.map((item: any) => {
               return (
                 <Col md={3}>
-                  <Card>
+                  <Card style={{ height: 'calc(100% - 1.25rem)' }}>
                     <CardBody>
                       <DashboardCard
                         key={item?.id}
                         title={item?.name}
                         count={item?.count}
-                        link={`/hr/dashboard/${generalDepartmentId}/department/${departmentId}/office/${item?.id}`}
+                        link={`/hr/dashboard/general-department/${generalDepartmentId}/department/${departmentId}/office/${item?.id}`}
                         icon={faNetworkWired}
                       />
                     </CardBody>

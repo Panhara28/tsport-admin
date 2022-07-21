@@ -1,9 +1,11 @@
 import { useQuery } from '@apollo/client';
-import { faAngleLeft, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faAngleLeft, faChevronDown, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { gql } from 'apollo-boost';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { Dropdown, Modal } from 'react-bootstrap';
 import { Col } from 'reactstrap';
 import { Row } from 'reactstrap';
 import { Card } from 'reactstrap';
@@ -12,16 +14,50 @@ import { CardBody } from 'reactstrap';
 import { Container } from 'reactstrap';
 import { Breadcrumb } from '../../components/Common/Breadcrumb';
 import Button from '../../components/Form/Button';
+import XForm from '../../components/Form/XForm';
 import { CustomPagination } from '../../components/Paginations';
+import BiographyForm from '../../components/PrintForm/BiographyForm/BiographyForm';
+import ContractForm from '../../components/PrintForm/ContractForm/ContractForm';
+import CVForm from '../../components/PrintForm/CVForm/CVForm';
 import Layout from '../../components/VerticalLayout';
 import { setting } from '../../libs/settings';
+import { CustomModal, CustomTableContainer } from './HrEmployeeListScreen.styled';
 
 const QUERY = gql`
-  query hrEmployeeList($pagination: PaginationInput) {
-    hrEmployeeList(pagination: $pagination) {
+  query hrEmployeeList($pagination: PaginationInput, $filter: HrEmployeeFilter) {
+    hrEmployeeList(pagination: $pagination, filter: $filter) {
       data {
         id
+        username
         fullname
+        fullname_en
+        profile
+        phoneNumber
+        status
+        email
+        gender
+        nationality
+        dob
+        district
+        commune
+        education_level
+        passport_id
+        national_id
+        position_level
+        position_description
+        unit
+        department_id
+        general_department_id
+        contact_city_or_province
+        province
+        homeNo
+        streetNo
+        village_or_group
+        contact_district
+        contact_village
+        contact_commune
+        officer_id
+        office_id
       }
       pagination {
         current
@@ -32,8 +68,49 @@ const QUERY = gql`
   }
 `;
 
-export function HrEmployeeListScreen() {
+function RenderBiographyFormModal({ info, isShow, setIsShow }: any) {
+  return (
+    <CustomModal dialogClassName="modal-90w" show={isShow === info?.id} onHide={() => setIsShow(0)}>
+      <Modal.Header closeButton></Modal.Header>
+      <Modal.Body>
+        <BiographyForm info={info} />
+      </Modal.Body>
+    </CustomModal>
+  );
+}
+
+function RenderContactFormModal({ info, isShowContractForm, setIsShowContractForm }: any) {
+  return (
+    <CustomModal
+      dialogClassName="modal-90w"
+      show={isShowContractForm === info?.id}
+      onHide={() => setIsShowContractForm(0)}
+    >
+      <Modal.Header closeButton></Modal.Header>
+      <Modal.Body>
+        <ContractForm info={info} />
+      </Modal.Body>
+    </CustomModal>
+  );
+}
+
+function RenderCVFormModal({ info, isShowCVForm, setIsShowCVForm }: any) {
+  return (
+    <CustomModal dialogClassName="modal-90w" show={isShowCVForm === info?.id} onHide={() => setIsShowCVForm(0)}>
+      <Modal.Header closeButton></Modal.Header>
+      <Modal.Body>
+        <CVForm info={info} />
+      </Modal.Body>
+    </CustomModal>
+  );
+}
+
+const RenderHrEmployeeList = ({ filterOfficerName }: any) => {
   const router = useRouter();
+
+  const [isShow, setIsShow] = useState(0);
+  const [isShowContractForm, setIsShowContractForm] = useState(0);
+  const [isShowCVForm, setIsShowCVForm] = useState(0);
 
   const { data, loading } = useQuery(QUERY, {
     variables: {
@@ -41,10 +118,79 @@ export function HrEmployeeListScreen() {
         page: router.query.page ? Number(router.query.page) : 1,
         size: 10,
       },
+      filter: {
+        officerName: filterOfficerName,
+      },
     },
   });
 
   if (loading || !data) return <div>Loading...</div>;
+
+  return (
+    <Card>
+      <CardBody>
+        <CustomTableContainer>
+          <Table className="table-centered table-nowrap mb-0" hover striped>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Fullname</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data?.hrEmployeeList?.data.map((item: any) => {
+                return (
+                  <tr key={item?.id}>
+                    <td>{item?.id}</td>
+                    <td>{item?.fullname}</td>
+                    <td>
+                      <div className="d-flex">
+                        <Dropdown>
+                          <Dropdown.Toggle variant="success" id="dropdown-basic">
+                            Forms <FontAwesomeIcon icon={faChevronDown} />
+                          </Dropdown.Toggle>
+
+                          <Dropdown.Menu>
+                            <Dropdown.Item onClick={() => setIsShow(item?.id)}>ជីវប្រវត្តិសង្ខេប</Dropdown.Item>
+                            <Dropdown.Item onClick={() => setIsShowContractForm(item?.id)}>កិច្ចសន្យា</Dropdown.Item>
+                            <Dropdown.Item onClick={() => setIsShowCVForm(item?.id)}>ប្រវត្តិរូបសង្ខេប</Dropdown.Item>
+                          </Dropdown.Menu>
+                        </Dropdown>
+                        <Link href={`/hr/officers/${item?.id}/edit`}>
+                          <a style={{ marginLeft: 10 }} className="btn btn-primary">
+                            Edit
+                          </a>
+                        </Link>
+                      </div>
+                    </td>
+                    <RenderBiographyFormModal info={item} isShow={isShow} setIsShow={setIsShow} />
+                    <RenderContactFormModal
+                      info={item}
+                      isShowContractForm={isShowContractForm}
+                      setIsShowContractForm={setIsShowContractForm}
+                    />
+                    <RenderCVFormModal info={item} isShowCVForm={isShowCVForm} setIsShowCVForm={setIsShowCVForm} />
+                  </tr>
+                );
+              })}
+            </tbody>
+          </Table>
+        </CustomTableContainer>
+      </CardBody>
+      <CustomPagination
+        total={data?.hrEmployeeList?.pagination?.total}
+        currentPage={data?.hrEmployeeList?.pagination?.current}
+        size={data?.hrEmployeeList?.pagination?.size}
+        limit={10}
+      />
+    </Card>
+  );
+};
+
+export function HrEmployeeListScreen() {
+  const router = useRouter();
+  const [filterOfficerName, setFilterOfficerName] = useState(undefined);
 
   return (
     <Layout>
@@ -66,58 +212,16 @@ export function HrEmployeeListScreen() {
                   </a>
                 </Link>
               </div>
-              <Card>
-                <CardBody>
-                  <Table className="table-centered table-nowrap mb-0" hover striped>
-                    <thead>
-                      <tr>
-                        <th>ID</th>
-                        <th>Fullname</th>
-                        <th>Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {data.hrEmployeeList.data.map((item: any) => {
-                        return (
-                          <tr key={item.id}>
-                            <td>{item?.id}</td>
-                            <td>{item?.fullname}</td>
-                            <td>
-                              <Link href={`/hr/officers/${item?.id}/edit`}>
-                                <a style={{ marginLeft: 10 }} className="btn btn-primary">
-                                  Edit
-                                </a>
-                              </Link>
-                              {/* <Link href={`/hr/users/${item?.id}/role`}>
-                                <a style={{ marginLeft: 10 }} className="btn btn-info">
-                                  Assign Role
-                                </a>
-                              </Link>
-                              <Link href="#">
-                                <a style={{ marginLeft: 10 }} className="btn btn-danger">
-                                  Remove
-                                </a>
-                              </Link> */}
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </Table>
-                </CardBody>
-                <CustomPagination
-                  total={data?.adminUserList?.pagination?.total}
-                  currentPage={data?.adminUserList?.pagination?.current}
-                  size={data?.adminUserList?.pagination?.size}
-                  limit={10}
-                />
-              </Card>
+
+              <RenderHrEmployeeList filterOfficerName={filterOfficerName} />
             </Col>
             <Col md={3}>
               <Card>
                 <CardBody>
                   <h6>Filter</h6>
                   <hr />
+                  <label>Search by Officer Name</label>
+                  <XForm.Text value={filterOfficerName} onChange={(e: any) => setFilterOfficerName(e?.target?.value)} />
                 </CardBody>
               </Card>
             </Col>
