@@ -18,6 +18,8 @@ import ContractForm from '../../components/PrintForm/ContractForm/ContractForm';
 import CVForm from '../../components/PrintForm/CVForm/CVForm';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { CustomPagination } from '../../components/Paginations';
+import { useRouter } from 'next/router';
 
 const QUERY = gql`
   query employeeReport($pagination: PaginationInput, $filter: EmployeeReportFilter) {
@@ -54,6 +56,11 @@ const QUERY = gql`
         contact_commune
         officer_id
         office_id
+      }
+      pagination {
+        total
+        size
+        current
       }
     }
   }
@@ -202,6 +209,7 @@ function RenderCVFormModal({ info, isShowCVForm, setIsShowCVForm }: any) {
 }
 
 function RenderReport({ generalDepartmentId, departmentId, officeId, officerName }: RenderReportProps) {
+  const router = useRouter();
   const [isShow, setIsShow] = useState(0);
   const [isShowContractForm, setIsShowContractForm] = useState(0);
   const [isShowCVForm, setIsShowCVForm] = useState(0);
@@ -209,7 +217,7 @@ function RenderReport({ generalDepartmentId, departmentId, officeId, officerName
   const { data, loading } = useQuery(QUERY, {
     variables: {
       pagination: {
-        page: 1,
+        page: router.query.page ? Number(router.query.page) : 1,
         size: 10,
       },
       filter: {
@@ -225,42 +233,70 @@ function RenderReport({ generalDepartmentId, departmentId, officeId, officerName
 
   return (
     <>
-      {data.employeeReport.data.map((item: any) => {
-        return (
-          <tr key={item?.id}>
-            <td>{item?.profile}</td>
-            <td>{item?.fullname}</td>
-            <td>{item?.gender}</td>
-            <td>{item?.phoneNumber}</td>
-            <td>{item?.email}</td>
-            <td>
-              <div className="d-flex" style={{ gap: 15 }}>
-                <Dropdown>
-                  <Dropdown.Toggle variant="success" id="dropdown-basic">
-                    Forms <FontAwesomeIcon icon={faChevronDown} />
-                  </Dropdown.Toggle>
+      <Card>
+        <CardBody>
+          <CustomTableContainer>
+            <Table striped responsive bordered hover>
+              <thead>
+                <tr>
+                  <th>Profile</th>
+                  <th>Fullname</th>
+                  <th>Gender</th>
+                  <th>Phone Number</th>
+                  <th>Email</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.employeeReport.data.map((item: any) => {
+                  return (
+                    <tr key={item?.id}>
+                      <td>
+                        <img src={item?.profile ? item?.profile : '/userplacehoder.png'} width={50} height={50} />
+                      </td>
+                      <td>{item?.fullname}</td>
+                      <td>{item?.gender}</td>
+                      <td>{item?.phoneNumber}</td>
+                      <td>{item?.email}</td>
+                      <td>
+                        <div className="d-flex" style={{ gap: 15 }}>
+                          <Dropdown>
+                            <Dropdown.Toggle variant="success" id="dropdown-basic">
+                              Forms <FontAwesomeIcon icon={faChevronDown} />
+                            </Dropdown.Toggle>
 
-                  <Dropdown.Menu>
-                    <Dropdown.Item onClick={() => setIsShow(item?.id)}>ជីវប្រវត្តិសង្ខេប</Dropdown.Item>
-                    <Dropdown.Item onClick={() => setIsShowContractForm(item?.id)}>កិច្ចសន្យា</Dropdown.Item>
-                    <Dropdown.Item onClick={() => setIsShowCVForm(item?.id)}>ប្រវត្តិរូបសង្ខេប</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-                <Link href={`/hr/officers/${item?.id}/edit`}>
-                  <a className="btn btn-primary">Edit</a>
-                </Link>
-              </div>
-            </td>
-            <RenderBiographyFormModal info={item} isShow={isShow} setIsShow={setIsShow} />
-            <RenderContactFormModal
-              info={item}
-              isShowContractForm={isShowContractForm}
-              setIsShowContractForm={setIsShowContractForm}
-            />
-            <RenderCVFormModal info={item} isShowCVForm={isShowCVForm} setIsShowCVForm={setIsShowCVForm} />
-          </tr>
-        );
-      })}
+                            <Dropdown.Menu>
+                              <Dropdown.Item onClick={() => setIsShow(item?.id)}>ជីវប្រវត្តិសង្ខេប</Dropdown.Item>
+                              <Dropdown.Item onClick={() => setIsShowContractForm(item?.id)}>កិច្ចសន្យា</Dropdown.Item>
+                              <Dropdown.Item onClick={() => setIsShowCVForm(item?.id)}>ប្រវត្តិរូបសង្ខេប</Dropdown.Item>
+                            </Dropdown.Menu>
+                          </Dropdown>
+                          <Link href={`/hr/officers/${item?.id}/edit`}>
+                            <a className="btn btn-primary">Edit</a>
+                          </Link>
+                        </div>
+                      </td>
+                      <RenderBiographyFormModal info={item} isShow={isShow} setIsShow={setIsShow} />
+                      <RenderContactFormModal
+                        info={item}
+                        isShowContractForm={isShowContractForm}
+                        setIsShowContractForm={setIsShowContractForm}
+                      />
+                      <RenderCVFormModal info={item} isShowCVForm={isShowCVForm} setIsShowCVForm={setIsShowCVForm} />
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </Table>
+          </CustomTableContainer>
+        </CardBody>
+        <CustomPagination
+          total={data?.employeeReport?.pagination?.total}
+          currentPage={data?.employeeReport?.pagination?.current}
+          size={data?.employeeReport?.pagination?.size}
+          limit={10}
+        />
+      </Card>
     </>
   );
 }
@@ -313,32 +349,12 @@ export function SearchScreen() {
           </Row>
           <Row>
             <Col>
-              <Card>
-                <CardBody>
-                  <CustomTableContainer>
-                    <Table striped responsive bordered hover>
-                      <thead>
-                        <tr>
-                          <th>Profile</th>
-                          <th>Fullname</th>
-                          <th>Gender</th>
-                          <th>Phone Number</th>
-                          <th>Email</th>
-                          <th>Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <RenderReport
-                          generalDepartmentId={Number(generalDepartmentId)}
-                          departmentId={Number(departmentId)}
-                          officeId={Number(officeId)}
-                          officerName={officerName}
-                        />
-                      </tbody>
-                    </Table>
-                  </CustomTableContainer>
-                </CardBody>
-              </Card>
+              <RenderReport
+                generalDepartmentId={Number(generalDepartmentId)}
+                departmentId={Number(departmentId)}
+                officeId={Number(officeId)}
+                officerName={officerName}
+              />
             </Col>
           </Row>
         </Container>
