@@ -18,6 +18,8 @@ import ContractForm from '../../components/PrintForm/ContractForm/ContractForm';
 import CVForm from '../../components/PrintForm/CVForm/CVForm';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import Image from 'next/image';
+import classes from './report.module.scss';
 
 const QUERY = gql`
   query employeeReport($pagination: PaginationInput, $filter: EmployeeReportFilter) {
@@ -228,7 +230,12 @@ function RenderReport({ generalDepartmentId, departmentId, officeId, officerName
       {data.employeeReport.data.map((item: any) => {
         return (
           <tr key={item?.id}>
-            <td>{item?.profile}</td>
+            <td>
+              {/* {item?.profile} */}
+              <div className={classes.profile}>
+                {/* <Image {item?.profile ? item.profile : '/icons/profile.png'} alt="profile" layout="responsive" width={512} height={512} /> */}
+              </div>
+            </td>
             <td>{item?.fullname}</td>
             <td>{item?.gender}</td>
             <td>{item?.phoneNumber}</td>
