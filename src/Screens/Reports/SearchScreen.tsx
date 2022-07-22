@@ -231,16 +231,17 @@ function RenderReport({ generalDepartmentId, departmentId, officeId, officerName
         return (
           <tr key={item?.id}>
             <td>
-              {/* {item?.profile} */}
-              <div className={classes.profile}>
-                <Image
-                  src={item?.profile ? item.profile : '/icons/profile.png'}
-                  alt="profile"
-                  layout="responsive"
-                  width={512}
-                  height={512}
-                />
-              </div>
+              <td>
+                <div className={classes.profile}>
+                  <Image
+                    src={item?.profile ? item.profile : '/icons/profile.png'}
+                    alt="profile"
+                    layout="responsive"
+                    width={512}
+                    height={512}
+                  />
+                </div>
+              </td>
             </td>
             <td>{item?.fullname}</td>
             <td>{item?.gender}</td>

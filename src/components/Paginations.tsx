@@ -38,7 +38,7 @@ export function CustomPagination({ currentPage, size, total, limit, variableName
   //Construct Previous Page
   pages.push(
     <li key="_previous" className={'paginate_button page-item ' + (currentPage === 1 ? 'disabled' : '')}>
-      <Link href={base + variableName + '=' + (currentPage - 1)}>
+      <Link href={base + variableN + '=' + (currentPage - 1)}>
         <a className={`page-link`}>
           <FontAwesomeIcon icon={faAngleLeft} style={{ fontSize: 15 }} />
         </a>
@@ -67,7 +67,7 @@ export function CustomPagination({ currentPage, size, total, limit, variableName
           (i + start === currentPage ? 'disabled' : '')
         }
       >
-        <Link href={base + variableName + '=' + (i + start)}>
+        <Link href={base + variableN + '=' + (i + start)}>
           <a className={`page-link`}>{i + start}</a>
         </Link>
       </li>,
@@ -76,7 +76,7 @@ export function CustomPagination({ currentPage, size, total, limit, variableName
 
   pages.push(
     <li key="next" className={'paginate_button page-item ' + (currentPage * limit >= total ? 'disabled' : '')}>
-      <Link href={base + variableName + '=' + (currentPage + 1)}>
+      <Link href={base + variableN + '=' + (currentPage + 1)}>
         <a className="page-link">
           <FontAwesomeIcon icon={faAngleRight} style={{ fontSize: 15 }} />
         </a>
