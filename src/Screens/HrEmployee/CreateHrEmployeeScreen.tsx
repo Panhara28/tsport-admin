@@ -273,6 +273,73 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
     setOfficeId('');
   };
 
+  const positionLevelSelectOptions: any = [
+    {
+      text: 'Choose one of the following',
+      value: undefined,
+    },
+    {
+      text: 'រដ្ឋមន្រ្តី',
+      value: 'រដ្ឋមន្រ្តី',
+    },
+    {
+      text: 'រដ្ឋលេខាធិការ',
+      value: 'រដ្ឋលេខាធិការ',
+    },
+    {
+      text: 'អនុរដ្ឋលេខាធិការ',
+      value: 'អនុរដ្ឋលេខាធិការ',
+    },
+    {
+      text: 'អគ្គនាយក',
+      value: 'អគ្គនាយក',
+    },
+    {
+      text: 'អគ្គនាយករង',
+      value: 'អគ្គនាយករង',
+    },
+    {
+      text: 'ប្រធាននាយកដ្ឋាន',
+      value: 'ប្រធាននាយកដ្ឋាន',
+    },
+    {
+      text: 'អនុប្រធាននាយកដ្ឋាន',
+      value: 'អនុប្រធាននាយកដ្ឋាន',
+    },
+    {
+      text: 'ប្រធានការិយាល័យ',
+      value: 'ប្រធានការិយាល័យ',
+    },
+    {
+      text: 'អនុប្រធានការិយាល័យ',
+      value: 'អនុប្រធានការិយាល័យ',
+    },
+    {
+      text: 'មន្រ្តី',
+      value: 'មន្រ្តី',
+    },
+    {
+      text: 'មន្រ្តីជាប់កិច្ចសន្យា',
+      value: 'មន្រ្តីជាប់កិច្ចសន្យា',
+    },
+    {
+      text: 'បុគ្គលិកស្ម័គ្រចិត្ត',
+      value: 'បុគ្គលិកស្ម័គ្រចិត្ត',
+    },
+    {
+      text: 'ខុន្ទកាល័យឯកឧតម្តរដ្ឋមន្រ្តី',
+      value: 'ខុន្ទកាល័យឯកឧតម្តរដ្ឋមន្រ្តី',
+    },
+    {
+      text: 'អគ្គាធិការ',
+      value: 'អគ្គាធិការ',
+    },
+    {
+      text: 'អគ្គាធិការរង',
+      value: 'អគ្គាធិការរង',
+    },
+  ];
+
   return (
     <Form onSubmit={onHandleSubmit}>
       <Row>
@@ -458,9 +525,10 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
         </Col>
 
         <Col md={6}>
-          <XForm.Text
+          <XForm.Select
             label="Position Level"
             value={positionLevel}
+            items={positionLevelSelectOptions}
             name="positionLevel"
             onChange={e => setPositionLevel(e.currentTarget.value)}
           />
@@ -669,6 +737,74 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
       input: input,
     });
   };
+
+  const positionLevelSelectOptions: any = [
+    {
+      text: 'Choose one of the following',
+      value: undefined,
+    },
+    {
+      text: 'រដ្ឋមន្រ្តី',
+      value: 'រដ្ឋមន្រ្តី',
+    },
+    {
+      text: 'រដ្ឋលេខាធិការ',
+      value: 'រដ្ឋលេខាធិការ',
+    },
+    {
+      text: 'អនុរដ្ឋលេខាធិការ',
+      value: 'អនុរដ្ឋលេខាធិការ',
+    },
+    {
+      text: 'អគ្គនាយក',
+      value: 'អគ្គនាយក',
+    },
+    {
+      text: 'អគ្គនាយករង',
+      value: 'អគ្គនាយករង',
+    },
+    {
+      text: 'ប្រធាននាយកដ្ឋាន',
+      value: 'ប្រធាននាយកដ្ឋាន',
+    },
+    {
+      text: 'អនុប្រធាននាយកដ្ឋាន',
+      value: 'អនុប្រធាននាយកដ្ឋាន',
+    },
+    {
+      text: 'ប្រធានការិយាល័យ',
+      value: 'ប្រធានការិយាល័យ',
+    },
+    {
+      text: 'អនុប្រធានការិយាល័យ',
+      value: 'អនុប្រធានការិយាល័យ',
+    },
+    {
+      text: 'មន្រ្តី',
+      value: 'មន្រ្តី',
+    },
+    {
+      text: 'មន្រ្តីជាប់កិច្ចសន្យា',
+      value: 'មន្រ្តីជាប់កិច្ចសន្យា',
+    },
+    {
+      text: 'បុគ្គលិកស្ម័គ្រចិត្ត',
+      value: 'បុគ្គលិកស្ម័គ្រចិត្ត',
+    },
+    {
+      text: 'ខុន្ទកាល័យឯកឧតម្តរដ្ឋមន្រ្តី',
+      value: 'ខុន្ទកាល័យឯកឧតម្តរដ្ឋមន្រ្តី',
+    },
+    {
+      text: 'អគ្គាធិការ',
+      value: 'អគ្គាធិការ',
+    },
+    {
+      text: 'អគ្គាធិការរង',
+      value: 'អគ្គាធិការរង',
+    },
+  ];
+
   return (
     <Form onSubmit={onHandleSubmit}>
       <Row>
@@ -834,9 +970,10 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
         </Col>
 
         <Col md={6}>
-          <XForm.Text
+          <XForm.Select
             label="Position Level"
             value={positionLevel}
+            items={positionLevelSelectOptions}
             name="positionLevel"
             onChange={e => setPositionLevel(e.currentTarget.value)}
           />

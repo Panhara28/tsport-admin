@@ -232,7 +232,7 @@ function RenderReport({ generalDepartmentId, departmentId, officeId, officerName
           <tr key={item?.id}>
             <td>
               <td>
-                <div className={classes.profile}>
+                <div className={classes.profile} onClick={() => setIsShow(item?.id)}>
                   <Image
                     src={item?.profile ? item.profile : '/icons/profile.png'}
                     alt="profile"

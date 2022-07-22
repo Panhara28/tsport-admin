@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { faAngleLeft, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { gql } from 'apollo-boost';
@@ -10,6 +10,7 @@ import { Card } from 'reactstrap';
 import { Table } from 'reactstrap';
 import { CardBody } from 'reactstrap';
 import { Container } from 'reactstrap';
+import Swal from 'sweetalert2';
 import { Breadcrumb } from '../../../components/Common/Breadcrumb';
 import { CustomPagination } from '../../../components/Paginations';
 import Layout from '../../../components/VerticalLayout';
@@ -18,6 +19,12 @@ import { setting } from '../../../libs/settings';
 const QUERY = gql`
   query hrDepartmentList($branch_level: Int) {
     hrDepartmentList(branch_level: $branch_level)
+  }
+`;
+
+const REMOVE_DEPARTMENT = gql`
+  mutation removeHrDepartment($id: Int!) {
+    removeHrDepartment(id: $id)
   }
 `;
 
@@ -34,7 +41,46 @@ export function DepartmentListScreen() {
     },
   });
 
+  const [removeHrDepartment] = useMutation(REMOVE_DEPARTMENT, { refetchQueries: ['hrDepartmentList'] });
+
   if (loading || !data) return <div>Loading...</div>;
+
+  const onHandleRemoveHrDepartment = (e: any, id: number) => {
+    e.preventDefault();
+
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: 'btn btn-success ml-2',
+        cancelButton: 'btn btn-danger',
+      },
+      // buttonsStyling: false,
+    });
+
+    swalWithBootstrapButtons
+      .fire({
+        title: 'Accept to continue deletion?',
+        showCancelButton: true,
+        reverseButtons: true,
+        confirmButtonText: 'Confirm',
+        cancelButtonText: 'Deny',
+      })
+      .then((result: any) => {
+        if (result.isConfirmed) {
+          swalWithBootstrapButtons.fire({
+            title: 'Deleted!',
+            text: 'Your selection has been deleted.',
+            icon: 'success',
+            timer: 1500,
+          });
+
+          removeHrDepartment({
+            variables: {
+              id: id,
+            },
+          });
+        }
+      });
+  };
 
   return (
     <Layout>
@@ -79,8 +125,12 @@ export function DepartmentListScreen() {
                                 </a>
                               </Link>
                               <Link href="#">
-                                <a className="btn btn-danger " style={{ marginLeft: 10 }} onClick={() => router.back()}>
-                                  Cancel
+                                <a
+                                  className="btn btn-danger "
+                                  style={{ marginLeft: 10 }}
+                                  onClick={e => onHandleRemoveHrDepartment(e, item?.id)}
+                                >
+                                  Remove
                                 </a>
                               </Link>
                             </td>
