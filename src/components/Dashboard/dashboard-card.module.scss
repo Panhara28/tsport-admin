@@ -11,14 +11,23 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
+  .departmentIcon {
+    font-size: 0.875em;
+  }
+
+  
 }
 
 .dashWidgetInfo {
-  margin-left: 20px;
-  // flex-direction: column;
-  // text-align: right;
-  // width: calc(100% - 70px);
-  // margin-bottom: 15px;
-  // justify-content: flex-end;
-  // display: flex;
+  span {
+    text-align: left;
+  }
+  @media screen and (max-width: 1400px) {
+    span,
+    h5 {
+      padding-left: 0.9em;
+      font-size: 1.1em;
+    }
+  }
 }
