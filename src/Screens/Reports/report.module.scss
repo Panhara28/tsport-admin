@@ -1,3 +1,17 @@
+.profile {
+  max-width: 100%;
+  width: 3.2em;
+  height: 3.2em;
+
+  img {
+    border-radius: 50%;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 .label_txt {
   color: #6b778c;
   display: inline-block;
@@ -6,10 +20,4 @@
   line-height: 16px;
   padding: 0;
   margin-bottom: 4px;
-}
-
-.select_input {
-  background-color: #fafbfc;
-  border-radius: 3px;
-  outline: none;
 }

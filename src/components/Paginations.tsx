@@ -19,7 +19,7 @@ export function CustomPagination({ currentPage, size, total, limit, variableName
   const search = new URLSearchParams(process.browser ? window.location.search : '');
 
   search.delete(variableN);
-  const base: string = '?' + (search.toString() !== '' ? search.toString() + '&' : '');
+  const base: string = window.location.pathname + '?' + (search.toString() !== '' ? search.toString() + '&' : '');
 
   let pagesPage = Math.ceil(total / limit);
 
@@ -73,6 +73,8 @@ export function CustomPagination({ currentPage, size, total, limit, variableName
       </li>,
     );
   }
+
+  console.log(window.location.pathname);
 
   pages.push(
     <li key="next" className={'paginate_button page-item ' + (currentPage * limit >= total ? 'disabled' : '')}>

@@ -1,7 +1,9 @@
 import { gql, useQuery } from '@apollo/client';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { Dropdown, Modal } from 'react-bootstrap';
 import { Row } from 'reactstrap';
@@ -13,22 +15,17 @@ import { Container } from 'reactstrap';
 import { Breadcrumb } from '../../components/Common/Breadcrumb';
 import { DashboardCard } from '../../components/Dashboard/DashboardCard';
 import XForm from '../../components/Form/XForm';
+import { CustomPagination } from '../../components/Paginations';
 import BiographyForm from '../../components/PrintForm/BiographyForm/BiographyForm';
 import ContractForm from '../../components/PrintForm/ContractForm/ContractForm';
 import CVForm from '../../components/PrintForm/CVForm/CVForm';
 import Layout from '../../components/VerticalLayout';
 import { setting } from '../../libs/settings';
-import { CustomModal } from './OfficeListDashboardScreen.styled';
+import { CustomModal, CustomTableContainer } from './DashboardScreen.styled';
 
 const QUERY = gql`
-  query hrDepartmentUsersCount($filter: HrDepartmentUsersCountFilter) {
-    hrDepartmentUsersCount(filter: $filter)
-  }
-`;
-
-const HR_EMPLOYEE_QUERY = gql`
-  query hrDepartmentUsersCount($filter: HrDepartmentUsersCountFilter) {
-    hrDepartmentUsersCount(filter: $filter)
+  query hrDepartmentUsersCount($filter: HrDepartmentUsersCountFilter, $pagination: PaginationInput) {
+    hrDepartmentUsersCount(filter: $filter, pagination: $pagination)
   }
 `;
 
@@ -76,6 +73,7 @@ function RenderCVFormModal({ info, isShowCVForm, setIsShowCVForm }: any) {
 }
 
 const RenderHrEmployeeList = ({ officeId, filterOfficerName }: any) => {
+  const router = useRouter();
   const [isShow, setIsShow] = useState(0);
   const [isShowContractForm, setIsShowContractForm] = useState(0);
   const [isShowCVForm, setIsShowCVForm] = useState(0);
@@ -87,6 +85,10 @@ const RenderHrEmployeeList = ({ officeId, filterOfficerName }: any) => {
         type: 'OFFICE',
         officerName: filterOfficerName,
       },
+      pagination: {
+        page: router.query.page ? Number(router.query.page) : 1,
+        size: 10,
+      },
     },
   });
 
@@ -95,54 +97,79 @@ const RenderHrEmployeeList = ({ officeId, filterOfficerName }: any) => {
   return (
     <Card>
       <CardBody>
-        <Table className="table-centered table-nowrap mb-0" hover striped>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Fullname</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data?.hrDepartmentUsersCount?.totalUsers?.map((item: any) => {
-              return (
-                <tr key={item.id}>
-                  <td>{item.id}</td>
-                  <td>{item.fullname}</td>
-                  <td>
-                    <div className="d-flex">
-                      <Dropdown>
-                        <Dropdown.Toggle variant="success" id="dropdown-basic">
-                          Forms <FontAwesomeIcon icon={faChevronDown} />
-                        </Dropdown.Toggle>
+        <CustomTableContainer>
+          <Table className="table-centered table-nowrap mb-0" hover striped>
+            <thead>
+              <tr>
+                <th>Profile</th>
+                <th>Fullname</th>
+                <th>Gender</th>
+                <th>Phone Number</th>
+                <th>Email</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data?.hrDepartmentUsersCount?.totalUsers?.map((item: any) => {
+                return (
+                  <tr key={item.id}>
+                    <td>
+                      <div onClick={() => setIsShow(item?.id)}>
+                        <Image
+                          className="profile_picture"
+                          src={item?.profile ? item.profile : '/icons/profile.png'}
+                          alt="profile"
+                          layout="responsive"
+                          width={512}
+                          height={512}
+                        />
+                      </div>
+                    </td>
+                    <td>{item?.fullname}</td>
+                    <td>{item?.gender}</td>
+                    <td>{item?.phoneNumber}</td>
+                    <td>{item?.email}</td>
+                    <td>
+                      <div className="d-flex">
+                        <Dropdown>
+                          <Dropdown.Toggle variant="success" id="dropdown-basic">
+                            Forms <FontAwesomeIcon icon={faChevronDown} />
+                          </Dropdown.Toggle>
 
-                        <Dropdown.Menu>
-                          <Dropdown.Item onClick={() => setIsShow(item?.id)}>ជីវប្រវត្តិសង្ខេប</Dropdown.Item>
-                          <Dropdown.Item onClick={() => setIsShowContractForm(item?.id)}>កិច្ចសន្យា</Dropdown.Item>
-                          <Dropdown.Item onClick={() => setIsShowCVForm(item?.id)}>ប្រវត្តិរូបសង្ខេប</Dropdown.Item>
-                        </Dropdown.Menu>
-                      </Dropdown>
+                          <Dropdown.Menu>
+                            <Dropdown.Item onClick={() => setIsShow(item?.id)}>ជីវប្រវត្តិសង្ខេប</Dropdown.Item>
+                            <Dropdown.Item onClick={() => setIsShowContractForm(item?.id)}>កិច្ចសន្យា</Dropdown.Item>
+                            <Dropdown.Item onClick={() => setIsShowCVForm(item?.id)}>ប្រវត្តិរូបសង្ខេប</Dropdown.Item>
+                          </Dropdown.Menu>
+                        </Dropdown>
 
-                      <Link href={`/hr/officers/${item?.id}/edit`}>
-                        <a style={{ marginLeft: 10 }} className="btn btn-primary">
-                          Edit
-                        </a>
-                      </Link>
-                    </div>
-                    <RenderBiographyFormModal info={item} isShow={isShow} setIsShow={setIsShow} />
-                    <RenderContactFormModal
-                      info={item}
-                      isShowContractForm={isShowContractForm}
-                      setIsShowContractForm={setIsShowContractForm}
-                    />
-                    <RenderCVFormModal info={item} isShowCVForm={isShowCVForm} setIsShowCVForm={setIsShowCVForm} />
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </Table>
+                        <Link href={`/hr/officers/${item?.id}/edit`}>
+                          <a style={{ marginLeft: 10 }} className="btn btn-primary">
+                            Edit
+                          </a>
+                        </Link>
+                      </div>
+                      <RenderBiographyFormModal info={item} isShow={isShow} setIsShow={setIsShow} />
+                      <RenderContactFormModal
+                        info={item}
+                        isShowContractForm={isShowContractForm}
+                        setIsShowContractForm={setIsShowContractForm}
+                      />
+                      <RenderCVFormModal info={item} isShowCVForm={isShowCVForm} setIsShowCVForm={setIsShowCVForm} />
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </Table>
+        </CustomTableContainer>
       </CardBody>
+      <CustomPagination
+        total={data?.hrDepartmentUsersCount?.pagination?.total}
+        currentPage={data?.hrDepartmentUsersCount?.pagination?.current}
+        size={data?.hrDepartmentUsersCount?.pagination?.size}
+        limit={10}
+      />
     </Card>
   );
 };
@@ -160,6 +187,27 @@ const OfficeListDashboardScreen = ({ departmentId, generalDepartmentId, officeId
   });
 
   if (!data || loading) return <></>;
+
+  if (data?.hrDepartmentUsersCount?.data?.length === 0) {
+    return (
+      <Layout>
+        <div className="page-content">
+          <Container fluid>
+            <Breadcrumb
+              title={setting.title}
+              breadcrumbItem={
+                data?.hrDepartmentUsersCount?.parent?.name ? data?.hrDepartmentUsersCount?.parent?.name : 'Dashboard'
+              }
+            />
+            <hr />
+            <div className="d-flex justify-content-center mt-5">
+              <img src="/dashboard-no-data.png" width="600px" />
+            </div>
+          </Container>
+        </div>
+      </Layout>
+    );
+  }
 
   return (
     <Layout>

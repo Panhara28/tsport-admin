@@ -70,7 +70,11 @@ export function SingleUpload({ setImage, image, width, height }: Props) {
         </div>
         <div>
           {image ? (
-            <Image src={parseImageUrl(image, '800x570')} alt="" layout="responsive" width={150} height={150} />
+            <img
+              src={parseImageUrl(image, width && height ? `${width}x${height}` : '280x280')}
+              alt=""
+              style={{ width: width ? width : 280, height: height ? height : 280 }}
+            />
           ) : (
             undefined
           )}

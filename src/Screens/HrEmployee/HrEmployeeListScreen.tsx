@@ -2,6 +2,7 @@ import { useQuery } from '@apollo/client';
 import { faAngleLeft, faChevronDown, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { gql } from 'apollo-boost';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
@@ -133,8 +134,11 @@ const RenderHrEmployeeList = ({ filterOfficerName }: any) => {
           <Table className="table-centered table-nowrap mb-0" hover striped>
             <thead>
               <tr>
-                <th>ID</th>
+                <th>Profile</th>
                 <th>Fullname</th>
+                <th>Gender</th>
+                <th>Phone Number</th>
+                <th>Email</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -142,8 +146,19 @@ const RenderHrEmployeeList = ({ filterOfficerName }: any) => {
               {data?.hrEmployeeList?.data.map((item: any) => {
                 return (
                   <tr key={item?.id}>
-                    <td>{item?.id}</td>
+                    <td>
+                      <div onClick={() => setIsShow(item?.id)}>
+                        <img
+                          className="profile_picture"
+                          src={item?.profile ? item.profile : '/icons/profile.png'}
+                          alt="profile"
+                        />
+                      </div>
+                    </td>
                     <td>{item?.fullname}</td>
+                    <td>{item?.gender}</td>
+                    <td>{item?.phoneNumber}</td>
+                    <td>{item?.email}</td>
                     <td>
                       <div className="d-flex">
                         <Dropdown>

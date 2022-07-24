@@ -53,12 +53,18 @@ const DepartmentSelect = ({ department, setDepartment }: any) => {
 
   if (!data || loading) return <></>;
 
-  const options = data?.hrDepartmentList?.map((x: any) => {
-    return {
-      text: x?.name,
-      value: x?.id,
-    };
-  });
+  const options = [
+    {
+      text: 'Choose one of the following',
+      value: undefined,
+    },
+    ...data?.hrDepartmentList?.map((x: any) => {
+      return {
+        text: x?.name,
+        value: x?.id,
+      };
+    }),
+  ];
 
   return (
     <XForm.Select
