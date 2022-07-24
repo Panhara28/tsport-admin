@@ -69,7 +69,15 @@ export function SingleUpload({ setImage, image, width, height }: Props) {
           <FontAwesomeIcon icon={faTrash} style={{ cursor: 'pointer' }} className="text-danger mb-3" />
         </div>
         <div>
-          {image ? <img src={parseImageUrl(image, '800x570')} alt="" style={{ width: 150, height: 150 }} /> : undefined}
+          {image ? (
+            <img
+              src={parseImageUrl(image, width && height ? `${width}x${height}` : '280x280')}
+              alt=""
+              style={{ width: width ? width : 280, height: height ? height : 280 }}
+            />
+          ) : (
+            undefined
+          )}
         </div>
       </div>
     );
