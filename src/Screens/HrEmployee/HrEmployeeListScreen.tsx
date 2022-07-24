@@ -148,13 +148,10 @@ const RenderHrEmployeeList = ({ filterOfficerName }: any) => {
                   <tr key={item?.id}>
                     <td>
                       <div onClick={() => setIsShow(item?.id)}>
-                        <Image
+                        <img
                           className="profile_picture"
                           src={item?.profile ? item.profile : '/icons/profile.png'}
                           alt="profile"
-                          layout="responsive"
-                          width={512}
-                          height={512}
                         />
                       </div>
                     </td>
