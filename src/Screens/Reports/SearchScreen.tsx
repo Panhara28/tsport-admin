@@ -345,7 +345,7 @@ export function SearchScreen() {
                       <OfficeSelect officeId={officeId} setOfficeId={setOfficeId} departmentId={departmentId} />
                     </Col>
                     <Col md={3}>
-                      <label>Search</label>
+                      <label className={classes.label_txt}>Search</label>
                       <input
                         className="form-control"
                         value={officerName}
