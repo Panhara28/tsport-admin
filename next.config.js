@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['uat-space.uat.moc.gov.kh'],
+    domains: ['21accec-space.moc.gov.kh'],
   },
 };
 
