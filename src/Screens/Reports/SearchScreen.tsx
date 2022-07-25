@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { Col } from 'reactstrap';
 import { Row } from 'reactstrap';
 import { CardBody } from 'reactstrap';
@@ -255,12 +256,11 @@ function RenderReport({ generalDepartmentId, departmentId, officeId, officerName
                     <td>
                       <td>
                         <div className={classes.profile} onClick={() => setIsShow(item?.id)}>
-                          <Image
+                          <img
+                            className="profile_picture"
                             src={item?.profile ? item.profile : '/icons/profile.png'}
                             alt="profile"
-                            layout="responsive"
-                            width={512}
-                            height={512}
+                            style={{ width: '50px', height: '50px' }}
                           />
                         </div>
                       </td>

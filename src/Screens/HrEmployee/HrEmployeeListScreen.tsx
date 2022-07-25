@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useQuery } from '@apollo/client';
 import { faAngleLeft, faChevronDown, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
