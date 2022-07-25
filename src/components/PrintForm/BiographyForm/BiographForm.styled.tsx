@@ -1,5 +1,5 @@
-import { Col } from "react-bootstrap";
-import styled from "styled-components";
+import { Col } from 'react-bootstrap';
+import styled from 'styled-components';
 
 /*
   Commons
@@ -8,7 +8,7 @@ export const InputText = styled.p`
   margin-right: 60px !important;
   color: blue;
   font-weight: 600;
-  font-family: "Siemreap", cursive !important;
+  font-family: 'Siemreap', arial !important;
 `;
 
 export const BlankSpace = styled.span`
@@ -34,7 +34,7 @@ export const RowCol = styled(Col)`
 export const BiographyFormContainer = styled.div`
   padding: 40px 40px 0px 40px;
   position: relative;
-  font-family: "Moul", cursive;
+  font-family: 'Moul', cursive;
 
   p,
   b,
@@ -42,7 +42,7 @@ export const BiographyFormContainer = styled.div`
   h4,
   h5,
   h6 {
-    font-family: "Moul", cursive;
+    font-family: 'Moul', cursive;
   }
 `;
 
@@ -125,7 +125,7 @@ export const BiographyFormFooterRight = styled.div`
 `;
 
 export const InputTextSpan = styled.span`
-  font-family: "Siemreap", cursive !important;
+  font-family: 'Siemreap', cursive !important;
   color: blue;
   font-size: 16px;
   font-weight: 500;
