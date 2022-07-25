@@ -12,6 +12,8 @@ const ME = gql`
       id
       fullname
       profilePicture
+      phoneNumber
+      email
       roleName
       roleId
     }

@@ -49,20 +49,20 @@ export const ProfileMenu = () => {
           <FontAwesomeIcon icon={faAngleDown} className="d-none d-xl-inline-block font-size-15" />
         </DropdownToggle>
         <DropdownMenu className="dropdown-menu-end">
-          <Link href={`/mochub/profile`}>
+          <Link href={`/hr/profile`}>
             <a className="dropdown-item">
               <FontAwesomeIcon icon={faUser} className="font-size-14 align-middle text-muted me-1" /> Profile
             </a>
           </Link>
           <div className="dropdown-divider" />
-          <Link href="/mochub/profile/edit">
+          <Link href="/hr/profile/edit">
             <a className="dropdown-item">
               <FontAwesomeIcon icon={faEdit} className=" font-size-14 align-middle me-1 text-muted" />{' '}
               <span>Edit profile</span>
             </a>
           </Link>
           <div className="dropdown-divider" />
-          <Link href="/mochub/profile/change-password">
+          <Link href="/hr/profile/change-password">
             <a className="dropdown-item">
               <FontAwesomeIcon icon={faKey} className=" font-size-14 align-middle me-1 text-muted" />{' '}
               <span>Change password</span>

@@ -159,10 +159,11 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
       fullname: fullname,
       email: email,
       phoneNumber: phoneNumber,
+      profile_picture: image,
     };
 
     update({
-      ...input,
+      input: input,
     });
   };
   return (

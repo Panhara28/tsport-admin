@@ -59,7 +59,7 @@ export function SingleUpload({ setImage, image, width, height }: Props) {
             flexDirection: 'row',
             position: 'absolute',
             top: 45,
-            right: 20,
+            left: width ? Number(width) - 15 : 280,
             zIndex: 999,
           }}
           onClick={() => {
