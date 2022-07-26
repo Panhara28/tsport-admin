@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { faAngleLeft, faChevronDown, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { gql } from 'apollo-boost';
@@ -24,6 +24,7 @@ import CVForm from '../../components/PrintForm/CVForm/CVForm';
 import Layout from '../../components/VerticalLayout';
 import { setting } from '../../libs/settings';
 import { CustomModal, CustomTableContainer } from './HrEmployeeListScreen.styled';
+import Swal from 'sweetalert2';
 
 const QUERY = gql`
   query hrEmployeeList($pagination: PaginationInput, $filter: HrEmployeeFilter) {
@@ -67,6 +68,12 @@ const QUERY = gql`
         total
       }
     }
+  }
+`;
+
+const REMOVE_HR_EMPLOYEE = gql`
+  mutation removeHrEmployee($id: Int!) {
+    removeHrEmployee(id: $id)
   }
 `;
 
@@ -114,6 +121,8 @@ const RenderHrEmployeeList = ({ filterOfficerName }: any) => {
   const [isShowContractForm, setIsShowContractForm] = useState(0);
   const [isShowCVForm, setIsShowCVForm] = useState(0);
 
+  const [removeHrEmployee] = useMutation(REMOVE_HR_EMPLOYEE, { refetchQueries: ['hrEmployeeList'] });
+
   const { data, loading } = useQuery(QUERY, {
     variables: {
       pagination: {
@@ -127,6 +136,43 @@ const RenderHrEmployeeList = ({ filterOfficerName }: any) => {
   });
 
   if (loading || !data) return <div>Loading...</div>;
+
+  const onHandleRemoveHrDepartment = (e: any, id: number) => {
+    e.preventDefault();
+
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: 'btn btn-success ml-2',
+        cancelButton: 'btn btn-danger',
+      },
+      // buttonsStyling: false,
+    });
+
+    swalWithBootstrapButtons
+      .fire({
+        title: 'Accept to continue deletion?',
+        showCancelButton: true,
+        reverseButtons: true,
+        confirmButtonText: 'Confirm',
+        cancelButtonText: 'Deny',
+      })
+      .then((result: any) => {
+        if (result.isConfirmed) {
+          swalWithBootstrapButtons.fire({
+            title: 'Deleted!',
+            text: 'Your selection has been deleted.',
+            icon: 'success',
+            timer: 1500,
+          });
+
+          removeHrEmployee({
+            variables: {
+              id: id,
+            },
+          });
+        }
+      });
+  };
 
   return (
     <Card>
@@ -176,6 +222,15 @@ const RenderHrEmployeeList = ({ filterOfficerName }: any) => {
                         <Link href={`/hr/officers/${item?.id}/edit`}>
                           <a style={{ marginLeft: 10 }} className="btn btn-primary">
                             Edit
+                          </a>
+                        </Link>
+                        <Link href="#">
+                          <a
+                            className="btn btn-danger "
+                            style={{ marginLeft: 10 }}
+                            onClick={e => onHandleRemoveHrDepartment(e, item?.id)}
+                          >
+                            Remove
                           </a>
                         </Link>
                       </div>
