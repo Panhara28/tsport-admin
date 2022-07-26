@@ -72,6 +72,7 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
       fullname: fullname,
       email: x.email?.value,
       phoneNumber: x.phoneNumber?.value,
+      profile_picture: image,
     };
 
     update({

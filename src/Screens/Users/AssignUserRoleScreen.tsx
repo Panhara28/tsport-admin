@@ -112,35 +112,35 @@ export function AssignUserRoleScreen({ userEditId }: Props) {
                     <Table responsive striped hover>
                       <thead>
                         <tr>
-                          <th>#</th>
                           <th>Name</th>
                           <th>Status</th>
                         </tr>
                       </thead>
                       <tbody>
                         {data?.adminRoleList?.data.map((role: any) => {
-                          return (
-                            <tr key={role?.id}>
-                              <td>{role.id}</td>
-                              <td>{role.name}</td>
-                              <td>
-                                <input
-                                  type="radio"
-                                  value={role.id}
-                                  onChange={e => onValueChange(e)}
-                                  checked={Number(selected) === role.id}
-                                />
-                                <span
-                                  onClick={() => handleShow(role.id)}
-                                  className="btn btn-primary"
-                                  style={{ marginLeft: 10 }}
-                                >
-                                  Manage Access
-                                </span>
-                              </td>
-                              <RenderRoleModal show={show} handleClose={handleClose} roleId={Number(role.id)} />
-                            </tr>
-                          );
+                          if (role?.name !== 'Default') {
+                            return (
+                              <tr key={role?.id}>
+                                <td>{role.name}</td>
+                                <td>
+                                  <input
+                                    type="radio"
+                                    value={role.id}
+                                    onChange={e => onValueChange(e)}
+                                    checked={Number(selected) === role.id}
+                                  />
+                                  <span
+                                    onClick={() => handleShow(role.id)}
+                                    className="btn btn-primary"
+                                    style={{ marginLeft: 10 }}
+                                  >
+                                    Manage Access
+                                  </span>
+                                </td>
+                                <RenderRoleModal show={show} handleClose={handleClose} roleId={Number(role.id)} />
+                              </tr>
+                            );
+                          }
                         })}
                       </tbody>
                     </Table>

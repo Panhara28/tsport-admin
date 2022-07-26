@@ -101,7 +101,7 @@ export const Aside = ({ collapsed, rtl, toggled, handleToggleSidebar }: any) => 
                 <MenuItem>User list</MenuItem>
               </a>
             </Link>
-            <Link href={`/hr/users/`}>
+            <Link href={`/hr/activity-logs/`}>
               <a>
                 <MenuItem>Activity Log</MenuItem>
               </a>

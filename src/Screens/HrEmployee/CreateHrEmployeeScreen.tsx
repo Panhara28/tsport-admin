@@ -177,7 +177,7 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
   const [email, setEmail] = useState(defaultValues?.email || '');
   const [phoneNumber, setPhoneNumber] = useState(defaultValues?.phoneNumber || '');
   const [image, setImage] = useState(defaultValues?.profile || '');
-  const [gender, setGender] = useState(defaultValues?.gender || '');
+  const [gender, setGender] = useState<any>(defaultValues?.gender || '');
   const [nationality, setNationality] = useState(defaultValues?.nationality || '');
   const [dob, setDob] = useState<any>(defaultValues?.dob ? new Date(defaultValues?.dob) : new Date());
   const [district, setDistrict] = useState(defaultValues?.district || '');
@@ -212,7 +212,7 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
       phoneNumber: phoneNumber,
       profile: image,
       fullname_en: fullnameEn,
-      gender: gender,
+      gender: gender === '' || gender === undefined ? undefined : gender,
       nationality: nationality,
       dob: dob ? moment(dob).format('YYYY-MM-DD') : '',
       district: district?.label,
@@ -395,6 +395,7 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
             value={gender}
             name="gender"
             items={[
+              { text: 'Choose one of the following', value: '' },
               { text: 'Male', value: 'ប្រុស' },
               { text: 'Female', value: 'ស្រី' },
             ]}
@@ -671,7 +672,7 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
   const [email, setEmail] = useState(defaultValues?.email || '');
   const [phoneNumber, setPhoneNumber] = useState(defaultValues?.phoneNumber || '');
   const [image, setImage] = useState(defaultValues?.profile || '');
-  const [gender, setGender] = useState(defaultValues?.gender || '');
+  const [gender, setGender] = useState<any>(defaultValues?.gender || '');
   const [nationality, setNationality] = useState(defaultValues?.nationality || '');
   const [dob, setDob] = useState<any>(defaultValues?.dob ? new Date(defaultValues?.dob) : new Date());
   const [district, setDistrict] = useState({ label: defaultValues?.district, value: '' } || '');
@@ -708,7 +709,7 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
       phoneNumber: phoneNumber,
       profile: image,
       fullname_en: fullnameEn,
-      gender: gender,
+      gender: gender === '' || gender === undefined ? undefined : gender,
       nationality: nationality,
       dob: dob ? moment(dob).format('YYYY-MM-DD') : '',
       district: district?.label,
@@ -839,6 +840,7 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
             value={gender}
             name="gender"
             items={[
+              { text: 'Choose one of the following', value: '' },
               { text: 'Male', value: 'ប្រុស' },
               { text: 'Female', value: 'ស្រី' },
             ]}

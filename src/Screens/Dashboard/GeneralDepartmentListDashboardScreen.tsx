@@ -91,10 +91,6 @@ const RenderHrEmployeeList = ({ generalDepartmentId, filterOfficerName }: any) =
 
   if (!data || loading) return <></>;
 
-  if (data?.hrDepartmentUsersCount?.totalUsers?.length === 0) {
-    return <></>;
-  }
-
   return (
     <Card>
       <CardBody>
@@ -111,56 +107,66 @@ const RenderHrEmployeeList = ({ generalDepartmentId, filterOfficerName }: any) =
               </tr>
             </thead>
             <tbody>
-              {data?.hrDepartmentUsersCount?.totalUsers?.map((item: any) => {
-                return (
-                  <tr key={item.id}>
-                    <td>
-                      <div onClick={() => setIsShow(item?.id)}>
-                        <Image
-                          className="profile_picture"
-                          src={item?.profile ? item.profile : '/icons/profile.png'}
-                          alt="profile"
-                          layout="responsive"
-                          width={512}
-                          height={512}
+              {data?.hrDepartmentUsersCount?.totalUsers?.length === 0 ? (
+                <tr>
+                  <td colSpan={6}>
+                    <div className="d-flex justify-content-center mt-5">
+                      <img src="/dashboard-no-data.png" width="600px" />
+                    </div>
+                  </td>
+                </tr>
+              ) : (
+                data?.hrDepartmentUsersCount?.totalUsers?.map((item: any) => {
+                  return (
+                    <tr key={item.id}>
+                      <td>
+                        <div onClick={() => setIsShow(item?.id)} style={{ borderRadius: '50%', overflow: 'hidden' }}>
+                          <Image
+                            className="profile_picture"
+                            src={item?.profile ? item.profile : '/icons/profile.png'}
+                            alt="profile"
+                            layout="responsive"
+                            width={512}
+                            height={512}
+                          />
+                        </div>
+                      </td>
+                      <td>{item?.fullname}</td>
+                      <td>{item?.gender}</td>
+                      <td>{item?.phoneNumber}</td>
+                      <td>{item?.email}</td>
+                      <td>
+                        <div className="d-flex">
+                          <Dropdown>
+                            <Dropdown.Toggle variant="success" id="dropdown-basic">
+                              Forms <FontAwesomeIcon icon={faChevronDown} />
+                            </Dropdown.Toggle>
+
+                            <Dropdown.Menu>
+                              <Dropdown.Item onClick={() => setIsShow(item?.id)}>ជីវប្រវត្តិសង្ខេប</Dropdown.Item>
+                              <Dropdown.Item onClick={() => setIsShowContractForm(item?.id)}>កិច្ចសន្យា</Dropdown.Item>
+                              <Dropdown.Item onClick={() => setIsShowCVForm(item?.id)}>ប្រវត្តិរូបសង្ខេប</Dropdown.Item>
+                            </Dropdown.Menu>
+                          </Dropdown>
+
+                          <Link href={`/hr/officers/${item?.id}/edit`}>
+                            <a style={{ marginLeft: 10 }} className="btn btn-primary">
+                              Edit
+                            </a>
+                          </Link>
+                        </div>
+                        <RenderBiographyFormModal info={item} isShow={isShow} setIsShow={setIsShow} />
+                        <RenderContactFormModal
+                          info={item}
+                          isShowContractForm={isShowContractForm}
+                          setIsShowContractForm={setIsShowContractForm}
                         />
-                      </div>
-                    </td>
-                    <td>{item?.fullname}</td>
-                    <td>{item?.gender}</td>
-                    <td>{item?.phoneNumber}</td>
-                    <td>{item?.email}</td>
-                    <td>
-                      <div className="d-flex">
-                        <Dropdown>
-                          <Dropdown.Toggle variant="success" id="dropdown-basic">
-                            Forms <FontAwesomeIcon icon={faChevronDown} />
-                          </Dropdown.Toggle>
-
-                          <Dropdown.Menu>
-                            <Dropdown.Item onClick={() => setIsShow(item?.id)}>ជីវប្រវត្តិសង្ខេប</Dropdown.Item>
-                            <Dropdown.Item onClick={() => setIsShowContractForm(item?.id)}>កិច្ចសន្យា</Dropdown.Item>
-                            <Dropdown.Item onClick={() => setIsShowCVForm(item?.id)}>ប្រវត្តិរូបសង្ខេប</Dropdown.Item>
-                          </Dropdown.Menu>
-                        </Dropdown>
-
-                        <Link href={`/hr/officers/${item?.id}/edit`}>
-                          <a style={{ marginLeft: 10 }} className="btn btn-primary">
-                            Edit
-                          </a>
-                        </Link>
-                      </div>
-                      <RenderBiographyFormModal info={item} isShow={isShow} setIsShow={setIsShow} />
-                      <RenderContactFormModal
-                        info={item}
-                        isShowContractForm={isShowContractForm}
-                        setIsShowContractForm={setIsShowContractForm}
-                      />
-                      <RenderCVFormModal info={item} isShowCVForm={isShowCVForm} setIsShowCVForm={setIsShowCVForm} />
-                    </td>
-                  </tr>
-                );
-              })}
+                        <RenderCVFormModal info={item} isShowCVForm={isShowCVForm} setIsShowCVForm={setIsShowCVForm} />
+                      </td>
+                    </tr>
+                  );
+                })
+              )}
             </tbody>
           </Table>
         </CustomTableContainer>
