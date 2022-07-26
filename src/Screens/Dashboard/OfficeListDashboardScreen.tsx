@@ -188,7 +188,7 @@ const OfficeListDashboardScreen = ({ departmentId, generalDepartmentId, officeId
 
   if (!data || loading) return <></>;
 
-  if (data?.hrDepartmentUsersCount?.data?.length === 0) {
+  if (data?.hrDepartmentUsersCount?.totalUsers?.length === 0) {
     return (
       <Layout>
         <div className="page-content">

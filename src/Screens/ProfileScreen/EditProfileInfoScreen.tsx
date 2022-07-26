@@ -69,7 +69,6 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
     const x: any = e.target;
 
     const input = {
-      username: username,
       fullname: fullname,
       email: x.email?.value,
       phoneNumber: x.phoneNumber?.value,
@@ -88,15 +87,8 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
           <SingleUpload image={image} setImage={setImage} width="150" height="150" />
         </Col>
       </Row>
-
-      <Row className="mt-4">
-        <h4>Security Info</h4>
-        <Col md={6}>
-          <XForm.Text label="Username" value={username} onChange={e => setUsername(e.currentTarget.value)} />
-        </Col>
-      </Row>
       <Row>
-        <h4>User Info</h4>
+        <h4 className="mt-4">User Info</h4>
         <hr />
         <Col md={6}>
           <XForm.Text label="Fullname" value={fullname} onChange={e => setFullName(e.currentTarget.value)} />
