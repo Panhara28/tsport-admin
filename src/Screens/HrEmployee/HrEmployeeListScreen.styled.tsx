@@ -17,10 +17,7 @@ export const CustomTableContainer = styled.div`
     max-width: 100%;
     width: 3.2em;
     height: 3.2em;
-
-    img {
-      border-radius: 50%;
-    }
+    border-radius: 50%;
 
     &:hover {
       cursor: pointer;
