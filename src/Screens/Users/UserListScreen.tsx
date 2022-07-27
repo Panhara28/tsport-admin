@@ -63,31 +63,41 @@ const RenderUserList = ({ filterFullname }: any) => {
             </tr>
           </thead>
           <tbody>
-            {data.adminUserList.data.map((item: any) => {
-              return (
-                <tr key={item.id}>
-                  <td>{item.id}</td>
-                  <td>{item.fullname}</td>
-                  <td>
-                    <Link href={`/hr/users/${item?.id}/edit`}>
-                      <a style={{ marginLeft: 10 }} className="btn btn-primary">
-                        Edit
-                      </a>
-                    </Link>
-                    <Link href={`/hr/users/${item?.id}/role`}>
-                      <a style={{ marginLeft: 10 }} className="btn btn-info">
-                        Assign Role
-                      </a>
-                    </Link>
-                    <Link href="#">
-                      <a style={{ marginLeft: 10 }} className="btn btn-danger">
-                        Remove
-                      </a>
-                    </Link>
-                  </td>
-                </tr>
-              );
-            })}
+            {data.adminUserList.data.length === 0 ? (
+              <tr>
+                <td colSpan={6}>
+                  <div className="d-flex justify-content-center mt-5">
+                    <img src="/dashboard-no-data.png" width="600px" />
+                  </div>
+                </td>
+              </tr>
+            ) : (
+              data.adminUserList.data.map((item: any) => {
+                return (
+                  <tr key={item.id}>
+                    <td>{item.id}</td>
+                    <td>{item.fullname}</td>
+                    <td>
+                      <Link href={`/hr/users/${item?.id}/edit`}>
+                        <a style={{ marginLeft: 10 }} className="btn btn-primary">
+                          Edit
+                        </a>
+                      </Link>
+                      <Link href={`/hr/users/${item?.id}/role`}>
+                        <a style={{ marginLeft: 10 }} className="btn btn-info">
+                          Assign Role
+                        </a>
+                      </Link>
+                      <Link href="#">
+                        <a style={{ marginLeft: 10 }} className="btn btn-danger">
+                          Remove
+                        </a>
+                      </Link>
+                    </td>
+                  </tr>
+                );
+              })
+            )}
           </tbody>
         </Table>
       </CardBody>

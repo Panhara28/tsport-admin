@@ -190,61 +190,71 @@ const RenderHrEmployeeList = ({ filterOfficerName }: any) => {
               </tr>
             </thead>
             <tbody>
-              {data?.hrEmployeeList?.data.map((item: any) => {
-                return (
-                  <tr key={item?.id}>
-                    <td>
-                      <div onClick={() => setIsShow(item?.id)}>
-                        <img
-                          className="profile_picture"
-                          src={item?.profile ? item.profile : '/icons/profile.png'}
-                          alt="profile"
-                        />
-                      </div>
-                    </td>
-                    <td>{item?.fullname}</td>
-                    <td>{item?.gender}</td>
-                    <td>{item?.phoneNumber}</td>
-                    <td>{item?.email}</td>
-                    <td>
-                      <div className="d-flex">
-                        <Dropdown>
-                          <Dropdown.Toggle variant="success" id="dropdown-basic">
-                            Forms <FontAwesomeIcon icon={faChevronDown} />
-                          </Dropdown.Toggle>
+              {data?.hrEmployeeList?.data?.length === 0 ? (
+                <tr>
+                  <td colSpan={6}>
+                    <div className="d-flex justify-content-center mt-5">
+                      <img src="/dashboard-no-data.png" width="600px" />
+                    </div>
+                  </td>
+                </tr>
+              ) : (
+                data?.hrEmployeeList?.data.map((item: any) => {
+                  return (
+                    <tr key={item?.id}>
+                      <td>
+                        <div onClick={() => setIsShow(item?.id)}>
+                          <img
+                            className="profile_picture"
+                            src={item?.profile ? item.profile : '/icons/profile.png'}
+                            alt="profile"
+                          />
+                        </div>
+                      </td>
+                      <td>{item?.fullname}</td>
+                      <td>{item?.gender}</td>
+                      <td>{item?.phoneNumber}</td>
+                      <td>{item?.email}</td>
+                      <td>
+                        <div className="d-flex">
+                          <Dropdown>
+                            <Dropdown.Toggle variant="success" id="dropdown-basic">
+                              Forms <FontAwesomeIcon icon={faChevronDown} />
+                            </Dropdown.Toggle>
 
-                          <Dropdown.Menu>
-                            <Dropdown.Item onClick={() => setIsShow(item?.id)}>ជីវប្រវត្តិសង្ខេប</Dropdown.Item>
-                            <Dropdown.Item onClick={() => setIsShowContractForm(item?.id)}>កិច្ចសន្យា</Dropdown.Item>
-                            <Dropdown.Item onClick={() => setIsShowCVForm(item?.id)}>ប្រវត្តិរូបសង្ខេប</Dropdown.Item>
-                          </Dropdown.Menu>
-                        </Dropdown>
-                        <Link href={`/hr/officers/${item?.id}/edit`}>
-                          <a style={{ marginLeft: 10 }} className="btn btn-primary">
-                            Edit
-                          </a>
-                        </Link>
-                        <Link href="#">
-                          <a
-                            className="btn btn-danger "
-                            style={{ marginLeft: 10 }}
-                            onClick={e => onHandleRemoveHrDepartment(e, item?.id)}
-                          >
-                            Remove
-                          </a>
-                        </Link>
-                      </div>
-                    </td>
-                    <RenderBiographyFormModal info={item} isShow={isShow} setIsShow={setIsShow} />
-                    <RenderContactFormModal
-                      info={item}
-                      isShowContractForm={isShowContractForm}
-                      setIsShowContractForm={setIsShowContractForm}
-                    />
-                    <RenderCVFormModal info={item} isShowCVForm={isShowCVForm} setIsShowCVForm={setIsShowCVForm} />
-                  </tr>
-                );
-              })}
+                            <Dropdown.Menu>
+                              <Dropdown.Item onClick={() => setIsShow(item?.id)}>ជីវប្រវត្តិសង្ខេប</Dropdown.Item>
+                              <Dropdown.Item onClick={() => setIsShowContractForm(item?.id)}>កិច្ចសន្យា</Dropdown.Item>
+                              <Dropdown.Item onClick={() => setIsShowCVForm(item?.id)}>ប្រវត្តិរូបសង្ខេប</Dropdown.Item>
+                            </Dropdown.Menu>
+                          </Dropdown>
+                          <Link href={`/hr/officers/${item?.id}/edit`}>
+                            <a style={{ marginLeft: 10 }} className="btn btn-primary">
+                              Edit
+                            </a>
+                          </Link>
+                          <Link href="#">
+                            <a
+                              className="btn btn-danger "
+                              style={{ marginLeft: 10 }}
+                              onClick={e => onHandleRemoveHrDepartment(e, item?.id)}
+                            >
+                              Remove
+                            </a>
+                          </Link>
+                        </div>
+                      </td>
+                      <RenderBiographyFormModal info={item} isShow={isShow} setIsShow={setIsShow} />
+                      <RenderContactFormModal
+                        info={item}
+                        isShowContractForm={isShowContractForm}
+                        setIsShowContractForm={setIsShowContractForm}
+                      />
+                      <RenderCVFormModal info={item} isShowCVForm={isShowCVForm} setIsShowCVForm={setIsShowCVForm} />
+                    </tr>
+                  );
+                })
+              )}
             </tbody>
           </Table>
         </CustomTableContainer>
