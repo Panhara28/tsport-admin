@@ -1,4 +1,4 @@
-import { gql, useQuery } from '@apollo/client';
+import { gql, useMutation, useQuery } from '@apollo/client';
 import { faChevronDown, faHouseUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
@@ -9,6 +9,7 @@ import { Dropdown, Modal, Table } from 'react-bootstrap';
 import { Row } from 'reactstrap';
 import { Card } from 'reactstrap';
 import { CardBody } from 'reactstrap';
+import { Button } from 'reactstrap';
 import { Col } from 'reactstrap';
 import { Container } from 'reactstrap';
 import { Breadcrumb } from '../../components/Common/Breadcrumb';
@@ -21,10 +22,18 @@ import CVForm from '../../components/PrintForm/CVForm/CVForm';
 import Layout from '../../components/VerticalLayout';
 import { setting } from '../../libs/settings';
 import { CustomModal, CustomTableContainer } from './DashboardScreen.styled';
+import toastr from 'toastr';
+import 'toastr/build/toastr.min.css';
 
 const QUERY = gql`
   query hrDepartmentUsersCount($filter: HrDepartmentUsersCountFilter, $pagination: PaginationInput) {
     hrDepartmentUsersCount(filter: $filter, pagination: $pagination)
+  }
+`;
+
+const CREATE_MUTATION = gql`
+  mutation createHrDepartment($input: HrDepartmentInput) {
+    createHrDepartment(input: $input)
   }
 `;
 
@@ -182,8 +191,60 @@ const RenderHrEmployeeList = ({ generalDepartmentId, filterOfficerName }: any) =
   );
 };
 
+type RenderAddDepartmentProps = {
+  show: boolean;
+  setShow: any;
+  parent_id: number;
+  parent_name: string;
+};
+
+const RenderAddDepartment = ({ show, setShow, parent_id, parent_name }: RenderAddDepartmentProps) => {
+  const [createHrDepartment] = useMutation(CREATE_MUTATION, {
+    onCompleted: data => {
+      if (data) {
+        toastr.success('Department Added Successfully!');
+        setShow(false);
+      }
+    },
+    refetchQueries: ['hrDepartmentUsersCount'],
+  });
+  let nameInput: any;
+
+  const onHandleCreate = (e: any) => {
+    e.preventDefault();
+
+    createHrDepartment({
+      variables: {
+        input: {
+          parent_id: parent_id,
+          name: nameInput?.value,
+        },
+      },
+    });
+  };
+
+  return (
+    <>
+      <Modal show={show} onHide={() => setShow(false)}>
+        <Modal.Header closeButton>Add Department To {parent_name}</Modal.Header>
+        <Modal.Body>
+          <input
+            ref={node => (nameInput = node)}
+            className="form-control mb-4"
+            placeholder="Enter department name..."
+          />
+          <Button className="btn-success" onClick={(e: any) => onHandleCreate(e)}>
+            Create
+          </Button>
+        </Modal.Body>
+      </Modal>
+    </>
+  );
+};
+
 const GeneralDepartmentListDashboardScreen = ({ generalDepartmentId }: GeneralDepartmentListDashboardScreenProps) => {
   const [filterOfficerName, setFilterOfficerName] = useState(undefined);
+  const [show, setShow] = useState(false);
 
   const { data, loading } = useQuery(QUERY, {
     variables: {
@@ -208,8 +269,19 @@ const GeneralDepartmentListDashboardScreen = ({ generalDepartmentId }: GeneralDe
               }
             />
             <hr />
-            <div className="d-flex justify-content-center mt-5">
+            <RenderAddDepartment
+              show={show}
+              setShow={setShow}
+              parent_id={Number(generalDepartmentId)}
+              parent_name={data?.hrDepartmentUsersCount?.parent?.name}
+            />
+
+            <div className="d-flex flex-column align-items-center mt-5">
               <img src="/dashboard-no-data.png" width="600px" />
+
+              <Button className="mb-4 btn-success" onClick={() => setShow(true)}>
+                Add Department
+              </Button>
             </div>
           </Container>
         </div>
@@ -228,6 +300,18 @@ const GeneralDepartmentListDashboardScreen = ({ generalDepartmentId }: GeneralDe
             }
           />
           <hr />
+
+          <RenderAddDepartment
+            show={show}
+            setShow={setShow}
+            parent_id={Number(generalDepartmentId)}
+            parent_name={data?.hrDepartmentUsersCount?.parent?.name}
+          />
+
+          <Button className="mb-4 btn-success" onClick={() => setShow(true)}>
+            Add Department
+          </Button>
+
           <Row>
             {data?.hrDepartmentUsersCount?.data?.map((item: any) => {
               return (
