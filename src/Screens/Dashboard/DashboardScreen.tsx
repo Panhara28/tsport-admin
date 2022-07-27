@@ -50,6 +50,11 @@ const RenderAddGeneralDepartment = ({ show, setShow }: RenderAddGeneralDepartmen
         setShow(false);
       }
     },
+    onError: (error: any) => {
+      if (error?.message) {
+        toastr.error(error?.message);
+      }
+    },
     refetchQueries: ['hrDepartmentUsersCount'],
   });
   let nameInput: any;
