@@ -17,6 +17,7 @@ import { Button } from 'reactstrap';
 import { Modal } from 'react-bootstrap';
 import toastr from 'toastr';
 import 'toastr/build/toastr.min.css';
+import { SEO } from '../../components/SEO';
 
 const ReactApexChart: any = dynamic(() => import('react-apexcharts'), { ssr: false });
 
@@ -99,62 +100,71 @@ const DashboardScreen = () => {
   if (!data || loading) return <></>;
 
   return (
-    <Layout>
-      <div className="page-content">
-        <Container fluid>
-          <Breadcrumb
-            title={setting.title}
-            breadcrumbItem={
-              data?.hrDepartmentUsersCount?.parent?.name ? data?.hrDepartmentUsersCount?.parent?.name : 'Dashboard'
-            }
-          />
-          <hr />
+    <>
+      <SEO
+        title="General Department"
+        description={`
+                  Design & Develop  by Moc Software Development Team
+                `}
+        image=""
+      />
+      <Layout>
+        <div className="page-content">
+          <Container fluid>
+            <Breadcrumb
+              title={setting.title}
+              breadcrumbItem={
+                data?.hrDepartmentUsersCount?.parent?.name ? data?.hrDepartmentUsersCount?.parent?.name : 'Dashboard'
+              }
+            />
+            <hr />
 
-          <RenderAddGeneralDepartment show={show} setShow={setShow} />
+            <RenderAddGeneralDepartment show={show} setShow={setShow} />
 
-          <Button className="mb-4 btn-success" onClick={() => setShow(true)}>
-            Add General Department
-          </Button>
+            <Button className="mb-4 btn-success" onClick={() => setShow(true)}>
+              Add General Department
+            </Button>
 
-          <Row>
-            {data?.hrDepartmentUsersCount?.data?.map((item: any) => {
-              return (
-                <Col md={3}>
-                  <Card style={{ height: 'calc(100% - 1.25rem)' }}>
-                    <CardBody>
-                      <DashboardCard
-                        key={item?.id}
-                        title={item?.name}
-                        count={item?.count}
-                        link={`/hr/dashboard/general-department/${item?.id}`}
-                        icon={faLandmark}
-                      />
-                    </CardBody>
-                  </Card>
-                </Col>
-              );
-            })}
-          </Row>
+            <Row>
+              {data?.hrDepartmentUsersCount?.data?.map((item: any) => {
+                return (
+                  <Col md={3}>
+                    <Card style={{ height: 'calc(100% - 1.25rem)' }}>
+                      <CardBody>
+                        <DashboardCard
+                          key={item?.id}
+                          title={item?.name}
+                          count={item?.count}
+                          link={`/hr/dashboard/general-department/${item?.id}`}
+                          icon={faLandmark}
+                        />
+                      </CardBody>
+                    </Card>
+                  </Col>
+                );
+              })}
+            </Row>
 
-          <hr></hr>
-          <Row>
-            <Col md={6}>
-              <Card>
-                <CardBody>
-                  <h5 className="mb-5">Total employees based on gender</h5>
-                  <ReactApexChart
-                    options={format_dashboard_gender_count(data?.genderDashboardCount).options}
-                    series={format_dashboard_gender_count(data?.genderDashboardCount).series}
-                    type="bar"
-                    height={450}
-                  />
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
-      </div>
-    </Layout>
+            <hr></hr>
+            <Row>
+              <Col md={6}>
+                <Card>
+                  <CardBody>
+                    <h5 className="mb-5">Total employees based on gender</h5>
+                    <ReactApexChart
+                      options={format_dashboard_gender_count(data?.genderDashboardCount).options}
+                      series={format_dashboard_gender_count(data?.genderDashboardCount).series}
+                      type="bar"
+                      height={450}
+                    />
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
+        </div>
+      </Layout>
+    </>
   );
 };
 

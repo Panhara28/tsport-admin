@@ -11,6 +11,7 @@ import Layout from '../../components/VerticalLayout';
 import { RenderRoleModal } from './RenderRoleModal';
 import toastr from 'toastr';
 import 'toastr/build/toastr.min.css';
+import { SEO } from '../../components/SEO';
 
 const QUERY = gql`
   query adminRoleList($userId: Int!) {
@@ -100,6 +101,13 @@ export function AssignUserRoleScreen({ userEditId }: Props) {
 
   return (
     <>
+      <SEO
+        title="General Department"
+        description={`
+                  Design & Develop  by Moc Software Development Team
+                `}
+        image=""
+      />
       <Layout>
         <div className="page-content">
           <Container fluid>

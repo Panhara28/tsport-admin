@@ -25,6 +25,7 @@ import Layout from '../../components/VerticalLayout';
 import { setting } from '../../libs/settings';
 import { CustomModal, CustomTableContainer } from './HrEmployeeListScreen.styled';
 import Swal from 'sweetalert2';
+import { SEO } from '../../components/SEO';
 
 const QUERY = gql`
   query hrEmployeeList($pagination: PaginationInput, $filter: HrEmployeeFilter) {
@@ -274,41 +275,53 @@ export function HrEmployeeListScreen() {
   const [filterOfficerName, setFilterOfficerName] = useState(undefined);
 
   return (
-    <Layout>
-      <div className="page-content">
-        <Container fluid>
-          <Breadcrumb breadcrumbItem="Officers list" title={setting.title} />
-          <hr />
-          <Row>
-            <Col md={9}>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Link href={`/hr/officers/create`}>
-                  <a className="btn btn-primary mb-3">
-                    <FontAwesomeIcon icon={faPlus} /> Add new
-                  </a>
-                </Link>
-                <Link href="#">
-                  <a className="btn btn-danger mb-3" style={{ marginLeft: 10 }} onClick={() => router.back()}>
-                    <FontAwesomeIcon icon={faAngleLeft} /> Back
-                  </a>
-                </Link>
-              </div>
+    <>
+      <SEO
+        title="General Department"
+        description={`
+                  Design & Develop  by Moc Software Development Team
+                `}
+        image=""
+      />
+      <Layout>
+        <div className="page-content">
+          <Container fluid>
+            <Breadcrumb breadcrumbItem="Officers list" title={setting.title} />
+            <hr />
+            <Row>
+              <Col md={9}>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <Link href={`/hr/officers/create`}>
+                    <a className="btn btn-primary mb-3">
+                      <FontAwesomeIcon icon={faPlus} /> Add new
+                    </a>
+                  </Link>
+                  <Link href="#">
+                    <a className="btn btn-danger mb-3" style={{ marginLeft: 10 }} onClick={() => router.back()}>
+                      <FontAwesomeIcon icon={faAngleLeft} /> Back
+                    </a>
+                  </Link>
+                </div>
 
-              <RenderHrEmployeeList filterOfficerName={filterOfficerName} />
-            </Col>
-            <Col md={3}>
-              <Card>
-                <CardBody>
-                  <h6>Filter</h6>
-                  <hr />
-                  <label>Search by Officer Name</label>
-                  <XForm.Text value={filterOfficerName} onChange={(e: any) => setFilterOfficerName(e?.target?.value)} />
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
-      </div>
-    </Layout>
+                <RenderHrEmployeeList filterOfficerName={filterOfficerName} />
+              </Col>
+              <Col md={3}>
+                <Card>
+                  <CardBody>
+                    <h6>Filter</h6>
+                    <hr />
+                    <label>Search by Officer Name</label>
+                    <XForm.Text
+                      value={filterOfficerName}
+                      onChange={(e: any) => setFilterOfficerName(e?.target?.value)}
+                    />
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
+        </div>
+      </Layout>
+    </>
   );
 }
