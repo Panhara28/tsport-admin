@@ -23,6 +23,7 @@ import Image from 'next/image';
 import classes from './report.module.scss';
 import { CustomPagination } from '../../components/Paginations';
 import { useRouter } from 'next/router';
+import { SEO } from '../../components/SEO';
 
 const QUERY = gql`
   query employeeReport($pagination: PaginationInput, $filter: EmployeeReportFilter) {
@@ -328,57 +329,66 @@ export function SearchScreen() {
   const [officerName, setOfficerName] = useState('');
 
   return (
-    <Layout>
-      <div className="page-content">
-        <Container fluid>
-          <Breadcrumb breadcrumbItem="Search" title={setting.title} />
-          <hr />
-          <Row>
-            <Col>
-              <Card>
-                <CardBody>
-                  <Row>
-                    <Col md={3}>
-                      <GeneralDepartmentSelect
-                        generalDepartmentId={generalDepartmentId}
-                        setGeneralDepartmentId={setGeneralDepartmentId}
-                      />
-                    </Col>
-                    <Col md={3}>
-                      <DepartmentSelect
-                        departmentId={departmentId}
-                        setDepartmentId={setDepartmentId}
-                        generalDepartmentId={generalDepartmentId}
-                      />
-                    </Col>
-                    <Col md={3}>
-                      <OfficeSelect officeId={officeId} setOfficeId={setOfficeId} departmentId={departmentId} />
-                    </Col>
-                    <Col md={3}>
-                      <label className={classes.label_txt}>Search</label>
-                      <input
-                        className="form-control"
-                        value={officerName}
-                        onChange={e => setOfficerName(e.target.value)}
-                      />
-                    </Col>
-                  </Row>
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <RenderReport
-                generalDepartmentId={Number(generalDepartmentId)}
-                departmentId={Number(departmentId)}
-                officeId={Number(officeId)}
-                officerName={officerName}
-              />
-            </Col>
-          </Row>
-        </Container>
-      </div>
-    </Layout>
+    <>
+      <SEO
+        title="General Department"
+        description={`
+                  Design & Develop  by Moc Software Development Team
+                `}
+        image=""
+      />
+      <Layout>
+        <div className="page-content">
+          <Container fluid>
+            <Breadcrumb breadcrumbItem="Search" title={setting.title} />
+            <hr />
+            <Row>
+              <Col>
+                <Card>
+                  <CardBody>
+                    <Row>
+                      <Col md={3}>
+                        <GeneralDepartmentSelect
+                          generalDepartmentId={generalDepartmentId}
+                          setGeneralDepartmentId={setGeneralDepartmentId}
+                        />
+                      </Col>
+                      <Col md={3}>
+                        <DepartmentSelect
+                          departmentId={departmentId}
+                          setDepartmentId={setDepartmentId}
+                          generalDepartmentId={generalDepartmentId}
+                        />
+                      </Col>
+                      <Col md={3}>
+                        <OfficeSelect officeId={officeId} setOfficeId={setOfficeId} departmentId={departmentId} />
+                      </Col>
+                      <Col md={3}>
+                        <label className={classes.label_txt}>Search</label>
+                        <input
+                          className="form-control"
+                          value={officerName}
+                          onChange={e => setOfficerName(e.target.value)}
+                        />
+                      </Col>
+                    </Row>
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <RenderReport
+                  generalDepartmentId={Number(generalDepartmentId)}
+                  departmentId={Number(departmentId)}
+                  officeId={Number(officeId)}
+                  officerName={officerName}
+                />
+              </Col>
+            </Row>
+          </Container>
+        </div>
+      </Layout>
+    </>
   );
 }

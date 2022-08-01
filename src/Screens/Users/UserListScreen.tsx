@@ -15,6 +15,7 @@ import { Breadcrumb } from '../../components/Common/Breadcrumb';
 import Button from '../../components/Form/Button';
 import XForm from '../../components/Form/XForm';
 import { CustomPagination } from '../../components/Paginations';
+import { SEO } from '../../components/SEO';
 import Layout from '../../components/VerticalLayout';
 import { setting } from '../../libs/settings';
 
@@ -116,40 +117,49 @@ export function UserListScreen() {
   const [filterFullname, setFilterFullname] = useState(undefined);
 
   return (
-    <Layout>
-      <div className="page-content">
-        <Container fluid>
-          <Breadcrumb breadcrumbItem="User list" title={setting.title} />
-          <hr />
-          <Row>
-            <Col md={9}>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Link href={`/hr/users/create`}>
-                  <a className="btn btn-primary mb-3">
-                    <FontAwesomeIcon icon={faPlus} /> Add new
-                  </a>
-                </Link>
-                <Link href="#">
-                  <a className="btn btn-danger mb-3" style={{ marginLeft: 10 }} onClick={() => router.back()}>
-                    <FontAwesomeIcon icon={faAngleLeft} /> Back
-                  </a>
-                </Link>
-              </div>
-              <RenderUserList filterFullname={filterFullname} />
-            </Col>
-            <Col md={3}>
-              <Card>
-                <CardBody>
-                  <h6>Filter</h6>
-                  <hr />
-                  <label>Search by Fullname</label>
-                  <XForm.Text value={filterFullname} onChange={(e: any) => setFilterFullname(e?.target?.value)} />
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
-      </div>
-    </Layout>
+    <>
+      <SEO
+        title="General Department"
+        description={`
+                  Design & Develop  by Moc Software Development Team
+                `}
+        image=""
+      />
+      <Layout>
+        <div className="page-content">
+          <Container fluid>
+            <Breadcrumb breadcrumbItem="User list" title={setting.title} />
+            <hr />
+            <Row>
+              <Col md={9}>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <Link href={`/hr/users/create`}>
+                    <a className="btn btn-primary mb-3">
+                      <FontAwesomeIcon icon={faPlus} /> Add new
+                    </a>
+                  </Link>
+                  <Link href="#">
+                    <a className="btn btn-danger mb-3" style={{ marginLeft: 10 }} onClick={() => router.back()}>
+                      <FontAwesomeIcon icon={faAngleLeft} /> Back
+                    </a>
+                  </Link>
+                </div>
+                <RenderUserList filterFullname={filterFullname} />
+              </Col>
+              <Col md={3}>
+                <Card>
+                  <CardBody>
+                    <h6>Filter</h6>
+                    <hr />
+                    <label>Search by Fullname</label>
+                    <XForm.Text value={filterFullname} onChange={(e: any) => setFilterFullname(e?.target?.value)} />
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
+        </div>
+      </Layout>
+    </>
   );
 }

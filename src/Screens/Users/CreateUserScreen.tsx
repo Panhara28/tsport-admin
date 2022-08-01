@@ -12,6 +12,7 @@ import { Container } from 'reactstrap';
 import { Breadcrumb } from '../../components/Common/Breadcrumb';
 import XForm from '../../components/Form/XForm';
 import { CreateUpdateForm } from '../../components/GraphQL/CreateUpdateForm';
+import { SEO } from '../../components/SEO';
 import { SingleUpload } from '../../components/SingleUpload';
 import Layout from '../../components/VerticalLayout';
 import { setting } from '../../libs/settings';
@@ -223,29 +224,38 @@ type Props = {
 export function CreateUserScreen({ userEditId }: Props) {
   const router = useRouter();
   return (
-    <Layout>
-      <div className="page-content">
-        <Container fluid>
-          <Breadcrumb breadcrumbItem="Create user" title={setting.title} />
-          <hr />
-          <Row>
-            <Col md={9}>
-              <Card>
-                <CardBody>
-                  <CreateUpdateForm
-                    body={!userEditId ? FormBodyCreate : FormBodyEdit}
-                    update={UPDATE_MUTATION}
-                    create={CREATE_MUTATION}
-                    query={QUERY}
-                    id={Number(userEditId)}
-                    refectQuery="adminUserList"
-                  />
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
-      </div>
-    </Layout>
+    <>
+      <SEO
+        title="General Department"
+        description={`
+                  Design & Develop  by Moc Software Development Team
+                `}
+        image=""
+      />
+      <Layout>
+        <div className="page-content">
+          <Container fluid>
+            <Breadcrumb breadcrumbItem="Create user" title={setting.title} />
+            <hr />
+            <Row>
+              <Col md={9}>
+                <Card>
+                  <CardBody>
+                    <CreateUpdateForm
+                      body={!userEditId ? FormBodyCreate : FormBodyEdit}
+                      update={UPDATE_MUTATION}
+                      create={CREATE_MUTATION}
+                      query={QUERY}
+                      id={Number(userEditId)}
+                      refectQuery="adminUserList"
+                    />
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
+        </div>
+      </Layout>
+    </>
   );
 }

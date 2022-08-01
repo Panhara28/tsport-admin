@@ -20,6 +20,7 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import classes from './office.module.scss';
+import { SEO } from '../../components/SEO';
 
 const CREATE_MUTATION = gql`
   mutation createHrEmployee($input: HrEmployeeInput) {
@@ -1142,29 +1143,38 @@ export function CreateHrEmployeeScreen({ userEditId }: Props) {
   const router = useRouter();
 
   return (
-    <Layout>
-      <div className="page-content">
-        <Container fluid>
-          <Breadcrumb breadcrumbItem={`${userEditId ? 'Edit' : 'Create'} Officer`} title={setting.title} />
-          <hr />
-          <Row>
-            <Col md={9}>
-              <Card>
-                <CardBody>
-                  <CreateUpdateForm
-                    body={!userEditId ? FormBodyCreate : FormBodyEdit}
-                    update={UPDATE_MUTATION}
-                    create={CREATE_MUTATION}
-                    query={QUERY}
-                    id={Number(userEditId)}
-                    refectQuery="adminUserList"
-                  />
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
-      </div>
-    </Layout>
+    <>
+      <SEO
+        title="General Department"
+        description={`
+                  Design & Develop  by Moc Software Development Team
+                `}
+        image=""
+      />
+      <Layout>
+        <div className="page-content">
+          <Container fluid>
+            <Breadcrumb breadcrumbItem={`${userEditId ? 'Edit' : 'Create'} Officer`} title={setting.title} />
+            <hr />
+            <Row>
+              <Col md={9}>
+                <Card>
+                  <CardBody>
+                    <CreateUpdateForm
+                      body={!userEditId ? FormBodyCreate : FormBodyEdit}
+                      update={UPDATE_MUTATION}
+                      create={CREATE_MUTATION}
+                      query={QUERY}
+                      id={Number(userEditId)}
+                      refectQuery="adminUserList"
+                    />
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
+        </div>
+      </Layout>
+    </>
   );
 }

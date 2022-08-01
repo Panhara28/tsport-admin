@@ -12,6 +12,7 @@ import { Container } from 'reactstrap';
 import { Breadcrumb } from '../../../components/Common/Breadcrumb';
 import XForm from '../../../components/Form/XForm';
 import { CreateUpdateForm } from '../../../components/GraphQL/CreateUpdateForm';
+import { SEO } from '../../../components/SEO';
 import { SingleUpload } from '../../../components/SingleUpload';
 import Layout from '../../../components/VerticalLayout';
 import { setting } from '../../../libs/settings';
@@ -96,34 +97,46 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
   };
 
   return (
-    <Form onSubmit={onHandleSubmit}>
-      <Row>
-        <h4>Information</h4>
-        <hr />
-        <Col md={6}>
-          <XForm.Text label="Department" value={name} name="name" onChange={e => setName(e.currentTarget.value)} />
-        </Col>
-        <Col md={6}>
-          <GeneralDepartmentSelect generalDepartment={generalDepartment} setGeneralDepartment={setGeneralDepartment} />
-        </Col>
-      </Row>
+    <>
+      <SEO
+        title="General Department"
+        description={`
+                  Design & Develop  by Moc Software Development Team
+                `}
+        image=""
+      />
+      <Form onSubmit={onHandleSubmit}>
+        <Row>
+          <h4>Information</h4>
+          <hr />
+          <Col md={6}>
+            <XForm.Text label="Department" value={name} name="name" onChange={e => setName(e.currentTarget.value)} />
+          </Col>
+          <Col md={6}>
+            <GeneralDepartmentSelect
+              generalDepartment={generalDepartment}
+              setGeneralDepartment={setGeneralDepartment}
+            />
+          </Col>
+        </Row>
 
-      <Row>
-        <Col></Col>
-        <Col md={6}>
-          <XForm.Footer>
-            <XForm.Button type="submit" style={{ padding: '1.3em' }}>
-              Save
-            </XForm.Button>
-            <Link href="#">
-              <a className="btn btn-danger " style={{ marginLeft: 10 }} onClick={() => router.back()}>
-                Cancel
-              </a>
-            </Link>
-          </XForm.Footer>
-        </Col>
-      </Row>
-    </Form>
+        <Row>
+          <Col></Col>
+          <Col md={6}>
+            <XForm.Footer>
+              <XForm.Button type="submit" style={{ padding: '1.3em' }}>
+                Save
+              </XForm.Button>
+              <Link href="#">
+                <a className="btn btn-danger " style={{ marginLeft: 10 }} onClick={() => router.back()}>
+                  Cancel
+                </a>
+              </Link>
+            </XForm.Footer>
+          </Col>
+        </Row>
+      </Form>
+    </>
   );
 };
 
@@ -146,34 +159,46 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
     });
   };
   return (
-    <Form onSubmit={onHandleSubmit}>
-      <Row>
-        <h4>Information</h4>
-        <hr />
-        <Col md={6}>
-          <XForm.Text label="Department" value={name} name="name" onChange={e => setName(e.currentTarget.value)} />
-        </Col>
-        <Col md={6}>
-          <GeneralDepartmentSelect generalDepartment={generalDepartment} setGeneralDepartment={setGeneralDepartment} />
-        </Col>
-      </Row>
+    <>
+      <SEO
+        title="General Department"
+        description={`
+                  Design & Develop  by Moc Software Development Team
+                `}
+        image=""
+      />
+      <Form onSubmit={onHandleSubmit}>
+        <Row>
+          <h4>Information</h4>
+          <hr />
+          <Col md={6}>
+            <XForm.Text label="Department" value={name} name="name" onChange={e => setName(e.currentTarget.value)} />
+          </Col>
+          <Col md={6}>
+            <GeneralDepartmentSelect
+              generalDepartment={generalDepartment}
+              setGeneralDepartment={setGeneralDepartment}
+            />
+          </Col>
+        </Row>
 
-      <Row>
-        <Col></Col>
-        <Col md={6}>
-          <XForm.Footer>
-            <XForm.Button type="submit" style={{ padding: '1.3em' }}>
-              Save
-            </XForm.Button>
-            <Link href="#">
-              <a className="btn btn-danger " style={{ marginLeft: 10 }} onClick={() => router.back()}>
-                Cancel
-              </a>
-            </Link>
-          </XForm.Footer>
-        </Col>
-      </Row>
-    </Form>
+        <Row>
+          <Col></Col>
+          <Col md={6}>
+            <XForm.Footer>
+              <XForm.Button type="submit" style={{ padding: '1.3em' }}>
+                Save
+              </XForm.Button>
+              <Link href="#">
+                <a className="btn btn-danger " style={{ marginLeft: 10 }} onClick={() => router.back()}>
+                  Cancel
+                </a>
+              </Link>
+            </XForm.Footer>
+          </Col>
+        </Row>
+      </Form>
+    </>
   );
 };
 
