@@ -485,6 +485,14 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
           undefined
         )}
 
+        {villageOrGroup ? (
+          <Col md={6}>
+            <XForm.Text label="Postal Code" value={villageOrGroup?.value} disabled />
+          </Col>
+        ) : (
+          undefined
+        )}
+
         <Col md={6} className="mt-2">
           <XForm.Text
             label="Education Level"
@@ -926,6 +934,22 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
                 name="village"
               />
             </Form.Group>
+          </Col>
+        ) : (
+          undefined
+        )}
+
+        {villageOrGroup ? (
+          <Col md={6}>
+            <XForm.Text
+              label="Postal Code"
+              value={
+                villageOrGroup?.value
+                  ? villageOrGroup?.value
+                  : getVillage(undefined).find(x => x.label === defaultValues?.village_or_group)?.value
+              }
+              disabled
+            />
           </Col>
         ) : (
           undefined
