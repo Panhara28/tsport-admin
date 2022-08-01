@@ -182,7 +182,7 @@ export function CreateOfficeScreen({ userEditId }: Props) {
   return (
     <>
       <SEO
-        title="General Department"
+        title="Offices"
         description={`
                   Design & Develop  by Moc Software Development Team
                 `}

@@ -1123,7 +1123,7 @@ export function CreateHrEmployeeScreen({ userEditId }: Props) {
   return (
     <>
       <SEO
-        title="General Department"
+        title="Create Officers"
         description={`
                   Design & Develop  by Moc Software Development Team
                 `}

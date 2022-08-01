@@ -226,7 +226,7 @@ export function CreateUserScreen({ userEditId }: Props) {
   return (
     <>
       <SEO
-        title="General Department"
+        title="Create User"
         description={`
                   Design & Develop  by Moc Software Development Team
                 `}

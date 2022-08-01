@@ -16,6 +16,7 @@ import { ActivityLogContainer, ActivityTable } from './ActivityLogsScreen.styled
 import Select from 'react-select';
 import { Modal } from 'react-bootstrap';
 import styled from 'styled-components';
+import { SEO } from '../../components/SEO';
 
 const QUERY = gql`
   query activityLogsList($filter: FilterActivityLogs, $pagination: PaginationInput) {
@@ -142,174 +143,185 @@ export function ActivityLogsScreen() {
   };
 
   return (
-    <Layout>
-      <div className="page-content">
-        <Container fluid>
-          <Breadcrumb title={setting.title} breadcrumbItem="Activity Logs" />
-          <hr />
-          <Row className="mb-4">
-            <Col md={9}>
-              <Modal show={showLog} onHide={() => setShowLog(false)} size="lg">
-                <Modal.Header closeButton>Activity Logs</Modal.Header>
+    <>
+      <SEO
+        title="Activity Log"
+        description={`
+                  Design & Develop  by Moc Software Development Team
+                `}
+        image=""
+      />
+      <Layout>
+        <div className="page-content">
+          <Container fluid>
+            <Breadcrumb title={setting.title} breadcrumbItem="Activity Logs" />
+            <hr />
+            <Row className="mb-4">
+              <Col md={9}>
+                <Modal show={showLog} onHide={() => setShowLog(false)} size="lg">
+                  <Modal.Header closeButton>Activity Logs</Modal.Header>
 
-                <Modal.Body>
-                  <Row>
-                    <LineCol md={6}>
-                      <Row className="p-10" style={{ gap: '20px' }}>
-                        <Col>
-                          <img
-                            src={
-                              logData?.user?.profile_picture
-                                ? logData?.user?.profile_picture
-                                : '/user-placeholder-image.jpeg'
-                            }
-                            width="250px"
-                          />
-                        </Col>
-                        <Col>
-                          <p style={{ fontSize: '1.6rem' }}>
-                            {logData?.user?.fullname ? logData?.user?.fullname : 'គ្មាន'}
-                          </p>
-                          <p>Phone Number: {logData?.user?.phoneNumber ? logData?.user?.phoneNumber : 'គ្មាន'}</p>
-                          <p>Email: {logData?.user?.email ? logData?.user?.email : 'គ្មាន'}</p>
-                          {logData?.user?.position_level ? (
-                            <p>
-                              Position Level:{' '}
-                              {data?.positionList?.filter((item: any) => item.id === logData?.user?.position_level)[0]
-                                ?.name
-                                ? data?.positionList?.filter(
-                                    (item: any) => item.id === logData?.user?.position_level,
-                                  )[0]?.name
-                                : 'គ្មាន'}
+                  <Modal.Body>
+                    <Row>
+                      <LineCol md={6}>
+                        <Row className="p-10" style={{ gap: '20px' }}>
+                          <Col>
+                            <img
+                              src={
+                                logData?.user?.profile_picture
+                                  ? logData?.user?.profile_picture
+                                  : '/user-placeholder-image.jpeg'
+                              }
+                              width="250px"
+                            />
+                          </Col>
+                          <Col>
+                            <p style={{ fontSize: '1.6rem' }}>
+                              {logData?.user?.fullname ? logData?.user?.fullname : 'គ្មាន'}
                             </p>
-                          ) : (
-                            ''
-                          )}
-                        </Col>
-                      </Row>
-                    </LineCol>
-                    <Col md={6}>
-                      <Row className="p-10" style={{ gap: '20px' }}>
-                        <Col>
-                          <p style={{ fontSize: '1.6rem' }}>Activity Log</p>
-                          <p>
-                            <b>type:</b> {logData?.type ? logData?.type : 'គ្មាន'}
-                          </p>
-                          <p>
-                            <b>activity:</b>{' '}
-                            {parseTEXT(parseJSON(logData?.activity)?.activityType)
-                              ? parseTEXT(parseJSON(logData?.activity)?.activityType)
-                              : 'គ្មាន'}
-                          </p>
-                          {parseJSON(logData?.activity)?.changeStatus ? (
-                            <p>
-                              <b>status to:</b>{' '}
-                              <span className={`text-${checkStatus(parseJSON(logData?.activity)?.changeStatus)}`}>
-                                {parseJSON(logData?.activity)?.changeStatus
-                                  ? parseJSON(logData?.activity)?.changeStatus
+                            <p>Phone Number: {logData?.user?.phoneNumber ? logData?.user?.phoneNumber : 'គ្មាន'}</p>
+                            <p>Email: {logData?.user?.email ? logData?.user?.email : 'គ្មាន'}</p>
+                            {logData?.user?.position_level ? (
+                              <p>
+                                Position Level:{' '}
+                                {data?.positionList?.filter((item: any) => item.id === logData?.user?.position_level)[0]
+                                  ?.name
+                                  ? data?.positionList?.filter(
+                                      (item: any) => item.id === logData?.user?.position_level,
+                                    )[0]?.name
                                   : 'គ្មាន'}
-                              </span>
-                            </p>
-                          ) : (
-                            ''
-                          )}
-                          {parseJSON(logData?.activity)?.userAgent ? (
+                              </p>
+                            ) : (
+                              ''
+                            )}
+                          </Col>
+                        </Row>
+                      </LineCol>
+                      <Col md={6}>
+                        <Row className="p-10" style={{ gap: '20px' }}>
+                          <Col>
+                            <p style={{ fontSize: '1.6rem' }}>Activity Log</p>
                             <p>
-                              <b>user agent:</b>{' '}
-                              {parseJSON(logData?.activity)?.userAgent
-                                ? parseJSON(logData?.activity)?.userAgent
+                              <b>type:</b> {logData?.type ? logData?.type : 'គ្មាន'}
+                            </p>
+                            <p>
+                              <b>activity:</b>{' '}
+                              {parseTEXT(parseJSON(logData?.activity)?.activityType)
+                                ? parseTEXT(parseJSON(logData?.activity)?.activityType)
                                 : 'គ្មាន'}
                             </p>
-                          ) : (
-                            ''
-                          )}
-                          {parseJSON(logData?.activity)?.ip ? (
+                            {parseJSON(logData?.activity)?.changeStatus ? (
+                              <p>
+                                <b>status to:</b>{' '}
+                                <span className={`text-${checkStatus(parseJSON(logData?.activity)?.changeStatus)}`}>
+                                  {parseJSON(logData?.activity)?.changeStatus
+                                    ? parseJSON(logData?.activity)?.changeStatus
+                                    : 'គ្មាន'}
+                                </span>
+                              </p>
+                            ) : (
+                              ''
+                            )}
+                            {parseJSON(logData?.activity)?.userAgent ? (
+                              <p>
+                                <b>user agent:</b>{' '}
+                                {parseJSON(logData?.activity)?.userAgent
+                                  ? parseJSON(logData?.activity)?.userAgent
+                                  : 'គ្មាន'}
+                              </p>
+                            ) : (
+                              ''
+                            )}
+                            {parseJSON(logData?.activity)?.ip ? (
+                              <p>
+                                <b>ip address:</b>{' '}
+                                {parseJSON(logData?.activity)?.ip ? parseJSON(logData?.activity)?.ip : 'គ្មាន'}
+                              </p>
+                            ) : (
+                              ''
+                            )}
                             <p>
-                              <b>ip address:</b>{' '}
-                              {parseJSON(logData?.activity)?.ip ? parseJSON(logData?.activity)?.ip : 'គ្មាន'}
+                              <b>changed at:</b>{' '}
+                              {parseJSON(logData?.activity)?.logged_at
+                                ? parseJSON(logData?.activity)?.logged_at
+                                : 'គ្មាន'}
                             </p>
-                          ) : (
-                            ''
-                          )}
-                          <p>
-                            <b>changed at:</b>{' '}
-                            {parseJSON(logData?.activity)?.logged_at
-                              ? parseJSON(logData?.activity)?.logged_at
-                              : 'គ្មាន'}
-                          </p>
-                        </Col>
-                      </Row>
-                    </Col>
-                  </Row>
-                </Modal.Body>
-              </Modal>
-
-              <Card>
-                <CardBody>
-                  <ActivityLogContainer>
-                    <h5 className="mb-4">Logs Table</h5>
-
-                    <Row className="flex-start">
-                      <Col md={3} style={{ padding: '0px' }} className="mb-2">
-                        <Select
-                          options={options}
-                          onChange={(e: any) => setType(e.value)}
-                          value={{
-                            label: type === undefined ? 'ALL' : type,
-                            value: type,
-                          }}
-                        />
+                          </Col>
+                        </Row>
                       </Col>
                     </Row>
+                  </Modal.Body>
+                </Modal>
 
-                    <ActivityTable>
-                      <thead>
-                        <tr>
-                          <th>#Id</th>
-                          <th>Type</th>
-                          <th>Activity</th>
-                          <th>Fullname</th>
-                          <th>Logged At</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {data.activityLogsList.data.map((log: any) => {
-                          return (
-                            <tr key={log.id}>
-                              <td onClick={e => handleShowLog(e, log)} style={{ cursor: 'pointer' }}>
-                                {log.id ? log.id : 'គ្មាន'}
-                              </td>
-                              <td onClick={e => handleShowLog(e, log)} style={{ cursor: 'pointer' }}>
-                                {log.type ? log.type : 'គ្មាន'}
-                              </td>
-                              <td>
-                                {parseTEXT(parseJSON(log.activity).activityType)
-                                  ? parseTEXT(parseJSON(log.activity).activityType)
-                                  : 'គ្មាន'}
-                              </td>
-                              <td>
-                                {parseFULLNAME(Number(log.user_id)) ? parseFULLNAME(Number(log.user_id)) : 'គ្មាន'}
-                              </td>
-                              <td>{parseJSON(log.activity).logged_at ? parseJSON(log.activity).logged_at : 'គ្មាន'}</td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </ActivityTable>
-                  </ActivityLogContainer>
-                  <CustomPagination
-                    total={data.activityLogsList.pagination.total}
-                    currentPage={data.activityLogsList.pagination.current}
-                    size={data.activityLogsList.pagination.size}
-                    limit={10}
-                  />
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </Container>
-      </div>
-    </Layout>
+                <Card>
+                  <CardBody>
+                    <ActivityLogContainer>
+                      <h5 className="mb-4">Logs Table</h5>
+
+                      <Row className="flex-start">
+                        <Col md={3} style={{ padding: '0px' }} className="mb-2">
+                          <Select
+                            options={options}
+                            onChange={(e: any) => setType(e.value)}
+                            value={{
+                              label: type === undefined ? 'ALL' : type,
+                              value: type,
+                            }}
+                          />
+                        </Col>
+                      </Row>
+
+                      <ActivityTable>
+                        <thead>
+                          <tr>
+                            <th>#Id</th>
+                            <th>Type</th>
+                            <th>Activity</th>
+                            <th>Fullname</th>
+                            <th>Logged At</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {data.activityLogsList.data.map((log: any) => {
+                            return (
+                              <tr key={log.id}>
+                                <td onClick={e => handleShowLog(e, log)} style={{ cursor: 'pointer' }}>
+                                  {log.id ? log.id : 'គ្មាន'}
+                                </td>
+                                <td onClick={e => handleShowLog(e, log)} style={{ cursor: 'pointer' }}>
+                                  {log.type ? log.type : 'គ្មាន'}
+                                </td>
+                                <td>
+                                  {parseTEXT(parseJSON(log.activity).activityType)
+                                    ? parseTEXT(parseJSON(log.activity).activityType)
+                                    : 'គ្មាន'}
+                                </td>
+                                <td>
+                                  {parseFULLNAME(Number(log.user_id)) ? parseFULLNAME(Number(log.user_id)) : 'គ្មាន'}
+                                </td>
+                                <td>
+                                  {parseJSON(log.activity).logged_at ? parseJSON(log.activity).logged_at : 'គ្មាន'}
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </ActivityTable>
+                    </ActivityLogContainer>
+                    <CustomPagination
+                      total={data.activityLogsList.pagination.total}
+                      currentPage={data.activityLogsList.pagination.current}
+                      size={data.activityLogsList.pagination.size}
+                      limit={10}
+                    />
+                  </CardBody>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
+        </div>
+      </Layout>
+    </>
   );
 }
 

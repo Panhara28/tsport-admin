@@ -102,7 +102,7 @@ export function AssignUserRoleScreen({ userEditId }: Props) {
   return (
     <>
       <SEO
-        title="General Department"
+        title="Assign Role"
         description={`
                   Design & Develop  by Moc Software Development Team
                 `}
@@ -111,7 +111,7 @@ export function AssignUserRoleScreen({ userEditId }: Props) {
       <Layout>
         <div className="page-content">
           <Container fluid>
-            <Breadcrumb title="Ministry Of Commerce" breadcrumbItem="Add People" />
+            <Breadcrumb title="Ministry Of Commerce" breadcrumbItem="Assign Role" />
             <hr />
             <Row>
               <Col md={8}>

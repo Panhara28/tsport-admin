@@ -99,7 +99,7 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
   return (
     <>
       <SEO
-        title="General Department"
+        title="Department"
         description={`
                   Design & Develop  by Moc Software Development Team
                 `}

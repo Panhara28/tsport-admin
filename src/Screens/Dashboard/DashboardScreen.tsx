@@ -103,7 +103,7 @@ const DashboardScreen = () => {
   return (
     <>
       <SEO
-        title="General Department"
+        title="Dashboard"
         description={`
                   Design & Develop  by Moc Software Development Team
                 `}

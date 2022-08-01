@@ -331,7 +331,7 @@ export function SearchScreen() {
   return (
     <>
       <SEO
-        title="General Department"
+        title="Reports"
         description={`
                   Design & Develop  by Moc Software Development Team
                 `}
