@@ -18,6 +18,7 @@ import { Modal } from 'react-bootstrap';
 import toastr from 'toastr';
 import 'toastr/build/toastr.min.css';
 import { SEO } from '../../components/SEO';
+import Link from 'next/link';
 
 const ReactApexChart: any = dynamic(() => import('react-apexcharts'), { ssr: false });
 
@@ -83,7 +84,7 @@ const RenderAddGeneralDepartment = ({ show, setShow }: RenderAddGeneralDepartmen
             className="form-control mb-4"
             placeholder="Enter general department name..."
           />
-          <Button className="btn-success" onClick={(e: any) => onHandleCreate(e)}>
+          <Button className="btn bg-primary" onClick={(e: any) => onHandleCreate(e)}>
             Create
           </Button>
         </Modal.Body>
@@ -121,7 +122,7 @@ const DashboardScreen = () => {
 
             <RenderAddGeneralDepartment show={show} setShow={setShow} />
 
-            <Button className="mb-4 btn-success" onClick={() => setShow(true)}>
+            <Button className="mb-4 bg-primary" onClick={() => setShow(true)}>
               Add General Department
             </Button>
 

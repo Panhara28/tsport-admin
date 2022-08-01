@@ -284,7 +284,7 @@ const GeneralDepartmentListDashboardScreen = ({ generalDepartmentId }: GeneralDe
             <div className="d-flex flex-column align-items-center mt-5">
               <img src="/dashboard-no-data.png" width="600px" />
 
-              <Button className="mb-4 btn-success" onClick={() => setShow(true)}>
+              <Button className="mb-4 bg-primary" onClick={() => setShow(true)}>
                 Add Department
               </Button>
             </div>
@@ -313,7 +313,7 @@ const GeneralDepartmentListDashboardScreen = ({ generalDepartmentId }: GeneralDe
             parent_name={data?.hrDepartmentUsersCount?.parent?.name}
           />
 
-          <Button className="mb-4 btn-success" onClick={() => setShow(true)}>
+          <Button className="mb-4 bg-primary" onClick={() => setShow(true)}>
             Add Department
           </Button>
 

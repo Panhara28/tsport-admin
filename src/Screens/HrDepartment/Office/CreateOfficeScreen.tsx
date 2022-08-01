@@ -113,7 +113,7 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
         <Col></Col>
         <Col md={6}>
           <XForm.Footer>
-            <XForm.Button type="submit" style={{ padding: '1.3em' }}>
+            <XForm.Button type="submit" style={{ padding: '1.3em', backgroundColor: '#5b73e8' }}>
               Save
             </XForm.Button>
             <Link href="#">
@@ -163,7 +163,9 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
         <Col></Col>
         <Col md={6}>
           <XForm.Footer>
-            <XForm.Button type="submit">Save</XForm.Button>
+            <XForm.Button type="submit" style={{ backgroundColor: '#5b73e8' }}>
+              Save
+            </XForm.Button>
           </XForm.Footer>
         </Col>
       </Row>
