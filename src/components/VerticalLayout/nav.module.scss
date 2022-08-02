@@ -1,0 +1,25 @@
+.activeNav {
+  background-color: #1350ab;
+  color: white;
+  padding: 0 !important;
+  margin: 10px 0 !important;
+}
+
+.subActiveNav {
+  position: relative;
+  border-bottom: 0.2em #39e75f solid;
+  background-color: transparent;
+}
+
+.list_style {
+  list-style-type: disc;
+  margin-left: 1.8em;
+}
+
+.list_menu {
+  width: 11.5em;
+  padding: 0.5em;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
