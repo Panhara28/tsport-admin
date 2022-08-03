@@ -16,6 +16,7 @@ import Layout from '../../../components/VerticalLayout';
 import { setting } from '../../../libs/settings';
 import Swal from 'sweetalert2';
 import { SEO } from '../../../components/SEO';
+import { useAuthContext } from '../../../components/Authentication/AuthContext';
 
 const QUERY = gql`
   query hrDepartmentList($branch_level: Int) {
@@ -30,6 +31,7 @@ const REMOVE_DEPARTMENT = gql`
 `;
 
 export function GeneralDepartmentListScreen() {
+  const { me } = useAuthContext();
   const router = useRouter();
 
   const { data, loading } = useQuery(QUERY, {
@@ -100,11 +102,15 @@ export function GeneralDepartmentListScreen() {
             <Row>
               <Col md={9}>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <Link href={`/hr/general-departments/create`}>
-                    <a className="btn btn-primary mb-3">
-                      <FontAwesomeIcon icon={faPlus} /> Add new
-                    </a>
-                  </Link>
+                  {me?.access?.generalDepartmentWrite ? (
+                    <Link href={`/hr/general-departments/create`}>
+                      <a className="btn btn-primary mb-3">
+                        <FontAwesomeIcon icon={faPlus} /> Add new
+                      </a>
+                    </Link>
+                  ) : (
+                    undefined
+                  )}
                   <Link href="#">
                     <a className="btn btn-danger mb-3" style={{ marginLeft: 10 }} onClick={() => router.back()}>
                       <FontAwesomeIcon icon={faAngleLeft} /> Back
@@ -128,20 +134,28 @@ export function GeneralDepartmentListScreen() {
                               <td>{item.id}</td>
                               <td>{item.name}</td>
                               <td>
-                                <Link href={`/hr/general-departments/${item?.id}/edit`}>
-                                  <a style={{ marginLeft: 10 }} className="btn btn-primary">
-                                    Edit
-                                  </a>
-                                </Link>
-                                <Link href="#">
-                                  <a
-                                    className="btn btn-danger "
-                                    style={{ marginLeft: 10 }}
-                                    onClick={e => onHandleRemoveHrDepartment(e, item?.id)}
-                                  >
-                                    Remove
-                                  </a>
-                                </Link>
+                                {me?.access?.generalDepartmentModify ? (
+                                  <Link href={`/hr/general-departments/${item?.id}/edit`}>
+                                    <a style={{ marginLeft: 10 }} className="btn btn-primary">
+                                      Edit
+                                    </a>
+                                  </Link>
+                                ) : (
+                                  undefined
+                                )}
+                                {me?.access?.generalDepartmentRemove ? (
+                                  <Link href="#">
+                                    <a
+                                      className="btn btn-danger "
+                                      style={{ marginLeft: 10 }}
+                                      onClick={e => onHandleRemoveHrDepartment(e, item?.id)}
+                                    >
+                                      Remove
+                                    </a>
+                                  </Link>
+                                ) : (
+                                  undefined
+                                )}
                               </td>
                             </tr>
                           );

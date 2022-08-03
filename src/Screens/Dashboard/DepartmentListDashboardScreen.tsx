@@ -24,6 +24,7 @@ import { setting } from '../../libs/settings';
 import { CustomModal, CustomTableContainer } from './DashboardScreen.styled';
 import toastr from 'toastr';
 import 'toastr/build/toastr.min.css';
+import { useAuthContext } from '../../components/Authentication/AuthContext';
 
 const QUERY = gql`
   query hrDepartmentUsersCount($filter: HrDepartmentUsersCountFilter, $pagination: PaginationInput) {
@@ -244,6 +245,7 @@ const RenderAddOffice = ({ show, setShow, parent_id, parent_name }: RenderAddOff
 };
 
 const DepartmentListDashboardScreen = ({ departmentId, generalDepartmentId }: DepartmentListDashboardScreenProps) => {
+  const { me } = useAuthContext();
   const [filterOfficerName, setFilterOfficerName] = useState(undefined);
   const [show, setShow] = useState(false);
 
@@ -281,9 +283,13 @@ const DepartmentListDashboardScreen = ({ departmentId, generalDepartmentId }: De
             <div className="d-flex flex-column align-items-center  mt-5">
               <img src="/dashboard-no-data.png" width="600px" />
 
-              <Button className="mb-4 btn-success" onClick={() => setShow(true)}>
-                Add Office
-              </Button>
+              {me?.access?.officeWrite ? (
+                <Button className="mb-4 btn-success" onClick={() => setShow(true)}>
+                  Add Office
+                </Button>
+              ) : (
+                undefined
+              )}
             </div>
           </Container>
         </div>
@@ -310,9 +316,13 @@ const DepartmentListDashboardScreen = ({ departmentId, generalDepartmentId }: De
             parent_name={data?.hrDepartmentUsersCount?.parent?.name}
           />
 
-          <Button className="mb-4 btn-success" onClick={() => setShow(true)}>
-            Add Office
-          </Button>
+          {me?.access?.departmentWrite ? (
+            <Button className="mb-4 btn-success" onClick={() => setShow(true)}>
+              Add Office
+            </Button>
+          ) : (
+            undefined
+          )}
 
           <Row>
             {data?.hrDepartmentUsersCount?.data?.map((item: any) => {

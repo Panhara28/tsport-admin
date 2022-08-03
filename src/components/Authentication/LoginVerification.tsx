@@ -16,6 +16,28 @@ const ME = gql`
       email
       roleName
       roleId
+      access {
+        read
+        write
+        modify
+        delete
+        generalDepartmentRead
+        generalDepartmentWrite
+        generalDepartmentModify
+        generalDepartmentRemove
+        departmentRead
+        departmentWrite
+        departmentModify
+        departmentRemove
+        officeRead
+        officeWrite
+        officeModify
+        officeRemove
+        officerRead
+        officerWrite
+        officerModify
+        officerRemove
+      }
     }
   }
 `;

@@ -24,6 +24,7 @@ import { setting } from '../../libs/settings';
 import { CustomModal, CustomTableContainer } from './DashboardScreen.styled';
 import toastr from 'toastr';
 import 'toastr/build/toastr.min.css';
+import { useAuthContext } from '../../components/Authentication/AuthContext';
 
 const QUERY = gql`
   query hrDepartmentUsersCount($filter: HrDepartmentUsersCountFilter, $pagination: PaginationInput) {
@@ -248,6 +249,7 @@ const RenderAddDepartment = ({ show, setShow, parent_id, parent_name }: RenderAd
 };
 
 const GeneralDepartmentListDashboardScreen = ({ generalDepartmentId }: GeneralDepartmentListDashboardScreenProps) => {
+  const { me } = useAuthContext();
   const [filterOfficerName, setFilterOfficerName] = useState(undefined);
   const [show, setShow] = useState(false);
 
@@ -284,9 +286,13 @@ const GeneralDepartmentListDashboardScreen = ({ generalDepartmentId }: GeneralDe
             <div className="d-flex flex-column align-items-center mt-5">
               <img src="/dashboard-no-data.png" width="600px" />
 
-              <Button className="mb-4 bg-primary" onClick={() => setShow(true)}>
-                Add Department
-              </Button>
+              {me?.access?.departmentWrite ? (
+                <Button className="mb-4 bg-primary" onClick={() => setShow(true)}>
+                  Add Department
+                </Button>
+              ) : (
+                undefined
+              )}
             </div>
           </Container>
         </div>
@@ -313,9 +319,13 @@ const GeneralDepartmentListDashboardScreen = ({ generalDepartmentId }: GeneralDe
             parent_name={data?.hrDepartmentUsersCount?.parent?.name}
           />
 
-          <Button className="mb-4 bg-primary" onClick={() => setShow(true)}>
-            Add Department
-          </Button>
+          {me?.access?.departmentWrite ? (
+            <Button className="mb-4 bg-primary" onClick={() => setShow(true)}>
+              Add Department
+            </Button>
+          ) : (
+            undefined
+          )}
 
           <Row>
             {data?.hrDepartmentUsersCount?.data?.map((item: any) => {

@@ -26,6 +26,7 @@ import { setting } from '../../libs/settings';
 import { CustomModal, CustomTableContainer } from './HrEmployeeListScreen.styled';
 import Swal from 'sweetalert2';
 import { SEO } from '../../components/SEO';
+import { useAuthContext } from '../../components/Authentication/AuthContext';
 
 const QUERY = gql`
   query hrEmployeeList($pagination: PaginationInput, $filter: HrEmployeeFilter) {
@@ -116,6 +117,7 @@ function RenderCVFormModal({ info, isShowCVForm, setIsShowCVForm }: any) {
 }
 
 const RenderHrEmployeeList = ({ filterOfficerName }: any) => {
+  const { me } = useAuthContext();
   const router = useRouter();
 
   const [isShow, setIsShow] = useState(0);
@@ -229,20 +231,28 @@ const RenderHrEmployeeList = ({ filterOfficerName }: any) => {
                               <Dropdown.Item onClick={() => setIsShowCVForm(item?.id)}>ប្រវត្តិរូបសង្ខេប</Dropdown.Item>
                             </Dropdown.Menu>
                           </Dropdown>
-                          <Link href={`/hr/officers/${item?.id}/edit`}>
-                            <a style={{ marginLeft: 10 }} className="btn btn-primary">
-                              Edit
-                            </a>
-                          </Link>
-                          <Link href="#">
-                            <a
-                              className="btn btn-danger "
-                              style={{ marginLeft: 10 }}
-                              onClick={e => onHandleRemoveHrDepartment(e, item?.id)}
-                            >
-                              Remove
-                            </a>
-                          </Link>
+                          {me?.access?.officerModify ? (
+                            <Link href={`/hr/officers/${item?.id}/edit`}>
+                              <a style={{ marginLeft: 10 }} className="btn btn-primary">
+                                Edit
+                              </a>
+                            </Link>
+                          ) : (
+                            undefined
+                          )}
+                          {me?.access?.officerRemove ? (
+                            <Link href="#">
+                              <a
+                                className="btn btn-danger "
+                                style={{ marginLeft: 10 }}
+                                onClick={e => onHandleRemoveHrDepartment(e, item?.id)}
+                              >
+                                Remove
+                              </a>
+                            </Link>
+                          ) : (
+                            undefined
+                          )}
                         </div>
                       </td>
                       <RenderBiographyFormModal info={item} isShow={isShow} setIsShow={setIsShow} />
@@ -271,6 +281,7 @@ const RenderHrEmployeeList = ({ filterOfficerName }: any) => {
 };
 
 export function HrEmployeeListScreen() {
+  const { me } = useAuthContext();
   const router = useRouter();
   const [filterOfficerName, setFilterOfficerName] = useState(undefined);
 
@@ -291,11 +302,15 @@ export function HrEmployeeListScreen() {
             <Row>
               <Col md={9}>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <Link href={`/hr/officers/create`}>
-                    <a className="btn btn-primary mb-3">
-                      <FontAwesomeIcon icon={faPlus} /> Add new
-                    </a>
-                  </Link>
+                  {me?.access?.officerWrite ? (
+                    <Link href={`/hr/officers/create`}>
+                      <a className="btn btn-primary mb-3">
+                        <FontAwesomeIcon icon={faPlus} /> Add new
+                      </a>
+                    </Link>
+                  ) : (
+                    undefined
+                  )}
                   <Link href="#">
                     <a className="btn btn-danger mb-3" style={{ marginLeft: 10 }} onClick={() => router.back()}>
                       <FontAwesomeIcon icon={faAngleLeft} /> Back

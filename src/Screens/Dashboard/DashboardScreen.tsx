@@ -19,6 +19,7 @@ import toastr from 'toastr';
 import 'toastr/build/toastr.min.css';
 import { SEO } from '../../components/SEO';
 import Link from 'next/link';
+import { useAuthContext } from '../../components/Authentication/AuthContext';
 
 const ReactApexChart: any = dynamic(() => import('react-apexcharts'), { ssr: false });
 
@@ -95,6 +96,7 @@ const RenderAddGeneralDepartment = ({ show, setShow }: RenderAddGeneralDepartmen
 
 const DashboardScreen = () => {
   const router = useRouter();
+  const { me } = useAuthContext();
   const [show, setShow] = useState(false);
   const { data, loading } = useQuery(QUERY);
 
@@ -122,9 +124,13 @@ const DashboardScreen = () => {
 
             <RenderAddGeneralDepartment show={show} setShow={setShow} />
 
-            <Button className="mb-4 bg-primary" onClick={() => setShow(true)}>
-              Add General Department
-            </Button>
+            {me?.access?.generalDepartmentWrite ? (
+              <Button className="mb-4 bg-primary" onClick={() => setShow(true)}>
+                Add General Department
+              </Button>
+            ) : (
+              undefined
+            )}
 
             <Row>
               {data?.hrDepartmentUsersCount?.data?.map((item: any) => {

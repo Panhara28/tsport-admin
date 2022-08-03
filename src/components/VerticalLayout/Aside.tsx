@@ -42,112 +42,166 @@ export const Aside = ({ collapsed, rtl, toggled, handleToggleSidebar }: any) => 
   if (me.roleName == 'Site Administrator') {
     checkUserHavePermissionForSiteBar = (
       <>
-        <Menu
-          subMenuBullets={true}
-          iconShape="circle"
-          className={`${
-            router?.pathname?.includes('/hr/general-departments') ? `${classes.activeNav} ${classes.format}` : ''
-          }`}
-        >
-          <SubMenu title="General Departments" icon={<FontAwesomeIcon icon={faLandmark} />}>
-            <li className={classes.list_style}>
-              <Link href={`/hr/general-departments/create`}>
-                <a>
-                  <div className={classes.list_menu}>
-                    <span className={subActiveNav(`/hr/general-departments/create`)}>Create General Department</span>
-                  </div>
-                </a>
-              </Link>
-            </li>
-            <li className={classes.list_style}>
-              <Link href={`/hr/general-departments`}>
-                <a>
-                  <div className={classes.list_menu}>
-                    <span className={subActiveNav(`/hr/general-departments`)}>All</span>
-                  </div>
-                </a>
-              </Link>
-            </li>
-          </SubMenu>
-        </Menu>
-        <Menu
-          subMenuBullets={true}
-          iconShape="circle"
-          className={`${router?.pathname?.includes('/hr/departments') ? `${classes.activeNav}` : ''}`}
-        >
-          <SubMenu title="Departments" icon={<FontAwesomeIcon icon={faHouseUser} />}>
-            <li className={classes.list_style}>
-              <Link href={`/hr/departments/create`}>
-                <a>
-                  <div className={classes.list_menu}>
-                    <span className={subActiveNav(`/hr/departments/create`)}>Create Department</span>
-                  </div>
-                </a>
-              </Link>
-            </li>
-            <li className={classes.list_style}>
-              <Link href={`/hr/departments`}>
-                <a>
-                  <div className={classes.list_menu}>
-                    <span className={subActiveNav(`/hr/departments`)}>All</span>
-                  </div>
-                </a>
-              </Link>
-            </li>
-          </SubMenu>
-        </Menu>
-        <Menu
-          subMenuBullets={true}
-          iconShape="circle"
-          className={`${router?.pathname?.includes('/hr/offices') ? `${classes.activeNav}` : ''}`}
-        >
-          <SubMenu title="Offices" icon={<FontAwesomeIcon icon={faNetworkWired} />}>
-            <li className={classes.list_style}>
-              <Link href={`/hr/offices/create`}>
-                <a className={isActive(`/hr/offices/create`)}>
-                  <div className={classes.list_menu}>
-                    <span className={subActiveNav(`/hr/offices/create`)}>Create Office</span>
-                  </div>
-                </a>
-              </Link>
-            </li>
-            <li className={classes.list_style}>
-              <Link href={`/hr/offices`}>
-                <a className={isActive(`/hr/offices`)}>
-                  <div className={classes.list_menu}>
-                    <span className={subActiveNav(`/hr/offices`)}>All</span>
-                  </div>
-                </a>
-              </Link>
-            </li>
-          </SubMenu>
-        </Menu>
-        <Menu
-          subMenuBullets={true}
-          iconShape="circle"
-          className={`${router?.pathname?.includes('/hr/officers') ? `${classes.activeNav}` : ''}`}
-        >
-          <SubMenu title="Officer management" icon={<FontAwesomeIcon icon={faUsers} />}>
-            <li className={classes.list_style}>
-              <Link href={`/hr/officers/create`}>
-                <a className={isActive(`/hr/officers/create`)}>
-                  <div className={classes.list_menu}>
-                    <span className={subActiveNav(`/hr/officers/create`)}>Create Officer</span>
-                  </div>
-                </a>
-              </Link>
-            </li>
-            <li className={classes.list_style}>
-              <Link href={`/hr/officers`}>
-                <a className={isActive(`/hr/officers`)}>
-                  <div className={classes.list_menu}>
-                    <span className={subActiveNav(`/hr/officers`)}>Officer List</span>
-                  </div>
-                </a>
-              </Link>
-            </li>
-          </SubMenu>
-        </Menu>
+        {me?.access?.generalDepartmentRead || me?.access?.generalDepartmentWrite ? (
+          <Menu
+            subMenuBullets={true}
+            iconShape="circle"
+            className={`${
+              router?.pathname?.includes('/hr/general-departments') ? `${classes.activeNav} ${classes.format}` : ''
+            }`}
+          >
+            <SubMenu title="General Departments" icon={<FontAwesomeIcon icon={faLandmark} />}>
+              {me?.access?.generalDepartmentWrite ? (
+                <li className={classes.list_style}>
+                  <Link href={`/hr/general-departments/create`}>
+                    <a>
+                      <div className={classes.list_menu}>
+                        <span className={subActiveNav(`/hr/general-departments/create`)}>
+                          Create General Department
+                        </span>
+                      </div>
+                    </a>
+                  </Link>
+                </li>
+              ) : (
+                undefined
+              )}
+              {me?.access?.generalDepartmentRead ? (
+                <li className={classes.list_style}>
+                  <Link href={`/hr/general-departments`}>
+                    <a>
+                      <div className={classes.list_menu}>
+                        <span className={subActiveNav(`/hr/general-departments`)}>All</span>
+                      </div>
+                    </a>
+                  </Link>
+                </li>
+              ) : (
+                undefined
+              )}
+            </SubMenu>
+          </Menu>
+        ) : (
+          undefined
+        )}
+
+        {me?.access?.departmentRead || me?.access?.departmentWrite ? (
+          <Menu
+            subMenuBullets={true}
+            iconShape="circle"
+            className={`${router?.pathname?.includes('/hr/departments') ? `${classes.activeNav}` : ''}`}
+          >
+            <SubMenu title="Departments" icon={<FontAwesomeIcon icon={faHouseUser} />}>
+              {me?.access?.departmentWrite ? (
+                <li className={classes.list_style}>
+                  <Link href={`/hr/departments/create`}>
+                    <a>
+                      <div className={classes.list_menu}>
+                        <span className={subActiveNav(`/hr/departments/create`)}>Create Department</span>
+                      </div>
+                    </a>
+                  </Link>
+                </li>
+              ) : (
+                undefined
+              )}
+              {me?.access?.departmentRead ? (
+                <li className={classes.list_style}>
+                  <Link href={`/hr/departments`}>
+                    <a>
+                      <div className={classes.list_menu}>
+                        <span className={subActiveNav(`/hr/departments`)}>All</span>
+                      </div>
+                    </a>
+                  </Link>
+                </li>
+              ) : (
+                undefined
+              )}
+            </SubMenu>
+          </Menu>
+        ) : (
+          undefined
+        )}
+
+        {me?.access?.officeRead || me?.access?.officeWrite ? (
+          <Menu
+            subMenuBullets={true}
+            iconShape="circle"
+            className={`${router?.pathname?.includes('/hr/offices') ? `${classes.activeNav}` : ''}`}
+          >
+            <SubMenu title="Offices" icon={<FontAwesomeIcon icon={faNetworkWired} />}>
+              {me?.access?.officeWrite ? (
+                <li className={classes.list_style}>
+                  <Link href={`/hr/offices/create`}>
+                    <a className={isActive(`/hr/offices/create`)}>
+                      <div className={classes.list_menu}>
+                        <span className={subActiveNav(`/hr/offices/create`)}>Create Office</span>
+                      </div>
+                    </a>
+                  </Link>
+                </li>
+              ) : (
+                undefined
+              )}
+              {me?.access?.officeRead ? (
+                <li className={classes.list_style}>
+                  <Link href={`/hr/offices`}>
+                    <a className={isActive(`/hr/offices`)}>
+                      <div className={classes.list_menu}>
+                        <span className={subActiveNav(`/hr/offices`)}>All</span>
+                      </div>
+                    </a>
+                  </Link>
+                </li>
+              ) : (
+                undefined
+              )}
+            </SubMenu>
+          </Menu>
+        ) : (
+          undefined
+        )}
+
+        {me?.access?.officerRead || me?.access?.officerWrite ? (
+          <Menu
+            subMenuBullets={true}
+            iconShape="circle"
+            className={`${router?.pathname?.includes('/hr/officers') ? `${classes.activeNav}` : ''}`}
+          >
+            <SubMenu title="Officer management" icon={<FontAwesomeIcon icon={faUsers} />}>
+              {me?.access?.officerWrite ? (
+                <li className={classes.list_style}>
+                  <Link href={`/hr/officers/create`}>
+                    <a className={isActive(`/hr/officers/create`)}>
+                      <div className={classes.list_menu}>
+                        <span className={subActiveNav(`/hr/officers/create`)}>Create Officer</span>
+                      </div>
+                    </a>
+                  </Link>
+                </li>
+              ) : (
+                undefined
+              )}
+              {me?.access?.officerRead ? (
+                <li className={classes.list_style}>
+                  <Link href={`/hr/officers`}>
+                    <a className={isActive(`/hr/officers`)}>
+                      <div className={classes.list_menu}>
+                        <span className={subActiveNav(`/hr/officers`)}>Officer List</span>
+                      </div>
+                    </a>
+                  </Link>
+                </li>
+              ) : (
+                undefined
+              )}
+            </SubMenu>
+          </Menu>
+        ) : (
+          undefined
+        )}
+
         <Menu iconShape="circle" className={isActive(`/hr/reports/search`)}>
           <Link href="/hr/reports/search">
             <a>
