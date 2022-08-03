@@ -86,7 +86,7 @@ export function DepartmentListScreen() {
   return (
     <>
       <SEO
-        title="General Department"
+        title="Department List"
         description={`
                   Design & Develop  by Moc Software Development Team
                 `}

@@ -99,7 +99,7 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
   return (
     <>
       <SEO
-        title="General Department"
+        title="Department"
         description={`
                   Design & Develop  by Moc Software Development Team
                 `}
@@ -124,7 +124,7 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
           <Col></Col>
           <Col md={6}>
             <XForm.Footer>
-              <XForm.Button type="submit" style={{ padding: '1.3em' }}>
+              <XForm.Button type="submit" style={{ padding: '1.3em', backgroundColor: '#5b73e8' }}>
                 Save
               </XForm.Button>
               <Link href="#">

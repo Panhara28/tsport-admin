@@ -667,7 +667,9 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
         <Col></Col>
         <Col md={6}>
           <XForm.Footer>
-            <XForm.Button type="submit">Save</XForm.Button>
+            <XForm.Button type="submit" style={{ padding: '1.3em', backgroundColor: '#5b73e8' }}>
+              Save
+            </XForm.Button>
           </XForm.Footer>
         </Col>
       </Row>
@@ -1145,7 +1147,7 @@ export function CreateHrEmployeeScreen({ userEditId }: Props) {
   return (
     <>
       <SEO
-        title="General Department"
+        title="Create Officers"
         description={`
                   Design & Develop  by Moc Software Development Team
                 `}

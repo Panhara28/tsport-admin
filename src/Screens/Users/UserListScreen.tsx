@@ -119,7 +119,7 @@ export function UserListScreen() {
   return (
     <>
       <SEO
-        title="General Department"
+        title="User List"
         description={`
                   Design & Develop  by Moc Software Development Team
                 `}
