@@ -1,8 +1,9 @@
 import type { NextPage } from "next";
+import { DashboardScreen } from "../src/Screens/Dashboard";
 
 
 const Home: NextPage = () => {
-  return <></>
+  return <DashboardScreen />
 };
 
 export default Home;
