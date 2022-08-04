@@ -50,8 +50,8 @@ export default function MutationStatus(props: Props) {
         <Alert variant="danger" onClose={() => setShow(false)} dismissible>
           <Alert.Heading>Oh snap! You got an error!</Alert.Heading>
           <ul>
-            {errorMessages.map(item => {
-              return <li>{item}</li>;
+            {errorMessages.map((item, idx) => {
+              return <li key={idx}>{item}</li>;
             })}
           </ul>
         </Alert>

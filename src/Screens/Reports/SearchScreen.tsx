@@ -24,9 +24,16 @@ import classes from './report.module.scss';
 import { CustomPagination } from '../../components/Paginations';
 import { useRouter } from 'next/router';
 import { SEO } from '../../components/SEO';
+import * as Excel from 'exceljs';
+import { saveAs } from 'file-saver';
+import moment from 'moment';
+import { CardHeader } from 'reactstrap';
+import { Button } from 'reactstrap';
 
 const QUERY = gql`
-  query employeeReport($pagination: PaginationInput, $filter: EmployeeReportFilter) {
+  query employeeReport($pagination: PaginationInput, $filter: EmployeeReportFilter, $type: String) {
+    hrDepartmentList(type: $type)
+
     employeeReport(pagination: $pagination, filter: $filter) {
       data {
         id
@@ -230,13 +237,109 @@ function RenderReport({ generalDepartmentId, departmentId, officeId, officerName
         officeId,
         officerName,
       },
+      type: 'list',
     },
   });
 
   if (loading || !data) return <div>Loading...</div>;
 
+  const onDownload = async (e: any) => {
+    e.preventDefault();
+
+    let workbook = new Excel.Workbook(); // create bookwork
+    let worksheet = workbook.addWorksheet('Officers'); // create booksheet
+
+    //  WorkSheet Header
+    worksheet.columns = [
+      {
+        header: 'Id',
+        key: 'id',
+        width: 10,
+      },
+      { header: 'Fullname', key: 'fullname', width: 30 },
+      { header: 'Fullname English', key: 'fullname_en', width: 30 },
+      { header: 'Phone Number', key: 'phoneNumber', width: 30 },
+      { header: 'Email', key: 'email', width: 30 },
+      { header: 'Gender', key: 'gender', width: 30 },
+      { header: 'Date of Birth', key: 'dob', width: 30 },
+      { header: 'Nationality', key: 'nationality', width: 30 },
+      { header: 'Education Level', key: 'education_level', width: 30 },
+      { header: 'Passport Id', key: 'passport_id', width: 30 },
+      { header: 'National Id', key: 'national_id', width: 30 },
+      { header: 'Position Level', key: 'position_level', width: 30 },
+      { header: 'Position Description', key: 'position_description', width: 30 },
+      { header: 'Unit', key: 'unit', width: 30 },
+      { header: 'Office Id', key: 'office_id', width: 30 },
+      { header: 'Department', key: 'department_id', width: 30 },
+      { header: 'General Department', key: 'general_department_id', width: 30 },
+      { header: 'Province', key: 'province', width: 30 },
+      { header: 'District', key: 'district', width: 30 },
+      { header: 'Village or Group', key: 'village_or_group', width: 30 },
+      { header: 'Commune', key: 'commune', width: 30 },
+      { header: 'Home No', key: 'homeNo', width: 30 },
+      { header: 'Street No', key: 'streetNo', width: 30 },
+      { header: 'Contact City or Province', key: 'contact_city_or_province', width: 30 },
+      { header: 'Contact District', key: 'contact_district', width: 30 },
+      { header: 'Contact Village', key: 'contact_village', width: 30 },
+      { header: 'Contact Commune', key: 'contact_commune', width: 30 },
+      { header: 'Officer Id', key: 'officer_id', width: 30 },
+    ];
+
+    for (const row of data.employeeReport.data) {
+      worksheet.addRow({
+        fullname: row?.fullname ? row?.fullname : 'គ្មាន',
+        fullname_en: row?.fullname_en ? row?.fullname_en : 'គ្មាន',
+        phoneNumber: row?.phoneNumber ? row?.phoneNumber : 'គ្មាន',
+        email: row?.email ? row?.email : 'គ្មាន',
+        gender: row?.gender ? row?.gender : 'គ្មាន',
+        dob: row?.dob ? row?.dob : 'គ្មាន',
+        nationality: row?.nationality ? row?.nationality : 'គ្មាន',
+        education_level: row?.education_level ? row?.education_level : 'គ្មាន',
+        passport_id: row?.passport_id ? row?.passport_id : 'គ្មាន',
+        national_id: row?.national_id ? row?.national_id : 'គ្មាន',
+        position_level: row?.position_level ? row?.position_level : 'គ្មាន',
+        position_description: row?.position_description ? row?.position_description : 'គ្មាន',
+        unit: row?.unit ? row?.unit : 'គ្មាន',
+        office_id: row?.office_id
+          ? data?.hrDepartmentList?.find((x: any) => Number(x?.id) === Number(row?.office_id))?.name
+          : 'គ្មាន',
+        department_id: row?.department_id
+          ? data?.hrDepartmentList?.find((x: any) => Number(x?.id) === Number(row?.department_id))?.name
+          : 'គ្មាន',
+        general_department_id: row?.general_department_id
+          ? data?.hrDepartmentList?.find((x: any) => Number(x?.id) === Number(row?.general_department_id))?.name
+          : 'គ្មាន',
+        province: row?.province ? row?.province : 'គ្មាន',
+        district: row?.district ? row?.district : 'គ្មាន',
+        village_or_group: row?.village_or_group ? row?.village_or_group : 'គ្មាន',
+        commune: row?.commune ? row?.commune : 'គ្មាន',
+        homeNo: row?.homeNo ? row?.homeNo : 'គ្មាន',
+        streetNo: row?.streetNo ? row?.streetNo : 'គ្មាន',
+        contact_city_or_province: row?.contact_city_or_province ? row?.contact_city_or_province : 'គ្មាន',
+        contact_district: row?.contact_district ? row?.contact_district : 'គ្មាន',
+        contact_village: row?.contact_village ? row?.contact_village : 'គ្មាន',
+        contact_commune: row?.contact_commune ? row?.contact_commune : 'គ្មាន',
+        officer_id: row?.officer_id ? row?.officer_id : 'គ្មាន',
+      });
+    }
+
+    // Write to File
+    const buffer = await workbook.xlsx.writeBuffer();
+    const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+    const fileExtension = '.xlsx';
+
+    const blob = new Blob([buffer], { type: fileType });
+
+    saveAs(blob, 'officers_report' + fileExtension);
+  };
+
   return (
     <Card>
+      <CardHeader>
+        <Button onClick={(e: any) => onDownload(e)} style={{ marginTop: '29px' }} className="d-flex align-items-center">
+          Download
+        </Button>
+      </CardHeader>
       <CardBody>
         <CustomTableContainer>
           <Table striped responsive bordered hover>

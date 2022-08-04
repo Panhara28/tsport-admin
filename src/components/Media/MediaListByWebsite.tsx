@@ -140,6 +140,7 @@ export function MediaListByWebsite({
                   : 'none';
               return (
                 <Col
+                  key={item?.id}
                   md={2}
                   onClick={() => {
                     setSelectImage({

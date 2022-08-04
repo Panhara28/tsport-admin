@@ -13,26 +13,30 @@ export function CustomTable({ data, websiteId }: Props) {
     <table className={style.mocTable}>
       <thead className={style.mocTableHead}>
         <tr>
-          {thead.map(th => {
+          {thead.map((th, idx) => {
             if (th == '__typename') return;
 
-            return <th className={style.mocTableHeader}>{th}</th>;
+            return (
+              <th key={idx} className={style.mocTableHeader}>
+                {th}
+              </th>
+            );
           })}
           <th>Action</th>
         </tr>
       </thead>
       <tbody>
-        {data.map(rowData => {
+        {data.map((rowData, idx) => {
           return (
-            <tr>
-              {thead.map(path => {
+            <tr key={idx}>
+              {thead.map((path, idx) => {
                 if (path == '__typename') return;
                 return (
-                  <>
+                  <div key={idx}>
                     <td key={path} className={style.mocTableData}>
                       {rowData[path]}
                     </td>
-                  </>
+                  </div>
                 );
               })}
               <td>

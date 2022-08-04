@@ -333,7 +333,7 @@ const GeneralDepartmentListDashboardScreen = ({ generalDepartmentId }: GeneralDe
           <Row>
             {data?.hrDepartmentUsersCount?.data?.map((item: any) => {
               return (
-                <Col md={3}>
+                <Col md={3} key={item?.id}>
                   <Card style={{ height: 'calc(100% - 1.25rem)' }}>
                     <CardBody>
                       <DashboardCard

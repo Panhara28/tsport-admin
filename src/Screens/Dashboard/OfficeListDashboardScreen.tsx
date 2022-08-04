@@ -123,7 +123,7 @@ const RenderHrEmployeeList = ({ officeId, filterOfficerName }: any) => {
               ) : (
                 data?.hrDepartmentUsersCount?.totalUsers?.map((item: any) => {
                   return (
-                    <tr key={item.id}>
+                    <tr key={item?.id}>
                       <td>
                         <div onClick={() => setIsShow(item?.id)} style={{ borderRadius: '50%', overflow: 'hidden' }}>
                           <Image
@@ -236,7 +236,7 @@ const OfficeListDashboardScreen = ({ departmentId, generalDepartmentId, officeId
           <Row>
             {data?.hrDepartmentUsersCount?.data?.map((item: any) => {
               return (
-                <Col md={3}>
+                <Col md={3} key={item?.id}>
                   <Card style={{ height: 'calc(100% - 1.25rem)' }}>
                     <CardBody>
                       <DashboardCard key={item?.id} title={item?.name} count={item?.count} />
