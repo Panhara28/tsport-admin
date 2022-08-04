@@ -1,0 +1,24 @@
+{
+  "dashboard": {
+    "title": "Dashboard",
+    "add_general_department": "Add General Department",
+    "add_department": "Add Department",
+    "add_office": "Add Office",
+    "total_employee_dashboard": "Total employees based on gender",
+    "total_employees_gender": "Total Employees Gender",
+    "table": {
+      "profile": "Profile",
+      "fullname": "Fullname",
+      "gender": "Gender",
+      "phone_number": "Phone Number",
+      "email": "Email",
+      "actions": "Actions",
+      "forms": "Forms",
+      "edit": "Edit"
+    }
+  },
+  "dashboard_card": {
+    "officers": "officers",
+    "view_detail": "View Detail"
+  }
+}

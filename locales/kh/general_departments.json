@@ -1,0 +1,21 @@
+{
+  "create_general_department": {
+    "title": "អគ្គនាយកដ្ឋាន",
+    "information": "ព័ត៌មាន",
+    "general_department_name": "ឈ្មោះអគ្គនាយកដ្ឋាន",
+    "save_btn": "រក្សាទុក",
+    "cancel_btn": "ត្រឡប់"
+  },
+  "general_department_list": {
+    "title": "តារាងអគ្គនាយកដ្ឋាន",
+    "add_new_btn": "បន្ថែមថ្មី",
+    "back_btn": "ត្រឡប់",
+    "table": {
+      "id": "លេខសម្គាល់",
+      "name": "ឈ្មោះ",
+      "actions": "សកម្មភាព",
+      "edit_btn": "កែតម្រូវ",
+      "remove_btn": "លុប"
+    }
+  }
+}

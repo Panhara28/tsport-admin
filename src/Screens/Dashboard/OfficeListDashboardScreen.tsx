@@ -22,6 +22,7 @@ import CVForm from '../../components/PrintForm/CVForm/CVForm';
 import Layout from '../../components/VerticalLayout';
 import { setting } from '../../libs/settings';
 import { CustomModal, CustomTableContainer } from './DashboardScreen.styled';
+import useTranslation from 'next-translate/useTranslation';
 
 const QUERY = gql`
   query hrDepartmentUsersCount($filter: HrDepartmentUsersCountFilter, $pagination: PaginationInput) {
@@ -73,6 +74,7 @@ function RenderCVFormModal({ info, isShowCVForm, setIsShowCVForm }: any) {
 }
 
 const RenderHrEmployeeList = ({ officeId, filterOfficerName }: any) => {
+  const { t } = useTranslation();
   const router = useRouter();
   const [isShow, setIsShow] = useState(0);
   const [isShowContractForm, setIsShowContractForm] = useState(0);
@@ -101,12 +103,12 @@ const RenderHrEmployeeList = ({ officeId, filterOfficerName }: any) => {
           <Table className="table-centered table-nowrap mb-0" hover striped>
             <thead>
               <tr>
-                <th>Profile</th>
-                <th>Fullname</th>
-                <th>Gender</th>
-                <th>Phone Number</th>
-                <th>Email</th>
-                <th>Actions</th>
+                <th>{t('dashboard:dashboard.table.profile')}</th>
+                <th>{t('dashboard:dashboard.table.fullname')}</th>
+                <th>{t('dashboard:dashboard.table.gender')}</th>
+                <th>{t('dashboard:dashboard.table.phone_number')}</th>
+                <th>{t('dashboard:dashboard.table.email')}</th>
+                <th>{t('dashboard:dashboard.table.actions')}</th>
               </tr>
             </thead>
             <tbody>
@@ -142,7 +144,7 @@ const RenderHrEmployeeList = ({ officeId, filterOfficerName }: any) => {
                         <div className="d-flex">
                           <Dropdown>
                             <Dropdown.Toggle variant="success" id="dropdown-basic">
-                              Forms <FontAwesomeIcon icon={faChevronDown} />
+                              {t('dashboard:dashboard.table.forms')} <FontAwesomeIcon icon={faChevronDown} />
                             </Dropdown.Toggle>
 
                             <Dropdown.Menu>
@@ -154,7 +156,7 @@ const RenderHrEmployeeList = ({ officeId, filterOfficerName }: any) => {
 
                           <Link href={`/hr/officers/${item?.id}/edit`}>
                             <a style={{ marginLeft: 10 }} className="btn btn-primary">
-                              Edit
+                              {t('dashboard:dashboard.table.edit')}
                             </a>
                           </Link>
                         </div>
@@ -185,6 +187,7 @@ const RenderHrEmployeeList = ({ officeId, filterOfficerName }: any) => {
 };
 
 const OfficeListDashboardScreen = ({ departmentId, generalDepartmentId, officeId }: OfficeListDashboardScreenProps) => {
+  const { t } = useTranslation();
   const [filterOfficerName, setFilterOfficerName] = useState(undefined);
 
   const { data, loading } = useQuery(QUERY, {
@@ -250,9 +253,9 @@ const OfficeListDashboardScreen = ({ departmentId, generalDepartmentId, officeId
             <Col md={3}>
               <Card>
                 <CardBody>
-                  <h6>Filter</h6>
+                  <h6>{t('common:filter_card.title')}</h6>
                   <hr />
-                  <label>Search by Officer Name</label>
+                  <label>{t('common:filter_card.filter_label')}</label>
                   <XForm.Text value={filterOfficerName} onChange={(e: any) => setFilterOfficerName(e?.target?.value)} />
                 </CardBody>
               </Card>

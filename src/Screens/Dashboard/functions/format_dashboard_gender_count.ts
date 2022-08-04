@@ -1,4 +1,4 @@
-export function format_dashboard_gender_count(total_employee?: any) {
+export function format_dashboard_gender_count(total_employee?: any, category?: any) {
   const data: any = {
     series: [],
     options: {
@@ -56,7 +56,7 @@ export function format_dashboard_gender_count(total_employee?: any) {
 
   male_data.data.push(total_employee?.total_male);
 
-  data.options.xaxis.categories.push('Total Employees Gender');
+  data.options.xaxis.categories.push(category ? category : 'Total Employees Gender');
 
   female_data.data.push(total_employee?.total_female);
 

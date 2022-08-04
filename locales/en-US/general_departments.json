@@ -1,0 +1,21 @@
+{
+  "create_general_department": {
+    "title": "Create General Department",
+    "information": "Information",
+    "general_department_name": "General Department Name",
+    "save_btn": "Save",
+    "cancel_btn": "Cancel"
+  },
+  "general_department_list": {
+    "title": "General Department List",
+    "add_new_btn": "Add New",
+    "back_btn": "Back",
+    "table": {
+      "id": "ID",
+      "name": "Name",
+      "actions": "Actions",
+      "edit_btn": "Edit",
+      "remove_btn": "Remove"
+    }
+  }
+}

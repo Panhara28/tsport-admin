@@ -16,6 +16,7 @@ import { SEO } from '../../../components/SEO';
 import { SingleUpload } from '../../../components/SingleUpload';
 import Layout from '../../../components/VerticalLayout';
 import { setting } from '../../../libs/settings';
+import useTranslation from 'next-translate/useTranslation';
 
 const CREATE_MUTATION = gql`
   mutation createHrDepartment($input: HrDepartmentInput) {
@@ -39,6 +40,7 @@ const QUERY = gql`
 `;
 
 const FormBodyCreate = ({ update, defaultValues }: any) => {
+  const { t } = useTranslation();
   const [name, setName] = useState(defaultValues?.name || '');
 
   const onHandleSubmit = (e: any) => {
@@ -67,11 +69,11 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
       />
       <Form onSubmit={onHandleSubmit}>
         <Row>
-          <h4>Information</h4>
+          <h4>{t('general_departments:create_general_department.information')}</h4>
           <hr />
           <Col md={6}>
             <XForm.Text
-              label="General Department"
+              label={t('general_departments:create_general_department.general_department_name')}
               value={name}
               name="name"
               onChange={e => setName(e.currentTarget.value)}
@@ -84,11 +86,11 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
           <Col md={6}>
             <XForm.Footer>
               <XForm.Button type="submit" style={{ padding: '1.3em', backgroundColor: '#5b73e8' }}>
-                Save
+                {t('general_departments:create_general_department.save_btn')}
               </XForm.Button>
               <Link href="#">
                 <a className="btn btn-danger " style={{ marginLeft: 10 }} onClick={() => router.back()}>
-                  Cancel
+                  {t('general_departments:create_general_department.cancel_btn')}
                 </a>
               </Link>
             </XForm.Footer>
@@ -100,6 +102,7 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
 };
 
 const FormBodyEdit = ({ update, defaultValues }: any) => {
+  const { t } = useTranslation();
   const [name, setName] = useState(defaultValues?.name || '');
 
   const onHandleSubmit = (e: any) => {
@@ -119,11 +122,11 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
   return (
     <Form onSubmit={onHandleSubmit}>
       <Row>
-        <h4>Information</h4>
+        <h4>{t('general_departments:create_general_department.information')}</h4>
         <hr />
         <Col md={6}>
           <XForm.Text
-            label="General Department"
+            label={t('general_departments:create_general_department.general_department_name')}
             value={name}
             name="name"
             onChange={e => setName(e.currentTarget.value)}
@@ -135,7 +138,7 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
         <Col></Col>
         <Col md={6}>
           <XForm.Footer>
-            <XForm.Button type="submit">Save</XForm.Button>
+            <XForm.Button type="submit">{t('general_departments:create_general_department.save_btn')}</XForm.Button>
           </XForm.Footer>
         </Col>
       </Row>
@@ -148,6 +151,7 @@ type Props = {
 };
 
 export function CreateGeneralDepartmentScreen({ userEditId }: Props) {
+  const { t } = useTranslation();
   const router = useRouter();
   return (
     <>
@@ -160,7 +164,10 @@ export function CreateGeneralDepartmentScreen({ userEditId }: Props) {
       <Layout>
         <div className="page-content">
           <Container fluid>
-            <Breadcrumb breadcrumbItem="General Department" title={setting.title} />
+            <Breadcrumb
+              breadcrumbItem={t('general_departments:create_general_department.title')}
+              title={setting.title}
+            />
             <hr />
             <Row>
               <Col md={9}>

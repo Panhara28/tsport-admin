@@ -20,6 +20,7 @@ import 'toastr/build/toastr.min.css';
 import { SEO } from '../../components/SEO';
 import Link from 'next/link';
 import { useAuthContext } from '../../components/Authentication/AuthContext';
+import useTranslation from 'next-translate/useTranslation';
 
 const ReactApexChart: any = dynamic(() => import('react-apexcharts'), { ssr: false });
 
@@ -95,6 +96,7 @@ const RenderAddGeneralDepartment = ({ show, setShow }: RenderAddGeneralDepartmen
 };
 
 const DashboardScreen = () => {
+  const { t } = useTranslation();
   const router = useRouter();
   const { me } = useAuthContext();
   const [show, setShow] = useState(false);
@@ -117,7 +119,9 @@ const DashboardScreen = () => {
             <Breadcrumb
               title={setting.title}
               breadcrumbItem={
-                data?.hrDepartmentUsersCount?.parent?.name ? data?.hrDepartmentUsersCount?.parent?.name : 'Dashboard'
+                data?.hrDepartmentUsersCount?.parent?.name
+                  ? data?.hrDepartmentUsersCount?.parent?.name
+                  : t('dashboard:dashboard.title')
               }
             />
             <hr />
@@ -126,7 +130,7 @@ const DashboardScreen = () => {
 
             {me?.access?.generalDepartmentWrite ? (
               <Button className="mb-4 bg-primary" onClick={() => setShow(true)}>
-                Add General Department
+                {t('dashboard:dashboard.add_general_department')}
               </Button>
             ) : (
               undefined
@@ -157,10 +161,20 @@ const DashboardScreen = () => {
               <Col md={6}>
                 <Card>
                   <CardBody>
-                    <h5 className="mb-5">Total employees based on gender</h5>
+                    <h5 className="mb-5">{t('dashboard:dashboard.total_employee_dashboard')}</h5>
                     <ReactApexChart
-                      options={format_dashboard_gender_count(data?.genderDashboardCount).options}
-                      series={format_dashboard_gender_count(data?.genderDashboardCount).series}
+                      options={
+                        format_dashboard_gender_count(
+                          data?.genderDashboardCount,
+                          t('dashboard:dashboard.total_employees_gender'),
+                        ).options
+                      }
+                      series={
+                        format_dashboard_gender_count(
+                          data?.genderDashboardCount,
+                          t('dashboard:dashboard.total_employees_gender'),
+                        ).series
+                      }
                       type="bar"
                       height={450}
                     />

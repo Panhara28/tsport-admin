@@ -1,0 +1,40 @@
+{
+  "filter_card": {
+    "title": "Filter",
+    "filter_label": "Search by Officer Name"
+  },
+  "sidebar": {
+    "dashboard": {
+      "title": "Dashboard"
+    },
+    "general_departments": {
+      "title": "General Departments",
+      "create_general_department": "Create General Department",
+      "all": "All"
+    },
+    "departments": {
+      "title": "Departments",
+      "create_department": "Create Department",
+      "all": "All"
+    },
+    "offices": {
+      "title": "Offices",
+      "create_office": "Create Office",
+      "all": "All"
+    },
+    "officer_management": {
+      "title": "Officer Management",
+      "create_officer": "Create Officer",
+      "officer_list": "Offcer List"
+    },
+    "report": {
+      "title": "report"
+    },
+    "settings": {
+      "title": "Settings",
+      "add_user": "Add User",
+      "user_list": "User List",
+      "activity_log": "Activity Log"
+    }
+  }
+}

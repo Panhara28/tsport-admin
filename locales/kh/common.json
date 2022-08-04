@@ -1,0 +1,40 @@
+{
+  "filter_card": {
+    "title": "ស្វែងរក",
+    "filter_label": "ស្វែងរកតាមរយៈឈ្មោះមន្រ្តី"
+  },
+  "sidebar": {
+    "dashboard": {
+      "title": "ផ្ទាំងគ្រប់គ្រង"
+    },
+    "general_departments": {
+      "title": "អគ្គនាយកដ្ឋាន",
+      "create_general_department": "បង្កើតអគ្គនាយកដ្ឋាន",
+      "all": "ទាំងអស់"
+    },
+    "departments": {
+      "title": "នាយកដ្ឋាន",
+      "create_department": "បង្កើតនាយកដ្ឋាន",
+      "all": "ទាំងអស់"
+    },
+    "offices": {
+      "title": "ការិយាល័យ",
+      "create_office": "បង្កើតការិយាល័យ",
+      "all": "ទាំងអស់"
+    },
+    "officer_management": {
+      "title": "ការគ្រប់គ្រងមន្រ្តី",
+      "create_officer": "បញ្ជូលមន្រ្តី",
+      "officer_list": "មន្រ្តីទាំងអស់"
+    },
+    "report": {
+      "title": "របាយការណ៍"
+    },
+    "settings": {
+      "title": "ការកំណត់",
+      "add_user": "បញ្ជូលអ្នក​ប្រើប្រាស់",
+      "user_list": "អ្នក​ប្រើប្រាស់ទាំងអស់",
+      "activity_log": "កំណត់ហេតុសកម្មភាព"
+    }
+  }
+}

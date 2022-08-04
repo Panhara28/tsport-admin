@@ -17,6 +17,7 @@ import { setting } from '../../../libs/settings';
 import Swal from 'sweetalert2';
 import { SEO } from '../../../components/SEO';
 import { useAuthContext } from '../../../components/Authentication/AuthContext';
+import useTranslation from 'next-translate/useTranslation';
 
 const QUERY = gql`
   query hrDepartmentList($branch_level: Int) {
@@ -31,6 +32,7 @@ const REMOVE_DEPARTMENT = gql`
 `;
 
 export function GeneralDepartmentListScreen() {
+  const { t } = useTranslation();
   const { me } = useAuthContext();
   const router = useRouter();
 

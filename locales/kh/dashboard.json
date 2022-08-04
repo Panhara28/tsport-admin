@@ -1,0 +1,24 @@
+{
+  "dashboard": {
+    "title": "ផ្ទាំងគ្រប់គ្រង",
+    "add_general_department": "បន្ថែមអគ្គនាយកដ្ឋាន",
+    "add_department": "បន្ថែមនាយកដ្ឋាន",
+    "add_office": "បន្ថែមការិយាល័យ",
+    "total_employee_dashboard": "ស្ថិតិមន្រ្តីផ្អែកលើភេទ",
+    "total_employees_gender": "មន្រ្តីសរុបផ្អែកលើភេទ",
+    "table": {
+      "profile": "រូបថត",
+      "fullname": "នាម ត្រកូល",
+      "gender": "ភេទ",
+      "phone_number": "លេខទូរសព្ទ",
+      "email": "អុីម៉ែល",
+      "actions": "សកម្មភាព",
+      "forms": "ទម្រង់",
+      "edit": "កែតម្រូវ"
+    }
+  },
+  "dashboard_card": {
+    "officers": "មន្រ្តី",
+    "view_detail": "មើលបន្ថែម"
+  }
+}
