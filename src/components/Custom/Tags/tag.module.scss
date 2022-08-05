@@ -1,0 +1,41 @@
+.container {
+}
+
+.editor {
+  display: flex;
+  height: 38.5px;
+
+  ul {
+    display: inline-flex;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+
+    li.active {
+      background: #00b894;
+      color: #fff;
+    }
+
+    li {
+      background: #e1e1e1;
+      padding: 3px 10px;
+      border-radius: 5px;
+      margin: 0 2px;
+
+      i {
+        margin-left: 5px;
+        color: #888;
+        cursor: pointer;
+      }
+
+      i:hover {
+        color: #d63031;
+      }
+    }
+  }
+  input {
+    outline: none;
+    border: 0;
+    flex-grow: 1;
+  }
+}

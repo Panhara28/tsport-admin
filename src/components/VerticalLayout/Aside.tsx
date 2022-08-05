@@ -18,6 +18,7 @@ import { ProSidebar, Menu, MenuItem, SubMenu, SidebarHeader, SidebarFooter, Side
 import AuthContext from '../Authentication/AuthContext';
 import classes from './nav.module.scss';
 import useTranslation from 'next-translate/useTranslation';
+import { MenuItems } from '../../libs/MenuItem';
 
 export const Aside = ({ collapsed, rtl, toggled, handleToggleSidebar }: any) => {
   const router = useRouter();
@@ -66,39 +67,35 @@ export const Aside = ({ collapsed, rtl, toggled, handleToggleSidebar }: any) => 
       </SidebarHeader>
 
       <SidebarContent className="sidebar-content">
-        <Menu iconShape="circle" className={isActive(`/`)}>
-          <Link href="/">
-            <a>
-              <MenuItem icon={<FontAwesomeIcon icon={faGlobeAsia} />}>{t('common:sidebar.dashboard.title')}</MenuItem>
-            </a>
-          </Link>
-        </Menu>
-        <Menu
-          subMenuBullets={true}
-          iconShape="circle"
-          className={`${router?.pathname?.includes('/hr/users/create') ? `${classes.activeNav}` : ''}`}
-        >
-          <SubMenu title={t('common:sidebar.settings.title')} icon={<FontAwesomeIcon icon={faCog} />}>
-            <li className={classes.list_style}>
-              <Link href={`/hr/users/create`}>
-                <a className={isActive(`/hr/users/create`)}>
-                  <div className={classes.list_menu}>
-                    <span className={subActiveNav(`/hr/users/create`)}>{t('common:sidebar.settings.add_user')}</span>
-                  </div>
-                </a>
-              </Link>
-            </li>
-            <li className={classes.list_style}>
-              <Link href={`/hr/users`}>
-                <a className={isActive(`/hr/users`)}>
-                  <div className={classes.list_menu}>
-                    <span className={subActiveNav(`/hr/users`)}>{t('common:sidebar.settings.user_list')}</span>
-                  </div>
-                </a>
-              </Link>
-            </li>
-          </SubMenu>
-        </Menu>
+        {MenuItems.map(item => {
+          return (
+            <Menu iconShape="circle" className={isActive(item.link)} key={item.title}>
+              {!!item.subs ? (
+                <SubMenu title={t(item.title)} icon={<FontAwesomeIcon icon={item.icon} />}>
+                  {item.subs.map(x => {
+                    return (
+                      <li key={x.title} className={classes.list_style}>
+                        <Link href={x.link}>
+                          <a className={isActive(x.link)}>
+                            <div className={classes.list_menu}>
+                              <span className={subActiveNav(x.link)}>{t(x.title)}</span>
+                            </div>
+                          </a>
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </SubMenu>
+              ) : (
+                <Link href={item.link}>
+                  <a>
+                    <MenuItem icon={<FontAwesomeIcon icon={item.icon} />}>{t(item.title)}</MenuItem>
+                  </a>
+                </Link>
+              )}
+            </Menu>
+          );
+        })}
       </SidebarContent>
       <SidebarFooter>
         <div

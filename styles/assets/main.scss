@@ -382,3 +382,13 @@ body {
     margin: 5mm;
   }
 }
+
+.category_form {
+  background-color: transparent;
+  padding: 5px;
+  width: 100%;
+
+  &:hover {
+    background-color: #54545433;
+  }
+}

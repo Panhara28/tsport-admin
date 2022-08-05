@@ -35,6 +35,19 @@
       "add_user": "Add User",
       "user_list": "User List",
       "activity_log": "Activity Log"
+    },
+    "product": {
+      "title": "Product",
+      "add_product": "Upload Product",
+      "product_list": "Product List"
+    },
+    "category": {
+      "title": "Category",
+      "category_list": "Category List"
+    },
+    "customer": {
+      "title": "Customer",
+      "customer_list": "Customer List"
     }
   }
 }
