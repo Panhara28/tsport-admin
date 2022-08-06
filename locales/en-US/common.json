@@ -48,6 +48,10 @@
     "customer": {
       "title": "Customer",
       "customer_list": "Customer List"
+    },
+    "banner": {
+      "title": "Banner",
+      "banner_list": "Banner List"
     }
   }
 }

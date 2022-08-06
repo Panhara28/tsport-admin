@@ -5,7 +5,7 @@ export function CreateProductScreen() {
   return (
     <TsContent title="Upload Product">
       <div className="row">
-        <div className="col-6">
+        <div className="col-8">
           <DraftProduct />
         </div>
       </div>

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { gql, useMutation } from '@apollo/client';
 import { faImage, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -26,6 +27,7 @@ type Props = {
   width?: string;
   height?: string;
 };
+
 export function SingleUpload({ setImage, image, width, height }: Props) {
   const [pic, setPic] = useState(image);
   const refUpload = React.useRef<HTMLInputElement | null>(null);

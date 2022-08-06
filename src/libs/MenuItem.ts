@@ -55,6 +55,10 @@ export const MenuItems: MenuItem[] = [
         title: 'common:sidebar.settings.user_list',
         link: '/hr/users',
       },
+      {
+        title: 'common:sidebar.banner.banner_list',
+        link: '/banner',
+      },
     ],
   },
 ];
