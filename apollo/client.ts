@@ -5,7 +5,9 @@ import { setting } from '../src/libs/settings';
 
 export default function createApolloClient(token = '') {
   const uri = setting.api + '?token=' + token;
-  const uploadLink: any = createUploadLink({ uri });
+  const uploadLink: any = createUploadLink({
+    uri,
+  });
   const batch = new BatchHttpLink({ uri });
   const link = ApolloLink.split(
     op => {
@@ -19,8 +21,8 @@ export default function createApolloClient(token = '') {
   );
 
   return new ApolloClient({
-    uri,
     link,
+    uri,
     cache: new InMemoryCache(),
     defaultOptions: {
       query: {

@@ -30,7 +30,7 @@ export function SingleUpload({ setImage, image, width, height }: Props) {
   const [pic, setPic] = useState(image);
   const refUpload = React.useRef<HTMLInputElement | null>(null);
 
-  const [uploadMutation] = useMutation(UPLOAD, {
+  const [singleUpload] = useMutation(UPLOAD, {
     onCompleted: (data: any) => {
       setPic(data.singleUpload.url);
       setImage(data.singleUpload.url);
@@ -41,11 +41,13 @@ export function SingleUpload({ setImage, image, width, height }: Props) {
   });
 
   const onChange = (e: any) => {
-    uploadMutation({
-      variables: {
-        file: e.target.files[0],
-      },
-    });
+    if (e.target.validity.valid && e.target.files) {
+      singleUpload({
+        variables: {
+          file: e.target.files[0],
+        },
+      });
+    }
   };
 
   if (image) {
