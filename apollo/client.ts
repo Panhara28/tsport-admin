@@ -4,7 +4,7 @@ import { createUploadLink } from 'apollo-upload-client';
 import { setting } from '../src/libs/settings';
 
 export default function createApolloClient(token = '') {
-  const uri = setting.api + '?token=' + token;
+  const uri = setting.api + (token ? '?token=' + token : '');
   const uploadLink: any = createUploadLink({
     uri,
   });

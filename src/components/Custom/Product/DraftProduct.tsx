@@ -40,6 +40,8 @@ const optionSize = ['XS', 'S', 'M', 'L', 'XL'];
 export function DraftProduct() {
   const [product, setProduct] = useState<Product>();
 
+  console.log(product);
+
   return (
     <div className="card">
       <div className="card-body">
@@ -143,7 +145,12 @@ export function DraftProduct() {
           />
         </div>
         <div>
-          <StockItem color={product?.color || ''} size={product?.size || ''} />
+          <StockItem
+            color={product?.color || ''}
+            size={product?.size || ''}
+            sku={product?.sku || []}
+            onChange={(e: any) => setProduct({ ...product, sku: e })}
+          />
         </div>
       </div>
     </div>
