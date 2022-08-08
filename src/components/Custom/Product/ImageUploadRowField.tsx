@@ -29,7 +29,11 @@ export function ImageUploadRowField({ onUpload }: { onUpload: any }) {
   return (
     <div>
       <input type="file" style={{ display: 'none' }} ref={refInput} onChange={onChange} />
-      <button className="btn btn-sm btn-primary" onClick={() => refInput.current && (refInput.current as any).click()}>
+      <button
+        type="button"
+        className="btn btn-sm btn-primary"
+        onClick={() => refInput.current && (refInput.current as any).click()}
+      >
         <FontAwesomeIcon icon={faPaperclip} />
       </button>
     </div>

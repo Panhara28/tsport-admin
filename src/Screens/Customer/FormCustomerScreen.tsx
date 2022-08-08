@@ -77,8 +77,13 @@ const FormBody = ({ isEditingMode, update, defaultValues }: CreateUpdateProps<an
   return (
     <Form onSubmit={onHandleSubmit}>
       <XForm.Group label="Information">
+        <div>
+          <Label>Profile Picture</Label>
+          <SingleUpload image={profile} setImage={setProfile} width="175" height="175" />
+        </div>
+        <br />
         <div className="row">
-          <div className="col-md-9">
+          <div className="col-md-6">
             <XForm.Text
               label="Fullname"
               placeholder="Enter your name"
@@ -86,6 +91,8 @@ const FormBody = ({ isEditingMode, update, defaultValues }: CreateUpdateProps<an
               onChange={e => setFullname(e.currentTarget.value)}
               required
             />
+          </div>
+          <div className="col-md-6">
             <XForm.Text
               label="Phonenumber"
               placeholder="Enter your phonenumber"
@@ -93,12 +100,6 @@ const FormBody = ({ isEditingMode, update, defaultValues }: CreateUpdateProps<an
               onChange={e => setPhone(e.currentTarget.value)}
               required
             />
-          </div>
-          <div className="col-md-3">
-            <div>
-              <Label>Profile Picture</Label>
-              <SingleUpload image={profile} setImage={setProfile} width="175" height="175" />
-            </div>
           </div>
           <XForm.TextArea
             label="Address"

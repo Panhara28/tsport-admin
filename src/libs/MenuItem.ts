@@ -26,6 +26,10 @@ export const MenuItems: MenuItem[] = [
         link: '/product/create',
       },
       {
+        title: 'common:sidebar.product.product_list',
+        link: '/product',
+      },
+      {
         title: 'common:sidebar.category.category_list',
         link: '/category',
       },

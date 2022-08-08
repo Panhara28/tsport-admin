@@ -11,20 +11,27 @@ function generateSku(color: string[], size: string[], sku: any[]): any[] {
     for (const s of size) {
       if (sku.length > 0) {
         const index = sku.find(
-          x => String(x.color).toLowerCase() === c.toLowerCase() && String(x.size).toLowerCase() === s.toLowerCase(),
+          x =>
+            String(x.color)
+              .trim()
+              .toLowerCase() === c.trim().toLowerCase() &&
+            String(x.size)
+              .trim()
+              .toLowerCase() === s.trim().toLowerCase(),
         );
         if (index) {
           items.push({
-            color: c,
-            size: s,
+            id: index.id,
+            color: c.trim(),
+            size: s.trim(),
             image: index.image,
             barcode: index.barcode,
             stock: index.stock,
           });
         } else {
           items.push({
-            color: c,
-            size: s,
+            color: c.trim(),
+            size: s.trim(),
             image: '',
             barcode: '',
             stock: 0,
@@ -32,8 +39,8 @@ function generateSku(color: string[], size: string[], sku: any[]): any[] {
         }
       } else {
         items.push({
-          color: c,
-          size: s,
+          color: c.trim(),
+          size: s.trim(),
           image: '',
           barcode: '',
           stock: 0,
