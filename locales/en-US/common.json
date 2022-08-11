@@ -52,6 +52,10 @@
     "banner": {
       "title": "Banner",
       "banner_list": "Banner List"
+    },
+    "order": {
+      "title": "Order",
+      "order_list": "Order Management"
     }
   }
 }

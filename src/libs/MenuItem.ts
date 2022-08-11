@@ -1,4 +1,11 @@
-import { faAddressCard, faBox, faCog, faGlobeAsia, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import {
+  faAddressCard,
+  faBox,
+  faCog,
+  faGlobeAsia,
+  faShoppingCart,
+  IconDefinition,
+} from '@fortawesome/free-solid-svg-icons';
 
 interface MenuItem {
   title: string;
@@ -32,6 +39,17 @@ export const MenuItems: MenuItem[] = [
       {
         title: 'common:sidebar.category.category_list',
         link: '/category',
+      },
+    ],
+  },
+  {
+    title: 'common:sidebar.order.title',
+    icon: faShoppingCart,
+    link: '#',
+    subs: [
+      {
+        title: 'common:sidebar.order.order_list',
+        link: '/order',
       },
     ],
   },
