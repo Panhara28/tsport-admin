@@ -1,9 +1,13 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { gql } from 'apollo-boost';
 import React, { useState } from 'react';
-import { DraftProduct } from '../../components/Custom/Product/DraftProduct';
 import { TsContent } from '../../components/Custom/TsContent';
 import toastr from 'toastr';
+import dynamic from 'next/dynamic';
+
+const DraftProduct = dynamic(() => import('../../components/Custom/Product/DraftProduct'), {
+  ssr: false,
+});
 
 const QUERY = gql`
   query product($id: Int!) {
@@ -31,7 +35,7 @@ export function EditProductScreen({ id }: { id?: number }) {
       }
     },
     onError: err => {
-      toastr.danger(err.message);
+      toastr.error(err.message);
     },
   });
 
@@ -46,39 +50,36 @@ export function EditProductScreen({ id }: { id?: number }) {
 
   return (
     <TsContent title="Edit Product">
-      <div className="row">
-        <div className="col-8">
-          {data && (
-            <DraftProduct
-              data={{
-                title: data.product.title || '',
-                code: data.product.code || '',
-                description: data.product.description || '',
-                price: data.product.price || '',
-                discount: data.product.discount || '0',
-                size: data.product.size || '',
-                color: data.product.color || '',
-                category: data.product.category ? data.product.category[0].id || 0 : 0,
-                stock: data.product.stock || '',
-                unit: data.product.unit || '',
-                sku: (data.product.sku as any[]).map(x => {
-                  return {
-                    id: x.id,
-                    image: x.image,
-                    color: x.color,
-                    size: x.size,
-                    isMain: false,
-                    barcode: x.barcode,
-                    stock: x.stock,
-                  };
-                }),
-                image: data.product.picture || '',
-              }}
-              onSave={onSave}
-            />
-          )}
-        </div>
-      </div>
+      {data && (
+        <DraftProduct
+          data={{
+            title: data.product.title || '',
+            code: data.product.code || '',
+            description: data.product.description || '',
+            price: data.product.price || '',
+            discount: data.product.discount || '0',
+            size: data.product.size || '',
+            color: data.product.color || '',
+            category: data.product.category ? data.product.category[0].id || 0 : 0,
+            stock: data.product.stock || '',
+            unit: data.product.unit || '',
+            sku: (data.product.sku as any[]).map(x => {
+              return {
+                id: x.id,
+                image: x.image,
+                color: x.color,
+                size: x.size,
+                isMain: false,
+                barcode: x.barcode,
+                stock: x.stock,
+              };
+            }),
+            image: data.product.picture || '',
+            images: data.product.images || [],
+          }}
+          onSave={onSave}
+        />
+      )}
     </TsContent>
   );
 }

@@ -96,7 +96,7 @@ export function UploadImage({ setImage, image, width, height }: Props) {
           onClick={() => refUpload?.current?.click()}
         >
           <FontAwesomeIcon icon={faImage} style={{ fontSize: 32, color: '#4886ff' }} />
-          <XForm.Text type="file" onChange={onChange} style={{ display: 'none' }} ref={refUpload} />
+          <XForm.Text multiple type="file" onChange={onChange} style={{ display: 'none' }} ref={refUpload} />
         </div>
       </div>
     </div>

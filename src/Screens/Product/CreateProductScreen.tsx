@@ -1,9 +1,13 @@
 import { useMutation } from '@apollo/client';
 import { gql } from 'apollo-boost';
-import { useEffect, useState } from 'react';
-import { DraftProduct } from '../../components/Custom/Product/DraftProduct';
+import { useState } from 'react';
 import { TsContent } from '../../components/Custom/TsContent';
 import toastr from 'toastr';
+import dynamic from 'next/dynamic';
+
+const DraftProduct = dynamic(() => import('../../components/Custom/Product/DraftProduct'), {
+  ssr: false,
+});
 
 const CREATE = gql`
   mutation createProduct($data: ProductInput) {
@@ -35,11 +39,7 @@ export function CreateProductScreen() {
 
   return (
     <TsContent title="Upload Product">
-      <div className="row">
-        <div className="col-8">
-          <DraftProduct data={data} onSave={onSave} />
-        </div>
-      </div>
+      <DraftProduct data={data} onSave={onSave} />
     </TsContent>
   );
 }

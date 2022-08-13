@@ -1,8 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable jsx-a11y/alt-text */
-import React, { useEffect, useState } from 'react';
+import { valid } from 'chroma-js';
+import React, { useEffect, useRef, useState } from 'react';
 import XForm from '../../Form/XForm';
 import { ImageUploadRowField } from './ImageUploadRowField';
+import { SelectImage } from './SelectImage';
 
 function generateSku(color: string[], size: string[], sku: any[]): any[] {
   const items: any[] = [];
@@ -52,7 +54,19 @@ function generateSku(color: string[], size: string[], sku: any[]): any[] {
   return items;
 }
 
-export function StockItem({ color, size, onChange, sku }: { color: string; size: string; onChange: any; sku: any[] }) {
+export function StockItem({
+  color,
+  size,
+  onChange,
+  sku,
+  images,
+}: {
+  color: string;
+  size: string;
+  onChange: any;
+  sku: any[];
+  images: any[];
+}) {
   const [items, setItems] = useState(generateSku(color.split(','), size.split(','), sku));
 
   useEffect(() => {
@@ -106,9 +120,10 @@ export function StockItem({ color, size, onChange, sku }: { color: string; size:
                 />
               </td>
               <td className="text-center">
-                {x.image && <img src={x.image} style={{ width: 50, height: 50 }} />}
-                <ImageUploadRowField
-                  onUpload={(e: any) => {
+                <SelectImage
+                  images={images}
+                  image={x.image}
+                  onClick={(e: any) => {
                     const data = [...items];
                     data[i].image = e;
                     setItems(data);
