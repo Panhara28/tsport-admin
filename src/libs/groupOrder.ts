@@ -19,6 +19,7 @@ export function groupOrder(data: any[]) {
         total: Number(item.total),
         date: moment(item.created_at).format('MMMM DD, YYYY'),
         details: [item],
+        customer: item.customer,
       });
     } else {
       items[find].qty = items[find].qty + item.qty;

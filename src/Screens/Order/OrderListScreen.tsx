@@ -8,14 +8,19 @@ import { CardBody } from 'reactstrap';
 import { Card } from 'reactstrap';
 import { TsContent } from '../../components/Custom/TsContent';
 import { groupOrder } from '../../libs/groupOrder';
-//@ts-ignore
-import { Menu, MenuItem, MenuButton, SubMenu } from '@szhsin/react-menu';
-import '@szhsin/react-menu/dist/index.css';
 import { BtnIcon } from '../../components/Form/ButtonIcon';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { Nav, NavItem, NavLink } from 'reactstrap';
 import { useRouter } from 'next/router';
+import {
+  ChangeStatusOrderMenu,
+  OrderStatus,
+  OrderStatusColor,
+} from '../../components/Custom/Order/ChangeStatusOrderMenu';
+import { Badge } from 'reactstrap';
+import Toast from 'react-bootstrap/Toast';
+import ToastContainer from 'react-bootstrap/ToastContainer';
 
 const QUERY = gql`
   query orderList($status: [OrderStatus]) {
@@ -88,6 +93,7 @@ function TabOrder({ tab, setTab }: { tab: any; setTab: any }) {
 export function OrderListScreen() {
   const [select, setSelect] = useState(0);
   const [tab, setTab] = useState('ORDER_RECEIVED');
+  const [err, setErr] = useState(null);
   const { data, loading } = useQuery(QUERY, {
     variables: {
       status: tab === 'DELIVERY' ? ['READY_TO_DELIVERY', 'ORDER_DELIVERY'] : [tab],
@@ -106,6 +112,13 @@ export function OrderListScreen() {
 
   return (
     <TsContent title="Order Management">
+      <ToastContainer position="top-end" className="p-3" style={{ marginTop: '5%' }}>
+        <Toast show={!!err} onClose={() => setErr(null)} autohide delay={3000} bg="danger">
+          <Toast.Body>
+            <small className="text-light">{err}</small>
+          </Toast.Body>
+        </Toast>
+      </ToastContainer>
       <TabOrder tab={tab} setTab={setTab} />
       <br />
       {orders.length > 0 && (
@@ -132,11 +145,15 @@ export function OrderListScreen() {
                           borderLeftWidth: 0,
                           borderRightWidth: 0,
                           borderColor: 'rgb(229,231,235)',
+                          justifyContent: 'space-between',
                         }}
                       >
                         <span>
                           <b>Order</b>
                           <span>#{x.id}</span>
+                        </span>
+                        <span>
+                          <b>Customer</b> #{x.customer.phone ? x.customer.phone : x.customer.display}
                         </span>
                       </div>
                       <div style={{ padding: '0.75rem 1.25rem' }}>
@@ -174,6 +191,7 @@ export function OrderListScreen() {
                   <thead>
                     <tr>
                       <th>Item</th>
+                      <th className="text-center">Status</th>
                       <th className="text-center">Quantity</th>
                       <th className="text-center">Amount</th>
                       <th className="text-center">Total Price</th>
@@ -216,6 +234,20 @@ export function OrderListScreen() {
                                 transform: 'translate(-50%, -50%)',
                               }}
                             >
+                              <Badge color={OrderStatusColor[x.status]} pill>
+                                {OrderStatus[x.status]}
+                              </Badge>
+                            </small>
+                          </td>
+                          <td className="text-center" style={{ alignItems: 'center', position: 'relative' }}>
+                            <small
+                              style={{
+                                position: 'absolute',
+                                top: '50%',
+                                left: '50%',
+                                transform: 'translate(-50%, -50%)',
+                              }}
+                            >
                               {x.qty}
                             </small>
                           </td>
@@ -244,41 +276,7 @@ export function OrderListScreen() {
                             </small>
                           </td>
                           <td className="text-center" style={{ alignItems: 'center', position: 'relative' }}>
-                            <Menu
-                              menuButton={
-                                <div
-                                  style={{
-                                    position: 'absolute',
-                                    top: '50%',
-                                    left: '50%',
-                                    transform: 'translate(-50%, -50%)',
-                                  }}
-                                >
-                                  <MenuButton className="btn btn-link btn-sm">
-                                    <FontAwesomeIcon icon={faEllipsisH} />
-                                  </MenuButton>
-                                </div>
-                              }
-                            >
-                              <MenuItem>
-                                <small>Order Revived</small>
-                              </MenuItem>
-                              <MenuItem>
-                                <small>Order Processing</small>
-                              </MenuItem>
-                              <MenuItem>
-                                <small>Ready to Delivery</small>
-                              </MenuItem>
-                              <MenuItem>
-                                <small>Order Delivery</small>
-                              </MenuItem>
-                              <MenuItem>
-                                <small>Confirm Pick up</small>
-                              </MenuItem>
-                              <MenuItem>
-                                <small>Return</small>
-                              </MenuItem>
-                            </Menu>
+                            <ChangeStatusOrderMenu currentStatus={x.status} id={x.id} onError={setErr} />
                           </td>
                         </tr>
                       );
