@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { useState } from 'react';
+import React, { useState } from 'react';
 //@ts-ignore
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 //@ts-ignore
