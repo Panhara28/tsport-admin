@@ -228,7 +228,7 @@ export function CreateUserScreen({ userEditId }: Props) {
       <SEO
         title="Create User"
         description={`
-                  Design & Develop  by Moc Software Development Team
+                  Design & Develop  by Codehub Software Development Team
                 `}
         image=""
       />

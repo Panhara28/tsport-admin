@@ -121,7 +121,7 @@ export function UserListScreen() {
       <SEO
         title="User List"
         description={`
-                  Design & Develop  by Moc Software Development Team
+                  Design & Develop  by Codehub Software Development Team
                 `}
         image=""
       />

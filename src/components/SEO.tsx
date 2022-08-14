@@ -20,7 +20,7 @@ export const SEO: React.FC<SeoProps> = ({ title, description, canonical, image }
       content={
         description ||
         `  
-        Design & Develop  by Moc Software Development Team`
+        Design & Develop  by Codehub Software Development Team`
       }
     />
     <meta property="og:type" content="website" />
@@ -31,7 +31,7 @@ export const SEO: React.FC<SeoProps> = ({ title, description, canonical, image }
       content={
         description ||
         `  
-        Design & Develop  by Moc Software Development Team`
+        Design & Develop  by Codehub Software Development Team`
       }
     />
 

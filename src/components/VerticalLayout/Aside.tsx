@@ -62,7 +62,7 @@ export const Aside = ({ collapsed, rtl, toggled, handleToggleSidebar }: any) => 
             whiteSpace: 'nowrap',
           }}
         >
-          Ministry Of Commerce
+          Tsport cambodia
         </div>
       </SidebarHeader>
 
@@ -105,7 +105,7 @@ export const Aside = ({ collapsed, rtl, toggled, handleToggleSidebar }: any) => 
           }}
         >
           <a href="#" target="_blank" className="sidebar-btn" rel="noopener noreferrer">
-            <span>{new Date().getFullYear()} © Ministry Of Commerce.</span>
+            <span>{new Date().getFullYear()} © Codehub.</span>
           </a>
         </div>
       </SidebarFooter>

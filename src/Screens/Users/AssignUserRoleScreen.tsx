@@ -104,7 +104,7 @@ export function AssignUserRoleScreen({ userEditId }: Props) {
       <SEO
         title="Assign Role"
         description={`
-                  Design & Develop  by Moc Software Development Team
+                  Design & Develop  by Codehub Software Development Team
                 `}
         image=""
       />
