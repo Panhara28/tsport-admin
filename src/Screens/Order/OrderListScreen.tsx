@@ -190,7 +190,9 @@ export function OrderListScreen() {
                 <Table>
                   <thead>
                     <tr>
-                      <th>Item</th>
+                      <th>
+                        Item <span style={{ textDecoration: 'underline' }}>Order #{orders[select].id}</span>
+                      </th>
                       <th className="text-center">Status</th>
                       <th className="text-center">Quantity</th>
                       <th className="text-center">Amount</th>
@@ -276,7 +278,12 @@ export function OrderListScreen() {
                             </small>
                           </td>
                           <td className="text-center" style={{ alignItems: 'center', position: 'relative' }}>
-                            <ChangeStatusOrderMenu currentStatus={x.status} id={x.id} onError={setErr} />
+                            <ChangeStatusOrderMenu
+                              onCompleted={() => setSelect(0)}
+                              currentStatus={x.status}
+                              id={x.id}
+                              onError={setErr}
+                            />
                           </td>
                         </tr>
                       );

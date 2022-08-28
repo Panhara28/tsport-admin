@@ -36,14 +36,17 @@ export function ChangeStatusOrderMenu({
   currentStatus,
   id,
   onError,
+  onCompleted,
 }: {
   currentStatus: OrderStatus;
   id: number;
   onError: any;
+  onCompleted: any;
 }) {
   const [changeOrderStatus] = useMutation(MUTATION, {
     refetchQueries: ['orderList'],
     onError: err => onError(err.message),
+    onCompleted,
   });
 
   const onClickOrderStatus = (status: string) => {
@@ -73,32 +76,32 @@ export function ChangeStatusOrderMenu({
         </div>
       }
     >
-      {currentStatus !== OrderStatus.ORDER_RECEIVED && (
+      {/* {currentStatus !== OrderStatus.ORDER_RECEIVED && (
         <MenuItem onClick={() => onClickOrderStatus('ORDER_RECEIVED')}>
           <small>Order Revived</small>
         </MenuItem>
-      )}
-      {currentStatus !== OrderStatus.ORDER_PROCESSING && (
+      )} */}
+      {currentStatus === OrderStatus.ORDER_RECEIVED && (
         <MenuItem onClick={() => onClickOrderStatus('ORDER_PROCESSING')}>
           <small>Order Processing</small>
         </MenuItem>
       )}
-      {currentStatus !== OrderStatus.READY_TO_DELIVERY && (
+      {currentStatus === OrderStatus.ORDER_PROCESSING && (
         <MenuItem onClick={() => onClickOrderStatus('READY_TO_DELIVERY')}>
           <small>Ready to Delivery</small>
         </MenuItem>
       )}
-      {currentStatus !== OrderStatus.ORDER_DELIVERY && (
+      {currentStatus === OrderStatus.READY_TO_DELIVERY && (
         <MenuItem onClick={() => onClickOrderStatus('ORDER_DELIVERY')}>
           <small>Order Delivery</small>
         </MenuItem>
       )}
-      {currentStatus !== OrderStatus.CONFIRM_PICK_UP && (
+      {currentStatus === OrderStatus.ORDER_DELIVERY && (
         <MenuItem onClick={() => onClickOrderStatus('CONFIRM_PICK_UP')}>
           <small>Confirm Pick up</small>
         </MenuItem>
       )}
-      {currentStatus !== OrderStatus.RETURN && (
+      {currentStatus === OrderStatus.CONFIRM_PICK_UP && (
         <MenuItem onClick={() => onClickOrderStatus('RETURN')}>
           <small>Return</small>
         </MenuItem>
