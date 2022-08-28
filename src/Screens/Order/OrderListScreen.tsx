@@ -234,11 +234,14 @@ export function OrderListScreen() {
                                 top: '50%',
                                 left: '50%',
                                 transform: 'translate(-50%, -50%)',
+                                width: 120,
                               }}
                             >
                               <Badge color={OrderStatusColor[x.status]} pill>
                                 {OrderStatus[x.status]}
                               </Badge>
+                              <br />
+                              {tab === 'RETURN' && <small className="text-danger">{x.return_reason}</small>}
                             </small>
                           </td>
                           <td className="text-center" style={{ alignItems: 'center', position: 'relative' }}>

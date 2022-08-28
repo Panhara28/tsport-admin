@@ -50,6 +50,19 @@ export function ChangeStatusOrderMenu({
   });
 
   const onClickOrderStatus = (status: string) => {
+    if (status === 'RETURN') {
+      const x = window.prompt('Why did you want return?');
+
+      changeOrderStatus({
+        variables: {
+          status,
+          orderItemId: Number(id),
+          note: x,
+        },
+      });
+
+      return;
+    }
     changeOrderStatus({
       variables: {
         status,
