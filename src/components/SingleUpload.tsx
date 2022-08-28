@@ -62,8 +62,8 @@ export function SingleUpload({ setImage, image, width, height }: Props) {
             backgroundColor: 'unset',
             flexDirection: 'row',
             position: 'absolute',
-            top: 45,
-            left: width ? Number(width) - 15 : 280,
+            top: 25,
+            right: 20,
             zIndex: 999,
           }}
           onClick={() => {
@@ -74,11 +74,7 @@ export function SingleUpload({ setImage, image, width, height }: Props) {
         </div>
         <div>
           {image ? (
-            <img
-              src={parseImageUrl(image, width && height ? `${width}x${height}` : '280x280')}
-              alt=""
-              style={{ width: width ? width : 280, height: height ? height : 280 }}
-            />
+            <img src={image} alt="" style={{ width: width ? width : 280, height: height ? height : 280 }} />
           ) : (
             undefined
           )}

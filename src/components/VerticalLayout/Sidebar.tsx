@@ -28,42 +28,8 @@ const Sidebar = (props: Props) => {
   return (
     <React.Fragment>
       <div className="vertical-menu">
-        <div className="navbar-brand-box">
-          {/* <Link href="/">
-            <a className="logo logo-dark">
-              <span className="logo-sm">
-                <img src={""} alt="" height="22" />
-              </span>
-              <span className="logo-lg">
-                <img src={""} alt="" height="20" />
-              </span>
-            </a>
-          </Link>
-
-          <Link href="/">
-            <a className="logo logo-light">
-              <span className="logo-sm">
-                <img src={""} alt="" height="22" />
-              </span>
-              <span className="logo-lg">
-                <img src={""} alt="" height="20" />
-              </span>
-            </a>
-          </Link> */}
-        </div>
+        <div className="navbar-brand-box"></div>
         <Aside />
-        {/* <button
-          onClick={() => {
-            tToggle();
-          }}
-          type="button"
-          className="btn btn-sm px-3 font-size-16 header-item waves-effect vertical-menu-btn"
-        >
-          <i className="fa fa-fw fa-bars"></i>
-        </button> */}
-        {/* <div className="sidebar-menu-scroll">
-          <SidebarContent />
-        </div> */}
       </div>
     </React.Fragment>
   );

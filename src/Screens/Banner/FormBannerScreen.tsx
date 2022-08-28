@@ -69,19 +69,14 @@ export function FormBannerScreen({ id }: { id?: number }) {
   return (
     <TsContent title={id ? 'Edit Banner' : 'Create Banner'}>
       <div className="row">
-        <div className="col-md-6">
+        <div className="col-md-4">
           <Card>
             <CardBody>
               {data && (
                 <Form onSubmit={onHandleSubmit}>
                   <div>
                     <Label>Banner Image</Label>
-                    <SingleUpload
-                      image={image}
-                      setImage={setImage}
-                      width={(window.innerWidth / 2.5).toString()}
-                      height="250"
-                    />
+                    <SingleUpload image={image} setImage={setImage} width="100%" height="250px" />
                   </div>
                   <br />
                   <XForm.Text label="Name" defaultValue={data.banner.name} name="name" />
