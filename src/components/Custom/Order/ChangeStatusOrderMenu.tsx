@@ -18,7 +18,7 @@ export enum OrderStatus {
 }
 
 export enum OrderStatusColor {
-  primary = 0,
+  secondary = 0,
   info = 1,
   Secondary = 2,
   warning = 3,
@@ -53,13 +53,15 @@ export function ChangeStatusOrderMenu({
     if (status === 'RETURN') {
       const x = window.prompt('Why did you want return?');
 
-      changeOrderStatus({
-        variables: {
-          status,
-          orderItemId: Number(id),
-          note: x,
-        },
-      });
+      if (x) {
+        changeOrderStatus({
+          variables: {
+            status,
+            orderItemId: Number(id),
+            note: x,
+          },
+        });
+      }
 
       return;
     }

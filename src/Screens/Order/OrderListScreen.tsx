@@ -30,7 +30,7 @@ const QUERY = gql`
 
 function TabOrder({ tab, setTab }: { tab: any; setTab: any }) {
   return (
-    <Nav tabs>
+    <Nav pills>
       <NavItem>
         <NavLink
           href="#"
@@ -38,6 +38,7 @@ function TabOrder({ tab, setTab }: { tab: any; setTab: any }) {
             setTab('ORDER_RECEIVED');
           }}
           active={tab === 'ORDER_RECEIVED'}
+          className={tab === 'ORDER_RECEIVED' ? 'bg-secondary' : ''}
         >
           Received
         </NavLink>
@@ -49,6 +50,7 @@ function TabOrder({ tab, setTab }: { tab: any; setTab: any }) {
             setTab('ORDER_PROCESSING');
           }}
           active={tab === 'ORDER_PROCESSING'}
+          className={tab === 'ORDER_PROCESSING' ? 'bg-info' : ''}
         >
           Processing
         </NavLink>
@@ -60,6 +62,7 @@ function TabOrder({ tab, setTab }: { tab: any; setTab: any }) {
             setTab('DELIVERY');
           }}
           active={tab === 'DELIVERY'}
+          className={tab === 'DELIVERY' ? 'bg-warning' : ''}
         >
           Delivery
         </NavLink>
@@ -71,8 +74,9 @@ function TabOrder({ tab, setTab }: { tab: any; setTab: any }) {
             setTab('CONFIRM_PICK_UP');
           }}
           active={tab === 'CONFIRM_PICK_UP'}
+          className={tab === 'CONFIRM_PICK_UP' ? 'bg-success' : ''}
         >
-          Pick Up
+          Confirm
         </NavLink>
       </NavItem>
       <NavItem>
@@ -82,6 +86,7 @@ function TabOrder({ tab, setTab }: { tab: any; setTab: any }) {
             setTab('RETURN');
           }}
           active={tab === 'RETURN'}
+          className={tab === 'RETURN' ? 'bg-danger' : ''}
         >
           Return
         </NavLink>

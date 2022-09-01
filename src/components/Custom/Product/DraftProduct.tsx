@@ -107,7 +107,8 @@ export default function DraftProduct({ data, onSave }: { data: any; onSave: any 
                   }}
                 >
                   2
-                </span>
+                </span>{' '}
+                Select an image to the thumbnail
               </h2>
               <hr />
               {/* <UploadImage
@@ -264,7 +265,8 @@ export default function DraftProduct({ data, onSave }: { data: any; onSave: any 
                   }}
                 >
                   1
-                </span>
+                </span>{' '}
+                Select the relevant images
               </h2>
               <hr />
               <MultipleFiles
