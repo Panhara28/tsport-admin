@@ -76,6 +76,10 @@ export function EditProductScreen({ id }: { id?: number }) {
             }),
             image: data.product.picture || '',
             images: data.product.images || [],
+            price_hold_sale: data.product.price_hold_sale || 0,
+            price_premium: data.product.price_premium || 0,
+            discount_hold_sale: data.product.discount_hold_sale || 0,
+            discount_premium: data.product.discount_premium || 0,
           }}
           onSave={onSave}
         />

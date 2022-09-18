@@ -38,6 +38,10 @@ interface Product {
   sku?: sku[];
   image?: string;
   images?: string[];
+  price_hold_sale?: string
+  price_premium?: string
+  discount_hold_sale?: string
+  discount_premium?: string
 }
 
 const optionColor = ['Red', 'Blue', 'White', 'Black', 'Green', 'Yellow'];
@@ -83,6 +87,10 @@ export default function DraftProduct({ data, onSave }: { data: any; onSave: any 
       discount: product?.discount,
       picture: pictures,
       images: (product.images || []).map(x => x).join(','),
+      price_hold_sale: product.price_hold_sale,
+      price_premium: product.price_premium,
+      discount_hold_sale: product.discount_hold_sale,
+      discount_premium: product.discount_premium
     };
 
     onSave(data);
@@ -188,9 +196,12 @@ export default function DraftProduct({ data, onSave }: { data: any; onSave: any 
                     onChange={(e: any) => setProduct({ ...product, category: e })}
                   />
                 </div>
-                <div className="col-md-4">
+              </div>
+              <hr />
+              <div className='row'>
+              <div className="col-md-6">
                   <XForm.Text
-                    label="Sale Price"
+                    label="Sale Price ($)"
                     placeholder="Enter sale price"
                     type="number"
                     value={product?.price}
@@ -198,16 +209,55 @@ export default function DraftProduct({ data, onSave }: { data: any; onSave: any 
                     required
                   />
                 </div>
-                <div className="col-md-4">
+                <div className="col-md-6">
                   <XForm.Text
-                    label="Discount"
+                    label="Discount (%)"
                     placeholder="Enter discount"
                     type="number"
                     value={product?.discount}
                     onChange={e => setProduct({ ...product, discount: e.currentTarget.value })}
                   />
                 </div>
+              <div className="col-md-6">
+                  <XForm.Text
+                    label="Sale Price For Hold Sale ($)"
+                    placeholder="Enter sale price for hold sale"
+                    type="number"
+                    value={product?.price_hold_sale}
+                    onChange={e => setProduct({ ...product, price_hold_sale: e.currentTarget.value })}
+                    required
+                  />
+                </div>
+                <div className="col-md-6">
+                  <XForm.Text
+                    label="Discount Hold Sale (%)"
+                    placeholder="Enter discount hold sale"
+                    type="number"
+                    value={product?.discount_hold_sale}
+                    onChange={e => setProduct({ ...product, discount_hold_sale: e.currentTarget.value })}
+                  />
+                </div>
+                <div className="col-md-6">
+                  <XForm.Text
+                    label="Sale Price for Premium ($)"
+                    placeholder="Enter sale price for premium"
+                    type="number"
+                    value={product?.price_premium}
+                    onChange={e => setProduct({ ...product, price_premium: e.currentTarget.value })}
+                    required
+                  />
+                </div>
+                <div className="col-md-6">
+                  <XForm.Text
+                    label="Discount Premium (%)"
+                    placeholder="Enter discount premium"
+                    type="number"
+                    value={product?.discount_premium}
+                    onChange={e => setProduct({ ...product, discount_premium: e.currentTarget.value })}
+                  />
+                </div>
               </div>
+              <hr />
               <div className="form-group mb-3">
                 <label style={{ color: 'rgb(107, 119, 140)', fontSize: 12, fontWeight: 600 }}>Color</label>
                 <TagListComponent

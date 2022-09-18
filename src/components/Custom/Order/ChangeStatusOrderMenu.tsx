@@ -27,8 +27,8 @@ export enum OrderStatusColor {
 }
 
 const MUTATION = gql`
-  mutation changeOrderStatus($status: OrderStatus!, $orderItemId: Int!, $note: String) {
-    changeOrderStatus(orderItemId: $orderItemId, status: $status, note: $note)
+  mutation changeOrderStatus($status: OrderStatus!, $orderItemId: Int!, $note: String, $fee: String) {
+    changeOrderStatus(orderItemId: $orderItemId, status: $status, note: $note, fee: $fee)
   }
 `;
 
@@ -65,6 +65,25 @@ export function ChangeStatusOrderMenu({
 
       return;
     }
+
+    if(status === 'ORDER_DELIVERY') {
+      const x = window.prompt('Input delivery fee ($)');
+
+      if(x) {
+        if(!isNaN(Number(x))) {
+          changeOrderStatus({
+            variables: {
+              status,
+              orderItemId: Number(id),
+              fee: String(x),
+            },
+          });
+        }
+      }
+
+      return;
+    }
+
     changeOrderStatus({
       variables: {
         status,

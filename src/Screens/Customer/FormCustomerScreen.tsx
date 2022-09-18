@@ -56,7 +56,7 @@ const FormBody = ({ isEditingMode, update, defaultValues }: CreateUpdateProps<an
           phone,
           address,
           type,
-          discount: type === 'default' ? 0 : Number(discount),
+          discount: 0,
           profile,
         },
       });
@@ -68,7 +68,7 @@ const FormBody = ({ isEditingMode, update, defaultValues }: CreateUpdateProps<an
         username,
         password,
         type,
-        discount: type === 'default' ? 0 : Number(discount),
+        discount: 0,
         profile,
       });
     }
@@ -148,23 +148,15 @@ const FormBody = ({ isEditingMode, update, defaultValues }: CreateUpdateProps<an
                   value: 'default',
                 },
                 {
+                  text: 'Hold Sale',
+                  value: 'hold_sale',
+                },
+                {
                   text: 'Premium',
                   value: 'premium',
                 },
               ]}
             />
-          </div>
-          <div className="col-md-6">
-            {type === 'premium' && (
-              <XForm.Text
-                type="number"
-                label="Discount (%)"
-                placeholder="Enter discount"
-                value={discount}
-                onChange={e => setDiscount(e.currentTarget.value)}
-                required={type !== 'default'}
-              />
-            )}
           </div>
         </div>
       </XForm.Group>
