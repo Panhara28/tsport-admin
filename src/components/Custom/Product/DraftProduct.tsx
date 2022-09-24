@@ -63,6 +63,7 @@ export default function DraftProduct({ data, onSave }: { data: any; onSave: any 
         isMain: false,
         stock: Number(x.stock),
         barcode: x.barcode ? x.barcode : undefined,
+        qty: Number(x.qty),
       };
     });
 
@@ -74,6 +75,7 @@ export default function DraftProduct({ data, onSave }: { data: any; onSave: any 
       isMain: true,
       stock: 0,
       barcode: '',
+      qty: 0
     });
 
     const data = {

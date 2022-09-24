@@ -29,6 +29,7 @@ function generateSku(color: string[], size: string[], sku: any[]): any[] {
             image: index.image,
             barcode: index.barcode,
             stock: index.stock,
+            qty: index.qty
           });
         } else {
           items.push({
@@ -37,6 +38,7 @@ function generateSku(color: string[], size: string[], sku: any[]): any[] {
             image: '',
             barcode: '',
             stock: 0,
+            qty: index.qty
           });
         }
       } else {
@@ -46,6 +48,7 @@ function generateSku(color: string[], size: string[], sku: any[]): any[] {
           image: '',
           barcode: '',
           stock: 0,
+          qty: 0
         });
       }
     }
@@ -81,6 +84,7 @@ export function StockItem({
           <th className="text-center">Color</th>
           <th className="text-center">Size</th>
           <th className="text-center">Stock</th>
+          <th className="text-center">Qty</th>
           <th className="text-center">Image</th>
         </tr>
       </thead>
@@ -114,6 +118,20 @@ export function StockItem({
                   onChange={e => {
                     const data = [...items];
                     data[i].stock = e.target.value;
+                    setItems(data);
+                    onChange(data);
+                  }}
+                />
+              </td>
+              <td className="text-center" style={{ width: 100 }}>
+              <input
+                  type="text"
+                  value={x.qty}
+                  className="form-control form-control-sm"
+                  style={{ border: 'none', textAlign: 'center' }}
+                  onChange={e => {
+                    const data = [...items];
+                    data[i].qty = e.target.value;
                     setItems(data);
                     onChange(data);
                   }}

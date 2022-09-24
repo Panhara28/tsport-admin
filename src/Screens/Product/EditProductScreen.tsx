@@ -72,6 +72,7 @@ export function EditProductScreen({ id }: { id?: number }) {
                 isMain: false,
                 barcode: x.barcode,
                 stock: x.stock,
+                qty: x.qty
               };
             }),
             image: data.product.picture || '',
