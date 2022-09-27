@@ -81,18 +81,18 @@ export default function DraftProduct({ data, onSave }: { data: any; onSave: any 
     const data = {
       title: product?.title,
       description: product?.description,
-      price: product?.price,
+      price: String(product?.price),
       size: product?.size,
       color: product?.color,
       category: product?.category,
       unit: '',
-      discount: product?.discount,
+      discount: String(product?.discount),
       picture: pictures,
       images: (product.images || []).map(x => x).join(','),
-      price_hold_sale: product.price_hold_sale,
-      price_premium: product.price_premium,
-      discount_hold_sale: product.discount_hold_sale,
-      discount_premium: product.discount_premium
+      price_hold_sale: String(product.price_hold_sale),
+      price_premium: String(product.price_premium),
+      discount_hold_sale: String(product.discount_hold_sale),
+      discount_premium: String(product.discount_premium)
     };
 
     onSave(data);
