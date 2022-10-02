@@ -55,6 +55,8 @@ const FormBody = ({ isEditingMode, update, defaultValues }: CreateUpdateProps<an
           fullname,
           phone,
           address,
+          username,
+          password,
           type,
           discount: 0,
           profile,
@@ -109,32 +111,30 @@ const FormBody = ({ isEditingMode, update, defaultValues }: CreateUpdateProps<an
           />
         </div>
       </XForm.Group>
-      {!isEditingMode && (
-        <XForm.Group label="Authentication">
-          <XForm.Inline>
-            <div className="row">
-              <div className="col-md-6">
-                <XForm.Text
-                  required
-                  label="Username (@)"
-                  value={username}
-                  onChange={e => setUsername(e.currentTarget.value)}
-                />
-                <small className="text-danger">Username required @ (Ex: sample@customer.com)</small>
-              </div>
-              <div className="col-md-6">
-                <XForm.Text
-                  label="Password"
-                  type="password"
-                  value={password}
-                  onChange={e => setPassword(e.currentTarget.value)}
-                  required
-                />
-              </div>
+      <XForm.Group label="Authentication">
+        <XForm.Inline>
+          <div className="row">
+            <div className="col-md-6">
+              <XForm.Text
+                required
+                label="Username (@)"
+                value={username}
+                onChange={e => setUsername(e.currentTarget.value)}
+              />
+              <small className="text-danger">Username required @ (Ex: sample@customer.com)</small>
             </div>
-          </XForm.Inline>
-        </XForm.Group>
-      )}
+            <div className="col-md-6">
+              <XForm.Text
+                label="Password"
+                type="password"
+                value={password}
+                onChange={e => setPassword(e.currentTarget.value)}
+                required
+              />
+            </div>
+          </div>
+        </XForm.Inline>
+      </XForm.Group>
       <XForm.Group label="">
         <div className="row">
           <div className="col-md-6">

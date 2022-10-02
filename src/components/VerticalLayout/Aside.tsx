@@ -13,7 +13,7 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { ProSidebar, Menu, MenuItem, SubMenu, SidebarHeader, SidebarFooter, SidebarContent } from 'react-pro-sidebar';
 import AuthContext from '../Authentication/AuthContext';
 import classes from './nav.module.scss';
@@ -24,6 +24,7 @@ export const Aside = ({ collapsed, rtl, toggled, handleToggleSidebar }: any) => 
   const router = useRouter();
   const { t } = useTranslation();
   const { me } = useContext(AuthContext);
+  const [tog, setTog] = useState(false);
   const isActive = (r: any) => {
     if (r === router.asPath) {
       return `${classes.activeNav}`;
@@ -45,9 +46,13 @@ export const Aside = ({ collapsed, rtl, toggled, handleToggleSidebar }: any) => 
       image={false}
       rtl={rtl}
       collapsed={collapsed}
-      toggled={toggled}
-      breakPoint="md"
-      onToggle={handleToggleSidebar}
+      // toggled={window.innerWidth < 900 ? tog : toggled}
+      toggled={true}
+      breakPoint="sm"
+      onToggle={() => {
+        handleToggleSidebar();
+        setTog(!tog);
+      }}
     >
       <SidebarHeader>
         <div

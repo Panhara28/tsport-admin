@@ -52,7 +52,7 @@ export function CustomerListScreen() {
       {data && (
         <Card>
           <CardBody>
-            <Table className="table-centered table-nowrap mb-0" hover striped>
+            <Table responsive className="table-centered table-nowrap mb-0" hover striped>
               <thead>
                 <tr>
                   <th>Name</th>
