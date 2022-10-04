@@ -67,7 +67,7 @@ export const Aside = ({ collapsed, rtl, toggled, handleToggleSidebar }: any) => 
             whiteSpace: 'nowrap',
           }}
         >
-          Tsport cambodia
+          T-Sport cambodia
         </div>
       </SidebarHeader>
 
