@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { OrderStatus } from '../components/Custom/Order/ChangeStatusOrderMenu';
 
 export function groupOrder(data: any[]) {
   const items: any[] = [];
@@ -20,6 +21,8 @@ export function groupOrder(data: any[]) {
         date: moment(item.created_at).format('MMMM DD, YYYY'),
         details: [item],
         customer: item.customer,
+        fee: Number(item.fee),
+        status: OrderStatus[item.status]
       });
     } else {
       items[find].qty = items[find].qty + item.qty;

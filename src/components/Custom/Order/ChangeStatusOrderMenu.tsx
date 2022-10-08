@@ -125,11 +125,11 @@ export function ChangeStatusOrderMenu({
           <small>Ready to Delivery</small>
         </MenuItem>
       )}
-      {currentStatus === OrderStatus.READY_TO_DELIVERY && (
+      {/* {currentStatus === OrderStatus.READY_TO_DELIVERY && (
         <MenuItem onClick={() => onClickOrderStatus('ORDER_DELIVERY')}>
           <small>Order Delivery</small>
         </MenuItem>
-      )}
+      )} */}
       {currentStatus === OrderStatus.ORDER_DELIVERY && (
         <MenuItem onClick={() => onClickOrderStatus('CONFIRM_PICK_UP')}>
           <small>Confirm Pick up</small>

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @next/next/no-img-element */
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { gql } from 'apollo-boost';
 import React, { useEffect, useState } from 'react';
 import { Table } from 'reactstrap';
@@ -25,6 +25,12 @@ import ToastContainer from 'react-bootstrap/ToastContainer';
 const QUERY = gql`
   query orderList($status: [OrderStatus]) {
     orderList(status: $status)
+  }
+`;
+
+const MUTATION = gql`
+  mutation changeOrderStatus($status: OrderStatus!, $orderItemId: Int!, $note: String, $fee: String) {
+    changeOrderStatus(orderItemId: $orderItemId, status: $status, note: $note, fee: $fee)
   }
 `;
 
@@ -104,6 +110,11 @@ export function OrderListScreen() {
       status: tab === 'DELIVERY' ? ['READY_TO_DELIVERY', 'ORDER_DELIVERY'] : [tab],
     },
   });
+  const [changeOrderStatus] = useMutation(MUTATION, {
+    refetchQueries: ['orderList'],
+    // onError: err => onError(err.message),
+    // onCompleted,
+  });
 
   if (loading) {
     return (
@@ -114,6 +125,24 @@ export function OrderListScreen() {
   }
 
   const orders = groupOrder(data && data.orderList);
+
+  const onClickSetToDelivery = (id: number,) => {
+    const x = window.prompt('Input delivery fee ($)');
+
+      if(x) {
+        if(!isNaN(Number(x))) {
+          changeOrderStatus({
+            variables: {
+              status: 'ORDER_DELIVERY',
+              orderItemId: Number(id),
+              fee: String(x),
+            },
+          });
+        }
+      }
+
+      return;
+    }
 
   return (
     <TsContent title="Order Management">
@@ -157,9 +186,11 @@ export function OrderListScreen() {
                           <b>Order</b>
                           <span>#{x.id}</span>
                         </span>
-                        <span>
+                        {
+                          x.status === 'READY_TO_DELIVERY' ? <button className='btn btn-warning btn-sm' onClick={()=>onClickSetToDelivery(x.details[0].id)}>Process Delivery</button> : <span>
                           <b>Customer</b> #{x.customer.phone ? x.customer.phone : x.customer.display}
                         </span>
+                        }
                       </div>
                       <div style={{ padding: '0.75rem 1.25rem' }}>
                         <p style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -178,9 +209,14 @@ export function OrderListScreen() {
                           <b style={{ marginRight: '0.25rem' }}>${x.amount.toFixed(2)}</b>
                         </p>
                         <p style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <b style={{ width: '6rem' }}>Delivery Fee</b>
+                          <b style={{ marginRight: 'auto' }}>:</b>
+                          <b style={{ marginRight: '0.25rem' }}>${x.fee.toFixed(2)}</b>
+                        </p>
+                        <p style={{ display: 'flex', justifyContent: 'space-between' }}>
                           <b style={{ width: '6rem' }}>Total Price</b>
                           <b style={{ marginRight: 'auto' }}>:</b>
-                          <b style={{ marginRight: '0.25rem' }}>${x.total.toFixed(2)}</b>
+                          <b style={{ marginRight: '0.25rem' }}>${Number(x.total + x.fee).toFixed(2)}</b>
                         </p>
                       </div>
                     </CardBody>
