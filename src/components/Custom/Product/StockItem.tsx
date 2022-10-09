@@ -29,7 +29,7 @@ function generateSku(color: string[], size: string[], sku: any[]): any[] {
             image: index.image,
             barcode: index.barcode,
             stock: index.stock,
-            qty: index.qty
+            qty: index.qty,
           });
         } else {
           items.push({
@@ -38,7 +38,7 @@ function generateSku(color: string[], size: string[], sku: any[]): any[] {
             image: '',
             barcode: '',
             stock: 0,
-            qty: index.qty
+            qty: 0,
           });
         }
       } else {
@@ -48,7 +48,7 @@ function generateSku(color: string[], size: string[], sku: any[]): any[] {
           image: '',
           barcode: '',
           stock: 0,
-          qty: 0
+          qty: 0,
         });
       }
     }
@@ -124,7 +124,7 @@ export function StockItem({
                 />
               </td>
               <td className="text-center" style={{ width: 100 }}>
-              <input
+                <input
                   type="text"
                   value={x.qty}
                   className="form-control form-control-sm"

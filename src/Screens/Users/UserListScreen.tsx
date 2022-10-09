@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { faAngleLeft, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { gql } from 'apollo-boost';
@@ -18,6 +18,7 @@ import { CustomPagination } from '../../components/Paginations';
 import { SEO } from '../../components/SEO';
 import Layout from '../../components/VerticalLayout';
 import { setting } from '../../libs/settings';
+import toastr from 'toastr';
 
 const QUERY = gql`
   query adminUserList($pagination: PaginationInput, $filter: UserFilter) {
@@ -25,6 +26,7 @@ const QUERY = gql`
       data {
         id
         fullname
+        published
       }
       pagination {
         current
@@ -35,8 +37,24 @@ const QUERY = gql`
   }
 `;
 
+const MUTATION = gql`
+  mutation publishUser($id: Int!) {
+    publishUser(id: $id)
+  }
+`;
+
 const RenderUserList = ({ filterFullname }: any) => {
   const router = useRouter();
+  const [publishUser] = useMutation(MUTATION, {
+    refetchQueries: ['adminUserList'],
+    onCompleted: res => {
+      if (res.publishUser) {
+        toastr.success('User was change active');
+      } else {
+        toastr.danger('Somthing wrong...');
+      }
+    },
+  });
 
   const { data, loading } = useQuery(QUERY, {
     variables: {
@@ -51,6 +69,17 @@ const RenderUserList = ({ filterFullname }: any) => {
   });
 
   if (loading || !data) return <div>Loading...</div>;
+
+  const onClickPublish = (id: number) => {
+    const x = window.confirm('Are you sure want update active user?');
+    if (!!x) {
+      publishUser({
+        variables: {
+          id: Number(id),
+        },
+      });
+    }
+  };
 
   return (
     <Card>
@@ -84,14 +113,18 @@ const RenderUserList = ({ filterFullname }: any) => {
                           Edit
                         </a>
                       </Link>
-                      <Link href={`/hr/users/${item?.id}/role`}>
+                      {/* <Link href={`/hr/users/${item?.id}/role`}>
                         <a style={{ marginLeft: 10 }} className="btn btn-info">
                           Assign Role
                         </a>
-                      </Link>
+                      </Link> */}
                       <Link href="#">
-                        <a style={{ marginLeft: 10 }} className="btn btn-danger">
-                          Remove
+                        <a
+                          style={{ marginLeft: 10 }}
+                          className={item.published ? 'btn btn-danger' : 'btn btn-success'}
+                          onClick={() => onClickPublish(item.id)}
+                        >
+                          {item.published ? 'Remove' : 'Undo'}
                         </a>
                       </Link>
                     </td>

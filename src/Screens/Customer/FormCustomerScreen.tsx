@@ -121,7 +121,7 @@ const FormBody = ({ isEditingMode, update, defaultValues }: CreateUpdateProps<an
                 value={username}
                 onChange={e => setUsername(e.currentTarget.value)}
               />
-              <small className="text-danger">Username required @ (Ex: sample@customer.com)</small>
+              <small className="text-danger">Username required @ (Ex: @tsport.com)</small>
             </div>
             <div className="col-md-6">
               <XForm.Text

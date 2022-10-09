@@ -1,18 +1,25 @@
 /* eslint-disable @next/next/no-img-element */
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { gql } from 'apollo-boost';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Badge } from 'reactstrap';
 import { CardBody } from 'reactstrap';
 import { Table } from 'reactstrap';
 import { Card } from 'reactstrap';
 import { TsContent } from '../../components/Custom/TsContent';
 import { CustomPagination } from '../../components/Paginations';
+import toastr from 'toastr';
 
 const QUERY = gql`
   query productList($offset: Int = 0, $limit: Int = 10) {
     productList(offset: $offset, limit: $limit)
+  }
+`;
+
+const MUTATION = gql`
+  mutation publishProduct($id: Int!) {
+    publishProduct(id: $id)
   }
 `;
 
@@ -25,6 +32,37 @@ export function ProductListScreen() {
       limit,
     },
   });
+  const [publishProduct] = useMutation(MUTATION, {
+    refetchQueries: ['productList'],
+    onCompleted: res => {
+      if (res.publishProduct) {
+        toastr.success('Product was change status publish.');
+      } else {
+        toastr.danger('Somthing wrong...');
+      }
+    },
+  });
+
+  useEffect(() => {
+    if (process.browser) {
+      const query = new URLSearchParams(window.location.search);
+
+      if (query.get('page')) {
+        setOffset((Number(query.get('page')) - 1) * limit);
+      }
+    }
+  });
+
+  const onClickPublish = (id: number) => {
+    const x = window.confirm('Are you sure want update publish product?');
+    if (!!x) {
+      publishProduct({
+        variables: {
+          id: Number(id),
+        },
+      });
+    }
+  };
 
   return (
     <TsContent title="Product List">
@@ -79,7 +117,16 @@ export function ProductListScreen() {
                         <b>{x.stock}</b>
                       </td>
                       <td className="text-center">
-                        <Badge color={x.published ? 'success' : 'danger'}>{x.published ? 'Yes' : 'No'}</Badge>
+                        {x.published ? (
+                          <button className="btn btn-success btn-sm" onClick={() => onClickPublish(x.id)}>
+                            Yes
+                          </button>
+                        ) : (
+                          <button className="btn btn-danger btn-sm" onClick={() => onClickPublish(x.id)}>
+                            No
+                          </button>
+                        )}
+                        {/* <Badge color={x.published ? 'success' : 'danger'}>{x.published ? 'Yes' : 'No'}</Badge> */}
                       </td>
                       <td className="text-center">
                         <Link href={'/product/edit/' + x.id}>
@@ -94,9 +141,11 @@ export function ProductListScreen() {
           </CardBody>
           <CustomPagination
             total={data.productList.pagination.total}
-            currentPage={data.productList.pagination.current}
+            currentPage={
+              offset > 0 ? Math.ceil(data.productList.pagination.current / limit) : data.productList.pagination.current
+            }
             size={data.productList.pagination.size}
-            limit={10}
+            limit={limit}
           />
         </Card>
       )}

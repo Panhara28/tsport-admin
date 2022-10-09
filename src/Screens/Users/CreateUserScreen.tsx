@@ -79,7 +79,7 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
       <Row>
         <Col md={3} className="mb-3">
           <Label>Profile Picture</Label>
-          <SingleUpload image={image} setImage={setImage} width="150" height="150" />
+          <SingleUpload image={image} setImage={setImage} width={'150'} height={'150'} />
         </Col>
       </Row>
       <Row>
@@ -95,6 +95,7 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
         </Col>
         <Col md={6}>
           <XForm.Text label="Email" value={email} name="email" onChange={e => setEmail(e.currentTarget.value)} />
+          <small className="text-danger">{`(*Require '@tsport.com')`}</small>
         </Col>
         <Col md={12}>
           <XForm.Text
@@ -146,6 +147,7 @@ const FormBodyCreate = ({ update, defaultValues }: any) => {
 };
 
 const FormBodyEdit = ({ update, defaultValues }: any) => {
+  console.log(defaultValues);
   const [fullname, setFullName] = useState(defaultValues?.fullname || '');
   const [email, setEmail] = useState(defaultValues?.email || '');
   const [phoneNumber, setPhoneNumber] = useState(defaultValues?.phoneNumber || '');
@@ -172,7 +174,7 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
       <Row>
         <Col md={3} className="mb-3">
           <Label>Profile Picture</Label>
-          <SingleUpload image={image} setImage={setImage} width="150" height="150" />
+          <SingleUpload image={image} setImage={setImage} width={'150'} height={'150'} />
         </Col>
       </Row>
       <Row>
@@ -188,6 +190,7 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
         </Col>
         <Col md={6}>
           <XForm.Text label="Email" value={email} name="email" onChange={e => setEmail(e.currentTarget.value)} />
+          <small className="text-danger">{`(*Require '@tsport.com')`}</small>
         </Col>
         <Col md={12}>
           <XForm.Text

@@ -40,12 +40,15 @@ export function EditProductScreen({ id }: { id?: number }) {
   });
 
   const onSave = (e: any) => {
-    updateProduct({
-      variables: {
-        id: Number(id),
-        data: e,
-      },
-    });
+    const x = window.confirm('Are you sure want to save product?');
+    if (!!x) {
+      updateProduct({
+        variables: {
+          id: Number(id),
+          data: e,
+        },
+      });
+    }
   };
 
   return (
@@ -72,7 +75,7 @@ export function EditProductScreen({ id }: { id?: number }) {
                 isMain: false,
                 barcode: x.barcode,
                 stock: x.stock,
-                qty: x.qty
+                qty: x.qty,
               };
             }),
             image: data.product.picture || '',

@@ -17,12 +17,19 @@ const CREATE = gql`
 `;
 
 export function CreateProductScreen() {
-  const [data, setData] = useState({});
+  const [data, setData] = useState({
+    discount_hold_sale: 0,
+    discount_premium: 0,
+    discount: 0,
+  });
   const [createProduct] = useMutation(CREATE, {
     refetchQueries: ['productList', 'product'],
     onCompleted: res => {
       if (res.createProduct) {
         toastr.success('Upload new product.');
+        setTimeout(() => {
+          process.browser && window.location.reload();
+        }, 500);
       }
     },
     onError: err => {
