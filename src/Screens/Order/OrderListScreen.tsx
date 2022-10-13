@@ -126,23 +126,23 @@ export function OrderListScreen() {
 
   const orders = groupOrder(data && data.orderList);
 
-  const onClickSetToDelivery = (id: number,) => {
+  const onClickSetToDelivery = (id: number) => {
     const x = window.prompt('Input delivery fee ($)');
 
-      if(x) {
-        if(!isNaN(Number(x))) {
-          changeOrderStatus({
-            variables: {
-              status: 'ORDER_DELIVERY',
-              orderItemId: Number(id),
-              fee: String(x),
-            },
-          });
-        }
+    if (x) {
+      if (!isNaN(Number(x))) {
+        changeOrderStatus({
+          variables: {
+            status: 'ORDER_DELIVERY',
+            orderItemId: Number(id),
+            fee: String(x),
+          },
+        });
       }
-
-      return;
     }
+
+    return;
+  };
 
   return (
     <TsContent title="Order Management">
@@ -186,11 +186,18 @@ export function OrderListScreen() {
                           <b>Order</b>
                           <span>#{x.id}</span>
                         </span>
-                        {
-                          x.status === 'READY_TO_DELIVERY' ? <button className='btn btn-warning btn-sm' onClick={()=>onClickSetToDelivery(x.details[0].id)}>Process Delivery</button> : <span>
-                          <b>Customer</b> #{x.customer.phone ? x.customer.phone : x.customer.display}
-                        </span>
-                        }
+                        {x.status === 'READY_TO_DELIVERY' ? (
+                          <button
+                            className="btn btn-warning btn-sm"
+                            onClick={() => onClickSetToDelivery(x.details[0].id)}
+                          >
+                            Process Delivery
+                          </button>
+                        ) : (
+                          <span>
+                            <b>Customer</b> #{x.customer.phone ? x.customer.phone : x.customer.display}
+                          </span>
+                        )}
                       </div>
                       <div style={{ padding: '0.75rem 1.25rem' }}>
                         <p style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -228,7 +235,7 @@ export function OrderListScreen() {
           <div className="col-md-9">
             <Card>
               <CardBody style={{ padding: 0 }}>
-                <Table>
+                <Table responsive>
                   <thead>
                     <tr>
                       <th>
