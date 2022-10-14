@@ -403,3 +403,27 @@ body {
 //   padding: 0 !important;
 //   margin: 10px 0 !important;
 // }
+
+.grow {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  transition: all .2s ease-in-out;
+
+  .value {
+    font-size: 2.43rem;
+    font-weight: 500;
+    letter-spacing: 1px;
+    line-height: 1.2;
+  }
+
+  .label {
+    font-size: .99rem;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  &:hover {
+    transform: scale(1.4);
+  }
+}
