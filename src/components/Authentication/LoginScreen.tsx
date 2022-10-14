@@ -28,13 +28,13 @@ export function LoginScreen() {
     <>
       <div className={style.loginContainer}>
         <header className={style.loginHeader}>
-          <div className={style.adminLogoContainer}>
+          {/* <div className={style.adminLogoContainer}>
             <img className={style.adminLogo} src={setting.logo ? setting.logo : '/logo/logo-placeholder.png'} alt="" />
-          </div>
-          <h3>{setting.title}</h3>
+          </div> */}
+          <h3>T-Sport Cambodia</h3>
         </header>
         <div className={style.loginCard}>
-          <h5>Login to continue to: {setting.title}</h5>
+          <h5>Login to continue to: T-Sport Cambodia</h5>
           <div className="mt-3"></div>
           <label>Username</label>
           <XForm.Text ref={node => (usernameInput = node)} />
