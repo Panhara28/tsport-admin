@@ -7,6 +7,7 @@ import { CardBody } from 'reactstrap';
 import { Breadcrumb } from '../../components/Common/Breadcrumb';
 import Layout from '../../components/VerticalLayout';
 import { setting } from '../../libs/settings';
+import { DownloadExcel } from './downloadexcel';
 
 const QUERY_REPORT = gql`
   query query($start: String, $end: String, $offset: Int = 0, $limit: Int = 10) {
@@ -91,9 +92,28 @@ export function OrderReportScreen() {
           >
             Filter
           </button>
-          <button onClick={onClickReset} className="btn btn-sm btn-danger">
+          <button onClick={onClickReset} className="btn btn-sm btn-danger" style={{ marginRight: '1rem' }}>
             Reset
           </button>
+          <DownloadExcel
+            data={data.orderReport.map((x: any) => {
+              return {
+                'Customer Name': x.customer.display,
+                'Customer Number': '+855' + x.customer.phone,
+                'Product Code': x.product.code,
+                'Product Stock': x.product.stock,
+                'Order ID': x.order_id,
+                'Order UUID': x.order_uuid,
+                'Order Status': x.status,
+                Price: currency.format(x.price),
+                Qty: x.qty,
+                Amount: currency.format(x.amount),
+                Total: currency.format(x.total),
+              };
+            })}
+            start={start}
+            end={end}
+          />
         </div>
         <br />
         <div className="row">
