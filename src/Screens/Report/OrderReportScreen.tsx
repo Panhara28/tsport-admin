@@ -7,7 +7,7 @@ import { CardBody } from 'reactstrap';
 import { Breadcrumb } from '../../components/Common/Breadcrumb';
 import Layout from '../../components/VerticalLayout';
 import { setting } from '../../libs/settings';
-import { DownloadExcel } from './downloadexcel';
+import { DownloadExcel } from './DownloadExcel';
 
 const QUERY_REPORT = gql`
   query query($start: String, $end: String, $offset: Int = 0, $limit: Int = 10) {
