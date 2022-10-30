@@ -21,6 +21,13 @@ import {
 import { Badge } from 'reactstrap';
 import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
+import dynamic from 'next/dynamic';
+
+// const DraftProduct = dynamic(() => import('../../components/Custom/Product/DraftProduct'), {
+//   ssr: false,
+// });
+
+const PrintInvoice = dynamic(() => import('./PrintInvoice'), { ssr: false });
 
 const QUERY = gql`
   query orderList($status: [OrderStatus]) {
@@ -104,6 +111,8 @@ function TabOrder({ tab, setTab }: { tab: any; setTab: any }) {
 export function OrderListScreen() {
   const [select, setSelect] = useState(0);
   const [tab, setTab] = useState('ORDER_RECEIVED');
+  const [print, setPrint] = useState([]);
+  const [timer, setTimer] = useState('');
   const [err, setErr] = useState(null);
   const { data, loading } = useQuery(QUERY, {
     variables: {
@@ -340,6 +349,24 @@ export function OrderListScreen() {
                       );
                     })}
                   </tbody>
+                  {/* <tfoot>
+                    <tr>
+                      <td colSpan={6} className="text-right">
+                        {print && timer && <PrintInvoice data={print} timer={timer} />}
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'end' }}>
+                          <button
+                            className="btn btn-primary btn-sm"
+                            onClick={() => {
+                              setPrint(orders[select]);
+                              setTimer(new Date().getTime().toString());
+                            }}
+                          >
+                            Print Invoice
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  </tfoot> */}
                 </Table>
               </CardBody>
             </Card>
