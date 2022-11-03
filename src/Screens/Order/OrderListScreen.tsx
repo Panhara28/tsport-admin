@@ -111,7 +111,7 @@ function TabOrder({ tab, setTab }: { tab: any; setTab: any }) {
 export function OrderListScreen() {
   const [select, setSelect] = useState(0);
   const [tab, setTab] = useState('ORDER_RECEIVED');
-  const [print, setPrint] = useState([]);
+  const [print, setPrint] = useState(null);
   const [timer, setTimer] = useState('');
   const [err, setErr] = useState(null);
   const { data, loading } = useQuery(QUERY, {
@@ -162,7 +162,13 @@ export function OrderListScreen() {
           </Toast.Body>
         </Toast>
       </ToastContainer>
-      <TabOrder tab={tab} setTab={setTab} />
+      <TabOrder
+        tab={tab}
+        setTab={(e: any) => {
+          setTab(e);
+          setPrint(null);
+        }}
+      />
       <br />
       {orders.length > 0 && (
         <div className="row">
@@ -349,7 +355,7 @@ export function OrderListScreen() {
                       );
                     })}
                   </tbody>
-                  {/* <tfoot>
+                  <tfoot>
                     <tr>
                       <td colSpan={6} className="text-right">
                         {print && timer && <PrintInvoice data={print} timer={timer} />}
@@ -366,7 +372,7 @@ export function OrderListScreen() {
                         </div>
                       </td>
                     </tr>
-                  </tfoot> */}
+                  </tfoot>
                 </Table>
               </CardBody>
             </Card>

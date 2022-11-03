@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Hanuman:wght@100;300;400;700;900&display=swap');
+
+.invoice {
+  font-family: 'Hanuman', serif;
+  font-size: 12pt !important;
+}
+
+.invoice .header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.invoice .header .info {
+  width: 300px;
+  text-align: right;
+}
+
+.invoice .body {
+  text-align: center;
+}
+
+.invoice .body .info_customer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* font-size: 10px !important; */
+}
+
+.invoice .body .info_customer table {
+  border-collapse: collapse;
+}
+
+.invoice .body .info_customer div {
+  text-align: right;
+}
+
+.table_product {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 12pt !important;
+}
+
+.table_product th,
+td {
+  border: 0.5px solid;
+  padding: 5px;
+  font-size: 12pt !important;
+}
+
+table th {
+  background: rgb(201, 200, 200);
+  font-size: 12pt !important;
+}
+
+table td {
+  border: 1px solid;
+  padding: 5px;
+  text-align: center;
+}
+
+table td b {
+  font-size: 12pt !important;
+}
+
+.invoice .sign {
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.invoice .sign div {
+  width: 150px;
+}
+
+.invoice .sign div hr {
+  margin-top: 2.5rem;
+}
