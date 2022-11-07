@@ -2,13 +2,14 @@
 
 .invoice {
   font-family: 'Hanuman', serif;
-  font-size: 12pt !important;
+  font-size: 10pt !important;
 }
 
 .invoice .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  font-size: 9pt !important;
 }
 
 .invoice .header .info {
@@ -38,19 +39,19 @@
 .table_product {
   border-collapse: collapse;
   width: 100%;
-  font-size: 12pt !important;
+  font-size: 11pt !important;
 }
 
 .table_product th,
 td {
-  border: 0.5px solid;
+  border: 0.2px solid;
   padding: 5px;
-  font-size: 12pt !important;
+  font-size: 10pt !important;
 }
 
 table th {
   background: rgb(201, 200, 200);
-  font-size: 12pt !important;
+  font-size: 10pt !important;
 }
 
 table td {
@@ -60,7 +61,7 @@ table td {
 }
 
 table td b {
-  font-size: 12pt !important;
+  font-size: 10pt !important;
 }
 
 .invoice .sign {
@@ -71,7 +72,7 @@ table td b {
 }
 
 .invoice .sign div {
-  width: 150px;
+  width: 100px;
 }
 
 .invoice .sign div hr {

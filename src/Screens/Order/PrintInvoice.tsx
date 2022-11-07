@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable @next/next/no-css-tags */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import moment from 'moment';
@@ -30,6 +31,16 @@ class ComponentToPrint extends react.Component<{ data: any[] }> {
     );
   }
 }
+
+const currencyUSD = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+});
+
+const currencyKHR = new Intl.NumberFormat('kh-KH', {
+  style: 'currency',
+  currency: 'KHR',
+});
 
 function PrintInternal({ data, timer }: { data: any; timer: string }, mainRef: any) {
   const [iframeBody, setIframeBody] = useState<HTMLElement | null | undefined>(null);
@@ -75,19 +86,31 @@ function PrintInternal({ data, timer }: { data: any; timer: string }, mainRef: a
           <br />
           <div className="info_customer">
             <div>
-              <table>
+              <table className="table_product">
                 <tbody>
                   <tr>
-                    <td>អតិថិជន</td>
-                    <td>{data.customer.display}</td>
+                    <td>
+                      <small>អតិថិជន/custoemr</small>
+                    </td>
+                    <td>
+                      <small>{data.customer.display}</small>
+                    </td>
                   </tr>
                   <tr>
-                    <td>អាស័យដ្ឋាន</td>
-                    <td>{data.details[0].address}</td>
+                    <td>
+                      <small>អាស័យដ្ឋាន/Address</small>
+                    </td>
+                    <td>
+                      <small>{data.details[0].address}</small>
+                    </td>
                   </tr>
                   <tr>
-                    <td>លេខទូរស័ព្ទ</td>
-                    <td>+855{data.customer.phone}</td>
+                    <td>
+                      <small>លេខទូរស័ព្ទ/Telephone</small>
+                    </td>
+                    <td>
+                      <small>+855{data.customer.phone}</small>
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -101,45 +124,87 @@ function PrintInternal({ data, timer }: { data: any; timer: string }, mainRef: a
         </div>
         <br />
         <table className="table_product">
-          <thead>
-            <tr>
-              <th>No</th>
-              <th>Barcode</th>
-              <th>Description</th>
-              <th style={{ width: 100 }}>Size-Color</th>
-              <th>Quantity</th>
-              <th style={{ width: 150 }}>Unit Price</th>
-              <th style={{ width: 150 }}>After Dis</th>
-              <th style={{ width: 150 }}>Amount</th>
-            </tr>
-          </thead>
           <tbody>
+            <tr>
+              <td>
+                <small>ល.រ</small>
+                <br />
+                <small>No</small>
+              </td>
+              <td>
+                <small>លេខកូដ</small>
+                <br />
+                <small>Barcode</small>
+              </td>
+              <td>
+                <small>បរិយាយ</small>
+                <br />
+                <small>Description</small>
+              </td>
+              <td style={{ width: 100 }}>
+                <small>ទំហំ-ពណ៏</small>
+                <br />
+                <small>Size-Color</small>
+              </td>
+              <td>
+                <small>បរិមាណ</small>
+                <br />
+                <small>Quantity</small>
+              </td>
+              <td style={{ width: 150 }}>
+                <small>តម្លៃឯកតា</small>
+                <br />
+                <small>Unit Price</small>
+              </td>
+              <td style={{ width: 150 }}>
+                <small>តម្លៃចុះហើយ</small>
+                <br />
+                <small>After Dis</small>
+              </td>
+              <td style={{ width: 150 }}>
+                <small>តម្លៃសរុប</small>
+                <br />
+                <small>Amount</small>
+              </td>
+            </tr>
             {data.details.map((x: any, i: any) => {
               return (
                 <tr key={x.id}>
-                  <td>{i + 1}</td>
-                  <td>{x.sku.barcode}</td>
-                  <td>{x.product.title}</td>
+                  <td>
+                    <small>{i + 1}</small>
+                  </td>
+                  <td>
+                    <small>{x.sku.barcode}</small>
+                  </td>
+                  <td>
+                    <small>{x.product.title}</small>
+                  </td>
                   <td>
                     <small>Size: {x.sku.size}</small>
                     <br />
                     <small>Color: {x.sku.color}</small>
                   </td>
-                  <td>{x.qty}</td>
                   <td>
-                    <b>${x.price}</b>
+                    <small>{x.qty}</small>
                   </td>
                   <td>
-                    <b>${(Number(x.total) / Number(x.qty)).toFixed(2)}</b>
+                    <b>
+                      <small>{currencyUSD.format(Number(x.price || 0))}</small>
+                    </b>
                   </td>
                   <td>
-                    <b>${x.total}</b>
+                    <b>
+                      <small>{currencyUSD.format(Number(x.total) / Number(x.qty))}</small>
+                    </b>
+                  </td>
+                  <td>
+                    <b>
+                      <small>{currencyUSD.format(x.total)}</small>
+                    </b>
                   </td>
                 </tr>
               );
             })}
-          </tbody>
-          <tfoot>
             <tr>
               <td colSpan={4} rowSpan={5} style={{ textAlign: 'left' }}>
                 <small>- ទំនិញដែលទិញហើយមិនអាចប្តូរជាលុយវិញបានទេ</small>
@@ -155,10 +220,14 @@ function PrintInternal({ data, timer }: { data: any; timer: string }, mainRef: a
                 <small>Sub-Total</small>
               </td>
               <td colSpan={2}>
-                <b>R {Number(data.amount) * 4100}</b>
+                <b>
+                  <small>{currencyKHR.format(Number(data.amount) * 4100)}</small>
+                </b>
               </td>
               <td>
-                <b>${data.amount}</b>
+                <b>
+                  <small>{currencyUSD.format(data.amount)}</small>
+                </b>
               </td>
             </tr>
             <tr>
@@ -166,10 +235,14 @@ function PrintInternal({ data, timer }: { data: any; timer: string }, mainRef: a
                 <small>Discount</small>
               </td>
               <td colSpan={2}>
-                <b>R {(Number(data.total) - Number(data.amount)) * 4100}</b>
+                <b>
+                  <small>{currencyKHR.format((Number(data.total) - Number(data.amount)) * 4100)}</small>
+                </b>
               </td>
               <td>
-                <b>${Number(data.total) - Number(data.amount)}</b>
+                <b>
+                  <small>{currencyUSD.format(Number(data.total) - Number(data.amount))}</small>
+                </b>
               </td>
             </tr>
             <tr>
@@ -177,10 +250,14 @@ function PrintInternal({ data, timer }: { data: any; timer: string }, mainRef: a
                 <small>After Discount</small>
               </td>
               <td colSpan={2}>
-                <b>R {Number(data.total) * 4100}</b>
+                <b>
+                  <small>{currencyKHR.format(Number(data.total) * 4100)}</small>
+                </b>
               </td>
               <td>
-                <b>${data.total}</b>
+                <b>
+                  <small>{currencyUSD.format(data.total)}</small>
+                </b>
               </td>
             </tr>
             <tr>
@@ -205,23 +282,23 @@ function PrintInternal({ data, timer }: { data: any; timer: string }, mainRef: a
                 <b></b>
               </td>
             </tr>
-          </tfoot>
+          </tbody>
         </table>
         <div className="sign">
           <div>
-            Approved By
+            <small style={{ whiteSpace: 'nowrap' }}>អនុម័តដោយ/Approved By</small>
             <hr />
           </div>
           <div>
-            Stock
+            <small>ផ្នែកឃ្លាំង/Stock</small>
             <hr />
           </div>
           <div>
-            The Seller
+            <small>ផ្នែកលក់/The Seller</small>
             <hr />
           </div>
           <div>
-            Customer
+            <small>អតិថិជន/Customer</small>
             <hr />
           </div>
         </div>
