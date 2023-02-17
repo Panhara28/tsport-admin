@@ -5,7 +5,7 @@ import { TsContent } from '../../components/Custom/TsContent';
 import toastr from 'toastr';
 import dynamic from 'next/dynamic';
 // import DraftProduct from '../../components/Custom/Product/DraftProduct';
-const DraftProduct = dynamic(() => import('../../components/Custom/Product/DraftProduct'), {
+const DraftProduct: any = dynamic(() => import('../../components/Custom/Product/DraftProduct'), {
   ssr: false,
 });
 

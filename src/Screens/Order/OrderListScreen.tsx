@@ -27,7 +27,7 @@ import dynamic from 'next/dynamic';
 //   ssr: false,
 // });
 
-const PrintInvoice = dynamic(() => import('./PrintInvoice'), { ssr: false });
+const PrintInvoice: any = dynamic(() => import('./PrintInvoice'), { ssr: false });
 
 const QUERY = gql`
   query orderList($status: [OrderStatus]) {
