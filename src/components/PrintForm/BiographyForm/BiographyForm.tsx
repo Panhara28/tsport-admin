@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable @next/next/no-img-element */
 import React, { useState } from 'react';
 import { Table } from 'react-bootstrap';
 import { Col, Form, Row } from 'react-bootstrap';

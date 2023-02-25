@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import dynamic from 'next/dynamic';
@@ -77,7 +78,7 @@ export default function FormEditor({ dataKey, data, editDataKey, id }: FormEdito
           />
         </div>
       </main>
-
+      {/* //@ts-ignore */}
       <style jsx>{`
         .container {
           padding: 0;

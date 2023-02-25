@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import React, { useEffect, useState } from 'react';
 import EditorJS from '@editorjs/editorjs';
 import { tools } from './tools';
@@ -104,6 +105,7 @@ export const EditorContainer: any = ({ editorRef, children, data, options }: any
     <React.Fragment>
       {!children && <div id="editor-js"></div>}
       {children}
+      {/* //@ts-ignore */}
       <style jsx>{`
         .container {
           width: 100%;
