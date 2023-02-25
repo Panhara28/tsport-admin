@@ -2,6 +2,7 @@ const nextTranslate = require('next-translate');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  eslint: { ignoreDuringBuilds: true },
   reactStrictMode: true,
   i18n: {
     locales: ['en-US', 'kh'],

@@ -30,5 +30,6 @@ module.exports = {
     'prefer-const': ['off'],
     '@typescript-eslint/no-non-null-assertion': ['off'],
     'no-console': ['off'],
+    '@next/next/no-img-element': 'off',
   },
 };
