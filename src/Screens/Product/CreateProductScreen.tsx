@@ -38,11 +38,14 @@ export function CreateProductScreen() {
   });
 
   const onSave = (e: any) => {
-    createProduct({
-      variables: {
-        data: e,
-      },
-    });
+    const x = window.confirm('Are you sure want to create new product?');
+    if (!!x) {
+      createProduct({
+        variables: {
+          data: e,
+        },
+      });
+    }
   };
 
   return (
