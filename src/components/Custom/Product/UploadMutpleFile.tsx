@@ -16,23 +16,23 @@ export function MultipleFiles({ images, setImages }: { images: any; setImages: a
     if (e.target.validity.valid && e.target.files) {
       const x = images ? [...images] : [];
       for (const file of e.target.files) {
-        // await singleUpload({
-        //   variables: {
-        //     file,
-        //   },
-        // })
-        //   .then(async ({ data }) => {
-        //     x.push(data.singleUpload.url);
-        //   })
-        //   .catch(err => console.log(err));
-        // await setImages(x);
-        restapiupload(file).then(res => {
-          if (res) {
-            x.push(res.filename);
-          }
-        });
-
+        await singleUpload({
+          variables: {
+            file,
+          },
+        })
+          .then(async ({ data }) => {
+            x.push(data.singleUpload.url);
+          })
+          .catch(err => console.log(err));
         await setImages(x);
+        // restapiupload(file).then(res => {
+        //   if (res) {
+        //     x.push(res.filename);
+        //   }
+        // });
+
+        // await setImages(x);
       }
     }
   };
