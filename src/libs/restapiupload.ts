@@ -3,17 +3,21 @@ import FormData from 'form-data';
 
 export async function restapiupload(file: File) {
   try {
-    const formData = new FormData();
+    const myHeaders = new Headers();
+    myHeaders.append('Authorization', 'Bearer $2a$12$mbZDMo/pB/Eh0vIKhpOdsODiDY7XzePfuXRoHus/HKBhfM99aUTCS');
 
-    formData.append('mocspace', file, file.name);
+    const formdata = new FormData();
 
-    const res = await fetch('https://s2.tsportcambodia.com/upload', {
+    formdata.append('mocspace', file, file.name);
+
+    const requestOptions = {
       method: 'POST',
-      headers: {
-        authorization: 'Bearer $2a$12$mbZDMo/pB/Eh0vIKhpOdsODiDY7XzePfuXRoHus/HKBhfM99aUTCS',
-      },
-      body: JSON.stringify(formData),
-    });
+      headers: myHeaders,
+      body: formdata,
+      redirect: 'follow',
+    };
+
+    const res = await fetch('https://s2.tsportcambodia.com/upload', requestOptions as any);
 
     const json = await res.json();
 
