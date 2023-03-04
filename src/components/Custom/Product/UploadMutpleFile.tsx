@@ -7,6 +7,8 @@ import React, { useRef, useState } from 'react';
 import { parseImageUrl } from '../../../hook/parseImageUrl';
 import { UPLOAD } from '../../SingleUpload';
 import { restapiupload } from '../../../libs/restapiupload';
+import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+import { UploadFileToFirebase, storage } from '../../../libs/firebase';
 
 export function MultipleFiles({ images, setImages }: { images: any; setImages: any }) {
   const refUpload = useRef<HTMLInputElement | null>(null);
@@ -16,16 +18,50 @@ export function MultipleFiles({ images, setImages }: { images: any; setImages: a
     if (e.target.validity.valid && e.target.files) {
       const x = images ? [...images] : [];
       for (const file of e.target.files) {
-        await singleUpload({
-          variables: {
-            file,
-          },
-        })
-          .then(async ({ data }) => {
-            x.push(data.singleUpload.url);
-          })
-          .catch(err => console.log(err));
+        const upload = await UploadFileToFirebase(file);
+
+        const downloadURL = await getDownloadURL(upload.ref);
+
+        x.push(downloadURL);
+
+        console.log(downloadURL);
+
         await setImages(x);
+
+        // upload.on(
+        //   'state_changed',
+        //   snapshot => {
+        //     const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        //     console.log('Upload is ' + progress + '% done');
+        //     switch (snapshot.state) {
+        //       case 'paused':
+        //         console.log('Upload is paused');
+        //         break;
+        //       case 'running':
+        //         console.log('Upload is running');
+        //         break;
+        //     }
+        //   },
+        //   err => {},
+        //   () => {
+        //     getDownloadURL(upload.snapshot.ref).then(async downloadURL => {
+        //       console.log(downloadURL);
+        //       await x.push(downloadURL);
+        //       await setImages(x);
+        //     });
+        //   },
+        // );
+
+        // await singleUpload({
+        //   variables: {
+        //     file,
+        //   },
+        // })
+        //   .then(async ({ data }) => {
+        //     x.push(data.singleUpload.url);
+        //   })
+        //   .catch(err => console.log(err));
+        // await setImages(x);
         // restapiupload(file).then(res => {
         //   if (res) {
         //     x.push(res.filename);

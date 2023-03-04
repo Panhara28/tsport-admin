@@ -51,6 +51,7 @@
     "chroma-js": "^2.4.2",
     "exceljs": "^4.3.0",
     "file-saver": "^2.0.5",
+    "firebase": "^9.17.2",
     "form-data": "^4.0.0",
     "fs": "^0.0.1-security",
     "google-map-react": "^2.1.10",
