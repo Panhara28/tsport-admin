@@ -38,10 +38,10 @@ interface Product {
   sku?: sku[];
   image?: string;
   images?: string[];
-  price_hold_sale?: string
-  price_premium?: string
-  discount_hold_sale?: string
-  discount_premium?: string
+  price_hold_sale?: string;
+  price_premium?: string;
+  discount_hold_sale?: string;
+  discount_premium?: string;
 }
 
 const optionColor = ['Red', 'Blue', 'White', 'Black', 'Green', 'Yellow'];
@@ -75,7 +75,7 @@ export default function DraftProduct({ data, onSave }: { data: any; onSave: any 
       isMain: true,
       stock: 0,
       barcode: '',
-      qty: 0
+      qty: 0,
     });
 
     const data = {
@@ -92,7 +92,7 @@ export default function DraftProduct({ data, onSave }: { data: any; onSave: any 
       price_hold_sale: String(product.price_hold_sale),
       price_premium: String(product.price_premium),
       discount_hold_sale: String(product.discount_hold_sale),
-      discount_premium: String(product.discount_premium)
+      discount_premium: String(product.discount_premium),
     };
 
     onSave(data);
@@ -200,8 +200,8 @@ export default function DraftProduct({ data, onSave }: { data: any; onSave: any 
                 </div>
               </div>
               <hr />
-              <div className='row'>
-              <div className="col-md-6">
+              <div className="row">
+                <div className="col-md-6">
                   <XForm.Text
                     label="Sale Price ($)"
                     placeholder="Enter sale price"
@@ -220,7 +220,7 @@ export default function DraftProduct({ data, onSave }: { data: any; onSave: any 
                     onChange={e => setProduct({ ...product, discount: e.currentTarget.value })}
                   />
                 </div>
-              <div className="col-md-6">
+                <div className="col-md-6">
                   <XForm.Text
                     label="Sale Price For Hold Sale ($)"
                     placeholder="Enter sale price for hold sale"
