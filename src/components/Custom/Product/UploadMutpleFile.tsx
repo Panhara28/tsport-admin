@@ -18,15 +18,15 @@ export function MultipleFiles({ images, setImages }: { images: any; setImages: a
     if (e.target.validity.valid && e.target.files) {
       const x = images ? [...images] : [];
       for (const file of e.target.files) {
-        const upload = await UploadFileToFirebase(file);
+        // const upload = await UploadFileToFirebase(file);
 
-        const downloadURL = await getDownloadURL(upload.ref);
+        // const downloadURL = await getDownloadURL(upload.ref);
 
-        x.push(downloadURL);
+        // x.push(downloadURL);
 
-        console.log(downloadURL);
+        // console.log(downloadURL);
 
-        await setImages(x);
+        // await setImages(x);
 
         // upload.on(
         //   'state_changed',
@@ -52,23 +52,23 @@ export function MultipleFiles({ images, setImages }: { images: any; setImages: a
         //   },
         // );
 
-        // await singleUpload({
-        //   variables: {
-        //     file,
-        //   },
-        // })
-        //   .then(async ({ data }) => {
-        //     x.push(data.singleUpload.url);
-        //   })
-        //   .catch(err => console.log(err));
-        // await setImages(x);
-        // restapiupload(file).then(res => {
-        //   if (res) {
-        //     x.push(res.filename);
-        //   }
-        // });
+        await singleUpload({
+          variables: {
+            file,
+          },
+        })
+          .then(async ({ data }) => {
+            x.push(data.singleUpload.url);
+          })
+          .catch(err => console.log(err));
+        await setImages(x);
+        restapiupload(file).then(res => {
+          if (res) {
+            x.push(res.filename);
+          }
+        });
 
-        // await setImages(x);
+        await setImages(x);
       }
     }
   };

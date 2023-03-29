@@ -57,12 +57,12 @@ export function SingleUpload({ setImage, image, width, height }: Props) {
 
   const onChange = (e: any) => {
     if (e.target.validity.valid && e.target.files) {
-      // singleUpload({
-      //   variables: {
-      //     file: e.target.files[0],
-      //   },
-      // });
-      onUpload(e.target.files[0]);
+      singleUpload({
+        variables: {
+          file: e.target.files[0],
+        },
+      });
+      // onUpload(e.target.files[0]);
     }
   };
 
