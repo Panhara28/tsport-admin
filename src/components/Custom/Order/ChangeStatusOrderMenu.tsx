@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import React from 'react';
+import React, { useContext } from 'react';
 //@ts-ignore
 import { Menu, MenuItem, MenuButton, SubMenu } from '@szhsin/react-menu';
 import '@szhsin/react-menu/dist/index.css';
@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import { gql } from 'apollo-boost';
 import { useMutation } from '@apollo/client';
+import AuthContext from '../../Authentication/AuthContext';
 
 export enum OrderStatus {
   ORDER_RECEIVED = 0,
@@ -43,6 +44,7 @@ export function ChangeStatusOrderMenu({
   onError: any;
   onCompleted: any;
 }) {
+  const { me } = useContext(AuthContext);
   const [changeOrderStatus] = useMutation(MUTATION, {
     refetchQueries: ['orderList'],
     onError: err => onError(err.message),
@@ -66,11 +68,11 @@ export function ChangeStatusOrderMenu({
       return;
     }
 
-    if(status === 'ORDER_DELIVERY') {
+    if (status === 'ORDER_DELIVERY') {
       const x = window.prompt('Input delivery fee ($)');
 
-      if(x) {
-        if(!isNaN(Number(x))) {
+      if (x) {
+        if (!isNaN(Number(x))) {
           changeOrderStatus({
             variables: {
               status,
@@ -92,6 +94,10 @@ export function ChangeStatusOrderMenu({
       },
     });
   };
+
+  if (!me.access.modify && !me.access.write) {
+    return <div></div>;
+  }
 
   return (
     <Menu

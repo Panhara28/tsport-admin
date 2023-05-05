@@ -22,7 +22,8 @@ export function groupOrder(data: any[]) {
         details: [item],
         customer: item.customer,
         fee: Number(item.fee),
-        status: OrderStatus[item.status]
+        status: OrderStatus[item.status],
+        note: item.note,
       });
     } else {
       items[find].qty = items[find].qty + item.qty;

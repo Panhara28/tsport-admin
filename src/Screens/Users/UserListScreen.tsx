@@ -27,6 +27,7 @@ const QUERY = gql`
         id
         fullname
         published
+        roleId
       }
       pagination {
         current
@@ -42,6 +43,62 @@ const MUTATION = gql`
     publishUser(id: $id)
   }
 `;
+
+const MUTATION_ROLE = gql`
+  mutation setRoleToUser($userId: Int!, $roleId: Int!) {
+    setRoleToUser(userId: $userId, roleId: $roleId)
+  }
+`;
+
+const QUERY_ROLE = gql`
+  query adminRoleList {
+    adminRoleList {
+      data {
+        id
+        name
+        access {
+          read
+          write
+          modify
+          delete
+        }
+      }
+    }
+  }
+`;
+
+function RenderRole({ roleId, userId }: { roleId: number; userId: number }) {
+  const { data, loading } = useQuery(QUERY_ROLE);
+  const [setRoleToUser] = useMutation(MUTATION_ROLE, {
+    refetchQueries: ['adminUserList', 'adminRoleList']
+  });
+
+  return (
+    <select
+      className="btn btn-info"
+      style={{ marginLeft: 10 }}
+      value={roleId}
+      onChange={e => {
+        console.log(e.target.value);
+        setRoleToUser({
+          variables: {
+            userId: Number(userId),
+            roleId: Number(e.target.value),
+          },
+        }).then(res => {
+          if (res.data.setRoleToUser) {
+            alert('Updated role user');
+          }
+        });
+      }}
+    >
+      {data &&
+        data.adminRoleList.data.map((x: any) => {
+          return <option value={x.id}>{x.name}</option>;
+        })}
+    </select>
+  );
+}
 
 const RenderUserList = ({ filterFullname }: any) => {
   const router = useRouter();
@@ -118,6 +175,7 @@ const RenderUserList = ({ filterFullname }: any) => {
                           Assign Role
                         </a>
                       </Link> */}
+                      <RenderRole roleId={item.roleId} userId={item.id} />
                       <Link href="#">
                         <a
                           style={{ marginLeft: 10 }}

@@ -23,6 +23,12 @@ const MUTATION = gql`
   }
 `;
 
+const MU = gql`
+  mutation setProductPinDefault($id: Int!) {
+    setProductPinDefault(id: $id)
+  }
+`;
+
 export function ProductListScreen() {
   const [limit, setLimit] = useState(10);
   const [offset, setOffset] = useState(0);
@@ -43,6 +49,17 @@ export function ProductListScreen() {
     },
   });
 
+  const [setProductPinDefault] = useMutation(MU, {
+    refetchQueries: ['productList'],
+    onCompleted: res => {
+      if (res.setProductPinDefault) {
+        toastr.success('Product was change pin default.');
+      } else {
+        toastr.danger('Somthing wrong...');
+      }
+    },
+  });
+
   useEffect(() => {
     if (process.browser) {
       const query = new URLSearchParams(window.location.search);
@@ -57,6 +74,17 @@ export function ProductListScreen() {
     const x = window.confirm('Are you sure want update publish product?');
     if (!!x) {
       publishProduct({
+        variables: {
+          id: Number(id),
+        },
+      });
+    }
+  };
+
+  const onClickPin = (id: number) => {
+    const x = window.confirm('Are you sure want mark pin default product?');
+    if (!!x) {
+      setProductPinDefault({
         variables: {
           id: Number(id),
         },
@@ -91,6 +119,7 @@ export function ProductListScreen() {
                     <tr key={x.id}>
                       <td>
                         <div style={{ display: 'flex' }}>
+                          {x.pin_default ? <i className="fas fa-map-pin" style={{ marginRight: 5 }}></i> : ''}
                           <img
                             src={x.picture}
                             alt=""
@@ -131,7 +160,16 @@ export function ProductListScreen() {
                       <td className="text-center">
                         <Link href={'/product/edit/' + x.id}>
                           <a className="btn btn-sm btn-primary">Edit</a>
-                        </Link>
+                        </Link>{' '}
+                        {x.pin_default ? (
+                          <button className="btn btn-sm btn-danger" onClick={() => onClickPin(x.id)}>
+                            Unpin Default
+                          </button>
+                        ) : (
+                          <button className="btn btn-sm btn-info" onClick={() => onClickPin(x.id)}>
+                            Pin Default
+                          </button>
+                        )}
                       </td>
                     </tr>
                   );

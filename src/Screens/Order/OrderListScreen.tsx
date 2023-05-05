@@ -175,6 +175,7 @@ export function OrderListScreen() {
           <div className="col-md-3">
             <div>
               {orders.map((x, i) => {
+                console.log(x);
                 return (
                   <Card
                     style={{ cursor: 'pointer' }}
@@ -239,6 +240,11 @@ export function OrderListScreen() {
                           <b style={{ width: '6rem' }}>Total Price</b>
                           <b style={{ marginRight: 'auto' }}>:</b>
                           <b style={{ marginRight: '0.25rem' }}>${Number(x.total + x.fee).toFixed(2)}</b>
+                        </p>
+                        <p style={{ display: 'flex', justifyContent: 'space-between' }}>
+                          <b style={{ width: '6rem' }}>Note Order</b>
+                          <b style={{ marginRight: 'auto' }}>:</b>
+                          <b style={{ marginRight: '0.25rem' }}>{x.note}</b>
                         </p>
                       </div>
                     </CardBody>

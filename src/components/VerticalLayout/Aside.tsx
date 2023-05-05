@@ -18,7 +18,7 @@ import { ProSidebar, Menu, MenuItem, SubMenu, SidebarHeader, SidebarFooter, Side
 import AuthContext from '../Authentication/AuthContext';
 import classes from './nav.module.scss';
 import useTranslation from 'next-translate/useTranslation';
-import { MenuItems } from '../../libs/MenuItem';
+import { MenuItem as men, MenuItems } from '../../libs/MenuItem';
 
 export const Aside = ({ collapsed, rtl, toggled, handleToggleSidebar }: any) => {
   const router = useRouter();
@@ -40,6 +40,12 @@ export const Aside = ({ collapsed, rtl, toggled, handleToggleSidebar }: any) => 
       return ``;
     }
   };
+
+  let menu: men[] = [...MenuItems];
+
+  if (me.roleId !== 1) {
+    menu = MenuItems.filter(x => x.id !== 'setting');
+  }
 
   return (
     <ProSidebar
@@ -72,7 +78,7 @@ export const Aside = ({ collapsed, rtl, toggled, handleToggleSidebar }: any) => 
       </SidebarHeader>
 
       <SidebarContent className="sidebar-content">
-        {MenuItems.map(item => {
+        {menu.map(item => {
           return (
             <Menu iconShape="circle" className={isActive(item.link)} key={item.title}>
               {!!item.subs ? (

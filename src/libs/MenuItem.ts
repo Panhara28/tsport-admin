@@ -7,10 +7,11 @@ import {
   IconDefinition,
 } from '@fortawesome/free-solid-svg-icons';
 
-interface MenuItem {
+export interface MenuItem {
   title: string;
   icon: IconDefinition;
   link: string;
+  id?: string;
   subs?: {
     title: string;
     link: string;
@@ -22,11 +23,13 @@ export const MenuItems: MenuItem[] = [
     title: 'common:sidebar.dashboard.title',
     icon: faGlobeAsia,
     link: '/',
+    id: 'dashboard',
   },
   {
     title: 'common:sidebar.product.title',
     icon: faBox,
     link: '#',
+    id: 'product',
     subs: [
       {
         title: 'common:sidebar.product.add_product',
@@ -46,6 +49,7 @@ export const MenuItems: MenuItem[] = [
     title: 'common:sidebar.order.title',
     icon: faShoppingCart,
     link: '#',
+    id: 'order',
     subs: [
       {
         title: 'common:sidebar.order.order_list',
@@ -57,6 +61,7 @@ export const MenuItems: MenuItem[] = [
     title: 'common:sidebar.customer.title',
     icon: faAddressCard,
     link: '#',
+    id: 'customer',
     subs: [
       {
         title: 'common:sidebar.customer.customer_list',
@@ -68,6 +73,7 @@ export const MenuItems: MenuItem[] = [
     title: 'common:sidebar.settings.title',
     icon: faCog,
     link: '#',
+    id: 'setting',
     subs: [
       {
         title: 'common:sidebar.settings.add_user',
