@@ -9,6 +9,8 @@ import { Card } from 'reactstrap';
 import { Breadcrumb } from '../../components/Common/Breadcrumb';
 import Layout from '../../components/VerticalLayout';
 import { setting } from '../../libs/settings';
+import { useContext } from 'react';
+import AuthContext from '../../components/Authentication/AuthContext';
 
 const QUERY = gql`
   query summaryReport($start: String, $end: String) {
@@ -288,6 +290,7 @@ function ReportList() {
 }
 
 export function DashboardScreen() {
+  const { me } = useContext(AuthContext);
   const { data, loading } = useQuery(QUERY);
 
   if (loading) return <div></div>;
@@ -299,7 +302,9 @@ export function DashboardScreen() {
         <hr />
         {data && (
           <div className="row">
-            {dummy.map(x => {
+            {dummy.map((x, i) => {
+              if (me.roleId > 1 && i < 6) return <></>;
+
               if (x.id === 'customers' || x.id === 'users') {
                 return (
                   <div className="col-md-4" key={x.id}>

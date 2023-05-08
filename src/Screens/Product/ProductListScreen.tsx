@@ -10,6 +10,7 @@ import { Card } from 'reactstrap';
 import { TsContent } from '../../components/Custom/TsContent';
 import { CustomPagination } from '../../components/Paginations';
 import toastr from 'toastr';
+import { useAuthContext } from '../../components/Authentication/AuthContext';
 
 const QUERY = gql`
   query productList($offset: Int = 0, $limit: Int = 10) {
@@ -32,6 +33,7 @@ const MU = gql`
 export function ProductListScreen() {
   const [limit, setLimit] = useState(10);
   const [offset, setOffset] = useState(0);
+  const { me } = useAuthContext();
   const { data } = useQuery(QUERY, {
     variables: {
       offset,
@@ -94,9 +96,11 @@ export function ProductListScreen() {
 
   return (
     <TsContent title="Product List">
-      <Link href={'/product/create'}>
-        <a className="btn btn-sm btn-primary">Upload product</a>
-      </Link>
+      {me.roleId < 3 && (
+        <Link href={'/product/create'}>
+          <a className="btn btn-sm btn-primary">Upload product</a>
+        </Link>
+      )}
       <br />
       <br />
       {data && (
@@ -147,28 +151,40 @@ export function ProductListScreen() {
                       </td>
                       <td className="text-center">
                         {x.published ? (
-                          <button className="btn btn-success btn-sm" onClick={() => onClickPublish(x.id)}>
+                          <button
+                            disabled={me.roleId > 2}
+                            className="btn btn-success btn-sm"
+                            onClick={() => onClickPublish(x.id)}
+                          >
                             Yes
                           </button>
                         ) : (
-                          <button className="btn btn-danger btn-sm" onClick={() => onClickPublish(x.id)}>
+                          <button
+                            disabled={me.roleId > 2}
+                            className="btn btn-danger btn-sm"
+                            onClick={() => onClickPublish(x.id)}
+                          >
                             No
                           </button>
                         )}
                         {/* <Badge color={x.published ? 'success' : 'danger'}>{x.published ? 'Yes' : 'No'}</Badge> */}
                       </td>
                       <td className="text-center">
-                        <Link href={'/product/edit/' + x.id}>
-                          <a className="btn btn-sm btn-primary">Edit</a>
-                        </Link>{' '}
-                        {x.pin_default ? (
-                          <button className="btn btn-sm btn-danger" onClick={() => onClickPin(x.id)}>
-                            Unpin Default
-                          </button>
-                        ) : (
-                          <button className="btn btn-sm btn-info" onClick={() => onClickPin(x.id)}>
-                            Pin Default
-                          </button>
+                        {me.roleId < 3 && (
+                          <>
+                            <Link href={'/product/edit/' + x.id}>
+                              <a className="btn btn-sm btn-primary">Edit</a>
+                            </Link>{' '}
+                            {x.pin_default ? (
+                              <button className="btn btn-sm btn-danger" onClick={() => onClickPin(x.id)}>
+                                Unpin Default
+                              </button>
+                            ) : (
+                              <button className="btn btn-sm btn-info" onClick={() => onClickPin(x.id)}>
+                                Pin Default
+                              </button>
+                            )}
+                          </>
                         )}
                       </td>
                     </tr>

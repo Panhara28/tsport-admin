@@ -86,7 +86,7 @@ const SidebarContent = (props: any) => {
 
   return (
     <React.Fragment>
-      {/* <SimpleBar style={{ maxHeight: '100%' }} ref={ref}>
+      <SimpleBar style={{ maxHeight: '100%' }} ref={ref}>
         <div id="sidebar-menu">
           <ul className="metismenu list-unstyled" id="side-menu">
             <li className="menu-title">Menu </li>
@@ -118,7 +118,7 @@ const SidebarContent = (props: any) => {
             </li>
           </ul>
         </div>
-      </SimpleBar> */}
+      </SimpleBar>
     </React.Fragment>
   );
 };

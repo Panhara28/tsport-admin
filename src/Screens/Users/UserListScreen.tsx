@@ -70,7 +70,7 @@ const QUERY_ROLE = gql`
 function RenderRole({ roleId, userId }: { roleId: number; userId: number }) {
   const { data, loading } = useQuery(QUERY_ROLE);
   const [setRoleToUser] = useMutation(MUTATION_ROLE, {
-    refetchQueries: ['adminUserList', 'adminRoleList']
+    refetchQueries: ['adminUserList', 'adminRoleList'],
   });
 
   return (
@@ -175,16 +175,18 @@ const RenderUserList = ({ filterFullname }: any) => {
                           Assign Role
                         </a>
                       </Link> */}
-                      <RenderRole roleId={item.roleId} userId={item.id} />
-                      <Link href="#">
-                        <a
-                          style={{ marginLeft: 10 }}
-                          className={item.published ? 'btn btn-danger' : 'btn btn-success'}
-                          onClick={() => onClickPublish(item.id)}
-                        >
-                          {item.published ? 'Remove' : 'Undo'}
-                        </a>
-                      </Link>
+                      {item.id > 1 && <RenderRole roleId={item.roleId} userId={item.id} />}
+                      {item.id > 1 && (
+                        <Link href="#">
+                          <a
+                            style={{ marginLeft: 10 }}
+                            className={item.published ? 'btn btn-danger' : 'btn btn-success'}
+                            onClick={() => onClickPublish(item.id)}
+                          >
+                            {item.published ? 'Remove' : 'Undo'}
+                          </a>
+                        </Link>
+                      )}
                     </td>
                   </tr>
                 );

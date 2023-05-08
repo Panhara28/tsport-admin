@@ -25,7 +25,7 @@ export function LoginScreen() {
   }
 
   return (
-    <>
+    <form onSubmit={onSubmit}>
       <div className={style.loginContainer}>
         <header className={style.loginHeader}>
           {/* <div className={style.adminLogoContainer}>
@@ -42,11 +42,11 @@ export function LoginScreen() {
           <label>Password</label>
           <XForm.Text ref={node => (passwordInput = node)} type="password" />
           <div className="mt-3"></div>
-          <button className={style.loginButton} onClick={onSubmit}>
+          <button type="submit" className={style.loginButton} onClick={onSubmit}>
             Login
           </button>
         </div>
       </div>
-    </>
+    </form>
   );
 }
