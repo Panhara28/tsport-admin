@@ -67,7 +67,7 @@ const FormBody = ({ update, defaultValues, isEditingMode }: CreateUpdateProps<an
         onChange={e => setName(e.currentTarget.value)}
       />
       <div className="form-group">
-        <CategoryForm onChange={setParent} categoryId={parent} />
+        <CategoryForm onChange={setParent} categoryId={parent} require />
       </div>
       <XForm.Button>Save</XForm.Button>
     </Form>
