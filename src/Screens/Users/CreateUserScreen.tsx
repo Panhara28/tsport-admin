@@ -158,6 +158,18 @@ const FormBodyEdit = ({ update, defaultValues }: any) => {
 
     const x: any = e.target;
 
+    if ((email as string).split('@').length <= 1) {
+      alert('Email require (...@tsport.com)!');
+      return;
+    }
+
+    if ((email as string).split('@').length > 1) {
+      if ((email as string).split('@')[1] !== 'tsport.com') {
+        alert('Email require (...@tsport.com)!');
+        return;
+      }
+    }
+
     const input = {
       fullname: fullname,
       email: email,

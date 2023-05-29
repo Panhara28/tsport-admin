@@ -51,8 +51,18 @@ const optionSize = ['XS', 'S', 'M', 'L', 'XL'];
 export default function DraftProduct({ data, onSave }: { data: any; onSave: any }) {
   const [product, setProduct] = useState<Product>(data);
 
+  console.log(product);
+
   const onSubmit = (e: any) => {
     e.preventDefault();
+
+    if (!product.category) {
+      return alert('Please choose one category!');
+    }
+
+    if (product.category && product.category < 1) {
+      return alert('Please choose one category!');
+    }
 
     const pictures = (product?.sku as any[]).map(x => {
       return {
@@ -95,12 +105,14 @@ export default function DraftProduct({ data, onSave }: { data: any; onSave: any 
       discount_premium: String(product.discount_premium),
     };
 
-    onSave(data);
+    console.log(data);
+
+    // onSave(data);
   };
 
   return (
     <XForm onSubmit={onSubmit}>
-      <div className="row">
+      <div className="row" style={{ position: 'relative' }}>
         <div className="col-md-8">
           <div className="card">
             <div className="card-body">
@@ -196,6 +208,7 @@ export default function DraftProduct({ data, onSave }: { data: any; onSave: any 
                   <CategoryForm
                     categoryId={product?.category || 0}
                     onChange={(e: any) => setProduct({ ...product, category: e })}
+                    require
                   />
                 </div>
               </div>
@@ -302,31 +315,33 @@ export default function DraftProduct({ data, onSave }: { data: any; onSave: any 
           </div>
         </div>
         <div className="col-md-4">
-          <Card>
-            <CardBody>
-              <h2 className="card-title">
-                <span
-                  style={{
-                    borderStyle: 'solid',
-                    borderRadius: '50%',
-                    padding: '.1rem .6rem',
-                    borderWidth: 0.5,
-                    borderColor: '#0e7fe1',
-                    backgroundColor: '#0e7fe1',
-                    color: '#f3f3f3',
-                  }}
-                >
-                  1
-                </span>{' '}
-                Select the relevant images
-              </h2>
-              <hr />
-              <MultipleFiles
-                images={product.images || []}
-                setImages={(val: any) => setProduct({ ...product, images: val })}
-              />
-            </CardBody>
-          </Card>
+          <div style={{ position: 'fixed', width: '28%' }}>
+            <Card>
+              <CardBody>
+                <h2 className="card-title">
+                  <span
+                    style={{
+                      borderStyle: 'solid',
+                      borderRadius: '50%',
+                      padding: '.1rem .6rem',
+                      borderWidth: 0.5,
+                      borderColor: '#0e7fe1',
+                      backgroundColor: '#0e7fe1',
+                      color: '#f3f3f3',
+                    }}
+                  >
+                    1
+                  </span>{' '}
+                  Select the relevant images
+                </h2>
+                <hr />
+                <MultipleFiles
+                  images={product.images || []}
+                  setImages={(val: any) => setProduct({ ...product, images: val })}
+                />
+              </CardBody>
+            </Card>
+          </div>
         </div>
       </div>
     </XForm>

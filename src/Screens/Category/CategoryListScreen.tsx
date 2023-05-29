@@ -1,5 +1,5 @@
-import { useQuery } from '@apollo/client';
-import { faEdit, faFolder, faFolderOpen, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { useMutation, useQuery } from '@apollo/client';
+import { faEdit, faFolder, faFolderOpen, faPlus, faToggleOn, faToggleOff } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { gql } from 'apollo-boost';
 import Link from 'next/link';
@@ -14,17 +14,35 @@ const QUERY = gql`
       id
       name
       parents
+      active
     }
+  }
+`;
+
+const MU = gql`
+  mutation toggleCategory($id: Int!) {
+    toggleCategory(id: $id)
   }
 `;
 
 function TreeItem({ data, depth }: { data: any; depth: number }) {
   const [open, isOpen] = useState(false);
+  const [toggleCategory, { loading }] = useMutation(MU, {
+    refetchQueries: ['categoryList'],
+  });
   const children = data.parents.map((x: any) => <TreeItem key={x.id} data={x} depth={depth + 1} />);
 
   let heading;
 
   const border = depth > 0 ? { borderLeft: 'none', paddingLeft: 15, marginLeft: 0 } : {};
+
+  const onClickToggle = (id: number) => {
+    toggleCategory({
+      variables: {
+        id,
+      },
+    });
+  };
 
   if (depth > 0) {
     heading = (
@@ -38,7 +56,7 @@ function TreeItem({ data, depth }: { data: any; depth: number }) {
         }}
       >
         <div className="p-2">
-          <div style={{ justifyContent: 'space-between', display: 'flex' }}>
+          <div style={{ justifyContent: 'space-between', display: 'flex', alignItems: 'center' }}>
             <div
               onClick={() => {
                 isOpen(!open);
@@ -49,12 +67,22 @@ function TreeItem({ data, depth }: { data: any; depth: number }) {
                 {data.name} ({data.parents.length})
               </span>
             </div>
-            <div>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
               <Link href={`/category/edit/${data.id}`}>
                 <a>
                   <FontAwesomeIcon icon={faEdit} />
                 </a>
               </Link>
+              {loading ? (
+                <small style={{ marginLeft: 7, color: data.active ? 'green' : 'red' }}>Processing...</small>
+              ) : (
+                <a
+                  style={{ marginLeft: 7, color: data.active ? 'green' : 'red' }}
+                  onClick={() => onClickToggle(data.id)}
+                >
+                  <FontAwesomeIcon icon={data.active ? faToggleOn : faToggleOff} />
+                </a>
+              )}
             </div>
           </div>
         </div>

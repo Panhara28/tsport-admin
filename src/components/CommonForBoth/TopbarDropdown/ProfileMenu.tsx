@@ -44,7 +44,12 @@ export const ProfileMenu = () => {
     <React.Fragment>
       <Dropdown isOpen={menu} toggle={() => setMenu(!menu)} className="d-inline-block">
         <DropdownToggle className="btn header-item waves-effect" id="page-header-user-dropdown" tag="button">
-          <img className="rounded-circle header-profile-user" src={renderProfilePicture} alt="Header Avatar" />
+          <img
+            style={{ objectFit: 'cover' }}
+            className="rounded-circle header-profile-user"
+            src={renderProfilePicture}
+            alt="Header Avatar"
+          />
           <span className="d-none d-xl-inline-block ms-1 fw-medium font-size-15">{me.fullname}</span>{' '}
           <FontAwesomeIcon icon={faAngleDown} className="d-none d-xl-inline-block font-size-15" />
         </DropdownToggle>

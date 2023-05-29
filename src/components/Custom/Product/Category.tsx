@@ -5,10 +5,11 @@ import XForm from '../../Form/XForm';
 
 const QUERY = gql`
   query categoryList {
-    categoryList {
+    categoryList(active: true) {
       id
       name
       parents
+      active
     }
   }
 `;
@@ -67,7 +68,15 @@ function readCategory(id: number, data: any[]): any {
   return x;
 }
 
-export function CategoryForm({ categoryId, onChange }: { categoryId: number; onChange: any }) {
+export function CategoryForm({
+  categoryId,
+  onChange,
+  require,
+}: {
+  categoryId: number;
+  onChange: any;
+  require: boolean;
+}) {
   const wrappedRef = useRef<HTMLDivElement | null>(null);
   const [focus, setFocus] = useState(false);
   const [value, setValue] = useState<any>(categoryId || 0);
@@ -88,10 +97,11 @@ export function CategoryForm({ categoryId, onChange }: { categoryId: number; onC
     <div ref={wrappedRef}>
       {data && (
         <XForm.Text
-          label="Category"
+          label={`Category ${require ? '*' : ''}`}
           onClick={() => setFocus(true)}
           readOnly
           value={value > 0 ? readCategory(value, data.categoryList).name : null}
+          required={!!require}
         />
       )}
       {!!focus && data && (

@@ -121,7 +121,7 @@ export function SingleUpload({ setImage, image, width, height }: Props) {
       >
         <input type="file" onChange={onChange} style={{ display: 'none' }} ref={refUpload} />
         {image ? (
-          <img src={image} alt="" style={{ width, height: 'auto', objectFit: 'contain' }} />
+          <img src={image} alt="" style={{ width: `${width}px`, height: `${height}px`, objectFit: 'cover' }} />
         ) : (
           <FontAwesomeIcon icon={faImage} style={{ fontSize: 32, color: '#4886ff' }} />
         )}

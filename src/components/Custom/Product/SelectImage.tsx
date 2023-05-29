@@ -26,7 +26,7 @@ export function SelectImage({ images, image, onClick, width, height }: Props) {
   });
 
   return (
-    <div ref={wrappedRef}>
+    <div ref={wrappedRef} style={{ position: 'relative' }}>
       <div onClick={() => setFocus(true)} style={{ cursor: 'pointer' }}>
         {image ? (
           <img src={image} alt="choose image" style={{ width: width ? width : 50, height: height ? height : 50 }} />
@@ -52,6 +52,8 @@ export function SelectImage({ images, image, onClick, width, height }: Props) {
             height: 300,
             maxWidth: 120,
             overflowY: 'auto',
+            bottom: 0,
+            right: '-10%',
           }}
           onClick={() => setFocus(true)}
         >
