@@ -105,9 +105,7 @@ export default function DraftProduct({ data, onSave }: { data: any; onSave: any 
       discount_premium: String(product.discount_premium),
     };
 
-    console.log(data);
-
-    // onSave(data);
+    onSave(data);
   };
 
   return (
