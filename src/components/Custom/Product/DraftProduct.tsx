@@ -111,7 +111,7 @@ export default function DraftProduct({ data, onSave }: { data: any; onSave: any 
   };
 
   return (
-    <XForm onSubmit={onSubmit}>
+    <form onSubmit={onSubmit}>
       <div className="row" style={{ position: 'relative' }}>
         <div className="col-md-8">
           <div className="card">
@@ -310,7 +310,7 @@ export default function DraftProduct({ data, onSave }: { data: any; onSave: any 
                   images={product.images || []}
                 />
               </div>
-              <XForm.Button type="submit">Save</XForm.Button>
+              <button type="submit" className="btn btn-sm btn-primary">Save</button>
             </div>
           </div>
         </div>
@@ -344,6 +344,6 @@ export default function DraftProduct({ data, onSave }: { data: any; onSave: any 
           </div>
         </div>
       </div>
-    </XForm>
+    </form>
   );
 }
