@@ -45,7 +45,7 @@ export function SelectImage({ images, image, onClick, width, height }: Props) {
             width: '100%',
             boxShadow: '1px 1px 5px 1px rgba(0,0,0,0.5);',
             padding: 10,
-            // top: '100%',
+            top: 0,
             fontSize: 12,
             fontWeight: 500,
             overflow: 'hidden',
