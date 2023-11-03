@@ -22,6 +22,7 @@ import { Badge } from 'reactstrap';
 import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
 import dynamic from 'next/dynamic';
+import { CardHeader } from 'reactstrap';
 
 // const DraftProduct = dynamic(() => import('../../components/Custom/Product/DraftProduct'), {
 //   ssr: false,
@@ -254,6 +255,11 @@ export function OrderListScreen() {
             </div>
           </div>
           <div className="col-md-9">
+            <Card color="info" inverse>
+              <CardBody>
+                <b>#Address: {orders[select].details[0].address}</b>
+              </CardBody>
+            </Card>
             <Card>
               <CardBody style={{ padding: 0 }}>
                 <Table responsive>

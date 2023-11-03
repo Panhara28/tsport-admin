@@ -3,8 +3,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import { gql } from 'apollo-boost';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
-import { Badge } from 'reactstrap';
-import { CardBody } from 'reactstrap';
+import { CardBody, Modal, ModalHeader, ModalBody } from 'reactstrap';
 import { Table } from 'reactstrap';
 import { Card } from 'reactstrap';
 import { TsContent } from '../../components/Custom/TsContent';
@@ -30,7 +29,51 @@ const MU = gql`
   }
 `;
 
+function ShowStock({ modal, toggle, value }: { modal: boolean; toggle: () => void; value: any }) {
+  return (
+    <Modal isOpen={modal} toggle={toggle} fullscreen>
+      <ModalHeader toggle={toggle}>
+        {value && value.title}
+      </ModalHeader>
+      <ModalBody>
+        <Table responsive className="table-centered table-nowrap mb-0" hover bordered>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Barcode</th>
+              <th>Color</th>
+              <th>Size</th>
+              <th>Qty</th>
+              <th>Stock</th>
+            </tr>
+          </thead>
+          <tbody>
+            {value &&
+              value.sku.map((x: any, i: any) => {
+                return (
+                  <tr key={i}>
+                    <td>
+                      <img src={x.image} alt="" style={{ width: 75, height: 'auto', objectFit: 'contain' }} />
+                    </td>
+                    <td>{x.barcode}</td>
+                    <td>{x.color}</td>
+                    <td>{x.size}</td>
+                    <td>{x.qty}</td>
+                    <td>{x.stock}</td>
+                  </tr>
+                )
+              })
+            }
+          </tbody>
+        </Table>
+      </ModalBody>
+    </Modal>
+  )
+}
+
 export function ProductListScreen() {
+  const [modal, setModal] = useState(false);
+  const [index, setindex] = useState(-1);
   const [limit, setLimit] = useState(10);
   const [offset, setOffset] = useState(0);
   const { me } = useAuthContext();
@@ -94,8 +137,11 @@ export function ProductListScreen() {
     }
   };
 
+  const toggle = () => setModal(!modal);
+
   return (
     <TsContent title="Product List">
+      <ShowStock modal={modal} toggle={toggle} value={data ? data.productList.data.find((f: any) => f.id === index) : null} />
       {me.roleId < 3 && (
         <Link href={'/product/create'}>
           <a className="btn btn-sm btn-primary">Upload product</a>
@@ -175,12 +221,18 @@ export function ProductListScreen() {
                             <Link href={'/product/edit/' + x.id}>
                               <a className="btn btn-sm btn-primary">Edit</a>
                             </Link>{' '}
+                            <button className="btn btn-sm btn-warning" style={{ marginRight: 5 }} onClick={() => {
+                              setindex(x.id)
+                              toggle();
+                            }}>
+                              Stock
+                            </button>
                             {x.pin_default ? (
-                              <button className="btn btn-sm btn-danger" onClick={() => onClickPin(x.id)}>
+                              <button className="btn btn-sm btn-danger ml-2 mr-2" onClick={() => onClickPin(x.id)}>
                                 Unpin Default
                               </button>
                             ) : (
-                              <button className="btn btn-sm btn-info" onClick={() => onClickPin(x.id)}>
+                              <button className="btn btn-sm btn-info ml-2 mr-2" onClick={() => onClickPin(x.id)}>
                                 Pin Default
                               </button>
                             )}
