@@ -10,10 +10,11 @@ import { TsContent } from '../../components/Custom/TsContent';
 import { CustomPagination } from '../../components/Paginations';
 import toastr from 'toastr';
 import { useAuthContext } from '../../components/Authentication/AuthContext';
+import XForm from '../../components/Form/XForm';
 
 const QUERY = gql`
-  query productList($offset: Int = 0, $limit: Int = 10) {
-    productList(offset: $offset, limit: $limit)
+  query productList($offset: Int = 0, $limit: Int = 10, $filter: FilterProduct) {
+    productList(offset: $offset, limit: $limit, filter: $filter)
   }
 `;
 
@@ -76,11 +77,16 @@ export function ProductListScreen() {
   const [index, setindex] = useState(-1);
   const [limit, setLimit] = useState(10);
   const [offset, setOffset] = useState(0);
+  const [searchInput, setSearchInput] = useState('');
+  const [search, setSearch] = useState('');
   const { me } = useAuthContext();
   const { data } = useQuery(QUERY, {
     variables: {
       offset,
       limit,
+      filter: {
+        search: search ? String(search) : null
+      }
     },
   });
   const [publishProduct] = useMutation(MUTATION, {
@@ -143,9 +149,21 @@ export function ProductListScreen() {
     <TsContent title="Product List">
       <ShowStock modal={modal} toggle={toggle} value={data ? data.productList.data.find((f: any) => f.id === index) : null} />
       {me.roleId < 3 && (
-        <Link href={'/product/create'}>
-          <a className="btn btn-sm btn-primary">Upload product</a>
-        </Link>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div>
+            <Link href={'/product/create'}>
+              <a className="btn btn-sm btn-primary">Upload product</a>
+            </Link>
+          </div>
+          <div style={{ width: 300 }}>
+            <XForm.Text value={searchInput} onChange={e => {
+              setSearchInput(e.currentTarget.value);
+              if (e.currentTarget.value === '') {
+                setSearch('');
+              }
+            }} onKeyDown={e => e.keyCode === 13 && setSearch(searchInput)} placeholder='Search title or product code...' />
+          </div>
+        </div>
       )}
       <br />
       <br />
@@ -156,8 +174,8 @@ export function ProductListScreen() {
               <thead>
                 <tr>
                   <th>Product</th>
-                  <th>Code</th>
-                  <th>SKU</th>
+                  <th>{`Product Code (ID)`}</th>
+                  <th>{`Stock Keeping Units (SKUs)`}</th>
                   <th className="text-center">Stock</th>
                   <th className="text-center">Published</th>
                   <th className="text-center">Action</th>
