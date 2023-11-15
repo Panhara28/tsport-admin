@@ -76,6 +76,10 @@ export const MenuItems: MenuItem[] = [
     id: 'setting',
     subs: [
       {
+        title: 'Exchange Rate',
+        link: '/setting',
+      },
+      {
         title: 'common:sidebar.settings.add_user',
         link: '/hr/users/create',
       },

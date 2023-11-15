@@ -6,6 +6,18 @@ import ReactToPrint from 'react-to-print';
 import react, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 //@ts-ignore
 import { createPortal } from 'react-dom';
+import { gql, useQuery } from '@apollo/client';
+
+const QUERY = gql`
+query settings{
+  settings{
+    id
+    options{
+      khrvalue
+    }
+  }
+}
+`
 
 class ComponentToPrint extends react.Component<{ data: any[] }> {
   render(): react.ReactNode {
@@ -43,6 +55,9 @@ const currencyKHR = new Intl.NumberFormat('kh-KH', {
 });
 
 function PrintInternal({ data, timer }: { data: any; timer: string }, mainRef: any) {
+  const { data: setting, loading } = useQuery(QUERY, {
+    fetchPolicy: 'no-cache'
+  });
   const [iframeBody, setIframeBody] = useState<HTMLElement | null | undefined>(null);
 
   const ref = useRef<HTMLIFrameElement>(null);
@@ -63,7 +78,7 @@ function PrintInternal({ data, timer }: { data: any; timer: string }, mainRef: a
   }, [ref, timer]);
 
   const invoiceNum = String(data.id).padStart(6, '0');
-
+  const khrvalue = setting ? Number(setting.settings.options.khrvalue) : 4000
   const dom = (
     <div>
       <link type="text/css" rel="stylesheet" href="/style.css" />
@@ -221,7 +236,7 @@ function PrintInternal({ data, timer }: { data: any; timer: string }, mainRef: a
               </td>
               <td colSpan={2}>
                 <b>
-                  <small>{currencyKHR.format(Number(data.amount) * 4100)}</small>
+                  <small>{currencyKHR.format(Number(data.amount) * khrvalue)}</small>
                 </b>
               </td>
               <td>
@@ -236,7 +251,7 @@ function PrintInternal({ data, timer }: { data: any; timer: string }, mainRef: a
               </td>
               <td colSpan={2}>
                 <b>
-                  <small>{currencyKHR.format((Number(data.total) - Number(data.amount)) * 4100)}</small>
+                  <small>{currencyKHR.format((Number(data.total) - Number(data.amount)) * khrvalue)}</small>
                 </b>
               </td>
               <td>
@@ -251,7 +266,7 @@ function PrintInternal({ data, timer }: { data: any; timer: string }, mainRef: a
               </td>
               <td colSpan={2}>
                 <b>
-                  <small>{currencyKHR.format(Number(data.total) * 4100)}</small>
+                  <small>{currencyKHR.format(Number(data.total) * khrvalue)}</small>
                 </b>
               </td>
               <td>

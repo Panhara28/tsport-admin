@@ -1,16 +1,58 @@
-import Link from 'next/link';
-import { CardBody } from 'reactstrap';
+
 import { Col } from 'reactstrap';
-import { Card } from 'reactstrap';
-import { ListGroup } from 'react-bootstrap';
 import { Container } from 'reactstrap';
 import { Row } from 'reactstrap';
 import { Breadcrumb } from '../../components/Common/Breadcrumb';
 import Layout from '../../components/VerticalLayout';
 import { setting } from '../../libs/settings';
-import { SettingSideBar } from './SettingSideBar';
+import { Form } from 'react-bootstrap';
+import XForm from '../../components/Form/XForm';
+import { gql } from 'apollo-boost';
+import { useMutation, useQuery } from '@apollo/client';
+import { useState } from 'react';
+
+const QUERY = gql`
+query settings{
+  settings{
+    id
+    options{
+      khrvalue
+    }
+  }
+}
+`
+const UPDATE = gql`
+mutation updateKhrCurrencyValue($currency: Float){
+  updateKhrCurrencyValue(currency: $currency)
+}`
 
 export function SettingScreen() {
+  const [value, setValue] = useState('0')
+  const { data, loading } = useQuery(QUERY, {
+    fetchPolicy: 'no-cache',
+    onCompleted: r => {
+      if (r.settings) {
+        setValue(r.settings.options.khrvalue)
+      }
+    }
+  });
+  const [updateKhrCurrencyValue] = useMutation(UPDATE, {
+    refetchQueries: ['settings']
+  });
+
+  const onHandleSubmit = (e: any) => {
+    e.preventDefault();
+    updateKhrCurrencyValue({
+      variables: {
+        currency: Number(value)
+      }
+    }).then(r => {
+      if (r.data.updateKhrCurrencyValue) {
+        alert('Update exchange rate');
+      }
+    })
+  }
+
   return (
     <Layout>
       <div className="page-content">
@@ -19,15 +61,19 @@ export function SettingScreen() {
         <Container fluid>
           <Row>
             <Col md={3}>
-              <SettingSideBar />
-            </Col>
-            <Col md={9}>
-              <Card>
-                <CardBody>
-                  <h5>Setting</h5>
-                  <hr />
-                </CardBody>
-              </Card>
+              {
+                !loading && data && <Form onSubmit={onHandleSubmit}>
+                  <XForm.Text
+                    label={`Exchange rate 1 USD = ${data.settings.options.khrvalue} KHR (+)`}
+                    placeholder=""
+                    value={value}
+                    onChange={e => setValue(e.currentTarget.value)}
+                  />
+                  <div className="form-group">
+                  </div>
+                  <XForm.Button>Save</XForm.Button>
+                </Form>
+              }
             </Col>
           </Row>
         </Container>
