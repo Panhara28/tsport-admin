@@ -51,8 +51,6 @@ const optionSize = ['XS', 'S', 'M', 'L', 'XL'];
 export default function DraftProduct({ data, onSave }: { data: any; onSave: any }) {
   const [product, setProduct] = useState<Product>(data);
 
-  console.log(product);
-
   const onSubmit = (e: any) => {
     e.preventDefault();
 
@@ -95,6 +93,7 @@ export default function DraftProduct({ data, onSave }: { data: any; onSave: any 
       size: product?.size,
       color: product?.color,
       category: product?.category,
+      code: product?.code,
       unit: '',
       discount: String(product?.discount),
       picture: pictures,
@@ -202,6 +201,15 @@ export default function DraftProduct({ data, onSave }: { data: any; onSave: any 
                 />
               </div>
               <div className="row">
+                <div className='col-md-4'>
+                  <XForm.Text
+                    label='Product Code'
+                    placeholder='Enter product code...'
+                    type='text'
+                    value={product.code}
+                    onChange={e => setProduct({ ...product, code: e.currentTarget.value })}
+                  />
+                </div>
                 <div className="col-md-4">
                   <CategoryForm
                     categoryId={product?.category || 0}
