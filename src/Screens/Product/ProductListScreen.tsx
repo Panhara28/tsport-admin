@@ -11,6 +11,7 @@ import { CustomPagination } from '../../components/Paginations';
 import toastr from 'toastr';
 import { useAuthContext } from '../../components/Authentication/AuthContext';
 import XForm from '../../components/Form/XForm';
+import { useRouter } from 'next/router';
 
 const QUERY = gql`
   query productList($offset: Int = 0, $limit: Int = 10, $filter: FilterProduct) {
@@ -73,9 +74,10 @@ function ShowStock({ modal, toggle, value }: { modal: boolean; toggle: () => voi
 }
 
 export function ProductListScreen() {
+  const { push, pathname } = useRouter();
   const [modal, setModal] = useState(false);
   const [index, setindex] = useState(-1);
-  const [limit, setLimit] = useState(10);
+  const [limit, setLimit] = useState(25);
   const [offset, setOffset] = useState(0);
   const [searchInput, setSearchInput] = useState('');
   const [search, setSearch] = useState('');
@@ -118,8 +120,13 @@ export function ProductListScreen() {
       if (query.get('page')) {
         setOffset((Number(query.get('page')) - 1) * limit);
       }
+
+      if (query.get('search')) {
+        setSearch(query.get('search') || '')
+        setSearchInput(query.get('search') || '')
+      }
     }
-  });
+  }, []);
 
   const onClickPublish = (id: number) => {
     const x = window.confirm('Are you sure want update publish product?');
@@ -160,8 +167,14 @@ export function ProductListScreen() {
               setSearchInput(e.currentTarget.value);
               if (e.currentTarget.value === '') {
                 setSearch('');
+                push(pathname + "?page=1")
               }
-            }} onKeyDown={e => e.keyCode === 13 && setSearch(searchInput)} placeholder='Search title or product code...' />
+            }} onKeyDown={e => {
+              if (e.keyCode === 13) {
+                setSearch(searchInput);
+                push(pathname + "?page=1" + "&search=" + searchInput)
+              }
+            }} placeholder='Search title or product code...' />
           </div>
         </div>
       )}
