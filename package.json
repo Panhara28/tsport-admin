@@ -79,7 +79,7 @@
     "reactstrap": "^9.2.0",
     "redux-saga": "^1.1.3",
     "request": "^2.88.2",
-    "sass": "^1.45.0",
+    "sass": "^1.79.0",
     "simplebar-react": "^2.3.6",
     "styled-components": "^5.3.5",
     "sweetalert2": "^11.4.17",
